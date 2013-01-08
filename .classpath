@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/gluegen.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl-all-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl-all-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl.all-mobile.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl.all-noawt.jar"/>
+	<classpathentry kind="lib" path="lib/opengl/jogl.all.jar"/>
+	<classpathentry kind="lib" path="lib/graphics.jar"/>
+	<classpathentry kind="lib" path="lib/math/Jama-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/math/vecmath.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

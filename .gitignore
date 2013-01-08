@@ -1,3 +1,7 @@
+#project
+lib/opengl/*
+lib/math/*
+
 #LaTeX
 */doc/*.aux
 */doc/*.bbl
