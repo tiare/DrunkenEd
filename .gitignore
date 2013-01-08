@@ -1,0 +1,56 @@
+#LaTeX
+*/doc/*.aux
+*/doc/*.bbl
+*/doc/*.blg
+*/doc/*.log
+*/doc/*.tps
+*/doc/*.tcp
+
+#java specific
+*.class
+
+# Package Files #
+*.war
+*.ear
+
+# Eclipse #
+*.pydevproject
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+ 
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+
+#OSX
+.DS_Store
+__MACOSX
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+#WINDOWS
+# Windows image file caches
+Thumbs.db 
+
+# Folder config file
+Desktop.ini
+
+
