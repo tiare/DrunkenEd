@@ -1,6 +1,5 @@
 package control.states;
 
-import Highscores;
 import control.ProgramState;
 import graphics.StandardTextures;
 
