@@ -1,8 +1,7 @@
 package control.states;
 
-import control.ProgramState;
 
-public class GameState extends ProgramState {
+public class GameState extends WorldState {
 
 	@Override
 	public void onStep(float deltaTime) {

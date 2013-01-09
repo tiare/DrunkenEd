@@ -20,7 +20,7 @@ public abstract class ProgramState {
 		return this;
 	}
 	
-	public final void step(float deltaTime) {
+	public void step(float deltaTime) {
 		stateTimer += deltaTime;
 		onStep(deltaTime);
 	}

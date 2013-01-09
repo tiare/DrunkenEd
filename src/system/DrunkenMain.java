@@ -13,7 +13,7 @@ public class DrunkenMain {
 		
 		IOCommon.IMAGE_PATH = "textures/";
 		
-		GLESFrame frame = new GLESFrame("A Touch of Ninja");
+		GLESFrame frame = new GLESFrame("Drunken Ed");
 		frame.init();
 		
 		App.gfxLoader = frame.mGraphics.mGFXLoader;

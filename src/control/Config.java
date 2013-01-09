@@ -1,6 +1,6 @@
 package control;
 
-import control.states.TestState;
+import control.states.FigureTestState;
 
 public class Config {
 	
@@ -16,7 +16,7 @@ public class Config {
 	 * @return the state to start
 	 */
 	public static ProgramState getStartState(ProgramController programController) {
-		return new TestState();
+		return new FigureTestState();
 	}
 	
 }

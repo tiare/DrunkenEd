@@ -1,8 +1,7 @@
 package control.states;
 
-import control.ProgramState;
 
-public class MainMenuState extends ProgramState {
+public class MainMenuState extends WorldState {
 
 	@Override
 	public void onStep(float deltaTime) {

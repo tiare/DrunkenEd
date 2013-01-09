@@ -1,5 +1,6 @@
 package figure;
 
+import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
 import graphics.skeletons.Skeleton;
 import graphics.skeletons.SkeletonCarrier;
@@ -8,13 +9,22 @@ import graphics.translator.GraphicsTranslator;
 public class Player implements SkeletonCarrier {
 
 	private float speed;
+	private ProgramController programController;
 	private DrunkenSkeleton skeleton;
 	private GraphicsTranslator graphics;
 	private Default2DGraphics graphics2D;
 	public float posX,posY;
 	
 	public Player() {
-		
+		skeleton = new DrunkenSkeleton();
+	}
+	
+	public Player init(ProgramController programController) {
+		this.programController = programController;
+		this.graphics = programController.mGraphics;
+		this.graphics2D = programController.mGraphics2D;
+		skeleton.init(this);
+		return this;
 	}
 	
 	public void setSpeed(float speed) {
@@ -26,12 +36,13 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void draw() {
-		
+		skeleton.refreshVisualVars();
+		skeleton.draw();
 	}
 
 	@Override
 	public Default2DGraphics getGraphics() {
-		return null;
+		return graphics2D;
 	}
 
 	@Override
