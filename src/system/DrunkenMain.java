@@ -25,7 +25,6 @@ public class DrunkenMain {
 		frame.setEventListener(mainControl);
 		frame.setIconImage(new ImageIcon(IOCommon.ICON_PATH).getImage());
 		frame.run();
-		
 	}
 	
 }

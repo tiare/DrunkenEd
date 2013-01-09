@@ -1,11 +1,13 @@
 package control;
 
+import tracking.Tracking;
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
 
 public class ProgramController extends DefaultSurface {
 
 	private ProgramState currentState;
+	public Tracking tracking;
 	private float programTimer;
 	public boolean started;
 	
