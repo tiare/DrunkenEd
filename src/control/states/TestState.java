@@ -1,9 +1,21 @@
 package control.states;
 
+import Highscores;
 import control.ProgramState;
 import graphics.StandardTextures;
 
 public class TestState extends ProgramState{
+	
+	
+	public TestState() {
+		super();
+//		example how to load highscores;
+//		Highscores hs = new Highscores();
+//		hs.isNewHighScoreAndAdd(Highscores.GAME_EASY, -1);
+//		hs.isNewHighScoreAndAdd(Highscores.GAME_EASY, 1);
+//		hs.isNewHighScoreAndAdd(Highscores.GAME_EASY, 3);
+//		hs.isNewHighScoreAndAdd(Highscores.GAME_EASY, 2);
+	}
 
 	@Override
 	public void onStep(float deltaTime) {

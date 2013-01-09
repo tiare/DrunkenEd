@@ -20,9 +20,6 @@ public class Highscores {
 				saveFile(fileEasy, GAME_EASY, new int[] { 0, 0, 0 });
 			}
 			loadScoreFromFile(fileEasy, GAME_EASY);
-			for (int i = 0; i < 3; i++) {
-				p("easy[" + i + "] = " + highscoresEasy[i]);
-			}
 
 			File fileMedium = new File(getFileName(GAME_MEDIUM));
 			if (!fileMedium.exists()) {
