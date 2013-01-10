@@ -13,6 +13,7 @@ src/control/Config.java
 
 #java specific
 *.class
+.classpath
 
 # Package Files #
 *.war
