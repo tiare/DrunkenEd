@@ -9,7 +9,7 @@ public class FigureTestState extends WorldState{
 
 	@Override
 	public void onStep(float deltaTime) {
-		camera.set(1, 1, 2);
+		camera.set(1, 0, 2);
 		camera.setRotation(stateTimer);
 	}
 
