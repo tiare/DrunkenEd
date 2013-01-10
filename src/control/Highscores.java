@@ -33,7 +33,7 @@ public class Highscores {
 			}
 			loadScoreFromFile(fileHard, GAME_HARD);
 		} catch (IOException e) {
-			p("couldn't write to disk: " + e.toString());
+			p("Could not write to disk: " + e.toString());
 		}
 	}
 
@@ -46,7 +46,7 @@ public class Highscores {
 					table[j] = table[j - 1];
 				}
 				table[i] = score;
-				saveFile(new File(getFileName(GAME_EASY)), gameLevel, table);
+				saveFile(new File(getFileName(gameLevel)), gameLevel, table);
 				return true;
 			}
 		}
@@ -123,7 +123,6 @@ public class Highscores {
 	private void saveFile(File file, final int gameLevel, int[] scores) {
 		try {
 			FileWriter fstream = new FileWriter(getFileName(gameLevel));
-			p("saving to file "+file.toString());
 			BufferedWriter out = new BufferedWriter(fstream);
 			StringBuffer toWrite = new StringBuffer();
 			for (int i = 0; i < 2 ; i++) {
@@ -131,7 +130,6 @@ public class Highscores {
 			}
 			toWrite.append(scores[2]);
 			out.write(toWrite.toString());
-			p("towrite is: "+toWrite.toString());
 			out.close();
 			fstream.close();
 		} catch (IOException e) {
