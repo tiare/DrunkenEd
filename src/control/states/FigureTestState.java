@@ -19,5 +19,10 @@ public class FigureTestState extends WorldState{
 		graphics2D.setWhite();
 		player.draw();
 	}
+	
+	@Override
+	public void keyDown(int code) {
+		
+	}
 
 }

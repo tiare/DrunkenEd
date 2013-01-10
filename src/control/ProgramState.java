@@ -60,6 +60,14 @@ public abstract class ProgramState implements TrackingListener {
 		
 	}
 	
+	public void keyDown(int key) {
+		
+	}
+	
+	public void keyUp(int key) {
+		
+	}
+	
 	@Override
 	public void onDrink() {
 		

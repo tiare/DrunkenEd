@@ -93,6 +93,19 @@ public class ProgramController extends DefaultSurface {
 			currentState.pointerUp(x, y, pId);
 	}
 	
+	@Override
+	public void keyDown(int key) {
+		
+		if(currentState!=null)
+			currentState.keyDown(key);
+	}
+	
+	@Override
+	public void keyUp(int key) {
+		
+		if(currentState!=null)
+			currentState.keyUp(key);
+	}
 	
 	
 }

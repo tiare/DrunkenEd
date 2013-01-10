@@ -15,8 +15,11 @@ public class Player implements SkeletonCarrier {
 	private Default2DGraphics graphics2D;
 	public float posX,posY;
 	
+	public float bending;
+	
 	public Player() {
 		skeleton = new DrunkenSkeleton();
+		bending = 0;
 	}
 	
 	public Player init(ProgramController programController) {
