@@ -1,5 +1,6 @@
 package figure;
 
+import util.Util;
 import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
 import graphics.skeletons.Skeleton;
@@ -86,8 +87,13 @@ public class Player implements SkeletonCarrier {
 	public void step(float deltaTime) {
 		posX += velX*deltaTime;
 		posY += velY*deltaTime;
-		skeleton.applyConstraints();
+		
+		skeleton.mBreastJoint.mPosX = skeleton.mHipJoint.mPosX + (float)(skeleton.mBodyBone.mDistance*Math.sin(bending));
+		skeleton.mBreastJoint.mPosY = skeleton.mHipJoint.mPosY + (float)(skeleton.mBodyBone.mDistance*Math.cos(bending));
 		skeleton.mHipJoint.mFixed = true;
+		for(int i=0;i<3;i++)
+			skeleton.applyConstraints();
+		
 	}
 	
 }
