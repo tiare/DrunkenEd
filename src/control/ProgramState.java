@@ -1,9 +1,10 @@
 package control;
 
+import tracking.TrackingListener;
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 
-public abstract class ProgramState {
+public abstract class ProgramState implements TrackingListener {
 	
 	protected GraphicsTranslator graphics;
 	protected Default2DGraphics graphics2D;
@@ -59,4 +60,21 @@ public abstract class ProgramState {
 		
 	}
 	
+	public void keyDown(int key) {
+		
+	}
+	
+	public void keyUp(int key) {
+		
+	}
+	
+	@Override
+	public void onDrink() {
+		
+	}
+	
+	@Override
+	public void onBend(float bending) {
+		
+	}
 }
