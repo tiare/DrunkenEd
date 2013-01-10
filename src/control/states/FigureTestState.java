@@ -17,6 +17,7 @@ public class FigureTestState extends WorldState{
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 		player.draw();
+		
 	}
 
 }

@@ -57,7 +57,7 @@ public class Player implements SkeletonCarrier {
 
 	@Override
 	public Skeleton getSkeleton() {
-		return null;
+		return skeleton;
 	}
 
 	@Override

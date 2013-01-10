@@ -1,6 +1,6 @@
 package control;
 
-import control.states.FigureTestState;
+import control.states.*;
 
 public class Config {
 	
@@ -17,6 +17,7 @@ public class Config {
 	 */
 	public static ProgramState getStartState(ProgramController programController) {
 		return new FigureTestState();
+		//return new MainMenuState();
 	}
 	
 }
