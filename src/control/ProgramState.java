@@ -1,9 +1,10 @@
 package control;
 
+import tracking.TrackingListener;
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 
-public abstract class ProgramState {
+public abstract class ProgramState implements TrackingListener {
 	
 	protected GraphicsTranslator graphics;
 	protected Default2DGraphics graphics2D;
@@ -56,6 +57,11 @@ public abstract class ProgramState {
 	}
 	
 	public void pointerUp(float x,float y,int pId) {
+		
+	}
+	
+	@Override
+	public void onDrink() {
 		
 	}
 	

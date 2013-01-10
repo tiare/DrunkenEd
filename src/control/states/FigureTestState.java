@@ -9,7 +9,8 @@ public class FigureTestState extends WorldState{
 
 	@Override
 	public void onStep(float deltaTime) {
-		camera.set(0, 1, 2);
+		camera.set(1, 1, 2);
+		camera.setRotation(stateTimer);
 	}
 
 	@Override
@@ -17,6 +18,11 @@ public class FigureTestState extends WorldState{
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 		player.draw();
+	}
+	
+	@Override
+	public void onDrink() {
+		System.out.println("fnelgnerk.ge,r");
 	}
 
 }

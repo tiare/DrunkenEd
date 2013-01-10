@@ -15,11 +15,13 @@ public class ProgramController extends DefaultSurface {
 		super(true,false,true);
 		started = false;
 		programTimer = 0;
+		tracking = new Tracking(this);
 	}
 	
 	public void start() {
 		currentState = Config.getStartState(this).init(this);
 		programTimer = 0;
+		tracking.init();
 		
 		StandardTextures.init(mGraphics);
 		
@@ -33,9 +35,10 @@ public class ProgramController extends DefaultSurface {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					float deltaTime = System.currentTimeMillis()-startTime;
-					currentState.step(deltaTime*0.001f);
-					programTimer += deltaTime*0.001f;
+					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
+					tracking.step(deltaTime);
+					currentState.step(deltaTime);
+					programTimer += deltaTime;
 				}
 			}
 		}.start();
@@ -89,5 +92,7 @@ public class ProgramController extends DefaultSurface {
 		if(currentState!=null)
 			currentState.pointerUp(x, y, pId);
 	}
+	
+	
 	
 }
