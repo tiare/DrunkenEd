@@ -4,8 +4,8 @@ import figure.DrunkenSkeleton;
 
 public class MainMenuState extends WorldState {
 	
-	private float clickPosX = 0.0f;
-	private float clickPosY = 0.0f;
+//	private float clickPosX = 0.0f;
+//	private float clickPosY = 0.0f;
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -21,7 +21,6 @@ public class MainMenuState extends WorldState {
 		player.draw();
 		////graphics2D.setColor(1.0f, 0.3f, 0.3f);
 		//graphics2D.drawRect(5.f, 5.f, 50.f, 50.f);
-
 	}
 
 //	@Override

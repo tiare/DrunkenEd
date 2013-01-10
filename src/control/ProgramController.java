@@ -1,41 +1,50 @@
 package control;
 
-import tracking.Tracking;
+
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
+import ninja.game.model.Keys;
+import tracking.FakedTracking;
 
 public class ProgramController extends DefaultSurface {
 
 	private ProgramState currentState;
-	public Tracking tracking;
+	public FakedTracking tracking;
 	private float programTimer;
 	public boolean started;
+	private boolean running;
 	
 	public ProgramController() {
 		super(true,false,true);
 		started = false;
 		programTimer = 0;
+
+		tracking = new FakedTracking(this);
+		running = true;
+
 	}
 	
 	public void start() {
 		currentState = Config.getStartState(this).init(this);
 		programTimer = 0;
+		tracking.init();
 		
 		StandardTextures.init(mGraphics);
 		
 		new Thread() {
 			@Override
 			public void run() {
-				while(true) {
+				while(running) {
 					long startTime = System.currentTimeMillis();
 					try {
 						Thread.sleep(20);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					float deltaTime = System.currentTimeMillis()-startTime;
-					currentState.step(deltaTime*0.001f);
-					programTimer += deltaTime*0.001f;
+					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
+					tracking.step(deltaTime);
+					currentState.step(deltaTime);
+					programTimer += deltaTime;
 				}
 			}
 		}.start();
@@ -89,5 +98,28 @@ public class ProgramController extends DefaultSurface {
 		if(currentState!=null)
 			currentState.pointerUp(x, y, pId);
 	}
+	
+	@Override
+	public void keyDown(int key) {
+		if(key == Keys.ESC) {
+			running = false;
+			System.exit(0);
+		}
+		if(currentState!=null)
+			currentState.keyDown(key);
+		if(tracking != null)
+			tracking.keyDown(key);
+	}
+	
+	@Override
+	public void keyUp(int key) {
+		
+		if(currentState!=null)
+			currentState.keyUp(key);
+		
+		if(tracking != null)
+			tracking.keyUp(key);
+	}
+	
 	
 }

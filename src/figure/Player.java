@@ -1,22 +1,25 @@
 package figure;
 
-import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
 import graphics.skeletons.Skeleton;
 import graphics.skeletons.SkeletonCarrier;
 import graphics.translator.GraphicsTranslator;
+import control.ProgramController;
 
 public class Player implements SkeletonCarrier {
 
-	private float speed;
+	private float velX,velY;
 	private ProgramController programController;
 	private DrunkenSkeleton skeleton;
 	private GraphicsTranslator graphics;
 	private Default2DGraphics graphics2D;
 	public float posX,posY;
 	
+	public float bending;
+	
 	public Player() {
 		skeleton = new DrunkenSkeleton();
+		bending = 0;
 	}
 	
 	public Player init(ProgramController programController) {
@@ -27,12 +30,12 @@ public class Player implements SkeletonCarrier {
 		return this;
 	}
 	
-	public void setSpeed(float speed) {
-		this.speed = speed;
+	public void setSpeedX(float speed) {
+		this.velX = speed;
 	}
 	
 	public float getSpeed() {
-		return speed;
+		return velX;
 	}
 	
 	public void draw() {
@@ -78,6 +81,13 @@ public class Player implements SkeletonCarrier {
 	@Override
 	public void setSkeleton(Skeleton skeleton) {
 		
+	}
+
+	public void step(float deltaTime) {
+		posX += velX*deltaTime;
+		posY += velY*deltaTime;
+		skeleton.applyConstraints();
+		skeleton.mHipJoint.mFixed = true;
 	}
 	
 }

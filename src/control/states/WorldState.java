@@ -33,4 +33,10 @@ public abstract class WorldState extends ProgramState {
 		super.draw();
 	}
 	
+	@Override
+	public void onBend(float bending){
+		player.bending += bending;
+		player.setSpeedX( (float)(player.bending / (Math.PI/4.0) / 2.0) );
+	}
+	
 }
