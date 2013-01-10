@@ -1,8 +1,10 @@
 package control;
 
-import tracking.FakedTracking;
+
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
+import ninja.game.model.Keys;
+import tracking.FakedTracking;
 
 public class ProgramController extends DefaultSurface {
 
@@ -10,12 +12,16 @@ public class ProgramController extends DefaultSurface {
 	public FakedTracking tracking;
 	private float programTimer;
 	public boolean started;
+	private boolean running;
 	
 	public ProgramController() {
 		super(true,false,true);
 		started = false;
 		programTimer = 0;
+
 		tracking = new FakedTracking(this);
+		running = true;
+
 	}
 	
 	public void start() {
@@ -28,7 +34,7 @@ public class ProgramController extends DefaultSurface {
 		new Thread() {
 			@Override
 			public void run() {
-				while(true) {
+				while(running) {
 					long startTime = System.currentTimeMillis();
 					try {
 						Thread.sleep(20);
@@ -95,7 +101,10 @@ public class ProgramController extends DefaultSurface {
 	
 	@Override
 	public void keyDown(int key) {
-		
+		if(key == Keys.ESC) {
+			running = false;
+			System.exit(0);
+		}
 		if(currentState!=null)
 			currentState.keyDown(key);
 		if(tracking != null)

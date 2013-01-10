@@ -10,11 +10,12 @@ public class GameState extends WorldState {
 	public void onStep(float deltaTime) {
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, 2);
+		player.step(deltaTime);
 	}
 
 	@Override
 	public void onDraw() {
-		graphics.clear(1.0f, 0.3f, 0.3f);
+		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 		player.draw();
 		

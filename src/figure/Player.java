@@ -8,7 +8,7 @@ import graphics.translator.GraphicsTranslator;
 
 public class Player implements SkeletonCarrier {
 
-	private float speed;
+	private float velX,velY;
 	private ProgramController programController;
 	private DrunkenSkeleton skeleton;
 	private GraphicsTranslator graphics;
@@ -30,12 +30,12 @@ public class Player implements SkeletonCarrier {
 		return this;
 	}
 	
-	public void setSpeed(float speed) {
-		this.speed = speed;
+	public void setSpeedX(float speed) {
+		this.velX = speed;
 	}
 	
 	public float getSpeed() {
-		return speed;
+		return velX;
 	}
 	
 	public void draw() {
@@ -81,6 +81,13 @@ public class Player implements SkeletonCarrier {
 	@Override
 	public void setSkeleton(Skeleton skeleton) {
 		
+	}
+
+	public void step(float deltaTime) {
+		posX += velX*deltaTime;
+		posY += velY*deltaTime;
+		skeleton.applyConstraints();
+		skeleton.mHipJoint.mFixed = true;
 	}
 	
 }
