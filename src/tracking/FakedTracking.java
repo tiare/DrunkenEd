@@ -6,7 +6,7 @@ import ninja.game.model.Keys;
 
 import control.ProgramController;
 
-public class FakedTracking extends Tracking{
+public class FakedTracking extends AbstractTracking{
 
 	private float bending;
 	

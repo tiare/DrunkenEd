@@ -1,15 +1,17 @@
 package control;
 
 
+import ninja.game.model.Keys;
+import tracking.CameraTracking;
+import tracking.FakedTracking;
+import tracking.AbstractTracking;
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
-import ninja.game.model.Keys;
-import tracking.FakedTracking;
 
 public class ProgramController extends DefaultSurface {
 
 	private ProgramState currentState;
-	public FakedTracking tracking;
+	public AbstractTracking tracking;
 	private float programTimer;
 	public boolean started;
 	private boolean running;
@@ -19,7 +21,10 @@ public class ProgramController extends DefaultSurface {
 		started = false;
 		programTimer = 0;
 
-		tracking = new FakedTracking(this);
+		if(Debug.FAKE_CONTROLS)
+			tracking = new FakedTracking(this);
+		else
+			tracking = new CameraTracking(this);
 		running = true;
 
 	}
