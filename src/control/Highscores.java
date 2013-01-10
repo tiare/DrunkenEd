@@ -80,7 +80,7 @@ public class Highscores {
 			StringTokenizer st = new StringTokenizer(line, ",");
 			while (st.hasMoreTokens()) {
 				try {
-				score[index++] = Integer.parseInt(st.nextToken());
+					score[index++] = Integer.parseInt(st.nextToken());
 				} catch (NumberFormatException e) {
 					p("malformed file: "+getFileName(gameLevel)+", exception: "+e.toString());
 					score[index-1] = 0;
