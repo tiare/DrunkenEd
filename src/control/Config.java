@@ -16,8 +16,8 @@ public class Config {
 	 * @return the state to start
 	 */
 	public static ProgramState getStartState(ProgramController programController) {
-		return new FigureTestState();
-		//return new MainMenuState();
+		//return new FigureTestState();
+		return new MainMenuState();
 	}
 	
 }

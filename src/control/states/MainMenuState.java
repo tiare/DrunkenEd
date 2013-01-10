@@ -3,6 +3,9 @@ package control.states;
 import figure.DrunkenSkeleton;
 
 public class MainMenuState extends WorldState {
+	
+	private float clickPosX = 0.0f;
+	private float clickPosY = 0.0f;
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -21,6 +24,23 @@ public class MainMenuState extends WorldState {
 
 	}
 
-	
+//	@Override
+//	public void pointerDown(float x,float y,int pId) {
+//		clickPosX = x;
+//		clickPosY = y;
+//		System.out.println("Clicked");
+//	}
+//	
+//	@Override
+//	public void pointerDragged(float x,float y,int pId) {
+//		//player.posX = clickPosX-x;
+//		//player.posY = clickPosY-y;
+//		System.out.println("Dragged");
+//	}
+//	
+//	@Override
+//	public void pointerUp(float x,float y,int pId) {
+//		
+//	}
 	
 }
