@@ -6,14 +6,14 @@ import javax.vecmath.Point2d;
 
 import control.ProgramController;
 
-public abstract class Tracking {
+public abstract class AbstractTracking {
 
 
 	public ProgramController programController;
 	
 	private HashMap<Integer, Boolean> pressedKeys;
 	
-	public Tracking(ProgramController programController) {
+	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;
 		
 		pressedKeys = new HashMap<Integer, Boolean>();
