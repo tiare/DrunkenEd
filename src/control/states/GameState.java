@@ -7,11 +7,13 @@ import graphics.StandardTextures;
 public class GameState extends WorldState {
 
 	private float worldRotation;
-	private float time;
+	private float worldZoom;
+	//private float time;
 	
 	public GameState(){
 		super();
-		time = (float)Math.PI/2.0f;
+		//time = (float)Math.PI/2.0f;
+		worldZoom = 2;
 	}
 	
 	@Override
@@ -20,14 +22,14 @@ public class GameState extends WorldState {
 		
 		//stateTimer;
 		
-		time += deltaTime;//*timeShift;
+		//time += deltaTime;//*timeShift;
 		// calculate world rotation while considering difficulty
-		worldRotation += (float)Math.sin(time) / 100.0f; 
+		worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f; 
 		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		
-		
-		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, 2, worldRotation);
+		//if( programController.gamesettings.difficulty == GameSettings.GAME_HARD )
+		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, worldZoom, worldRotation);
 		
 		player.step(deltaTime);
 	}

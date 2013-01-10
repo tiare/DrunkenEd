@@ -20,8 +20,8 @@
 	<classpathentry kind="lib" path="lib/graphics.jar"/>
 	<classpathentry kind="lib" path="lib/math/Jama-1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/math/vecmath.jar"/>
-	<classpathentry kind="lib" path="C:/Users/tro/Documents/mobile/DrunkenEd/commons-math3-3.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/tro/Documents/mobile/DrunkenEd/core.jar"/>
-	<classpathentry kind="lib" path="C:/Users/tro/Documents/mobile/DrunkenEd/SimpleOpenNI.jar"/>
+	<classpathentry kind="lib" path="lib/commons-math3-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/core.jar"/>
+	<classpathentry kind="lib" path="lib/SimpleOpenNI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
