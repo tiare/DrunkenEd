@@ -38,11 +38,27 @@ public class GameState extends WorldState {
 	public void onDraw() {
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
+		
+		
+		// draw simple tree :)
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(0.8f,1.0f, 0.2f,2.0f, 0);
+		
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(0.8f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		
+		
+		
 		player.draw();
 		
-		graphics.bindTexture(StandardTextures.CUBE);
-		graphics2D.drawRectCentered(0,-0.45f, 2,0.9f, 0);
+		//graphics.bindTexture(StandardTextures.CUBE);
+		graphics2D.setColor(0.5f, 0.5f, 0.5f);
+		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		graphics2D.setColor(0.7f, 0.7f, 0.7f);
+		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
 		//player.getSpeed() < 0 ? stateTimer : -stateTimer
+		
+		
 		
 	}
 	
