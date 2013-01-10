@@ -22,13 +22,12 @@ public class GameState extends WorldState {
 		
 		time += deltaTime;//*timeShift;
 		// calculate world rotation while considering difficulty
-		worldRotation += (float)Math.sin(time) / 1.0f; 
+		worldRotation += (float)Math.sin(time) / 100.0f; 
 		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		
 		
-		camera.setRotation(worldRotation);
-		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, 2);
+		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, 2, worldRotation);
 		
 		player.step(deltaTime);
 	}
