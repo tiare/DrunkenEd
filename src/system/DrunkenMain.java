@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import pc.fileio.IOCommon;
 import pc.gles.GLESFrame;
 import app.App;
+import control.Config;
 import control.ProgramController;
 
 public class DrunkenMain {
@@ -25,6 +26,8 @@ public class DrunkenMain {
 		frame.setEventListener(mainControl);
 		frame.setIconImage(new ImageIcon(IOCommon.ICON_PATH).getImage());
 		frame.run();
+		
+		Config.preInitialize();
 	}
 	
 }

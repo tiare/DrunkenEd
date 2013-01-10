@@ -10,6 +10,8 @@ public abstract class ProgramState implements TrackingListener {
 	protected Default2DGraphics graphics2D;
 	protected ProgramController programController;
 	protected float stateTimer;
+	protected Highscores highscores;
+	protected GameSettings gameSettings;
 	
 	protected abstract void onStep(float deltaTime);
 	protected abstract void onDraw();
@@ -18,6 +20,9 @@ public abstract class ProgramState implements TrackingListener {
 		this.programController = programController;
 		graphics = programController.mGraphics;
 		graphics2D = programController.mGraphics2D;
+		
+		highscores = programController.highscores;
+		gameSettings = programController.gameSettings;
 		return this;
 	}
 	
