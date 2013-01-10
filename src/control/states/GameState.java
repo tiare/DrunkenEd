@@ -22,7 +22,7 @@ public class GameState extends WorldState {
 		//worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f; 
 		
 		// add bending caused by drunkenness
-		player.bending += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
+		player.drunkenBending += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
 		
 		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
@@ -30,7 +30,9 @@ public class GameState extends WorldState {
 		if( gameSettings.difficulty == GameSettings.GAME_HARD ){
 			worldZoom += (float)Math.sin(stateTimer*1.3) / 200.0f;
 		}
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.bending);
+		
+		
+		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
 		player.step(deltaTime);
 	}
 

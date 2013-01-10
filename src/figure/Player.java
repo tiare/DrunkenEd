@@ -15,11 +15,13 @@ public class Player implements SkeletonCarrier {
 	private Default2DGraphics graphics2D;
 	public float posX,posY;
 	
-	public float bending;
+	public float steeredBending;
+	public float drunkenBending;
 	
 	public Player() {
 		skeleton = new DrunkenSkeleton();
-		bending = 0;
+		steeredBending = 0;
+		drunkenBending = 0;
 	}
 	
 	public Player init(ProgramController programController) {
@@ -89,7 +91,7 @@ public class Player implements SkeletonCarrier {
 		
 		//skeleton.mBreastJoint.mPosX = skeleton.mHipJoint.mPosX + (float)(skeleton.mBodyBone.mDistance*Math.sin(bending));
 		//skeleton.mBreastJoint.mPosY = skeleton.mHipJoint.mPosY + (float)(skeleton.mBodyBone.mDistance*Math.cos(bending));
-		skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, bending);
+		skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, drunkenBending+steeredBending);
 		skeleton.mHipJoint.mFixed = true;
 		for(int i=0;i<3;i++)
 			skeleton.applyConstraints();
