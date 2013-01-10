@@ -1,13 +1,13 @@
 package control;
 
-import tracking.Tracking;
+import tracking.FakedTracking;
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
 
 public class ProgramController extends DefaultSurface {
 
 	private ProgramState currentState;
-	public Tracking tracking;
+	public FakedTracking tracking;
 	private float programTimer;
 	public boolean started;
 	
@@ -15,7 +15,7 @@ public class ProgramController extends DefaultSurface {
 		super(true,false,true);
 		started = false;
 		programTimer = 0;
-		tracking = new Tracking(this);
+		tracking = new FakedTracking(this);
 	}
 	
 	public void start() {
@@ -98,6 +98,8 @@ public class ProgramController extends DefaultSurface {
 		
 		if(currentState!=null)
 			currentState.keyDown(key);
+		if(tracking != null)
+			tracking.keyDown(key);
 	}
 	
 	@Override
@@ -105,6 +107,9 @@ public class ProgramController extends DefaultSurface {
 		
 		if(currentState!=null)
 			currentState.keyUp(key);
+		
+		if(tracking != null)
+			tracking.keyUp(key);
 	}
 	
 	
