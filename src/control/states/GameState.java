@@ -6,10 +6,29 @@ import graphics.StandardTextures;
 
 public class GameState extends WorldState {
 
+	private float worldRotation;
+	private float time;
+	
+	public GameState(){
+		super();
+		time = (float)Math.PI/2.0f;
+	}
+	
 	@Override
 	public void onStep(float deltaTime) {
+		//float timeShift = 0.9f + (float)Math.random()/5.0f;
+		
+		//stateTimer;
+		
+		time += deltaTime;//*timeShift;
+		// calculate world rotation while considering difficulty
+		worldRotation += (float)Math.sin(time) / 100.0f; 
+		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, 2);
+		
+		
+		camera.set(skeleton.mHipJoint.mPosX, skeleton.mHipJoint.mPosY, 2, worldRotation);
+		
 		player.step(deltaTime);
 	}
 
@@ -20,7 +39,8 @@ public class GameState extends WorldState {
 		player.draw();
 		
 		graphics.bindTexture(StandardTextures.CUBE);
-		graphics2D.drawRectCentered(0,0.15f, 1,0.9f, player.getSpeed() < 0 ? stateTimer : -stateTimer);
+		graphics2D.drawRectCentered(0,-0.45f, 2,0.9f, 0);
+		//player.getSpeed() < 0 ? stateTimer : -stateTimer
 		
 	}
 	
