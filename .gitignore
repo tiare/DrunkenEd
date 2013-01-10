@@ -1,6 +1,7 @@
 #project
 lib/opengl/*
 lib/math/*
+src/control/Config.java
 
 #LaTeX
 */doc/*.aux
