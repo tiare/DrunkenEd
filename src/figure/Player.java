@@ -1,6 +1,5 @@
 package figure;
 
-import util.Util;
 import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
 import graphics.skeletons.Skeleton;
@@ -88,8 +87,9 @@ public class Player implements SkeletonCarrier {
 		posX += velX*deltaTime;
 		posY += velY*deltaTime;
 		
-		skeleton.mBreastJoint.mPosX = skeleton.mHipJoint.mPosX + (float)(skeleton.mBodyBone.mDistance*Math.sin(bending));
-		skeleton.mBreastJoint.mPosY = skeleton.mHipJoint.mPosY + (float)(skeleton.mBodyBone.mDistance*Math.cos(bending));
+		//skeleton.mBreastJoint.mPosX = skeleton.mHipJoint.mPosX + (float)(skeleton.mBodyBone.mDistance*Math.sin(bending));
+		//skeleton.mBreastJoint.mPosY = skeleton.mHipJoint.mPosY + (float)(skeleton.mBodyBone.mDistance*Math.cos(bending));
+		skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, bending);
 		skeleton.mHipJoint.mFixed = true;
 		for(int i=0;i<3;i++)
 			skeleton.applyConstraints();
