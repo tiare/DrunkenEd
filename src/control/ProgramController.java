@@ -15,6 +15,8 @@ public class ProgramController extends DefaultSurface {
 	private float programTimer;
 	public boolean started;
 	private boolean running;
+	public Highscores highscores;
+	public GameSettings gameSettings;
 	
 	public ProgramController() {
 		super(true,false,true);
@@ -27,6 +29,9 @@ public class ProgramController extends DefaultSurface {
 			tracking = new CameraTracking(this);
 		running = true;
 
+		
+		highscores = new Highscores();
+		gameSettings = new GameSettings();
 	}
 	
 	public void start() {

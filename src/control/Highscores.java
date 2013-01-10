@@ -10,27 +10,26 @@ import java.util.StringTokenizer;
 public class Highscores {
 
 	public int[] highscoresEasy, highscoresMedium, highscoresHard;
-	public static final int GAME_EASY = 0, GAME_MEDIUM = 1, GAME_HARD = 2;
 
 	public Highscores() {
 		try {
-			File fileEasy = new File(getFileName(GAME_EASY));
+			File fileEasy = new File(getFileName(GameSettings.GAME_EASY));
 			if (!fileEasy.exists()) {
-				saveFile(fileEasy, GAME_EASY, new int[] { 0, 0, 0 });
+				saveFile(fileEasy, GameSettings.GAME_EASY, new int[] { 0, 0, 0 });
 			}
-			loadScoreFromFile(fileEasy, GAME_EASY);
+			loadScoreFromFile(fileEasy, GameSettings.GAME_EASY);
 
-			File fileMedium = new File(getFileName(GAME_MEDIUM));
+			File fileMedium = new File(getFileName(GameSettings.GAME_MEDIUM));
 			if (!fileMedium.exists()) {
-				saveFile(fileMedium, GAME_MEDIUM, new int[] { 0, 0, 0 });
+				saveFile(fileMedium, GameSettings.GAME_MEDIUM, new int[] { 0, 0, 0 });
 			}
-			loadScoreFromFile(fileMedium, GAME_MEDIUM);
+			loadScoreFromFile(fileMedium, GameSettings.GAME_MEDIUM);
 
-			File fileHard = new File(getFileName(GAME_HARD));
+			File fileHard = new File(getFileName(GameSettings.GAME_HARD));
 			if (!fileHard.exists()) {
-				saveFile(fileHard, GAME_HARD, new int[] { 0, 0, 0 });
+				saveFile(fileHard, GameSettings.GAME_HARD, new int[] { 0, 0, 0 });
 			}
-			loadScoreFromFile(fileHard, GAME_HARD);
+			loadScoreFromFile(fileHard, GameSettings.GAME_HARD);
 		} catch (IOException e) {
 			p("Could not write to disk: " + e.toString());
 		}
@@ -57,11 +56,11 @@ public class Highscores {
 
 	private int[] loadTableAccordingToGameLevel(final int gameLevel) {
 		switch (gameLevel) {
-		case GAME_EASY:
+		case GameSettings.GAME_EASY:
 			return highscoresEasy;
-		case GAME_MEDIUM:
+		case GameSettings.GAME_MEDIUM:
 			return highscoresMedium;
-		case GAME_HARD:
+		case GameSettings.GAME_HARD:
 			return highscoresHard;
 		default:
 			p("ERROR: gameLevel unknown");
@@ -89,13 +88,13 @@ public class Highscores {
 		bufRdr.close();
 
 		switch (gameLevel) {
-		case GAME_EASY:
+		case GameSettings.GAME_EASY:
 			highscoresEasy = score;
 			break;
-		case GAME_MEDIUM:
+		case GameSettings.GAME_MEDIUM:
 			highscoresMedium = score;
 			break;
-		case GAME_HARD:
+		case GameSettings.GAME_HARD:
 			highscoresHard = score;
 			break;
 		default:
@@ -107,11 +106,11 @@ public class Highscores {
 
 	private String getFileName(final int gameLevel) {
 		switch (gameLevel) {
-		case GAME_EASY:
+		case GameSettings.GAME_EASY:
 			return "scoreEasy.csv";
-		case GAME_MEDIUM:
+		case GameSettings.GAME_MEDIUM:
 			return "scoreMedium.csv";
-		case GAME_HARD:
+		case GameSettings.GAME_HARD:
 			return "scoreHard.csv";
 		default:
 			p("ERROR: unknown gamelevel..");
