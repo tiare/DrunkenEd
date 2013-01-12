@@ -5,9 +5,15 @@ import figure.DrunkenSkeleton;
 
 public class MainMenuState extends WorldState {
 	
-//	private float clickPosX = 0.0f;
-//	private float clickPosY = 0.0f;
-	private int activeDoor = 0;
+	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
+	private int activeDoor = NONE;
+	private float doorWith = 1.f;
+	private float doorHeight = 2.f;
+	private float doorLx = -2.f;
+	private float doorCx = 0.f;
+	private float doorRx = 2.f;
+	private float doorsY = 1.5f;
+	
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -15,15 +21,16 @@ public class MainMenuState extends WorldState {
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX, skeleton.mBreastJoint.mPosY, 2.3f);
 		player.step(deltaTime);
+		UpdateActiveDoor();
 	}
 
 	@Override
 	public void onDraw() {
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		
-		drawDoor(0.f, 2.0f, false);
-		drawDoor(-2.f, 2.0f, false);
-		drawDoor(2.f, 2.0f, true);
+		drawDoor(doorLx, doorsY, (activeDoor == 0));
+		drawDoor(doorCx, doorsY, (activeDoor == 1));
+		drawDoor(doorRx, doorsY, (activeDoor == 2));
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -36,12 +43,33 @@ public class MainMenuState extends WorldState {
 		else {
 			graphics2D.setColor(0.3f, 0.3f, 1.0f);
 		}
-		graphics2D.drawRectCentered(posX, posY, 1.f, 2.f);
+		graphics2D.drawRectCentered(posX, posY, doorWith, doorHeight);
 	}
 	
 	//TODO: set difficulty in gamesettings!
 	//TODO: programController.switchState(new GameState) ...
-	
+	private void UpdateActiveDoor () {
+		activeDoor = NONE;
+		
+		float playerLeft = player.posX-0.5f;
+		float playerRight = player.posX+0.5f;
+		
+		//Check if we're to the left of the center door
+		if (playerRight < doorCx-doorWith/2) {
+			//Then check with left door only
+			if (playerRight > doorLx-doorWith/2 && playerLeft < doorLx + doorWith/2)
+				activeDoor = LEFT;
+		}
+		//Check if we're to the right of the center door
+		else if (playerLeft > doorCx+doorWith/2) {
+			//Then check with right door only
+			if (playerRight > doorRx-doorWith/2 && playerLeft < doorRx + doorWith/2)
+				activeDoor = RIGHT;
+		}
+		else {
+			activeDoor = CENTER;
+		}
+	}
 
 //	@Override
 //	public void pointerDown(float x,float y,int pId) {
