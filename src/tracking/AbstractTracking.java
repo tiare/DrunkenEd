@@ -49,7 +49,7 @@ public abstract class AbstractTracking {
 	}
 	
 	public void keyUp(int key) {
-		pressedKeys.put(key, false);
+		pressedKeys.put(key, false);	//Andreas: nicht eher remove?
 	}
 	
 	public boolean keyIsPressed(int key){

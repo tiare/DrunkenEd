@@ -22,7 +22,10 @@ public class FigureTestState extends WorldState{
 	
 	@Override
 	public void keyDown(int code) {
-		
+		//System.out.println(code);
+		if(code == 100) {
+			player.fallDown();
+		}
 	}
 
 }
