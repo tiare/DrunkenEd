@@ -1,6 +1,6 @@
 package control.states;
 
-import control.ProgramController;
+import ninja.game.model.Keys;
 import figure.DrunkenSkeleton;
 
 public class MainMenuState extends WorldState {
@@ -13,15 +13,19 @@ public class MainMenuState extends WorldState {
 	private float doorCx = 0.f;
 	private float doorRx = 2.f;
 	private float doorsY = 1.5f;
-	
 
+	public MainMenuState () {
+	
+	}
+	
 	@Override
 	public void onStep(float deltaTime) {
 		//camera.set(0, 1, 2);
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX, skeleton.mBreastJoint.mPosY, 2.3f);
 		player.step(deltaTime);
-		UpdateActiveDoor();
+		//TODO: don't let the player walk out of the screen
+		updateActiveDoor();
 	}
 
 	@Override
@@ -46,9 +50,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(posX, posY, doorWith, doorHeight);
 	}
 	
-	//TODO: set difficulty in gamesettings!
-	//TODO: programController.switchState(new GameState) ...
-	private void UpdateActiveDoor () {
+	private void updateActiveDoor () {
 		activeDoor = NONE;
 		
 		float playerLeft = player.posX-0.5f;
@@ -71,23 +73,23 @@ public class MainMenuState extends WorldState {
 		}
 	}
 
-//	@Override
-//	public void pointerDown(float x,float y,int pId) {
-//		clickPosX = x;
-//		clickPosY = y;
-//		System.out.println("Clicked");
-//	}
-//	
-//	@Override
-//	public void pointerDragged(float x,float y,int pId) {
-//		//player.posX = clickPosX-x;
-//		//player.posY = clickPosY-y;
-//		System.out.println("Dragged");
-//	}
-//	
-//	@Override
-//	public void pointerUp(float x,float y,int pId) {
-//		
-//	}
+	@Override
+	public void keyDown(int key) {
+		//Enter the selected door
+		if( key == Keys.UP ) {
+			//Enter level
+			if (activeDoor != NONE) {
+				//set difficulty in gamesettings!
+				super.gameSettings.difficulty = activeDoor;			
+				//start game
+				super.programController.switchState(new GameState().init(programController));
+			}
+		}
+	}
 	
+	@Override
+	public int getType() {
+		return super.MENU;
+	}
+
 }

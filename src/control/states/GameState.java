@@ -2,7 +2,6 @@ package control.states;
 
 import control.GameSettings;
 import figure.DrunkenSkeleton;
-import graphics.StandardTextures;
 
 
 public class GameState extends WorldState {
@@ -72,6 +71,11 @@ public class GameState extends WorldState {
 	@Override
 	public void keyUp(int key){
 		
+	}
+	
+	@Override
+	public int getType() {
+		return super.GAME;
 	}
 	
 }

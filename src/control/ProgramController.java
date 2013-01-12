@@ -1,12 +1,13 @@
 package control;
 
 
-import ninja.game.model.Keys;
-import tracking.CameraTracking;
-import tracking.FakedTracking;
-import tracking.AbstractTracking;
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
+import ninja.game.model.Keys;
+import tracking.AbstractTracking;
+import tracking.CameraTracking;
+import tracking.FakedTracking;
+import control.states.MainMenuState;
 
 public class ProgramController extends DefaultSurface {
 
@@ -17,6 +18,7 @@ public class ProgramController extends DefaultSurface {
 	private boolean running;
 	public Highscores highscores;
 	public GameSettings gameSettings;
+	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	
 	public ProgramController() {
 		super(true,false,true);
@@ -72,7 +74,7 @@ public class ProgramController extends DefaultSurface {
 			currentState.onStop();
 		}
 		currentState = newState;
-		newState.onStart();
+		currentState.onStart();
 	}
 	
 	public ProgramState getCurrentState() {
@@ -112,8 +114,15 @@ public class ProgramController extends DefaultSurface {
 	@Override
 	public void keyDown(int key) {
 		if(key == Keys.ESC) {
-			running = false;
-			System.exit(0);
+			//Only end game if we are in the menu
+			if (currentState.getType() == MENU) {
+				running = false;
+				System.exit(0);
+			}
+			//Otherwise jump out to the menu
+			else {
+				switchState(new MainMenuState().init(this));
+			}
 		}
 		if(currentState!=null)
 			currentState.keyDown(key);
@@ -129,6 +138,10 @@ public class ProgramController extends DefaultSurface {
 		
 		if(tracking != null)
 			tracking.keyUp(key);
+	}
+	
+	public void test() {
+		System.out.println("Testing switch");
 	}
 	
 	

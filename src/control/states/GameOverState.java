@@ -49,5 +49,10 @@ public class GameOverState extends ProgramState{
 //	public void pointerUp(float x,float y,int pId) {
 //		
 //	}
+	
+	@Override
+	public int getType() {
+		return super.GAMEOVER;
+	}
 
 }

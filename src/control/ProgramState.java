@@ -12,6 +12,7 @@ public abstract class ProgramState implements TrackingListener {
 	protected float stateTimer;
 	protected Highscores highscores;
 	protected GameSettings gameSettings;
+	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	
 	protected abstract void onStep(float deltaTime);
 	protected abstract void onDraw();
@@ -81,5 +82,9 @@ public abstract class ProgramState implements TrackingListener {
 	@Override
 	public void onBend(float bending) {
 		
+	}
+	
+	public int getType() {
+		return -1;
 	}
 }

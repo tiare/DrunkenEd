@@ -9,6 +9,7 @@ import control.ProgramController;
 public class FakedTracking extends AbstractTracking{
 
 	private float bending;
+	private boolean drink = false;
 	
 	public FakedTracking(ProgramController programController) {
 		super(programController);
@@ -27,7 +28,7 @@ public class FakedTracking extends AbstractTracking{
 		return bending;
 	}
 	public void step(float deltaTime) {
-
+		
 		if( keyIsPressed(Keys.LEFT) ){
 			bending = -(float)Math.PI /36.0f;
 		} else if( keyIsPressed(Keys.RIGHT) ){
