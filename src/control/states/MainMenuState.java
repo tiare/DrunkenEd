@@ -8,11 +8,12 @@ public class MainMenuState extends WorldState {
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
 	private int activeDoor = NONE;
 	private float doorWith = 1.f;
-	private float doorHeight = 2.f;
+	private float doorHeight = 2.5f;
 	private float doorLx = -2.f;
 	private float doorCx = 0.f;
 	private float doorRx = 2.f;
-	private float doorsY = 1.5f;
+	private float doorsY = 1.f;
+	private float oldPlayerPosX = 0f;
 
 	public MainMenuState () {
 	
@@ -23,8 +24,10 @@ public class MainMenuState extends WorldState {
 		//camera.set(0, 1, 2);
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX, skeleton.mBreastJoint.mPosY, 2.3f);
+		oldPlayerPosX = player.posX;
 		player.step(deltaTime);
 		//TODO: don't let the player walk out of the screen
+		dontLeaveScreen ();
 		updateActiveDoor();
 	}
 
@@ -35,6 +38,25 @@ public class MainMenuState extends WorldState {
 		drawDoor(doorLx, doorsY, (activeDoor == 0));
 		drawDoor(doorCx, doorsY, (activeDoor == 1));
 		drawDoor(doorRx, doorsY, (activeDoor == 2));
+		
+		//floor
+		graphics2D.setColor(0.5f, 0.5f, 0.5f);
+		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		
+		// draw left tree
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(-3.3f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/4.0f);
+		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/7.0f);
+		// draw right tree
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(3.3f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
+		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -48,6 +70,12 @@ public class MainMenuState extends WorldState {
 			graphics2D.setColor(0.3f, 0.3f, 1.0f);
 		}
 		graphics2D.drawRectCentered(posX, posY, doorWith, doorHeight);
+	}
+	
+	private void dontLeaveScreen () {
+		//Set player back if he walks out
+		if ( player.posX < -3 || player.posX > 3 )
+			player.posX = oldPlayerPosX;
 	}
 	
 	private void updateActiveDoor () {
