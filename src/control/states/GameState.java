@@ -1,12 +1,14 @@
 package control.states;
 
 import control.GameSettings;
+import control.ProgramState;
 import figure.DrunkenSkeleton;
 
 
 public class GameState extends WorldState {
 
 	private float worldZoom;
+	private float fallingAngle;
 	//private float time;
 	
 	public GameState(){
@@ -16,21 +18,40 @@ public class GameState extends WorldState {
 	}
 	
 	@Override
+	public void onStart(){
+		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
+	}
+	
+	@Override
+	public void onBend(float bending){
+		player.steeredBending += bending;
+		float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
+		player.setSpeedX( speed );
+		
+	}
+	
+	
+	@Override
 	public void onStep(float deltaTime) {
 		// calculate world rotation while considering difficulty
 		//worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f; 
 		
-		// add bending caused by drunkenness
-		player.drunkenBending += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
 		
 		
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		
-		if( gameSettings.difficulty == GameSettings.GAME_HARD ){
-			worldZoom += (float)Math.sin(stateTimer*1.3) / 200.0f;
+		if( !player.gameOver ){
+			// add bending caused by drunkenness
+			player.drunkenBending += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
+			
+			if( gameSettings.difficulty == GameSettings.GAME_HARD ){
+				worldZoom += (float)Math.sin(stateTimer*1.3) / 200.0f;
+			}
 		}
 		
+		if( Math.abs( player.drunkenBending + player.steeredBending ) > fallingAngle){
+			player.fallDown();
+		}
 		
+		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
 		player.step(deltaTime);
 	}
@@ -75,7 +96,7 @@ public class GameState extends WorldState {
 	
 	@Override
 	public int getType() {
-		return super.GAME;
+		return ProgramState.GAME;
 	}
 	
 }
