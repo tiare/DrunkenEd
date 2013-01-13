@@ -37,7 +37,7 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	public void start() {
-		currentState = Config.getStartState(this).init(this);
+		switchState( Config.getStartState(this).init(this) );
 		programTimer = 0;
 		tracking.init();
 		
