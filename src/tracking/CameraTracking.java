@@ -1,29 +1,56 @@
 
 package tracking;
 
-import javax.vecmath.Point2d;
 
+import javax.vecmath.Point2d;
 import control.ProgramController;
 
 public class CameraTracking extends AbstractTracking {
 
+	public UserTrackerMod app;
+	
 	public CameraTracking(ProgramController programController) {
 		super(programController);
 	}
 
 	@Override
 	public Point2d getHeadPos() {
-		return null;
+		p("getheadpos triggered");
+		if (app!=null && app!=null)		return app.headpos; 
+		else return new Point2d();
 	}
 
 	@Override
 	public void init() {
-	
+		
+		 start();
 	}
 
+	public void start() {
+		
+        app = new UserTrackerMod(programController);
+        app.updateDepth();
+		
+	}
+	
+	
+	
+	public void step(float deltatime){
+		//p(deltatime);
+		if (app!=null)		app.updateDepth();
+	}
+	
 	@Override
 	public float getTorsoBending() {
+		if (app!=null && app!=null)
+		return app.bendingangle; else {
+//		p("gettorsobending triggered");
+			//p("somethin is NULL");
 		return 0;
+		}
 	}
-
+	
+	private static void p(Object p) {
+		System.out.println(p.toString());
+	}
 }
