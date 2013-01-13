@@ -45,11 +45,12 @@ public class GameState extends WorldState {
 			if( gameSettings.difficulty == GameSettings.GAME_HARD ){
 				worldZoom += (float)Math.sin(stateTimer*1.3) / 200.0f;
 			}
+			
+			if( Math.abs( player.drunkenBending + player.steeredBending ) > fallingAngle){
+				player.fallDown();
+			}
 		}
 		
-		if( Math.abs( player.drunkenBending + player.steeredBending ) > fallingAngle){
-			player.fallDown();
-		}
 		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
