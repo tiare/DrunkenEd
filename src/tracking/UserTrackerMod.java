@@ -77,7 +77,7 @@ public class UserTrackerMod {
 		public void update(IObservable<CalibrationProgressEventArgs> observable,
 				CalibrationProgressEventArgs args)
 		{
-			System.out.println("Calibraion complete: " + args.getStatus());
+			System.out.println("Calibration complete: " + args.getStatus());
 			try
 			{
 			if (args.getStatus() == CalibrationProgressStatus.OK)
@@ -137,6 +137,7 @@ public class UserTrackerMod {
 	public boolean hasDrinkingPose=false;
 	public boolean makesStep=false;
 	public Point2d headpos;
+	private float BENDINGANGLEFACTOR=20;
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -170,6 +171,7 @@ public class UserTrackerMod {
             skeletonCap.setSkeletonProfile(SkeletonProfile.ALL);
 			
 			context.startGeneratingAll();
+			headpos=new Point2d(0,0);
         } catch (GeneralException e) {
             e.printStackTrace();
             System.exit(1);
@@ -271,7 +273,7 @@ public class UserTrackerMod {
 				makesStep=true;
 			}
 			Point3D temp=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition();
-			
+			headpos=new Point2d(temp.getX(),temp.getY());
 			
 			calculateBendingAngle();
 			
@@ -298,7 +300,7 @@ public class UserTrackerMod {
 //			Point2d head2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d torso2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d temp2d=new Point2d();
-			bendingangle=test/20;
+			bendingangle=test/BENDINGANGLEFACTOR;
 			//System.out.println(test*360/Math.PI+"::"+bendingangle);
 			
 		} catch (StatusException e) {
