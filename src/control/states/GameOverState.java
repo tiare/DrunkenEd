@@ -1,11 +1,19 @@
 package control.states;
 
+
+import java.nio.ByteBuffer;
+
 import org.OpenNI.ImageGenerator;
+
+import tracking.CameraTracking;
 
 import control.ProgramController;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
 import figure.Player;
+import graphics.StandardTextures;
+import graphics.translator.Texture;
+import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
 
@@ -33,27 +41,16 @@ public class GameOverState extends ProgramState {
 	public void onDraw() {
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		
-		//floor
-		graphics2D.setColor(0.5f, 0.5f, 0.5f);
-		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
-		
-		// draw left tree
-		graphics2D.setColor(0.3f, 0.1f, 0.0f);
-		graphics2D.drawRectCentered(-3.3f,1.0f, 0.2f,2.0f, 0);
-		graphics2D.setColor(0.0f, 0.66f, 0.0f);
-		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
-		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/4.0f);
-		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/7.0f);
-		// draw right tree
-		graphics2D.setColor(0.3f, 0.1f, 0.0f);
-		graphics2D.drawRectCentered(3.3f,1.0f, 0.2f,2.0f, 0);
-		graphics2D.setColor(0.0f, 0.66f, 0.0f);
-		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
-		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
-		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
-		
+
 		graphics2D.setWhite();
-		//graphics2D.s
+		
+		graphics.bindTexture(StandardTextures.CUBE);
+		Texture t = new Texture(graphics);
+		graphics.bindTexture(new Texture(graphics, programController.tracking.getColorImage(), 640, 480, new TextureSettings()));
+		graphics2D.drawRectCentered(0,0.15f, 1,0.9f, stateTimer);
+		
+		graphics2D.setColor(0.5f, 0.5f, 0.85f);
+		graphics2D.drawStringL(graphics2D.getScreenLeft()+0.03f, 0.9f, 0.1f, "Time:  "+(int)(stateTimer*10)/10f+"sec");
 		//player.draw();
 	}
 	
