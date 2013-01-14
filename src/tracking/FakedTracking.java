@@ -41,7 +41,7 @@ public class FakedTracking extends AbstractTracking{
 		
 		TrackingListener listener = programController.getCurrentState();
 		if(listener!=null) {
-			listener.onDrink();
+			//listener.onDrink();
 			listener.onBend(bending);
 		}
 		

@@ -1,5 +1,7 @@
 package control.states;
 
+import java.sql.Time;
+
 import control.GameSettings;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
@@ -9,7 +11,8 @@ public class GameState extends WorldState {
 
 	private float worldZoom;
 	private float fallingAngle;
-	//private float time;
+	private float gameOverTime;
+	private float dyingTimeout = 2.f;
 	
 	public GameState(){
 		super();
@@ -48,7 +51,11 @@ public class GameState extends WorldState {
 			
 			if( Math.abs( player.drunkenBending + player.steeredBending ) > fallingAngle){
 				player.fallDown();
+				gameOverTime = programController.getProgramTime();
 			}
+		}
+		else if (programController.getProgramTime() > gameOverTime + dyingTimeout){
+			super.programController.switchState(new GameOverState().init(programController));
 		}
 		
 		
@@ -70,19 +77,68 @@ public class GameState extends WorldState {
 		graphics2D.setColor(0.0f, 0.66f, 0.0f);
 		graphics2D.drawRectCentered(0.8f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
 		
+		// draw left tree
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(-3.3f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/4.0f);
+		graphics2D.drawRectCentered(-3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/7.0f);
+		
+		// draw right tree
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(3.3f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
+		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
+		
+		//draw another tree
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(8.f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(8.f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(8.f,2.5f, 1.0f,1.0f, (float)Math.PI/4.0f);
+		graphics2D.drawRectCentered(8.f,2.5f, 1.0f,1.0f, (float)Math.PI/7.0f);
+		
+		// and another
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(10.8f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(10.8f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
 		
 		
-		player.draw();
+		// and one more
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(15.f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(15.f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(15.f,2.5f, 1.0f,1.0f, (float)Math.PI/4.0f);
+		graphics2D.drawRectCentered(15.f,2.5f, 1.0f,1.0f, (float)Math.PI/7.0f);
+		
+		// final one - promise!
+		graphics2D.setColor(0.3f, 0.1f, 0.0f);
+		graphics2D.drawRectCentered(17.3f,1.0f, 0.2f,2.0f, 0);
+		graphics2D.setColor(0.0f, 0.66f, 0.0f);
+		graphics2D.drawRectCentered(17.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
+		graphics2D.drawRectCentered(17.3f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
+		graphics2D.drawRectCentered(17.3f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
+		
+		
+		//player.draw();
 		
 		//graphics.bindTexture(StandardTextures.CUBE);
+		//draw floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
 		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		graphics2D.drawRectCentered(20,-5.0f, 20,10.0f, 0);
 		graphics2D.setColor(0.7f, 0.7f, 0.7f);
 		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
+		graphics2D.drawRectCentered(20,-0.1f, 20,0.2f, 0);
 		//player.getSpeed() < 0 ? stateTimer : -stateTimer
 		
 		
-		
+		player.draw();
 	}
 	
 	@Override

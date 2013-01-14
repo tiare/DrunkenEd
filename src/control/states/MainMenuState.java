@@ -1,5 +1,6 @@
 package control.states;
 
+import control.ProgramController;
 import ninja.game.model.Keys;
 import figure.DrunkenSkeleton;
 
@@ -14,9 +15,20 @@ public class MainMenuState extends WorldState {
 	private float doorRx = 2.f;
 	private float doorsY = 1.f;
 	private float oldPlayerPosX = 0f;
+	
+	private float restartTime = 0.f;
+	private float startingTimeout = 2.f;
 
 	public MainMenuState () {
-	
+	}
+
+	@Override
+	public MainMenuState init(ProgramController programController) {
+		this.programController = programController;
+		super.init(programController);
+		//player.init(programController);
+		restartTime = programController.getProgramTime();
+		return this;
 	}
 	
 	@Override
@@ -26,7 +38,7 @@ public class MainMenuState extends WorldState {
 		camera.set(skeleton.mHipJoint.mPosX, skeleton.mBreastJoint.mPosY, 2.3f);
 		oldPlayerPosX = player.posX;
 		player.step(deltaTime);
-		//TODO: don't let the player walk out of the screen
+		//don't let the player walk out of the screen
 		dontLeaveScreen ();
 		updateActiveDoor();
 	}
@@ -42,6 +54,8 @@ public class MainMenuState extends WorldState {
 		//floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
 		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		graphics2D.setColor(0.7f, 0.7f, 0.7f);
+		graphics2D.drawRectCentered(0,-0.1f, 20,0.1f, 0);
 		
 		// draw left tree
 		graphics2D.setColor(0.3f, 0.1f, 0.0f);
@@ -57,6 +71,13 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
 		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
 		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
+		
+		graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(doorLx, doorsY+1, 0.3f, 0, 0, 0, "Beer");
+		graphics2D.drawString(doorCx, doorsY+1, 0.3f, 0, 0, 0, "Wine");
+		graphics2D.drawString(doorRx, doorsY+1, 0.3f, 0, 0, 0, "Vodka");
+		graphics2D.setColor(0.f, 0.f, 0.f);
+		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -112,6 +133,18 @@ public class MainMenuState extends WorldState {
 				//start game
 				super.programController.switchState(new GameState().init(programController));
 			}
+		}
+	}
+	
+	@Override
+	public void onDrink() {
+		//Enter the selected door
+		//Enter level
+		if (activeDoor != NONE && programController.getProgramTime() > restartTime + startingTimeout) {
+			//set difficulty in gamesettings!
+			super.gameSettings.difficulty = activeDoor;			
+			//start game
+			super.programController.switchState(new GameState().init(programController));
 		}
 	}
 	
