@@ -6,9 +6,9 @@ public class GameSettings {
 	public float maxSpeed = 0.7f;
 	
 	public float fallingAngle[] =
-		{(float)Math.toRadians(60),
-		(float)Math.toRadians(50),
-		(float)Math.toRadians(45)};
+		{(float)Math.toRadians(90),
+		(float)Math.toRadians(80),
+		(float)Math.toRadians(70)};
 	
 	public GameSettings () {
 		

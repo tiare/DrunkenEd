@@ -116,6 +116,18 @@ public class MainMenuState extends WorldState {
 	}
 	
 	@Override
+	public void onDrink() {
+		//Enter the selected door
+		//Enter level
+		if (activeDoor != NONE) {
+			//set difficulty in gamesettings!
+			super.gameSettings.difficulty = activeDoor;			
+			//start game
+			super.programController.switchState(new GameState().init(programController));
+		}
+	}
+	
+	@Override
 	public int getType() {
 		return super.MENU;
 	}
