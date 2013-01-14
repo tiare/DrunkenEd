@@ -1,5 +1,7 @@
 package control.states;
 
+import java.sql.Time;
+
 import control.GameSettings;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
@@ -9,7 +11,8 @@ public class GameState extends WorldState {
 
 	private float worldZoom;
 	private float fallingAngle;
-	//private float time;
+	private float gameOverTime;
+	private float dyingTimeout = 2.f;
 	
 	public GameState(){
 		super();
@@ -48,7 +51,11 @@ public class GameState extends WorldState {
 			
 			if( Math.abs( player.drunkenBending + player.steeredBending ) > fallingAngle){
 				player.fallDown();
+				gameOverTime = programController.getProgramTime();
 			}
+		}
+		else if (programController.getProgramTime() > gameOverTime + dyingTimeout){
+			super.programController.switchState(new GameOverState().init(programController));
 		}
 		
 		
