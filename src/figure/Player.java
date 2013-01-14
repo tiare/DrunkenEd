@@ -119,8 +119,8 @@ public class Player implements SkeletonCarrier {
 		skeleton.mLimitForceOutwards = 2.0f;
 		
 		for(Joint joint:skeleton.mJoints) {
-			joint.mFriction = 0.995f;
-			joint.vX = 5;
+			joint.mFriction = 0.99f;
+			joint.vX = velX;
 		}
 		
 		for(Constraint constraint:skeleton.mConstraints) {
