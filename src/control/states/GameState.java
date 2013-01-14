@@ -79,7 +79,7 @@ public class GameState extends WorldState {
 		
 		
 		
-		player.draw();
+		//player.draw();
 		
 		//graphics.bindTexture(StandardTextures.CUBE);
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
@@ -89,7 +89,7 @@ public class GameState extends WorldState {
 		//player.getSpeed() < 0 ? stateTimer : -stateTimer
 		
 		
-		
+		player.draw();
 	}
 	
 	@Override

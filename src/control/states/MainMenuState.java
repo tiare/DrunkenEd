@@ -54,6 +54,8 @@ public class MainMenuState extends WorldState {
 		//floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
 		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		graphics2D.setColor(0.7f, 0.7f, 0.7f);
+		graphics2D.drawRectCentered(0,-0.1f, 20,0.1f, 0);
 		
 		// draw left tree
 		graphics2D.setColor(0.3f, 0.1f, 0.0f);
@@ -75,7 +77,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(doorCx, doorsY+1, 0.3f, 0, 0, 0, "Wine");
 		graphics2D.drawString(doorRx, doorsY+1, 0.3f, 0, 0, 0, "Vodka");
 		graphics2D.setColor(0.f, 0.f, 0.f);
-		graphics2D.drawString(0, -0.2f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
+		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		
 		graphics2D.setWhite();
 		player.draw();
