@@ -58,6 +58,12 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
 		graphics2D.drawRectCentered(3.3f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
 		
+		graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(doorLx, doorsY+1, 0.3f, 0, 0, 0, "Beer");
+		graphics2D.drawString(doorCx, doorsY+1, 0.3f, 0, 0, 0, "Wine");
+		graphics2D.drawString(doorRx, doorsY+1, 0.3f, 0, 0, 0, "Vodka");
+		graphics2D.drawString(0, -0.2f, 0.2f, 0, 0, 0, "Drink (or press up) to select!");
+		
 		graphics2D.setWhite();
 		player.draw();
 	}
@@ -118,7 +124,7 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onDrink() {
 		//Enter the selected door
-		//Enter level
+		//Enter levelt 
 		if (activeDoor != NONE) {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeDoor;			
