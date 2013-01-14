@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import javax.vecmath.Point2d;
 
+import com.sun.corba.se.impl.ior.ByteBuffer;
+
 import control.ProgramController;
 
 public abstract class AbstractTracking {
@@ -20,6 +22,7 @@ public abstract class AbstractTracking {
 	}
 
 	public abstract Point2d getHeadPos();
+	public abstract byte[] getColorImage(); 
 
 	public abstract void init();
 	public abstract float getTorsoBending();
