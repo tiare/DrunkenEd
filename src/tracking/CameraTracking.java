@@ -16,7 +16,7 @@ public class CameraTracking extends AbstractTracking {
 	@Override
 	public Point2d getHeadPos() {
 		p("getheadpos triggered");
-		if (app!=null && app!=null)		return app.headpos; 
+		if (app!=null)		return app.headpos; 
 		else return new Point2d();
 	}
 
