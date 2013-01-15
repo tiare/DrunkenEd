@@ -138,7 +138,7 @@ public class UserTrackerMod {
 	public boolean hasDrinkingPose=false;
 	public boolean makesStep=false;
 	public Point2d headpos;
-	private float BENDINGANGLEFACTOR=20;
+	private float BENDINGANGLEFACTOR=1;
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -302,7 +302,7 @@ public class UserTrackerMod {
 //			Point2d torso2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d temp2d=new Point2d();
 			bendingangle=test/BENDINGANGLEFACTOR;
-			//System.out.println(test*360/Math.PI+"::"+bendingangle);
+			//System.out.println(test*180/Math.PI+"::"+bendingangle);
 			
 		} catch (StatusException e) {
 			// TODO Auto-generated catch block

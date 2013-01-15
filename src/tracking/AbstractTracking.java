@@ -62,5 +62,9 @@ public abstract class AbstractTracking {
 		
 		return false;
 	}
+
+	public void restart() {
+		
+	}
 	
 }

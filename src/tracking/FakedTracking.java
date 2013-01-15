@@ -10,7 +10,7 @@ import control.ProgramController;
 
 public class FakedTracking extends AbstractTracking{
 
-	private float bending;
+	public float bending;
 	private boolean drink = false;
 	
 	public FakedTracking(ProgramController programController) {
@@ -32,11 +32,9 @@ public class FakedTracking extends AbstractTracking{
 	public void step(float deltaTime) {
 		
 		if( keyIsPressed(Keys.LEFT) ){
-			bending = -(float)Math.PI /36.0f;
+			bending += -(float)Math.PI /36.0f;
 		} else if( keyIsPressed(Keys.RIGHT) ){
-			bending = (float)Math.PI /36.0f;
-		} else {
-			bending = .0f;
+			bending += (float)Math.PI /36.0f;
 		}
 		
 		TrackingListener listener = programController.getCurrentState();
@@ -47,6 +45,11 @@ public class FakedTracking extends AbstractTracking{
 		
 	}
 
+	@Override
+	public void restart() {
+		bending = 0;
+	}
+	
 	@Override
 	public java.nio.ByteBuffer getColorImage() {
 		// TODO Auto-generated method stub

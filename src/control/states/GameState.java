@@ -27,7 +27,7 @@ public class GameState extends WorldState {
 	
 	@Override
 	public void onBend(float bending){
-		player.steeredBending += bending;
+		player.steeredBending = bending;
 		float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
 		player.setSpeedX( speed );
 		
