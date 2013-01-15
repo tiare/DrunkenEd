@@ -8,12 +8,11 @@ import graphics.Camera2D;
 public abstract class WorldState extends ProgramState {
 
 	protected Player player;
-	protected Camera2D camera;
 	protected ProgramController programController;
 	
 	public WorldState() {
+		super();
 		player = new Player();
-		camera = new Camera2D();
 	}
 	
 	public WorldState init(ProgramController programController) {
