@@ -15,12 +15,12 @@ public class GameOverState extends ProgramState{
 	
 	ImageGenerator imgGen;
 	
-	private float worldZoom = 2.3f;
+	private float worldZoom = 5.f;
 
 	@Override
 	public void onStep(float deltaTime) {
 		//p("pos: "+programController.tracking.getHeadPos());
-		camera.set(0.f, 1.f, worldZoom);
+		camera.set(0.f, 2.f, worldZoom);
 	}
 
 	@Override
@@ -47,14 +47,15 @@ public class GameOverState extends ProgramState{
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
 		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
 		graphics2D.setColor(0.7f, 0.7f, 0.7f);
-		graphics2D.drawRectCentered(0,-0.1f, 20,0.1f, 0);
+		graphics2D.drawRectCentered(0,-0.05f, 20,0.1f, 0);
 		
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
 		graphics2D.setColor(0.f, 0.f, 0.f);
-		graphics2D.drawString(0, -0.8f, 0.2f, 0, 0, 0, "Drink (or press up) to restart!");
+		graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink (or press up) to restart!");
 		
-		graphics2D.setWhite();
+		graphics.bindTexture(null);
+		//graphics2D.setWhite();
 	}
 	
 	public void keyDown(int key) {
