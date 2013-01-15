@@ -3,12 +3,14 @@ package control;
 import tracking.TrackingListener;
 import graphics.Camera2D;
 import graphics.defaults.Default2DGraphics;
+import graphics.defaults.Default3DGraphics;
 import graphics.translator.GraphicsTranslator;
 
 public abstract class ProgramState implements TrackingListener {
 	
 	protected GraphicsTranslator graphics;
 	protected Default2DGraphics graphics2D;
+	protected Default3DGraphics graphics3D;
 	protected ProgramController programController;
 	protected float stateTimer;
 	protected Highscores highscores;

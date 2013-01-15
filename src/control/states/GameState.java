@@ -23,6 +23,7 @@ public class GameState extends WorldState {
 	@Override
 	public void onStart(){
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
+		player.bendingSpeed = 0;
 	}
 	
 	@Override
@@ -43,7 +44,9 @@ public class GameState extends WorldState {
 		
 		if( !player.gameOver ){
 			// add bending caused by drunkenness
-			player.drunkenBending += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
+			player.bendingSpeed = (float)Math.sin(player.drunkenBending + player.steeredBending*2)*0.02f;
+			player.drunkenBending += (float)Math.sin(stateTimer+Math.PI/2) / 200.0f;
+			player.drunkenBending += player.bendingSpeed;
 			
 			if( gameSettings.difficulty == GameSettings.GAME_HARD ){
 				worldZoom += (float)Math.sin(stateTimer*1.3) / 200.0f;

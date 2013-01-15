@@ -20,6 +20,7 @@ public class Player implements SkeletonCarrier {
 	public boolean gameOver;
 	
 	public float steeredBending;
+	public float bendingSpeed;
 	public float drunkenBending;
 	
 	public Player() {
