@@ -14,6 +14,8 @@ public class DrunkenMain {
 		
 		IOCommon.IMAGE_PATH = "textures/";
 		
+		Config.preInitialize();
+		
 		GLESFrame frame = new GLESFrame("Drunken Ed");
 		frame.init();
 		
@@ -26,8 +28,6 @@ public class DrunkenMain {
 		frame.setEventListener(mainControl);
 		frame.setIconImage(new ImageIcon(IOCommon.ICON_PATH).getImage());
 		frame.run();
-		
-		Config.preInitialize();
 	}
 	
 }

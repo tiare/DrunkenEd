@@ -2,7 +2,14 @@
 package tracking;
 
 
+import java.nio.ByteBuffer;
+
 import javax.vecmath.Point2d;
+
+import org.OpenNI.GeneralException;
+import org.OpenNI.ImageGenerator;
+
+
 import control.ProgramController;
 
 public class CameraTracking extends AbstractTracking {
@@ -52,5 +59,19 @@ public class CameraTracking extends AbstractTracking {
 	
 	private static void p(Object p) {
 		System.out.println(p.toString());
+	}
+
+	@Override
+	public ByteBuffer getColorImage() {
+		if (app!=null) {
+		try {
+			ImageGenerator img = ImageGenerator.create(app.context);
+			return img.createDataByteBuffer();
+		} catch (GeneralException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		return null;
 	}
 }

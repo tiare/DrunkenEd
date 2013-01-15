@@ -1,6 +1,7 @@
 package control;
 
 import tracking.TrackingListener;
+import graphics.Camera2D;
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 
@@ -13,9 +14,14 @@ public abstract class ProgramState implements TrackingListener {
 	protected Highscores highscores;
 	protected GameSettings gameSettings;
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
+	protected Camera2D camera;
 	
 	protected abstract void onStep(float deltaTime);
 	protected abstract void onDraw();
+	
+	public ProgramState() {
+		camera = new Camera2D();
+	}
 	
 	public ProgramState init(ProgramController programController) {
 		this.programController = programController;
@@ -25,6 +31,10 @@ public abstract class ProgramState implements TrackingListener {
 		highscores = programController.highscores;
 		gameSettings = programController.gameSettings;
 		return this;
+	}
+	
+	private static void p(String p) {
+		System.out.println(p);
 	}
 	
 	public void step(float deltaTime) {

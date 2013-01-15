@@ -2,6 +2,8 @@ package tracking;
 
 import javax.vecmath.Point2d;
 
+import com.sun.corba.se.impl.ior.ByteBuffer;
+
 import ninja.game.model.Keys;
 
 import control.ProgramController;
@@ -43,6 +45,12 @@ public class FakedTracking extends AbstractTracking{
 			listener.onBend(bending);
 		}
 		
+	}
+
+	@Override
+	public java.nio.ByteBuffer getColorImage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

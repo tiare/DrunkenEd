@@ -2,6 +2,6 @@ package control;
 
 public class Debug {
 
-	public static final boolean FAKE_CONTROLS = true;
+	public static boolean FAKE_CONTROLS = false;
 	
 }

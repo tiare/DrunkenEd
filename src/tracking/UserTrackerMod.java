@@ -11,6 +11,7 @@ import org.OpenNI.CalibrationProgressStatus;
 import org.OpenNI.Context;
 import org.OpenNI.DepthGenerator;
 import org.OpenNI.DepthMetaData;
+import org.OpenNI.ImageGenerator;
 import org.OpenNI.GeneralException;
 import org.OpenNI.IObservable;
 import org.OpenNI.IObserver;
@@ -123,7 +124,7 @@ public class UserTrackerMod {
 	
 	public final String SAMPLE_XML_FILE = "SamplesConfig.xml";
 	OutArg<ScriptNode> scriptNode;
-	private Context context;
+	public Context context;
 	private DepthGenerator depthGen;
 	private int width;
 	private int height;
@@ -146,6 +147,8 @@ public class UserTrackerMod {
             this.programController=programController;
 
             depthGen = DepthGenerator.create(context);
+            
+           
            // DepthMetaData depthMD = depthGen.getMetaData();
 
             //histogram = new float[10000];
