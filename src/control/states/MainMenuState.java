@@ -19,15 +19,12 @@ public class MainMenuState extends WorldState {
 	private float restartTime = 0.f;
 	private float startingTimeout = 2.f;
 
-	public MainMenuState () {
-	}
-
 	@Override
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
 		super.init(programController);
-		//player.init(programController);
 		restartTime = programController.getProgramTime();
+		player.posX = -1;
 		return this;
 	}
 	
@@ -78,6 +75,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(doorRx, doorsY+1, 0.3f, 0, 0, 0, "Vodka");
 		graphics2D.setColor(0.f, 0.f, 0.f);
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
+		graphics.bindTexture(null);
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -102,8 +100,8 @@ public class MainMenuState extends WorldState {
 	private void updateActiveDoor () {
 		activeDoor = NONE;
 		
-		float playerLeft = player.posX-0.5f;
-		float playerRight = player.posX+0.5f;
+		float playerLeft = player.posX-0.3f;
+		float playerRight = player.posX+0.3f;
 		
 		//Check if we're to the left of the center door
 		if (playerRight < doorCx-doorWith/2) {
