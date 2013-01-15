@@ -6,8 +6,8 @@ public class GameSettings {
 	public float difficultyAddition = 0.25f;
 	
 	public boolean speedIsProportionalToBending = false;
-	public float maxSpeed = 0.7f;
-	public float speedAccelerationFactor = 1;
+	public float maxSpeed = 3.0f;
+	public float speedAccelerationFactor = 0.5f;
 	public float flailingArmsSpeedFactor = 0.9f;
 	public float swingingArmsBendFactor = 0.9f;
 	
@@ -18,7 +18,7 @@ public class GameSettings {
 	public float zoomFrequencyFactor = 1.3f;
 	public float zoomIntensityFactor = 1.0f;
 	
-	public float drunkenBendingFactor = 0.5f;
+	public float drunkenBendingFactor = 1.4f;
 	
 	public float dyingTimeout = 2.f;
 	
