@@ -32,9 +32,9 @@ public class FakedTracking extends AbstractTracking{
 	public void step(float deltaTime) {
 		
 		if( keyIsPressed(Keys.LEFT) ){
-			bending += -(float)Math.PI /36.0f;
+			bending += -(float)Math.PI /72.0f;
 		} else if( keyIsPressed(Keys.RIGHT) ){
-			bending += (float)Math.PI /36.0f;
+			bending += (float)Math.PI /72.0f;
 		}
 		
 		TrackingListener listener = programController.getCurrentState();

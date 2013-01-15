@@ -131,4 +131,12 @@ public class Player implements SkeletonCarrier {
 		}
 	}
 	
+	public void setFlailingArms(boolean flail){
+		
+	}
+	
+	public void setSwingingArms(boolean swing){
+		
+	}
+	
 }
