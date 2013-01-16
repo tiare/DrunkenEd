@@ -70,6 +70,7 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	public void switchState(ProgramState newState) {
+		tracking.restart();
 		if(currentState!=null) {
 			currentState.onStop();
 		}

@@ -8,12 +8,11 @@ import graphics.Camera2D;
 public abstract class WorldState extends ProgramState {
 
 	protected Player player;
-	protected Camera2D camera;
 	protected ProgramController programController;
 	
 	public WorldState() {
+		super();
 		player = new Player();
-		camera = new Camera2D();
 	}
 	
 	public WorldState init(ProgramController programController) {
@@ -37,7 +36,7 @@ public abstract class WorldState extends ProgramState {
 	
 	@Override
 	public void onBend(float bending){
-		player.steeredBending += bending;
+		player.steeredBending = bending;
 		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) );
 	}
 	

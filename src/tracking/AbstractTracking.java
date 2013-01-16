@@ -16,10 +16,16 @@ public abstract class AbstractTracking {
 	public ProgramController programController;
 	
 	private HashMap<Integer, Boolean> pressedKeys;
+
+	public boolean trackArms;
+	public float leftUpperArmAngle;
+	public float leftLowerArmAngle;
+	public float rightUpperArmAngle;
+	public float rightLowerArmAngle;
 	
 	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;
-		
+		trackArms = false;
 		pressedKeys = new HashMap<Integer, Boolean>();
 	}
 
@@ -63,6 +69,10 @@ public abstract class AbstractTracking {
 		}
 		
 		return false;
+	}
+
+	public void restart() {
+		
 	}
 	
 }
