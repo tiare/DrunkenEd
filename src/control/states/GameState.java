@@ -11,8 +11,12 @@ public class GameState extends WorldState {
 
 	private float worldZoom;
 	private float fallingAngle;
+	private float difficultyFactor;
+	
 	private float gameOverTime;
-	private float dyingTimeout = 2.f;
+	
+	private boolean swingingArms = false;
+	private boolean flailingArms = false;
 	
 	public GameState(){
 		super();
@@ -24,14 +28,12 @@ public class GameState extends WorldState {
 	public void onStart(){
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
 		player.bendingSpeed = 0;
+		difficultyFactor = (1-(2*gameSettings.difficultyAddition) + gameSettings.difficulty * gameSettings.difficultyAddition);
 	}
 	
 	@Override
 	public void onBend(float bending){
 		player.steeredBending = bending;
-		float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
-		player.setSpeedX( speed );
-		
 	}
 	
 	
@@ -44,21 +46,75 @@ public class GameState extends WorldState {
 		
 		if( !player.gameOver ){
 			// add bending caused by drunkenness
-			player.bendingSpeed = (float)Math.sin(player.drunkenBending + player.steeredBending*2)*0.02f;
-			player.drunkenBending += (float)Math.sin(stateTimer+Math.PI/2) / 200.0f;
-			player.drunkenBending += player.bendingSpeed;
+			float gravity;
+			if(gameSettings.useGravity){
+				gravity = gameSettings.gravityFactor * difficultyFactor;
+				player.bendingSpeed = (float)Math.sin(player.drunkenBending + player.steeredBending*2)*gravity;
+				player.drunkenBending += player.bendingSpeed;
+			}
+			
+			player.drunkenBending += gameSettings.drunkenBendingFactor * 
+									((float)Math.sin(stateTimer+Math.PI/2) / 250.0f+
+									(float)Math.sin(stateTimer*1.7) / 350.0f)
+									* difficultyFactor;
+			
+			
+			
+			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
+			if( gameSettings.speedIsProportionalToBending ){
+				player.setSpeedX( speed );
+			} else {
+				speed = (speed/50.0f)*gameSettings.speedAccelerationFactor + player.getSpeed();
+				if( Math.abs(speed) > gameSettings.maxSpeed){
+					player.fallDown();
+					gameOverTime = programController.getProgramTime();
+				} else{
+					
+					if( flailingArms ){
+						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+							flailingArms = false;
+							player.setFlailingArms(false);
+						}
+					} else {
+						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+							flailingArms = true;
+							player.setFlailingArms(true);
+						}
+					}
+					
+					player.setSpeedX( speed );
+				}
+			}
+			
+			
 			
 			if( gameSettings.difficulty == GameSettings.GAME_HARD ){
-				worldZoom += (float)Math.sin(stateTimer*1.3) / 200.0f;
+				worldZoom += ((float)Math.sin(stateTimer*gameSettings.zoomFrequencyFactor) / 200.0) * gameSettings.zoomIntensityFactor;
 			}
 			
-			if( Math.abs( player.drunkenBending + player.steeredBending ) > fallingAngle){
+			float bending = Math.abs( player.drunkenBending + player.steeredBending );
+			if( bending > fallingAngle){
 				player.fallDown();
 				gameOverTime = programController.getProgramTime();
+			} else {
+				if(swingingArms){
+					if(bending < fallingAngle * gameSettings.swingingArmsBendFactor * difficultyFactor){
+						swingingArms = false;
+						player.setSwingingArms(false);
+					}
+				} else {
+					if(bending > fallingAngle * gameSettings.swingingArmsBendFactor * difficultyFactor){
+						swingingArms = true;
+						player.setSwingingArms(true);
+					}
+				}
 			}
 		}
-		else if (programController.getProgramTime() > gameOverTime + dyingTimeout){
-			super.programController.switchState(new GameOverState().init(programController));
+		else {
+			if (programController.getProgramTime() > gameOverTime + gameSettings.dyingTimeout){
+				super.programController.switchState(new GameOverState().init(programController));
+			}
+			
 		}
 		
 		

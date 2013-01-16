@@ -23,6 +23,7 @@ public class TestState extends ProgramState{
 
 	@Override
 	public void onDraw() {
+		graphics2D.activate();
 		graphics2D.setWhite();
 		
 		graphics.bindTexture(StandardTextures.CUBE);
