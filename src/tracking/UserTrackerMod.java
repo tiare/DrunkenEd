@@ -125,7 +125,7 @@ public class UserTrackerMod {
 	public final String SAMPLE_XML_FILE = "SamplesConfig.xml";
 	OutArg<ScriptNode> scriptNode;
 	public Context context;
-	private DepthGenerator depthGen;
+	public DepthGenerator depthGen;
 	private int width;
 	private int height;
 	private UserGenerator userGen;
@@ -270,11 +270,11 @@ public class UserTrackerMod {
 			}
 			if (skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()
 					-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY()>-330){
-				System.out.println("STEPbewegung erkannt");
+				//System.out.println("STEPbewegung erkannt");
 				makesStep=true;
 			}
-			Point3D temp=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition();
-			headpos=new Point2d(temp.getX(),temp.getY());
+			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition());
+			headpos=new Point2d(temp.getX(), temp.getY());
 			
 			calculateBendingAngle();
 			
