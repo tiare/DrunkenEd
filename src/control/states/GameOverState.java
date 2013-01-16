@@ -37,9 +37,9 @@ public class GameOverState extends ProgramState{
 	}
 	private float worldZoom = 2.3f;
 	
-	public GameOverState() {
+	//public GameOverState() {
 		//player.init(programController);
-	}
+	//}
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -65,7 +65,6 @@ public class GameOverState extends ProgramState{
 		graphics.bindTexture(StandardTextures.CUBE);
 		graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImage(), 60, 120, new TextureSettings()));
 		graphics2D.drawRectCentered(0,0.5f, 1,0.9f);
-		
 		/*graphics2D.setColor(0.5f, 0.5f, 0.85f);
 		graphics2D.drawStringL(graphics2D.getScreenLeft()+0.03f, 0.9f, 0.1f, "Time:  "+(int)(stateTimer*10)/10f+"sec");
 		//Texture t = new Texture(graphics);
