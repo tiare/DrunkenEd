@@ -32,8 +32,7 @@ public class GameOverState extends ProgramState{
 	}
 	
 	private static void p(String p) {
-		System.out.println(p);
-	//Player player;
+		if (control.Debug.GAME_OVER_SYSTEM_OUT_PRINTLN) System.out.println(p);
 	}
 	private float worldZoom = 2.3f;
 	
