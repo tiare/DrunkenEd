@@ -90,7 +90,7 @@ public class CameraTracking extends AbstractTracking {
 							bbNew.put(bb.get(index + 2));
 							bbNew.put((byte) 255);
 						} catch (IndexOutOfBoundsException o) {
-							p("indexout of bounds while index = " + index);
+							//p("indexout of bounds while index = " + index);
 						}
 					}
 				}
