@@ -5,6 +5,7 @@ import java.nio.ShortBuffer;
 import java.util.HashMap;
 
 import javax.vecmath.Point2d;
+import javax.vecmath.Vector3d;
 
 import org.OpenNI.CalibrationProgressEventArgs;
 import org.OpenNI.CalibrationProgressStatus;
@@ -125,7 +126,7 @@ public class UserTrackerMod {
 	public final String SAMPLE_XML_FILE = "SamplesConfig.xml";
 	OutArg<ScriptNode> scriptNode;
 	public Context context;
-	private DepthGenerator depthGen;
+	public DepthGenerator depthGen;
 	private int width;
 	private int height;
 	private UserGenerator userGen;
@@ -138,7 +139,11 @@ public class UserTrackerMod {
 	public boolean hasDrinkingPose=false;
 	public boolean makesStep=false;
 	public Point2d headpos;
+	public Point2d righthandpos;
+	public Point2d lefthandpos;
 	private float BENDINGANGLEFACTOR=1;
+	public float schulterwinkel=0;
+	public int activeuser=1;
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -173,6 +178,8 @@ public class UserTrackerMod {
 			
 			context.startGeneratingAll();
 			headpos=new Point2d(0,0);
+			lefthandpos=new Point2d(0,0);
+			righthandpos=new Point2d(0,0);
         } catch (GeneralException e) {
             e.printStackTrace();
             System.exit(1);
@@ -233,15 +240,19 @@ public class UserTrackerMod {
            // calcHist(depth);
            // depth.rewind();
             int[] users = userGen.getUsers();
+            float nearestx=1000;
 			for (int i = 0; i < users.length; ++i)
 			{
 				if (skeletonCap.isSkeletonTracking(users[i])){				
 					//getJoints(users[i]);
-					checkTriggers();
+					
+					
 					}
 			}
-            
-            
+			getActiveUser();
+			//if (activeuser!=0 )
+				checkTriggers();
+            //System.out.println(activeuser);
             
         } catch (GeneralException e) {
             e.printStackTrace();
@@ -255,7 +266,7 @@ public class UserTrackerMod {
 		try {
 			hasDrinkingPose=false;
 			makesStep=false;
-			if (userGen.getUsers().length>0 && skeletonCap.isSkeletonTracking(userGen.getUsers()[0]))
+			if (userGen.getUsers().length>0 && skeletonCap.isSkeletonTracking(userGen.getUsers()[0])){
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getX()
@@ -270,14 +281,18 @@ public class UserTrackerMod {
 			}
 			if (skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()
 					-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY()>-330){
-				System.out.println("STEPbewegung erkannt");
+				//System.out.println("STEPbewegung erkannt");
 				makesStep=true;
 			}
-			Point3D temp=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition();
-			headpos=new Point2d(temp.getX(),temp.getY());
-			
+			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition());
+			headpos=new Point2d(temp.getX(), temp.getY());
+			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.LEFT_HAND).getPosition());
+			lefthandpos=new Point2d(temp.getX(), temp.getY());
+			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition());
+			righthandpos=new Point2d(temp.getX(), temp.getY());
 			calculateBendingAngle();
-			
+			calculateShoulderAngle();
+			}
 		} catch (StatusException e) {
 			e.printStackTrace();
 		}
@@ -289,6 +304,26 @@ public class UserTrackerMod {
 				}
 			listener.onBend(bendingangle);
 		}
+	}
+
+	private void calculateShoulderAngle(){
+		try {
+			Point3D rightelbow3D = skeletonCap.getSkeletonJointPosition(activeuser,SkeletonJoint.RIGHT_ELBOW).getPosition();
+			Point3D rightshoulder3D = skeletonCap.getSkeletonJointPosition(activeuser,SkeletonJoint.RIGHT_SHOULDER).getPosition();
+			//Point3D head3D = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.HEAD).getPosition();
+			//Point3D torso3D = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.TORSO).getPosition();
+			Vector3d v1= new Vector3d(rightelbow3D.getX()-rightshoulder3D.getX(),rightelbow3D.getY()-rightshoulder3D.getY(),rightelbow3D.getZ()-rightshoulder3D.getZ());
+			//Vector3d v2=new Vector3d(torso3D.getX()-head3D.getX(),torso3D.getY()-head3D.getY(),torso3D.getZ()-head3D.getZ());
+			float winkel1=(float) Math.atan2(v1.x,v1.y);
+			//float winkel2=(float) Math.atan2(v2.x,v2.y);
+			//schulterwinkel=winkel2-winkel1;
+			schulterwinkel=bendingangle-winkel1;
+		} catch (StatusException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	private void calculateBendingAngle() {
@@ -311,4 +346,34 @@ public class UserTrackerMod {
 		
 	}
 
+	private int getActiveUser() {
+		int[] users;
+		int mostmiddleuser=0;
+		float nearestx=1000000;
+		try {
+			users = userGen.getUsers();
+			for (int i = 0; i < users.length; ++i)
+			{
+				if (skeletonCap.isSkeletonTracking(users[i])){				
+					if (Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX())<nearestx && i!=0){
+						mostmiddleuser=i;
+						System.out.println("activeuser set to:"+i+" :: "+skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
+						nearestx=Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
+					}
+					
+					}
+			}
+		} catch (StatusException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (mostmiddleuser!=0){
+			activeuser= mostmiddleuser;
+			return mostmiddleuser;
+		} else {
+			activeuser= 0;
+			return 0;
+		}
+		
+	}
 }
