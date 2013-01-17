@@ -3,6 +3,8 @@ package control.states;
 import control.ProgramController;
 import ninja.game.model.Keys;
 import figure.DrunkenSkeleton;
+import graphics.StandardTextures;
+import graphics.translator.Texture;
 
 public class MainMenuState extends WorldState {
 	
@@ -90,6 +92,15 @@ public class MainMenuState extends WorldState {
 		
 		graphics2D.setWhite();
 		player.draw();
+		
+		//draw beer
+		graphics.bindTexture(StandardTextures.BEER);
+		graphics2D.drawRectCentered(doorLx, doorsY+1.6f,0.38f,0.4f);
+		graphics.bindTexture(StandardTextures.WINE);
+		graphics2D.drawRectCentered(doorCx, doorsY+1.6f,0.38f,0.6f);
+		graphics.bindTexture(StandardTextures.VODKA);
+		graphics2D.drawRectCentered(doorRx, doorsY+1.6f,0.3f,0.7f);
+		graphics.bindTexture(null);
 	}
 	
 	private void drawDoor (float posX, float posY, boolean active) {
