@@ -128,7 +128,7 @@ public class GameState extends WorldState {
 		else {
 			if (programController.getProgramTime() > gameOverTime + gameSettings.dyingTimeout){
 				//TODO: -1f, -1f -> distance, time
-				super.programController.switchState(new GameOverState(programController, -1f, -1f).init(programController));
+				super.programController.switchState(new GameOverState(programController, player.getWorldX(), stateTimer-pauseTime).init(programController));
 			}
 			
 		}
