@@ -5,6 +5,8 @@ import java.sql.Time;
 import control.GameSettings;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
+import graphics.StandardTextures;
+import graphics.translator.TextureCoordinates;
 
 
 public class GameState extends WorldState {
@@ -112,7 +114,7 @@ public class GameState extends WorldState {
 		}
 		else {
 			if (programController.getProgramTime() > gameOverTime + gameSettings.dyingTimeout){
-				super.programController.switchState(new GameOverState().init(programController));
+				super.programController.switchState(new GameOverState(programController).init(programController));
 			}
 			
 		}
@@ -125,6 +127,8 @@ public class GameState extends WorldState {
 
 	@Override
 	public void onDraw() {
+		graphics.bindTexture(null);
+		
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 		
@@ -186,18 +190,27 @@ public class GameState extends WorldState {
 		
 		//player.draw();
 		
-		//graphics.bindTexture(StandardTextures.CUBE);
+		
 		//draw floor
-		graphics2D.setColor(0.5f, 0.5f, 0.5f);
-		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
-		graphics2D.drawRectCentered(20,-5.0f, 20,10.0f, 0);
-		graphics2D.setColor(0.7f, 0.7f, 0.7f);
-		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
-		graphics2D.drawRectCentered(20,-0.1f, 20,0.2f, 0);
+		//graphics2D.setColor(0.5f, 0.5f, 0.5f);
+		//graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		//graphics2D.drawRectCentered(20,-5.0f, 20,10.0f, 0);
+		//street
+		
+		
+		//graphics2D.setColor(0.7f, 0.7f, 0.7f);
+		TextureCoordinates texCoord = graphics.createTexCoords(0, 0, 200,1);
+		graphics2D.setWhite();
+		graphics.bindTexture(StandardTextures.STREET);
+		graphics2D.drawRectCentered(0, -1.0f, 20, 1.f, 0.0f, 0,0,100,1);
+		
+		graphics.bindTexture(null);
+		//graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
+		//graphics2D.drawRectCentered(20,-0.1f, 20,0.2f, 0);
 		//player.getSpeed() < 0 ? stateTimer : -stateTimer
 		
 		
-		player.draw();
+		//player.draw();
 	}
 	
 	@Override

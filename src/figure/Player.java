@@ -49,8 +49,8 @@ public class Player implements SkeletonCarrier {
 	private void refreshArms() {
 		if(!armAnglesByTracking)
 			return;
-		skeleton.mLeftShoulderJoint.applyConstraintPos();//setPosByConstraint
-		skeleton.mRightShoulderJoint.applyConstraintPos();
+		skeleton.mLeftShoulderJoint.setPosByConstraint();
+		skeleton.mRightShoulderJoint.setPosByConstraint();
 		skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
 		skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
 		skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);

@@ -5,8 +5,16 @@ import ninja.game.model.Keys;
 
 import org.OpenNI.ImageGenerator;
 
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
+
+import tracking.CameraTracking;
+
+import ninja.game.model.Keys;
+import control.ProgramController;
 import control.ProgramState;
 import graphics.StandardTextures;
+import graphics.translator.Texture;
+import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState{
 
@@ -15,10 +23,33 @@ public class GameOverState extends ProgramState{
 	
 	ImageGenerator imgGen;
 	
-	private float worldZoom = 5.f;
+	ProgramController programController;
+	
+	
+	public GameOverState(ProgramController programController) {
+		//player.init(programController);
+		this.programController = programController;
+	}
+	
+	private static void p(String p) {
+		System.out.println(p);
+	//Player player;
+	}
+	private float worldZoom = 2.3f;
+	
+	//public GameOverState() {
+		//player.init(programController);
+	//}
 
 	@Override
 	public void onStep(float deltaTime) {
+		p("head pos projected: "+programController.tracking.getHeadPos());
+		//DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+		//camera.set(0.f, 1.f, worldZoom);
+		//player.step(deltaTime);
+		
+		//if (!player.gameOver)
+			//player.fallDown();
 		//p("pos: "+programController.tracking.getHeadPos());
 		camera.set(0.f, 2.f, worldZoom);
 	}
@@ -30,7 +61,12 @@ public class GameOverState extends ProgramState{
 		graphics2D.switchGameCoordinates(false);
 		graphics2D.setWhite();
 		
+		//if ((new Debug()). != null);
 		graphics.bindTexture(StandardTextures.CUBE);
+		graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImage(), 60, 120, new TextureSettings()));
+		graphics2D.drawRectCentered(0,0.5f, 1,0.9f);
+		/*graphics2D.setColor(0.5f, 0.5f, 0.85f);
+		graphics2D.drawStringL(graphics2D.getScreenLeft()+0.03f, 0.9f, 0.1f, "Time:  "+(int)(stateTimer*10)/10f+"sec");
 		//Texture t = new Texture(graphics);
 		//graphics.bindTexture(new Texture(graphics, programController.tracking.getColorImage(), 640, 480, new TextureSettings()));
 		//graphics2D.drawRectCentered(0,0.15f, 1,0.9f, stateTimer);
@@ -39,7 +75,7 @@ public class GameOverState extends ProgramState{
 		//graphics2D.drawStringL(graphics2D.getScreenLeft()+0.03f, 0.9f, 0.1f, "Time:  "+(int)(stateTimer*10)/10f+"sec");
 		//player.draw();
 		////graphics2D.setColor(1.0f, 0.3f, 0.3f);
-		//graphics2D.drawRect(5.f, 5.f, 50.f, 50.f);
+		//graphics2D.drawRect(5.f, 5.f, 50.f, 50.f);*/
 		
 		
 		//floor
@@ -54,6 +90,9 @@ public class GameOverState extends ProgramState{
 		graphics2D.setColor(0.f, 0.f, 0.f);
 		graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink (or press up) to restart!");
 		
+		graphics2D.setWhite();
+		
+		//player.draw();
 		graphics.bindTexture(null);
 		//graphics2D.setWhite();
 	}
@@ -69,7 +108,7 @@ public class GameOverState extends ProgramState{
 	@Override
 	public void onDrink() {	
 		//start game
-		super.programController.switchState(new MainMenuState().init(programController));
+		//super.programController.switchState(new MainMenuState().init(programController));
 	}
 	
 	@Override
