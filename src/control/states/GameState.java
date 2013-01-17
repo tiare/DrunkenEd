@@ -17,6 +17,9 @@ public class GameState extends WorldState {
 	
 	private float gameOverTime;
 	
+	private boolean pause;
+	private float pauseTime;
+	
 	private boolean swingingArms = false;
 	private boolean flailingArms = false;
 	
@@ -31,6 +34,11 @@ public class GameState extends WorldState {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
 		player.bendingSpeed = 0;
 		difficultyFactor = (1-(2*gameSettings.difficultyAddition) + gameSettings.difficulty * gameSettings.difficultyAddition);
+		pause = true;
+		pauseTime = 2.0f;
+		
+		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
 	}
 	
 	@Override
@@ -45,7 +53,12 @@ public class GameState extends WorldState {
 		//worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f; 
 		
 		
-		
+		if( pause ){
+			if (stateTimer > pauseTime){
+				pause = false;
+			}
+			return;
+		}
 		if( !player.gameOver ){
 			// add bending caused by drunkenness
 			float gravity;
@@ -210,7 +223,7 @@ public class GameState extends WorldState {
 		//player.getSpeed() < 0 ? stateTimer : -stateTimer
 		
 		
-		//player.draw();
+		player.draw();
 	}
 	
 	@Override
