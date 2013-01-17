@@ -30,6 +30,7 @@ import org.OpenNI.StatusException;
 import org.OpenNI.UserEventArgs;
 import org.OpenNI.UserGenerator;
 
+import control.Debug;
 import control.ProgramController;
 
 import tracking.UserTrackerMod.CalibrationCompleteObserver;
@@ -143,7 +144,8 @@ public class UserTrackerMod {
 	public Point2d lefthandpos;
 	private float BENDINGANGLEFACTOR=1;
 	public float schulterwinkel=0;
-	public int activeuser=1;
+	public int activeuser=0;
+	public int users[];
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -198,8 +200,8 @@ public class UserTrackerMod {
 		{
 			joints.get(user).put(joint, new SkeletonJointPosition(new Point3D(), 0));
 		}
-		System.out.print(joints.get(user).get(SkeletonJoint.LEFT_ELBOW).getPosition().toString());
-		System.out.println(" :: "+joints.get(user).get(SkeletonJoint.LEFT_SHOULDER).getPosition().toString());
+		if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.print(joints.get(user).get(SkeletonJoint.LEFT_ELBOW).getPosition().toString());
+		if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println(" :: "+joints.get(user).get(SkeletonJoint.LEFT_SHOULDER).getPosition().toString());
     }
     public void getJoints(int user) throws StatusException
     {	
@@ -239,7 +241,7 @@ public class UserTrackerMod {
             ShortBuffer depth = depthMD.getData().createShortBuffer();
            // calcHist(depth);
            // depth.rewind();
-            int[] users = userGen.getUsers();
+            users = userGen.getUsers();
             float nearestx=1000;
 			for (int i = 0; i < users.length; ++i)
 			{
@@ -249,10 +251,10 @@ public class UserTrackerMod {
 					
 					}
 			}
-			getActiveUser();
+			setActiveUser();
 			//if (activeuser!=0 )
-				checkTriggers();
-            //System.out.println(activeuser);
+			checkTriggers();
+           // if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println(activeuser);
             
         } catch (GeneralException e) {
             e.printStackTrace();
@@ -266,29 +268,30 @@ public class UserTrackerMod {
 		try {
 			hasDrinkingPose=false;
 			makesStep=false;
-			if (userGen.getUsers().length>0 && skeletonCap.isSkeletonTracking(userGen.getUsers()[0])){
+			users = userGen.getUsers();
+			if (users.length>0 && skeletonCap.isSkeletonTracking(users[activeuser])){
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getX()
 //					+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
 //					+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getZ());
-			if (skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()
-					>=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
-				&&	skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
-					>=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()){
-				System.out.println("TRINKbewegung erkannt");
+			if (skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.HEAD).getPosition().getY()
+					>=skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.RIGHT_HAND).getPosition().getY()
+				&&	skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.RIGHT_HAND).getPosition().getY()
+					>=skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()){
+				//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("TRINKbewegung erkannt");
 				hasDrinkingPose=true;
 			}
-			if (skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()
-					-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY()>-330){
-				//System.out.println("STEPbewegung erkannt");
+			if (skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.RIGHT_KNEE).getPosition().getY()
+					-skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.RIGHT_HIP).getPosition().getY()>-330){
+				//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("STEPbewegung erkannt");
 				makesStep=true;
 			}
-			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition());
+			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.HEAD).getPosition());
 			headpos=new Point2d(temp.getX(), temp.getY());
-			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.LEFT_HAND).getPosition());
+			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.LEFT_HAND).getPosition());
 			lefthandpos=new Point2d(temp.getX(), temp.getY());
-			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition());
+			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.RIGHT_HAND).getPosition());
 			righthandpos=new Point2d(temp.getX(), temp.getY());
 			calculateBendingAngle();
 			calculateShoulderAngle();
@@ -308,8 +311,8 @@ public class UserTrackerMod {
 
 	private void calculateShoulderAngle(){
 		try {
-			Point3D rightelbow3D = skeletonCap.getSkeletonJointPosition(activeuser,SkeletonJoint.RIGHT_ELBOW).getPosition();
-			Point3D rightshoulder3D = skeletonCap.getSkeletonJointPosition(activeuser,SkeletonJoint.RIGHT_SHOULDER).getPosition();
+			Point3D rightelbow3D = skeletonCap.getSkeletonJointPosition(users[activeuser],SkeletonJoint.RIGHT_ELBOW).getPosition();
+			Point3D rightshoulder3D = skeletonCap.getSkeletonJointPosition(users[activeuser],SkeletonJoint.RIGHT_SHOULDER).getPosition();
 			//Point3D head3D = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.HEAD).getPosition();
 			//Point3D torso3D = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.TORSO).getPosition();
 			Vector3d v1= new Vector3d(rightelbow3D.getX()-rightshoulder3D.getX(),rightelbow3D.getY()-rightshoulder3D.getY(),rightelbow3D.getZ()-rightshoulder3D.getZ());
@@ -346,19 +349,22 @@ public class UserTrackerMod {
 		
 	}
 
-	private int getActiveUser() {
+	private int setActiveUser() {
 		int[] users;
-		int mostmiddleuser=0;
+		int mostmiddleuser=-1;
 		float nearestx=1000000;
 		try {
 			users = userGen.getUsers();
+			if (Debug.TRACKING_SYSTEM_OUT_PRINTLN) System.out.println("useranzahl:"+users.length);
 			for (int i = 0; i < users.length; ++i)
 			{
-				if (skeletonCap.isSkeletonTracking(users[i])){				
-					if (Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX())<nearestx && i!=0){
+				if (skeletonCap.isSkeletonTracking(users[i])){
+					float temp=Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
+					//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN) System.out.println(temp+"::user"+i);
+					if (temp<nearestx){
 						mostmiddleuser=i;
-						System.out.println("activeuser set to:"+i+" :: "+skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
-						nearestx=Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
+						//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("activeuser set to:"+i+" :: "+temp);
+						nearestx=temp;
 					}
 					
 					}
@@ -367,13 +373,19 @@ public class UserTrackerMod {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (mostmiddleuser!=0){
+		if (mostmiddleuser!=-1){
 			activeuser= mostmiddleuser;
+			p("activeuser set to:"+mostmiddleuser);
 			return mostmiddleuser;
 		} else {
 			activeuser= 0;
+			p("activeuser set to:0");
 			return 0;
 		}
 		
+	}
+	
+	private static void p(String p) {
+		if (control.Debug.TRACKING_SYSTEM_OUT_PRINTLN) System.out.println(p);
 	}
 }
