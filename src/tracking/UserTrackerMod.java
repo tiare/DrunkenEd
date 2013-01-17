@@ -143,7 +143,7 @@ public class UserTrackerMod {
 	public Point2d lefthandpos;
 	private float BENDINGANGLEFACTOR=1;
 	public float schulterwinkel=0;
-	public int activeuser=0;
+	public int activeuser=1;
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -240,16 +240,19 @@ public class UserTrackerMod {
            // calcHist(depth);
            // depth.rewind();
             int[] users = userGen.getUsers();
+            float nearestx=1000;
 			for (int i = 0; i < users.length; ++i)
 			{
 				if (skeletonCap.isSkeletonTracking(users[i])){				
 					//getJoints(users[i]);
-					getActiveUser();
-					checkTriggers();
+					
+					
 					}
 			}
-            
-            
+			getActiveUser();
+			//if (activeuser!=0 )
+				checkTriggers();
+            //System.out.println(activeuser);
             
         } catch (GeneralException e) {
             e.printStackTrace();
@@ -263,33 +266,33 @@ public class UserTrackerMod {
 		try {
 			hasDrinkingPose=false;
 			makesStep=false;
-			if (userGen.getUsers().length>0 && skeletonCap.isSkeletonTracking(userGen.getUsers()[0]))
+			if (userGen.getUsers().length>0 && skeletonCap.isSkeletonTracking(userGen.getUsers()[0])){
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getX()
 //					+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
 //					+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getZ());
-			if (skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.HEAD).getPosition().getY()
-					>=skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.RIGHT_HAND).getPosition().getY()
-				&&	skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.RIGHT_HAND).getPosition().getY()
-					>=skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()){
+			if (skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()
+					>=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
+				&&	skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
+					>=skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()){
 				System.out.println("TRINKbewegung erkannt");
 				hasDrinkingPose=true;
 			}
-			if (skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.RIGHT_KNEE).getPosition().getY()
-					-skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.RIGHT_HIP).getPosition().getY()>-330){
+			if (skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()
+					-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY()>-330){
 				//System.out.println("STEPbewegung erkannt");
 				makesStep=true;
 			}
-			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.HEAD).getPosition());
+			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition());
 			headpos=new Point2d(temp.getX(), temp.getY());
-			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.LEFT_HAND).getPosition());
+			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.LEFT_HAND).getPosition());
 			lefthandpos=new Point2d(temp.getX(), temp.getY());
-			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(activeuser, SkeletonJoint.RIGHT_HAND).getPosition());
+			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition());
 			righthandpos=new Point2d(temp.getX(), temp.getY());
 			calculateBendingAngle();
 			calculateShoulderAngle();
-			
+			}
 		} catch (StatusException e) {
 			e.printStackTrace();
 		}
@@ -325,8 +328,8 @@ public class UserTrackerMod {
 
 	private void calculateBendingAngle() {
 		try {
-			Point3D head3d = skeletonCap.getSkeletonJointPosition(activeuser,SkeletonJoint.HEAD).getPosition();
-			Point3D torso3d = skeletonCap.getSkeletonJointPosition(activeuser,SkeletonJoint.TORSO).getPosition();
+			Point3D head3d = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.HEAD).getPosition();
+			Point3D torso3d = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.TORSO).getPosition();
 			Point3D temp=new Point3D(head3d.getX()-torso3d.getX(),head3d.getY()-torso3d.getY(),head3d.getZ()-torso3d.getZ());
 			//System.out.println(temp.getX()+"::"+temp.getY());
 			float test=(float) Math.atan2(temp.getX(),temp.getY());
@@ -344,7 +347,33 @@ public class UserTrackerMod {
 	}
 
 	private int getActiveUser() {
-		// TODO Auto-generated method stub
-		return 0;
+		int[] users;
+		int mostmiddleuser=0;
+		float nearestx=1000000;
+		try {
+			users = userGen.getUsers();
+			for (int i = 0; i < users.length; ++i)
+			{
+				if (skeletonCap.isSkeletonTracking(users[i])){				
+					if (Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX())<nearestx && i!=0){
+						mostmiddleuser=i;
+						System.out.println("activeuser set to:"+i+" :: "+skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
+						nearestx=Math.abs(skeletonCap.getSkeletonJointPosition(users[i], SkeletonJoint.TORSO).getPosition().getX());
+					}
+					
+					}
+			}
+		} catch (StatusException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (mostmiddleuser!=0){
+			activeuser= mostmiddleuser;
+			return mostmiddleuser;
+		} else {
+			activeuser= 0;
+			return 0;
+		}
+		
 	}
 }
