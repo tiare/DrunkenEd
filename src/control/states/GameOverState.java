@@ -24,16 +24,17 @@ public class GameOverState extends ProgramState{
 	ImageGenerator imgGen;
 	
 	ProgramController programController;
+	float distance, time;
 	
-	
-	public GameOverState(ProgramController programController) {
+	public GameOverState(ProgramController programController, float distance, float time) {
 		//player.init(programController);
 		this.programController = programController;
+		this.distance = distance;
+		this.time= time;
 	}
 	
 	private static void p(String p) {
-		System.out.println(p);
-	//Player player;
+		if (control.Debug.GAME_OVER_SYSTEM_OUT_PRINTLN) System.out.println(p);
 	}
 	private float worldZoom = 2.3f;
 	

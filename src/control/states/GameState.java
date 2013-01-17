@@ -127,7 +127,8 @@ public class GameState extends WorldState {
 		}
 		else {
 			if (programController.getProgramTime() > gameOverTime + gameSettings.dyingTimeout){
-				super.programController.switchState(new GameOverState(programController).init(programController));
+				//TODO: -1f, -1f -> distance, time
+				super.programController.switchState(new GameOverState(programController, player.getWorldX(), stateTimer-pauseTime).init(programController));
 			}
 			
 		}
@@ -212,10 +213,14 @@ public class GameState extends WorldState {
 		
 		
 		//graphics2D.setColor(0.7f, 0.7f, 0.7f);
-		TextureCoordinates texCoord = graphics.createTexCoords(0, 0, 200,1);
 		graphics2D.setWhite();
 		graphics.bindTexture(StandardTextures.STREET);
-		graphics2D.drawRectCentered(0, -1.0f, 20, 1.f, 0.0f, 0,0,100,1);
+		
+		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+		
+		float streetWidth = 10;
+		graphics2D.drawRectCentered(player.posX, -0.5f, streetWidth, 2.0f,0.0f, 4*(2*player.posX/streetWidth-1) , 0, 4*(2*player.posX/streetWidth+1),1);
 		
 		graphics.bindTexture(null);
 		//graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
