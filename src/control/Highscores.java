@@ -34,6 +34,17 @@ public class Highscores {
 			p("Could not write to disk: " + e.toString());
 		}
 	}
+	
+	public int getHighScorePos(final int gameLevel, int score) {
+		int[] table = loadTableAccordingToGameLevel(gameLevel);
+
+		for (int i = 0; i < 3; i++) {
+			if (table[i] < score) {
+				return i+1;
+			}
+		}
+		return 4;
+	}
 
 	public boolean isNewHighScoreAndAdd(final int gameLevel, int score) {
 		int[] table = loadTableAccordingToGameLevel(gameLevel);

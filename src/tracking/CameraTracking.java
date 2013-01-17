@@ -71,9 +71,6 @@ public class CameraTracking extends AbstractTracking {
 		if (app != null) {
 			try {
 				ImageGenerator img = ImageGenerator.create(app.context);
-				// p("img"+); img.setPixelFormat(null);
-				// img.setPixelFormat(org.OpenNI.PixelFormat.);
-				p("bytes per pixel: " + img.getImageMap().getBytesPerPixel());
 
 				p("headpos: " + getHeadPos());
 
