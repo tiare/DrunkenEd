@@ -200,10 +200,9 @@ public class GameState extends WorldState {
 		
 		//graphics2D.setColor(0.7f, 0.7f, 0.7f);
 		TextureCoordinates texCoord = graphics.createTexCoords(0, 0, 200,1);
-		//texCoord.init(0, 0, 1, 0.05f);
 		graphics2D.setWhite();
 		graphics.bindTexture(StandardTextures.STREET);
-		graphics2D.drawRectCentered(0, -1.0f, 20, 1.f, 0.0f, 0,0,1,1);
+		graphics2D.drawRectCentered(0, -1.0f, 20, 1.f, 0.0f, 0,0,100,1);
 		
 		graphics.bindTexture(null);
 		//graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
