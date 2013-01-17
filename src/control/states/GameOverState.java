@@ -24,11 +24,13 @@ public class GameOverState extends ProgramState{
 	ImageGenerator imgGen;
 	
 	ProgramController programController;
+	float distance, time;
 	
-	
-	public GameOverState(ProgramController programController) {
+	public GameOverState(ProgramController programController, float distance, float time) {
 		//player.init(programController);
 		this.programController = programController;
+		this.distance = distance;
+		this.time= time;
 	}
 	
 	private static void p(String p) {
