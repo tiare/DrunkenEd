@@ -51,7 +51,7 @@ public class FakedTracking extends AbstractTracking{
 	}
 	
 	@Override
-	public java.nio.ByteBuffer getColorImage() {
+	public java.nio.ByteBuffer getColorImageByteBuffer() {
 		// TODO Auto-generated method stub
 		return null;
 	}

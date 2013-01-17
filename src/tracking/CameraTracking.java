@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import javax.vecmath.Point2d;
 
+import jogamp.nativewindow.windows.BITMAPINFO;
 import jogamp.opengl.util.av.impl.FFMPEGMediaPlayer.PixelFormat;
 
 import org.OpenNI.GeneralException;
@@ -62,9 +63,16 @@ public class CameraTracking extends AbstractTracking {
 	private static void p(Object p) {
 		System.out.println(p.toString());
 	}
+	
+
+	//@Override
+	//public Bitmap getColorImageBitmap() {
+		//Bitmap bmp = getColorImageByteBuffer();
+	//	return bmp;
+	//}
 
 	@Override
-	public ByteBuffer getColorImage() {
+	public ByteBuffer getColorImageByteBuffer() {
 		if (app == null) {
 			p("app was null!");
 		}
@@ -72,7 +80,7 @@ public class CameraTracking extends AbstractTracking {
 			try {
 				ImageGenerator img = ImageGenerator.create(app.context);
 
-				p("headpos: " + getHeadPos());
+				//p("headpos: " + getHeadPos());
 
 				ByteBuffer bbNew = ByteBuffer.allocateDirect(60 * 100 * 4);
 				bbNew.rewind();

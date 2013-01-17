@@ -27,6 +27,7 @@ public class GameOverState extends ProgramState {
 	float distance, time;
 	int score;
 	long countdownTime;
+	boolean initialMeasure;
 
 	public GameOverState(ProgramController programController, float distance, float time) {
 		// player.init(programController);
@@ -37,6 +38,7 @@ public class GameOverState extends ProgramState {
 		this.isHighScore = programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)) < 4;
 		p("highscore pos is: " + programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)));
 		countdownTime = System.currentTimeMillis();
+		initialMeasure = true;
 		/*
 		 * programController.highscores.isNewHighScoreAndAdd(
 		 * programController.gameSettings.difficulty, (int) getScore(distance,
@@ -69,16 +71,24 @@ public class GameOverState extends ProgramState {
 	}
 
 	boolean isHighScore;
+	float playerCenterX;
 
 	@Override
 	public void onDraw() {
-		
-
 		int timeLeft = 20-(int)((System.currentTimeMillis() - countdownTime)/1000L);
 
 		if (timeLeft < 0) {
 			super.programController.switchState(new MainMenuState().init(programController));
 		}
+		
+		if (initialMeasure) {
+			initialMeasure = false;
+
+			if (!control.Debug.FAKE_CONTROLS) {
+				playerCenterX = 1.5f*getFloatX((float)((CameraTracking) programController.tracking).getHeadPos().x);
+			}
+		}
+		
 		graphics2D.drawString(0f, 0.35f, 0.1f, 0, 0, 0, ""+timeLeft);
 		
 		graphics.clear(0.3f, 0.3f, 0.3f);
@@ -105,7 +115,10 @@ public class GameOverState extends ProgramState {
 
 
 		if (isHighScore) {
-			
+			//TODO:
+			/*
+			 * measure players initial position and from there take the center
+			 */
 
 			graphics2D.drawString(-0f, 0.55f, 0.1f, 0, 0, 0, "New Highscore!");
 			graphics2D.drawString(-0f, 0.45f, 0.1f, 0, 0, 0, "You scored " + score + " point"+(score>1?"s":"")+"!");
@@ -123,11 +136,23 @@ public class GameOverState extends ProgramState {
 			graphics2D.drawRectCentered(DISTANCE_TO_MIDDLE, 0, 0.5f, 0.6f);
 
 			if (!control.Debug.FAKE_CONTROLS) {
-				
-				
+				float playerX = 1.5f*getFloatX((float)((CameraTracking) programController.tracking).getHeadPos().x);
+				p("playerCenterX = "+playerCenterX);
+				p("playerX = "+playerX);
+				if (playerX >= playerCenterX + 0.75f) {
+					//take picture & return
+					p("would have taken a picture now!");
+					super.programController.switchState(new MainMenuState().init(programController));
+				}
+				if (playerX <= playerCenterX-0.75f) {
+					//don't take picture & return
+					//TODO: standart picture
+					p("would not have taken a picture now");
+					super.programController.switchState(new MainMenuState().init(programController));
+				}
 				graphics.bindTexture(StandardTextures.CUBE);
-				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImage(), 60, 100, new TextureSettings()));
-				graphics2D.drawRectCentered(getFloatX((float) ((CameraTracking) programController.tracking).getHeadPos().x) * 1.5f, 0f, 0.45f, DISTANCE_TO_MIDDLE);
+				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
+				graphics2D.drawRectCentered(playerX-playerCenterX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
 
 			}
 
