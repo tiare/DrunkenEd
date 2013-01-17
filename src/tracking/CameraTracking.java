@@ -77,11 +77,11 @@ public class CameraTracking extends AbstractTracking {
 
 				p("headpos: " + getHeadPos());
 
-				ByteBuffer bbNew = ByteBuffer.allocateDirect(60 * 120 * 4);
+				ByteBuffer bbNew = ByteBuffer.allocateDirect(60 * 100 * 4);
 				bbNew.rewind();
 				ByteBuffer bb = img.getImageMap().createByteBuffer();
 				if (getHeadPos().x!=0 && getHeadPos().y!=0){
-				for (int y = (int) (getHeadPos().y - 20); y < (int) (getHeadPos().y + 100); y++) {
+				for (int y = (int) (getHeadPos().y - 20); y < (int) (getHeadPos().y + 80); y++) {
 					for (int x = (int) (getHeadPos().x - 40); x < ((int) getHeadPos().x + 20); x++) {
 						int index = y * 640 * 3 + x * 3;
 						try {

@@ -105,7 +105,6 @@ public class GameOverState extends ProgramState{
 
 		graphics2D.drawString(-0.5f, 0.3f, 0.1f, 0, 0, 0, "Photo");
 		graphics2D.drawString(0.5f, 0.3f, 0.1f, 0, 0, 0, "No Photo");
-		//graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "No Photo");
 
 		graphics.bindTexture(null);
 
@@ -123,8 +122,8 @@ public class GameOverState extends ProgramState{
 		
 		if(!control.Debug.FAKE_CONTROLS){
 			graphics.bindTexture(StandardTextures.CUBE);
-			graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImage(), 60, 120, new TextureSettings()));
-			graphics2D.drawRectCentered(getFloatX( (float)((CameraTracking) programController.tracking).getHeadPos().x),0.5f, 0.45f,0.6f);
+			graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImage(), 60, 100, new TextureSettings()));
+			graphics2D.drawRectCentered(getFloatX( (float)((CameraTracking) programController.tracking).getHeadPos().x),0f, 0.45f,0.6f);
 			
 		}
 		
@@ -138,7 +137,7 @@ public class GameOverState extends ProgramState{
 	}	
 	private float getFloatX(float x) {
 		p("x before: "+x);
-		x= ((x - 640f / 2f) / 640f * 2)*1.2f;
+		x= ((x - 640f / 2f) / 640f * 2)*1.5f;
 		p("x after: "+x);
 		p("");
 		return x;
