@@ -17,6 +17,9 @@ import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
+	
+
+	static int TIMEOUT = 200; //in seconds
 
 	// private float clickPosX = 0.0f;
 	// private float clickPosY = 0.0f
@@ -39,6 +42,7 @@ public class GameOverState extends ProgramState {
 		p("highscore pos is: " + programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)));
 		countdownTime = System.currentTimeMillis();
 		initialMeasure = true;
+		playerCenterX = 0.0f;
 		/*
 		 * programController.highscores.isNewHighScoreAndAdd(
 		 * programController.gameSettings.difficulty, (int) getScore(distance,
@@ -75,19 +79,13 @@ public class GameOverState extends ProgramState {
 
 	@Override
 	public void onDraw() {
-		int timeLeft = 20-(int)((System.currentTimeMillis() - countdownTime)/1000L);
+		int timeLeft = TIMEOUT-(int)((System.currentTimeMillis() - countdownTime)/1000L);
 
 		if (timeLeft < 0) {
 			super.programController.switchState(new MainMenuState().init(programController));
 		}
 		
-		if (initialMeasure) {
-			initialMeasure = false;
 
-			if (!control.Debug.FAKE_CONTROLS) {
-				playerCenterX = 1.5f*getFloatX((float)((CameraTracking) programController.tracking).getHeadPos().x);
-			}
-		}
 		
 		graphics2D.drawString(0f, 0.35f, 0.1f, 0, 0, 0, ""+timeLeft);
 		
@@ -106,20 +104,17 @@ public class GameOverState extends ProgramState {
 
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
-		graphics2D.setColor(0.f, 0.f, 0.f);
-		graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Move left/right to take a highscore-picture!");
-//		graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink (or press up) to restart!");
+		graphics2D.setColor(0.f, 0.f, 0.f);//		graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink (or press up) to restart!");
 
 		graphics2D.setWhite();
 		
 
 
 		if (isHighScore) {
-			//TODO:
-			/*
-			 * measure players initial position and from there take the center
-			 */
 
+			graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Move left/right to take a highscore-picture!");
+
+			
 			graphics2D.drawString(-0f, 0.55f, 0.1f, 0, 0, 0, "New Highscore!");
 			graphics2D.drawString(-0f, 0.45f, 0.1f, 0, 0, 0, "You scored " + score + " point"+(score>1?"s":"")+"!");
 			
@@ -134,25 +129,30 @@ public class GameOverState extends ProgramState {
 			graphics2D.setColor(1f, 1f, 1f);
 			graphics2D.drawRectCentered(-DISTANCE_TO_MIDDLE, 0, 0.5f, 0.6f);
 			graphics2D.drawRectCentered(DISTANCE_TO_MIDDLE, 0, 0.5f, 0.6f);
-
-			if (!control.Debug.FAKE_CONTROLS) {
-				float playerX = 1.5f*getFloatX((float)((CameraTracking) programController.tracking).getHeadPos().x);
-				p("playerCenterX = "+playerCenterX);
-				p("playerX = "+playerX);
-				if (playerX >= playerCenterX + 0.75f) {
-					//take picture & return
-					p("would have taken a picture now!");
-					super.programController.switchState(new MainMenuState().init(programController));
+			
+			
+			if (!control.Debug.FAKE_CONTROLS && ((CameraTracking) programController.tracking).app.users.length>0) {
+				
+				if (initialMeasure || playerCenterX == 0.0f) {
+					initialMeasure = false;
+					playerCenterX = (float)((CameraTracking) programController.tracking).getHeadPos().x;	
 				}
-				if (playerX <= playerCenterX-0.75f) {
+				float playerX = ((float)((CameraTracking) programController.tracking).getHeadPos().x);	
+				float diffX = (playerX - playerCenterX)/110f;
+				if (diffX >= DISTANCE_TO_MIDDLE-0.01f) {
+					//take picture & return
+					p("would not have taken a picture now!");
+					//super.programController.switchState(new MainMenuState().init(programController));
+				}
+				if (diffX <= -DISTANCE_TO_MIDDLE+0.01f) {
 					//don't take picture & return
 					//TODO: standart picture
-					p("would not have taken a picture now");
-					super.programController.switchState(new MainMenuState().init(programController));
+					p("would have taken a picture now");
+					//super.programController.switchState(new MainMenuState().init(programController));
 				}
 				graphics.bindTexture(StandardTextures.CUBE);
 				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
-				graphics2D.drawRectCentered(playerX-playerCenterX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
+				graphics2D.drawRectCentered(diffX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
 
 			}
 
@@ -161,6 +161,7 @@ public class GameOverState extends ProgramState {
 			drawSquareAround(-DISTANCE_TO_MIDDLE, 0.07f, 0.5f, 0.6f);
 			drawSquareAround(DISTANCE_TO_MIDDLE, 0.07f, 0.5f, 0.6f);
 		} else {
+			graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to restart!");
 			graphics2D.drawString(-0f, 0.3f, 0.1f, 0, 0, 0, "You only scored " + score + " points :-(");
 			graphics2D.drawString(-0f, 0.2f, 0.1f, 0, 0, 0, "Try again!");
 		}
@@ -176,7 +177,8 @@ public class GameOverState extends ProgramState {
 	}
 
 	private float getFloatX(float x) {
-		x= ((x - 640f / 2f) / 640f * 2) * 1.5f;
+		float width  = 640f;
+		x= ((x - width / 2f) / (width * 2)) ;
 		if (x> 0.5f) {
 			return 0.5f;
 		}

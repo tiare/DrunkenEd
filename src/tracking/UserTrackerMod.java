@@ -288,6 +288,7 @@ public class UserTrackerMod {
 				makesStep=true;
 			}
 			Point3D temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.HEAD).getPosition());
+			
 			headpos=new Point2d(temp.getX(), temp.getY());
 			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeuser], SkeletonJoint.LEFT_HAND).getPosition());
 			lefthandpos=new Point2d(temp.getX(), temp.getY());

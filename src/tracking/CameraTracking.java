@@ -37,10 +37,8 @@ public class CameraTracking extends AbstractTracking {
 	}
 
 	public void start() {
-
 		app = new UserTrackerMod(programController);
 		app.updateDepth();
-
 	}
 
 	public void step(float deltatime) {
