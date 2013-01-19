@@ -22,7 +22,7 @@ import graphics.translator.TextureSettings;
 public class GameOverState extends ProgramState {
 	
 
-	static int TIMEOUT = 200; //in seconds
+	static int TIMEOUT = 20; //in seconds
 
 	// private float clickPosX = 0.0f;
 	// private float clickPosY = 0.0f
@@ -80,6 +80,7 @@ public class GameOverState extends ProgramState {
 		int timeLeft = TIMEOUT-(int)((System.currentTimeMillis() - countdownTime)/1000L);
 
 		if (timeLeft < 0) {
+			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
 			super.programController.switchState(new MainMenuState().init(programController));
 		}
 		
