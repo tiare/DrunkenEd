@@ -2,6 +2,7 @@
 lib/opengl/*
 lib/math/*
 src/control/Config.java
+score*bb
 
 #LaTeX
 */doc/*.aux

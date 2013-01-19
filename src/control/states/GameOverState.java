@@ -1,5 +1,8 @@
 package control.states;
 
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
+
 import ninja.game.model.Keys;
 
 import org.OpenNI.ImageGenerator;
@@ -43,11 +46,6 @@ public class GameOverState extends ProgramState {
 		countdownTime = System.currentTimeMillis();
 		initialMeasure = true;
 		playerCenterX = 0.0f;
-		/*
-		 * programController.highscores.isNewHighScoreAndAdd(
-		 * programController.gameSettings.difficulty, (int) getScore(distance,
-		 * time));
-		 */
 	}
 
 	private float getScore(float distance, float time) {
@@ -140,20 +138,21 @@ public class GameOverState extends ProgramState {
 				float playerX = ((float)((CameraTracking) programController.tracking).getHeadPos().x);	
 				float diffX = (playerX - playerCenterX)/110f;
 				if (diffX >= DISTANCE_TO_MIDDLE-0.01f) {
-					//take picture & return
-					p("would not have taken a picture now!");
-					//super.programController.switchState(new MainMenuState().init(programController));
+					//p("not taking a picture & returning");
+					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
+					super.programController.switchState(new MainMenuState().init(programController));
 				}
 				if (diffX <= -DISTANCE_TO_MIDDLE+0.01f) {
-					//don't take picture & return
-					//TODO: standart picture
-					p("would have taken a picture now");
-					//super.programController.switchState(new MainMenuState().init(programController));
+					//p("took a picture & returning");
+					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer()); 
+					super.programController.switchState(new MainMenuState().init(programController));
 				}
 				graphics.bindTexture(StandardTextures.CUBE);
 				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
 				graphics2D.drawRectCentered(diffX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
 
+			} else {
+				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
 			}
 
 			graphics.bindTexture(null);
@@ -174,18 +173,6 @@ public class GameOverState extends ProgramState {
 		graphics2D.drawRectCentered(around + width / 2, 0, thickness, height);
 		graphics2D.drawRectCentered(around, height / 2, width + thickness, thickness);
 		graphics2D.drawRectCentered(around, -height / 2, width + thickness, thickness);
-	}
-
-	private float getFloatX(float x) {
-		float width  = 640f;
-		x= ((x - width / 2f) / (width * 2)) ;
-		if (x> 0.5f) {
-			return 0.5f;
-		}
-		if (x<-0.5f) {
-			return -0.5f;
-		}
-		return x;
 	}
 
 	public void keyDown(int key) {
