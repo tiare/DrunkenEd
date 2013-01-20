@@ -1,10 +1,12 @@
 package control.states;
 
+import java.nio.ByteBuffer;
+
 import control.ProgramState;
+import graphics.FloatColor;
 import graphics.StandardTextures;
 
 public class TestState extends ProgramState{
-	
 	
 	public TestState() {
 		super();

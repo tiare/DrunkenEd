@@ -1,8 +1,8 @@
 package control.states;
 
-import control.ProgramController;
-import ninja.game.model.Keys;
 import figure.DrunkenSkeleton;
+import control.ProgramController;
+import graphics.events.Keys;
 
 public class MainMenuState extends WorldState {
 	

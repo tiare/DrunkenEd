@@ -2,11 +2,8 @@ package tracking;
 
 import javax.vecmath.Point2d;
 
-import com.sun.corba.se.impl.ior.ByteBuffer;
-
-import ninja.game.model.Keys;
-
 import control.ProgramController;
+import graphics.events.Keys;
 
 public class FakedTracking extends AbstractTracking{
 

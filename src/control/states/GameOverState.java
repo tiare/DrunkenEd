@@ -1,18 +1,13 @@
 package control.states;
 
 
-import ninja.game.model.Keys;
-
 import org.OpenNI.ImageGenerator;
 
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
-
 import tracking.CameraTracking;
-
-import ninja.game.model.Keys;
 import control.ProgramController;
 import control.ProgramState;
 import graphics.StandardTextures;
+import graphics.events.Keys;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 
