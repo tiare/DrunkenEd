@@ -1,8 +1,9 @@
 package control.states;
 
-import control.ProgramController;
-import ninja.game.model.Keys;
 import figure.DrunkenSkeleton;
+import control.ProgramController;
+import graphics.StandardTextures;
+import graphics.events.Keys;
 
 public class MainMenuState extends WorldState {
 	
@@ -17,7 +18,8 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 	
 	private float restartTime = 0.f;
-	private float startingTimeout = 2.f;
+	private float timeout = 1.f;
+	private boolean startLevel;
 
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -25,6 +27,7 @@ public class MainMenuState extends WorldState {
 		super.init(programController);
 		restartTime = programController.getProgramTime();
 		player.posX = -1;
+		startLevel = false;
 		return this;
 	}
 	
@@ -34,7 +37,16 @@ public class MainMenuState extends WorldState {
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX, skeleton.mBreastJoint.mPosY, 2.3f);
 		oldPlayerPosX = player.posX;
-		player.step(deltaTime);
+		
+		if (startLevel) {
+			if (programController.getProgramTime() > restartTime + timeout) {
+				//start game
+				super.programController.switchState(new GameState().init(programController));
+			}
+		}
+		else {
+			player.step(deltaTime);
+		}
 		//don't let the player walk out of the screen
 		dontLeaveScreen ();
 		updateActiveDoor();
@@ -79,6 +91,15 @@ public class MainMenuState extends WorldState {
 		
 		graphics2D.setWhite();
 		player.draw();
+		
+		//draw beer
+		graphics.bindTexture(StandardTextures.BEER);
+		graphics2D.drawRectCentered(doorLx, doorsY+1.6f,0.38f,0.4f);
+		graphics.bindTexture(StandardTextures.WINE);
+		graphics2D.drawRectCentered(doorCx, doorsY+1.6f,0.38f,0.6f);
+		graphics.bindTexture(StandardTextures.VODKA);
+		graphics2D.drawRectCentered(doorRx, doorsY+1.6f,0.3f,0.7f);
+		graphics.bindTexture(null);
 	}
 	
 	private void drawDoor (float posX, float posY, boolean active) {
@@ -126,10 +147,15 @@ public class MainMenuState extends WorldState {
 		if( key == Keys.UP ) {
 			//Enter level
 			if (activeDoor != NONE) {
+				restartTime = programController.getProgramTime();
+				startLevel = true;
+				
 				//set difficulty in gamesettings!
 				super.gameSettings.difficulty = activeDoor;			
-				//start game
-				super.programController.switchState(new GameState().init(programController));
+//				//start game
+//				super.programController.switchState(new GameState().init(programController));
+				
+				//TODO: trigger player animation!
 			}
 		}
 	}
@@ -138,7 +164,7 @@ public class MainMenuState extends WorldState {
 	public void onDrink() {
 		//Enter the selected door
 		//Enter level
-		if (activeDoor != NONE && programController.getProgramTime() > restartTime + startingTimeout) {
+		if (activeDoor != NONE && programController.getProgramTime() > restartTime + timeout) {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeDoor;			
 			//start game

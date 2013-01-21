@@ -1,10 +1,14 @@
 package control;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+//import java.nio.file.CopyOption;
+//import java.nio.file.Files;
 import java.util.StringTokenizer;
 
 public class Highscores {
@@ -15,19 +19,19 @@ public class Highscores {
 		try {
 			File fileEasy = new File(getFileName(GameSettings.GAME_EASY));
 			if (!fileEasy.exists()) {
-				saveFile(fileEasy, GameSettings.GAME_EASY, new int[] { 0, 0, 0 });
+				saveFile(GameSettings.GAME_EASY, new int[] { 0, 0, 0 });
 			}
 			loadScoreFromFile(fileEasy, GameSettings.GAME_EASY);
 
 			File fileMedium = new File(getFileName(GameSettings.GAME_MEDIUM));
 			if (!fileMedium.exists()) {
-				saveFile(fileMedium, GameSettings.GAME_MEDIUM, new int[] { 0, 0, 0 });
+				saveFile(GameSettings.GAME_MEDIUM, new int[] { 0, 0, 0 });
 			}
 			loadScoreFromFile(fileMedium, GameSettings.GAME_MEDIUM);
 
 			File fileHard = new File(getFileName(GameSettings.GAME_HARD));
 			if (!fileHard.exists()) {
-				saveFile(fileHard, GameSettings.GAME_HARD, new int[] { 0, 0, 0 });
+				saveFile(GameSettings.GAME_HARD, new int[] { 0, 0, 0 });
 			}
 			loadScoreFromFile(fileHard, GameSettings.GAME_HARD);
 		} catch (IOException e) {
@@ -35,20 +39,78 @@ public class Highscores {
 		}
 	}
 
-	public boolean isNewHighScoreAndAdd(final int gameLevel, int score) {
+	public int getHighScorePos(final int gameLevel, int score) {
 		int[] table = loadTableAccordingToGameLevel(gameLevel);
 
 		for (int i = 0; i < 3; i++) {
 			if (table[i] < score) {
+				return i + 1;
+			}
+		}
+		return 4;
+	}
+	
+
+
+	public ByteBuffer getPictureFromPos(final int gameLevel, int pos) {
+		try {
+			ByteBuffer bb =ByteBuffer.allocateDirect(60 * 100 * 4);
+			bb.rewind();
+
+			File file = new File(getFileName(gameLevel) + pos+".bb");
+
+			BufferedReader bufRdr = new BufferedReader(new FileReader(file));
+			String line = null;
+			while ((line = bufRdr.readLine()) != null) {
+				StringTokenizer st = new StringTokenizer(line, ",");
+				while (st.hasMoreTokens()) {
+					try {
+						bb.put(Byte.parseByte(st.nextToken()));
+					} catch (NumberFormatException e) {
+						p("malformed file: " + getFileName(gameLevel) + ", exception: " + e.toString());
+						bufRdr.close();
+						return null;
+					}
+				}
+			}
+			bufRdr.close();
+			bb.rewind();
+			return bb;
+			
+		} catch(Exception e) {
+			return null;
+		}
+	}
+
+	public void addHighscore(final int gameLevel, int score, ByteBuffer imageByteBuffer) {
+		if (imageByteBuffer!=null) {
+			imageByteBuffer.rewind();
+		}
+		
+		int[] table = loadTableAccordingToGameLevel(gameLevel);
+
+		for (int i = 0; i < 3; i++) {
+			if (table[i] < score) {
+				File temp  = new File(getFileName(gameLevel) + (2)+".bb");
+				if (temp.exists())  {temp.delete();}
+				for (int j = 1; j>=i; j--) {
+					temp = new File(getFileName(gameLevel) + (j)+".bb");
+				
+					if (temp.exists()) {
+						temp.renameTo(new File(getFileName(gameLevel) + (j+1)+".bb"));
+					} 
+				}
 				for (int j = i + 1; j < 3; j++) {
 					table[j] = table[j - 1];
 				}
 				table[i] = score;
-				saveFile(new File(getFileName(gameLevel)), gameLevel, table);
-				return true;
+				saveFile(gameLevel, table);
+				if (imageByteBuffer!=null) {
+					saveImageFile(gameLevel, i, imageByteBuffer);
+				}
+				i=3;
 			}
 		}
-		return false;
 
 	}
 
@@ -80,8 +142,8 @@ public class Highscores {
 				try {
 					score[index++] = Integer.parseInt(st.nextToken());
 				} catch (NumberFormatException e) {
-					p("malformed file: "+getFileName(gameLevel)+", exception: "+e.toString());
-					score[index-1] = 0;
+					p("malformed file: " + getFileName(gameLevel) + ", exception: " + e.toString());
+					score[index - 1] = 0;
 				}
 			}
 		}
@@ -118,15 +180,32 @@ public class Highscores {
 		}
 	}
 
-	private void saveFile(File file, final int gameLevel, int[] scores) {
+	private void saveFile(final int gameLevel, int[] scores) {
 		try {
 			FileWriter fstream = new FileWriter(getFileName(gameLevel));
 			BufferedWriter out = new BufferedWriter(fstream);
 			StringBuffer toWrite = new StringBuffer();
-			for (int i = 0; i < 2 ; i++) {
-				toWrite.append(scores[i]+",");
+			for (int i = 0; i < 2; i++) {
+				toWrite.append(scores[i] + ",");
 			}
 			toWrite.append(scores[2]);
+			out.write(toWrite.toString());
+			out.close();
+			fstream.close();
+		} catch (IOException e) {
+			p("ERROR: Couldn't write to file..");
+		}
+	}
+	
+	private void saveImageFile(final int gameLevel, int place, ByteBuffer bb) {
+		try {
+			bb.rewind();
+			FileWriter fstream = new FileWriter(getFileName(gameLevel) + place+".bb");
+			BufferedWriter out = new BufferedWriter(fstream);
+			StringBuffer toWrite = new StringBuffer();
+			for (int i = 0; i < bb.capacity(); i++) {
+				toWrite.append(bb.get(i) + ",");
+			}
 			out.write(toWrite.toString());
 			out.close();
 			fstream.close();

@@ -19,13 +19,9 @@ public class DrunkenMain {
 		GLESFrame frame = new GLESFrame("Drunken Ed");
 		frame.init();
 		
-		App.gfxLoader = frame.mGraphics.mGFXLoader;
-		App.exit = frame;
-		
 		ProgramController mainControl = new ProgramController();
 
 		frame.setSurface(mainControl);
-		frame.setEventListener(mainControl);
 		frame.setIconImage(new ImageIcon(IOCommon.ICON_PATH).getImage());
 		frame.run();
 	}

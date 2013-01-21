@@ -1,13 +1,14 @@
 package control;
 
 
-import graphics.StandardTextures;
-import graphics.defaults.DefaultSurface;
-import ninja.game.model.Keys;
 import tracking.AbstractTracking;
 import tracking.CameraTracking;
 import tracking.FakedTracking;
 import control.states.MainMenuState;
+import graphics.StandardTextures;
+import graphics.defaults.DefaultSurface;
+import graphics.events.Keys;
+import graphics.events.PointerEvent;
 
 public class ProgramController extends DefaultSurface {
 
@@ -55,6 +56,7 @@ public class ProgramController extends DefaultSurface {
 					}
 					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
 					tracking.step(deltaTime);
+					ProgramController.super.step();
 					currentState.step(deltaTime);
 					programTimer += deltaTime;
 				}
@@ -95,21 +97,21 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	@Override
-	public void pointerDown(float x,float y,int pId) {
+	public void pointerDown(float x,float y,PointerEvent event) {
 		if(currentState!=null)
-			currentState.pointerDown(x, y, pId);
+			currentState.pointerDown(x, y, event.mId);
 	}
 	
 	@Override
-	public void pointerDragged(float x,float y,int pId) {
+	public void pointerDragged(float x,float y,PointerEvent event) {
 		if(currentState!=null)
-			currentState.pointerDragged(x, y, pId);
+			currentState.pointerDragged(x, y, event.mId);
 	}
 	
 	@Override
-	public void pointerUp(float x,float y,int pId) {
+	public void pointerUp(float x,float y,PointerEvent event) {
 		if(currentState!=null)
-			currentState.pointerUp(x, y, pId);
+			currentState.pointerUp(x, y, event.mId);
 	}
 	
 	@Override

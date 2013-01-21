@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import javax.vecmath.Point2d;
 
+import jogamp.nativewindow.windows.BITMAPINFO;
 import jogamp.opengl.util.av.impl.FFMPEGMediaPlayer.PixelFormat;
 
 import org.OpenNI.GeneralException;
@@ -36,10 +37,8 @@ public class CameraTracking extends AbstractTracking {
 	}
 
 	public void start() {
-
 		app = new UserTrackerMod(programController);
 		app.updateDepth();
-
 	}
 
 	public void step(float deltatime) {
@@ -62,26 +61,30 @@ public class CameraTracking extends AbstractTracking {
 	private static void p(Object p) {
 		System.out.println(p.toString());
 	}
+	
+
+	//@Override
+	//public Bitmap getColorImageBitmap() {
+		//Bitmap bmp = getColorImageByteBuffer();
+	//	return bmp;
+	//}
 
 	@Override
-	public ByteBuffer getColorImage() {
+	public ByteBuffer getColorImageByteBuffer() {
 		if (app == null) {
 			p("app was null!");
 		}
 		if (app != null) {
 			try {
 				ImageGenerator img = ImageGenerator.create(app.context);
-				// p("img"+); img.setPixelFormat(null);
-				// img.setPixelFormat(org.OpenNI.PixelFormat.);
-				p("bytes per pixel: " + img.getImageMap().getBytesPerPixel());
 
-				p("headpos: " + getHeadPos());
+				//p("headpos: " + getHeadPos());
 
-				ByteBuffer bbNew = ByteBuffer.allocateDirect(60 * 120 * 4);
+				ByteBuffer bbNew = ByteBuffer.allocateDirect(60 * 100 * 4);
 				bbNew.rewind();
 				ByteBuffer bb = img.getImageMap().createByteBuffer();
 				if (getHeadPos().x!=0 && getHeadPos().y!=0){
-				for (int y = (int) (getHeadPos().y - 20); y < (int) (getHeadPos().y + 100); y++) {
+				for (int y = (int) (getHeadPos().y - 20); y < (int) (getHeadPos().y + 80); y++) {
 					for (int x = (int) (getHeadPos().x - 40); x < ((int) getHeadPos().x + 20); x++) {
 						int index = y * 640 * 3 + x * 3;
 						try {
@@ -89,8 +92,8 @@ public class CameraTracking extends AbstractTracking {
 							bbNew.put(bb.get(index + 1));
 							bbNew.put(bb.get(index + 2));
 							bbNew.put((byte) 255);
-						} catch (IndexOutOfBoundsException o) {
-							p("indexout of bounds while index = " + index);
+						} catch (Exception o) {
+							return null;
 						}
 					}
 				}
