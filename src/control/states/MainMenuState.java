@@ -1,11 +1,7 @@
 package control.states;
 
-import com.sun.corba.se.impl.ior.ByteBuffer;
-
-import sun.awt.image.ByteBandedRaster;
-import tracking.CameraTracking;
-import figure.DrunkenSkeleton;
 import control.ProgramController;
+import figure.DrunkenSkeleton;
 import graphics.StandardTextures;
 import graphics.events.Keys;
 import graphics.translator.Texture;

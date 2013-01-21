@@ -57,6 +57,9 @@ public class GameState extends WorldState {
 			if (stateTimer > pauseTime){
 				pause = false;
 			}
+			
+			player.step(deltaTime);
+			
 			return;
 		}
 		if( !player.gameOver ){
@@ -221,6 +224,11 @@ public class GameState extends WorldState {
 		
 		float streetWidth = 10;
 		graphics2D.drawRectCentered(player.posX, -0.5f, streetWidth, 2.0f,0.0f, 4*(2*player.posX/streetWidth-1) , 0, 4*(2*player.posX/streetWidth+1),1);
+		
+		if( pause){
+			graphics2D.setColor(1.f, 1.f, 1.f);
+			graphics2D.drawString(0.0f, 2.5f, 1.0f, 0, 0, 0, (int)(pauseTime-stateTimer+1)+" ");
+		}
 		
 		graphics.bindTexture(null);
 		//graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
