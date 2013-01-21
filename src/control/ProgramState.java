@@ -39,6 +39,12 @@ public abstract class ProgramState implements TrackingListener {
 		System.out.println(p);
 	}
 	
+	private static void p(String p, boolean print) {
+		if(print){
+			System.out.println(p);
+		}
+	}
+	
 	public void step(float deltaTime) {
 		stateTimer += deltaTime;
 		onStep(deltaTime);

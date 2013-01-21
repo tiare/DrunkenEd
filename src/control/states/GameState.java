@@ -57,6 +57,9 @@ public class GameState extends WorldState {
 			if (stateTimer > pauseTime){
 				pause = false;
 			}
+			
+			player.step(deltaTime);
+			
 			return;
 		}
 		if( !player.gameOver ){
