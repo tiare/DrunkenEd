@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
 import java.util.StringTokenizer;
 
 public class Highscores {

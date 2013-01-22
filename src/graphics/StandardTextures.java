@@ -1,5 +1,6 @@
 package graphics;
 
+import sun.security.x509.EDIPartyName;
 import graphics.AbstractGFXLoader;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
@@ -15,6 +16,7 @@ public class StandardTextures {
 	public static Texture BEER;
 	public static Texture WINE;
 	public static Texture VODKA;
+	public static Texture ED;
 	
 	public static void init(GraphicsTranslator graphics) {
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
@@ -24,6 +26,7 @@ public class StandardTextures {
 		BEER = gfxLoader.getImage("beer");
 		WINE = gfxLoader.getImage("wine");
 		VODKA = gfxLoader.getImage("vodka");
+		ED = gfxLoader.getImage("ed");
 	}
 	
 }
