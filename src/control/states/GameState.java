@@ -165,12 +165,12 @@ public class GameState extends WorldState {
 				gameOverTime = programController.getProgramTime();
 			} else {
 				if(swingingArms){
-					if(bending < fallingAngle * gameSettings.swingingArmsBendFactor * difficultyFactor){
+					if(bending < fallingAngle * gameSettings.swingingArmsBendFactor){
 						swingingArms = false;
 						player.setSwingingArms(false);
 					}
 				} else {
-					if(bending > fallingAngle * gameSettings.swingingArmsBendFactor * difficultyFactor){
+					if(bending > fallingAngle * gameSettings.swingingArmsBendFactor){
 						swingingArms = true;
 						player.setSwingingArms(true);
 					}
