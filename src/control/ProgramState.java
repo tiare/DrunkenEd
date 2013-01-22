@@ -105,4 +105,8 @@ public abstract class ProgramState implements TrackingListener {
 	public int getType() {
 		return -1;
 	}
+	
+	public void startGraphics() {
+		
+	}
 }

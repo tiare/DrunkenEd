@@ -312,5 +312,10 @@ public class MainMenuState extends WorldState {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void startGraphics() {
+		//TODO implement meeeee
+	}
 
 }
