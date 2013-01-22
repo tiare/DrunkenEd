@@ -29,6 +29,9 @@ public class Player implements SkeletonCarrier {
 	public boolean gameOver;
 	private boolean armAnglesByTracking;
 	public DefaultAnimationPlayer animationPlayer;
+	public float lifeTime;
+	private boolean mFlail;
+	private boolean mSwing;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -49,19 +52,39 @@ public class Player implements SkeletonCarrier {
 		skeleton.init(this);
 		setArmAnglesByTracking(true);
 		animationPlayer = new DefaultAnimationPlayer(skeleton,null);
+		skeleton.mAccuracy = 16;
+		
+		mFlail = false;
+		mSwing = false;
+		
 		start();
 		return this;
 	}
 	
 	private void refreshArms() {
-		if(!armAnglesByTracking)
-			return;
-		skeleton.mLeftShoulderJoint.setPosByConstraint();
-		skeleton.mRightShoulderJoint.setPosByConstraint();
-		skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
-		skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
-		skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
-		skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+		
+		if(mSwing) {
+			skeleton.mLeftShoulderJoint.setPosByConstraint();
+			skeleton.mRightShoulderJoint.setPosByConstraint();
+			boolean up = (int)(lifeTime*1000)/120%2==0;
+			float fac = 0.3f;
+			float angle = (up?PI/2+fac:PI/2-fac);
+			float offset = -(steeredBending+drunkenBending);
+			skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
+			skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
+			skeleton.mRightUpperArmBone.setAngle(angle+offset);
+			skeleton.mRightLowerArmBone.setAngle(angle+offset);
+		}else{
+			if(armAnglesByTracking) {
+				skeleton.mLeftShoulderJoint.setPosByConstraint();
+				skeleton.mRightShoulderJoint.setPosByConstraint();
+				skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
+				skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
+				skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
+				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+			}
+		}
+		
 	}
 	
 	public void setArmAnglesByTracking(boolean enabled) {
@@ -95,6 +118,8 @@ public class Player implements SkeletonCarrier {
 		setAnimated(skeleton.mHipJoint,true);
 		skeleton.mHeadJoint.mFixed = true;
 		
+		lifeTime = 0;
+		
 		animationPlayer.setAnimation(DrunkenAnimationSystem.WALK);
 	}
 	
@@ -107,10 +132,12 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void draw() {
-		skeleton.refreshVisualVars();
-		skeleton.draw();
-		if(Debug.DRAW_SKELETON)
-			skeleton.drawEditing(null);
+		synchronized(skeleton) {
+			skeleton.refreshVisualVars();
+			skeleton.draw();
+			if(Debug.DRAW_SKELETON)
+				skeleton.drawEditing(null);
+		}
 	}
 
 	@Override
@@ -154,21 +181,25 @@ public class Player implements SkeletonCarrier {
 	}
 
 	public void step(float deltaTime) {
+		lifeTime += deltaTime;
 		if(!gameOver) {
-			posX += velX*deltaTime;
-			posY += velY*deltaTime;
-			
-			animationPlayer.proceed(velX*deltaTime);
-			
-			skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
-			skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
-			
-			refreshArms();
+			synchronized(skeleton) {
+				posX += velX*deltaTime;
+				posY += velY*deltaTime;
+
+				animationPlayer.proceed(velX*deltaTime);
+				
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
+				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				
+				refreshArms();
+			}
 		}
 		
-		skeleton.mAccuracy = 16;
-		if(gameOver)
-			skeleton.applyConstraints(deltaTime);
+		synchronized(skeleton) {
+			if(gameOver)
+				skeleton.applyConstraints(deltaTime);
+		}
 	}
 
 	public void fallDown() {
@@ -193,11 +224,11 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void setFlailingArms(boolean flail){
-		
+		mFlail = flail;
 	}
 	
 	public void setSwingingArms(boolean swing){
-		
+		mSwing = swing;
 	}
 
 	@Override
