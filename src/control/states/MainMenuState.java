@@ -174,7 +174,7 @@ public class MainMenuState extends WorldState {
 		else {
 			graphics2D.setColor(0.6f, 0.6f, 0.8f);
 		}
-		//graphics.bindTexture(StandardTextures.CUBE);
+		graphics.bindTexture(null);
 		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
 		
 		int[] scores;

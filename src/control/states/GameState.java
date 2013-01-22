@@ -97,12 +97,12 @@ public class GameState extends WorldState {
 				} else{
 					
 					if( flailingArms ){
-						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
 							flailingArms = false;
 							player.setFlailingArms(false);
 						}
 					} else {
-						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
 							flailingArms = true;
 							player.setFlailingArms(true);
 						}
