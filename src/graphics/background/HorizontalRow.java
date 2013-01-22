@@ -28,7 +28,6 @@ public class HorizontalRow {
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D, float offset){
 		
 		float start = 0;
-		
 		for( HorizontalDrawable item : row){
 			if( start + item.getWidth() > offset - drawingWidth && start < offset + drawingWidth ){
 				item.draw(graphics, graphics2D);

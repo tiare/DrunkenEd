@@ -1,5 +1,7 @@
 package control.states;
 
+import java.text.DecimalFormat;
+
 import control.GameSettings;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
@@ -30,11 +32,13 @@ public class GameState extends WorldState {
 	private HorizontalRow houseRow;
 	private HorizontalRow treeRow;
 	
+	private DecimalFormat df;
 	
 	public GameState(){
 		super();
 		//time = (float)Math.PI/2.0f;
 		worldZoom = 2;
+		df = new DecimalFormat  ( ",##0.00" );
 	}
 	
 	@Override
@@ -210,42 +214,44 @@ public class GameState extends WorldState {
 
 	@Override
 	public void onDraw() {
+		// reset color stuff
 		graphics.bindTexture(null);
-		
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 		
-		// draw house
+		// draw houses and trees
 		houseRow.draw(graphics, graphics2D,player.posX);
-		//house1.draw(graphics, graphics2D);
-		//house2.draw(graphics, graphics2D);
-		
 		treeRow.draw(graphics, graphics2D, player.posX);
-		//street
 		
 		
-		//graphics2D.setColor(0.7f, 0.7f, 0.7f);
+		// draw street
 		graphics2D.setWhite();
 		graphics.bindTexture(StandardTextures.STREET);
 		
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-		
 		float streetWidth = 10;
 		graphics2D.drawRectCentered(player.posX, -0.5f, streetWidth, 2.0f,0.0f, 4*(2*player.posX/streetWidth-1) , 0, 4*(2*player.posX/streetWidth+1),1);
+		graphics.bindTexture(null);
 		
+		// draw initial start sequence
 		if( pause){
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			graphics2D.drawString(0.0f, 2.5f, 1.0f, 0, 0, 0, (int)(pauseTime-stateTimer+1)+" ");
 		}
 		
-		graphics.bindTexture(null);
-		//graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
-		//graphics2D.drawRectCentered(20,-0.1f, 20,0.2f, 0);
-		//player.getSpeed() < 0 ? stateTimer : -stateTimer
+		//config camera
+		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
 		
-		
+		//draw player
 		player.draw();
+		
+		//draw stats
+		graphics2D.switchGameCoordinates(false);
+		graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX ) +"m ");
+		graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed() ).replace("-","")+"m/s");
+		graphics2D.switchGameCoordinates(true);
+		
 	}
 	
 	@Override
