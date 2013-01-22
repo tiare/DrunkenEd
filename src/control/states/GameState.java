@@ -5,6 +5,7 @@ import java.sql.Time;
 import control.GameSettings;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
+import graphics.House;
 import graphics.StandardTextures;
 import graphics.translator.TextureCoordinates;
 
@@ -23,6 +24,9 @@ public class GameState extends WorldState {
 	private boolean swingingArms = false;
 	private boolean flailingArms = false;
 	
+	private House house1;
+	private House house2;
+	
 	public GameState(){
 		super();
 		//time = (float)Math.PI/2.0f;
@@ -39,6 +43,10 @@ public class GameState extends WorldState {
 		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+		
+		house1 = new House(-2.8f, StandardTextures.HOUSE1);
+		house2 = new House(+2.8f, StandardTextures.HOUSE1);
+		house2.setColor(0.4f, 0.2f, 0.2f);
 	}
 	
 	@Override
@@ -78,7 +86,7 @@ public class GameState extends WorldState {
 			
 			
 			
-			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
+			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.speedFactor;
 			if( gameSettings.speedIsProportionalToBending ){
 				player.setSpeedX( speed );
 			} else {
@@ -89,12 +97,12 @@ public class GameState extends WorldState {
 				} else{
 					
 					if( flailingArms ){
-						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
 							flailingArms = false;
 							player.setFlailingArms(false);
 						}
 					} else {
-						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
 							flailingArms = true;
 							player.setFlailingArms(true);
 						}
@@ -148,6 +156,10 @@ public class GameState extends WorldState {
 		
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
+		
+		// draw house
+		house1.draw(graphics, graphics2D);
+		house2.draw(graphics, graphics2D);
 		
 		
 		// draw simple tree :)

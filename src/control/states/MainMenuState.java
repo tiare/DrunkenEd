@@ -1,9 +1,15 @@
 package control.states;
 
+import java.nio.ByteBuffer;
+
+import org.OpenNI.SkeletonJoint;
+
 import control.ProgramController;
 import figure.DrunkenSkeleton;
+import figure.Player;
 import graphics.StandardTextures;
 import graphics.events.Keys;
+import graphics.skeletons.Skeleton;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 
@@ -29,7 +35,14 @@ public class MainMenuState extends WorldState {
 	private int[] scoresEasy;
 	private int[] scoresMedium;
 	private int[] scoresHard;
-
+	
+	private Player shadowPlayer;
+	private float elbowAngle = 0.0f;
+	private float shoulderAngle = 0.0f;
+	private float stepAngle = 80;
+	private float activationTime = 0;
+	private boolean waitedLongEnough = false;
+	
 	@Override
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
@@ -43,6 +56,11 @@ public class MainMenuState extends WorldState {
 		scoresEasy = highscores.highscoresEasy;
 		scoresMedium = highscores.highscoresMedium;
 		scoresHard = highscores.highscoresHard;
+		
+		shadowPlayer = new Player();
+		shadowPlayer.init(programController);
+		
+		player.setArmAnglesByTracking(true);
 		
 		return this;
 	}
@@ -66,6 +84,20 @@ public class MainMenuState extends WorldState {
 		//don't let the player walk out of the screen
 		dontLeaveScreen ();
 		updateActiveDoor();
+		
+//		if (activeDoor != NONE && waitedLongEnough)
+//		doDrinkingGesture ((DrunkenSkeleton)shadowPlayer.getSkeleton());
+//		shadowPlayer.posX = player.posX;
+//		shadowPlayer.posY = player.posY;
+	}
+	
+	private void doDrinkingGesture (DrunkenSkeleton shadowSkeleton) {
+		if (elbowAngle > 190 && shoulderAngle > 80 || elbowAngle < 0 && shoulderAngle < 0)
+			stepAngle *= -1;
+		elbowAngle += 190/stepAngle;
+		shoulderAngle += 80/stepAngle;
+		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+		shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
 	}
 
 	@Override
@@ -119,6 +151,8 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
+//		shadowPlayer.draw();
+		
 		graphics2D.setWhite();
 		player.draw();
 	}
@@ -134,15 +168,14 @@ public class MainMenuState extends WorldState {
 	}
 	
 	private void drawHighscores (float posX, float posY, int position) {
-		graphics.bindTexture(null);
 		if (position == activeDoor) {
 			graphics2D.setColor(0.2f, 0.2f, 0.4f);
 		}
 		else {
 			graphics2D.setColor(0.6f, 0.6f, 0.8f);
 		}
-		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
 		graphics.bindTexture(null);
+		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
 		
 		int[] scores;
 		Texture firstPic = StandardTextures.ED;
@@ -152,32 +185,38 @@ public class MainMenuState extends WorldState {
 			scores = scoresEasy;
 			
 			//Get Highscore Pictures
-			if (highscores.getPictureFromPos(LEFT, 0) != null)
-				firstPic = new Texture(graphics, highscores.getPictureFromPos(LEFT, 0), 30, 50, new TextureSettings());
-			if (highscores.getPictureFromPos(LEFT, 1) != null)
-				secondPic = new Texture(graphics, highscores.getPictureFromPos(LEFT, 1), 30, 50, new TextureSettings());
-			if (highscores.getPictureFromPos(LEFT, 2) != null)
-				thirdPic = new Texture(graphics, highscores.getPictureFromPos(LEFT, 2), 30, 50, new TextureSettings());
+			if (highscores.getPictureFromPos(LEFT, 0) != null) {
+				ByteBuffer bb = highscores.getPictureFromPos(LEFT, 0);
+				bb.rewind();
+				firstPic = new Texture(graphics, bb, 60,100, new TextureSettings());
+//				firstPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
+			}
+			if (highscores.getPictureFromPos(LEFT, 1) != null) {
+				secondPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 1), 60, 100, new TextureSettings());
+			}
+			if (highscores.getPictureFromPos(LEFT, 2) != null) {
+				thirdPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 2), 60, 100, new TextureSettings());
+			}
 		}
 		else if (position == CENTER) {
 			scores = scoresMedium;
 			
 			if(highscores.getPictureFromPos(CENTER, 0) != null)
-				firstPic = new Texture(graphics, highscores.getPictureFromPos(CENTER, 0), 30, 50, new TextureSettings());
+				firstPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 0), 60, 100, new TextureSettings());
 			if(highscores.getPictureFromPos(CENTER, 1) != null)	
-				secondPic = new Texture(graphics, highscores.getPictureFromPos(CENTER, 1), 30, 50, new TextureSettings());
+				secondPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 1), 60, 100, new TextureSettings());
 			if(highscores.getPictureFromPos(CENTER, 2) != null)
-				thirdPic = new Texture(graphics, highscores.getPictureFromPos(CENTER, 2), 30, 50, new TextureSettings());
+				thirdPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 2), 60, 100, new TextureSettings());
 		}
 		else {
 			scores = scoresHard;
 			
 			if(highscores.getPictureFromPos(RIGHT, 0) != null)
-				firstPic = new Texture(graphics, highscores.getPictureFromPos(RIGHT, 0), 30, 50, new TextureSettings());
+				firstPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 0), 60, 100, new TextureSettings());
 			if(highscores.getPictureFromPos(RIGHT, 1) != null)
-				secondPic = new Texture(graphics, highscores.getPictureFromPos(RIGHT, 1), 30, 50, new TextureSettings());
+				secondPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 1), 60, 100, new TextureSettings());
 			if(highscores.getPictureFromPos(RIGHT, 2) != null)
-				thirdPic = new Texture(graphics, highscores.getPictureFromPos(RIGHT, 2), 30, 50, new TextureSettings());
+				thirdPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 2), 60, 100, new TextureSettings());
 		}
 		
 		//Write highscores
@@ -198,6 +237,7 @@ public class MainMenuState extends WorldState {
 		graphics.bindTexture(thirdPic);
 		graphics2D.drawRectCentered(posX-0.3f, posY-0.65f, 0.3f, 0.35f);
 		graphics.bindTexture(null);
+
 	}
 	
 	private void dontLeaveScreen () {
@@ -207,6 +247,7 @@ public class MainMenuState extends WorldState {
 	}
 	
 	private void updateActiveDoor () {
+		
 		activeDoor = NONE;
 		
 		float playerLeft = player.posX-0.3f;
