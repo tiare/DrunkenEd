@@ -22,4 +22,9 @@ public class Spacer implements HorizontalDrawable {
 	@Override
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2d) {
 	}
+
+	@Override
+	public Spacer copy() {
+		return new Spacer(this.width);
+	}
 }

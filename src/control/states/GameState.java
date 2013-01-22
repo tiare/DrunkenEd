@@ -59,7 +59,15 @@ public class GameState extends WorldState {
 		housePool.add(h);
 		
 		h = new House( StandardTextures.HOUSE1);
-		h.setColor(0.4f, 0.2f, 0.2f);
+		h.setColor(0.2f, 0.2f, 0.2f);
+		housePool.add(h);
+		
+		h = new House(StandardTextures.HOUSE1);
+		h.setColor(0.2f, 0.4f, 0.2f);
+		housePool.add(h);
+		
+		h = new House( StandardTextures.HOUSE1);
+		h.setColor(0.2f, 0.2f, 0.4f);
 		housePool.add(h);
 		
 		houseRow = new HorizontalRow(housePool);
