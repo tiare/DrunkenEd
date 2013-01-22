@@ -1,10 +1,8 @@
 package graphics;
 
-import sun.security.x509.EDIPartyName;
-import graphics.AbstractGFXLoader;
+import graphics.skeletons.Skeleton;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
-import graphics.translator.TextureFilter;
 import graphics.translator.TextureSettings;
 import graphics.translator.TextureWrap;
 
@@ -27,6 +25,8 @@ public class StandardTextures {
 		WINE = gfxLoader.getImage("wine");
 		VODKA = gfxLoader.getImage("vodka");
 		ED = gfxLoader.getImage("ed");
+		
+		Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
 	
 }

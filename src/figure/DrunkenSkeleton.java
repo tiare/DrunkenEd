@@ -1,6 +1,7 @@
 package figure;
 
 import graphics.skeletons.defaults.HumanSkeleton;
+import graphics.skeletons.elements.Joint;
 
 public class DrunkenSkeleton extends HumanSkeleton {
 
@@ -10,6 +11,12 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		buildDefaultLayers();
 		
 		mContourFactor = 0.03f;
+	}
+
+	public void setAnimated(boolean animated) {
+		for(Joint joint:mJoints) {
+			joint.mAnimate = animated;
+		}
 	}
 	
 }

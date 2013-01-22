@@ -1,6 +1,8 @@
 package figure;
 
+import figure.animations.DrunkenAnimationSystem;
 import tracking.AbstractTracking;
+import control.Debug;
 import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
 import graphics.defaults.DefaultAnimationPlayer;
@@ -14,6 +16,7 @@ import graphics.translator.GraphicsTranslator;
 
 public class Player implements SkeletonCarrier {
 
+	public final static DrunkenAnimationSystem ANIMATION_SYSTEM = new DrunkenAnimationSystem();
 	public final static float PI = 3.1415926535f;
 	
 	private float velX,velY;
@@ -44,9 +47,9 @@ public class Player implements SkeletonCarrier {
 		this.graphics2D = programController.mGraphics2D;
 		tracking = programController.tracking;
 		skeleton.init(this);
-		start();
 		setArmAnglesByTracking(true);
 		animationPlayer = new DefaultAnimationPlayer(skeleton,null);
+		start();
 		return this;
 	}
 	
@@ -66,9 +69,14 @@ public class Player implements SkeletonCarrier {
 		skeleton.mLeftElbowJoint.mFixed = enabled;
 		skeleton.mLeftHandJoint.mFixed = enabled;
 		skeleton.mRightElbowJoint.mFixed = enabled;
-		skeleton.mRightElbowJoint.mFixed = enabled;
+		skeleton.mRightHandJoint.mFixed = enabled;
 		tracking.trackArms = enabled;
 		refreshArms();
+	}
+	
+	private void setAnimated(Joint joint,boolean animated) {
+		joint.mFixed = animated;
+		joint.mAnimate = true;
 	}
 	
 	public void start() {
@@ -76,12 +84,18 @@ public class Player implements SkeletonCarrier {
 		skeleton.mHipJoint.mFixed = true;
 		skeleton.mConstantForceY = -0.2f;
 		
-		skeleton.mLeftKneeJoint.mFixed = true;
-		skeleton.mLeftFootJoint.mFixed = true;
-		skeleton.mLeftToesJoint.mFixed = true;
-		skeleton.mRightKneeJoint.mFixed = true;
-		skeleton.mRightFootJoint.mFixed = true;
-		skeleton.mRightToesJoint.mFixed = true;
+		skeleton.setAnimated(false);
+		setAnimated(skeleton.mLeftKneeJoint,true);
+		setAnimated(skeleton.mLeftFootJoint,true);
+		setAnimated(skeleton.mLeftToesJoint,true);
+		setAnimated(skeleton.mRightKneeJoint,true);
+		setAnimated(skeleton.mRightFootJoint,true);
+		setAnimated(skeleton.mRightToesJoint,true);
+		setAnimated(skeleton.mBreastJoint,true);
+		setAnimated(skeleton.mHipJoint,true);
+		skeleton.mHeadJoint.mFixed = true;
+		
+		animationPlayer.setAnimation(DrunkenAnimationSystem.WALK);
 	}
 	
 	public void setSpeedX(float speed) {
@@ -95,6 +109,8 @@ public class Player implements SkeletonCarrier {
 	public void draw() {
 		skeleton.refreshVisualVars();
 		skeleton.draw();
+		if(Debug.DRAW_SKELETON)
+			skeleton.drawEditing(null);
 	}
 
 	@Override
@@ -142,13 +158,17 @@ public class Player implements SkeletonCarrier {
 			posX += velX*deltaTime;
 			posY += velY*deltaTime;
 			
+			animationPlayer.proceed(velX*deltaTime);
+			
 			skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
-
+			skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+			
 			refreshArms();
 		}
 		
 		skeleton.mAccuracy = 16;
-		skeleton.applyConstraints(deltaTime);
+		if(gameOver)
+			skeleton.applyConstraints(deltaTime);
 	}
 
 	public void fallDown() {

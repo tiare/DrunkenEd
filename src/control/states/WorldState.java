@@ -3,12 +3,12 @@ package control.states;
 import figure.Player;
 import control.ProgramController;
 import control.ProgramState;
-import graphics.Camera2D;
 
 public abstract class WorldState extends ProgramState {
 
 	protected Player player;
 	protected ProgramController programController;
+	public static final float SPEED_FACTOR = 2;
 	
 	public WorldState() {
 		super();
@@ -37,7 +37,7 @@ public abstract class WorldState extends ProgramState {
 	@Override
 	public void onBend(float bending){
 		player.steeredBending = bending;
-		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) );
+		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
 	}
 	
 	@Override
