@@ -176,6 +176,7 @@ public class MainMenuState extends WorldState {
 		}
 		graphics.bindTexture(null);
 		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
+		graphics.flush();
 		
 		int[] scores;
 		Texture firstPic = StandardTextures.ED;
@@ -188,7 +189,7 @@ public class MainMenuState extends WorldState {
 			if (highscores.getPictureFromPos(LEFT, 0) != null) {
 				ByteBuffer bb = highscores.getPictureFromPos(LEFT, 0);
 				bb.rewind();
-				firstPic = new Texture(graphics, bb, 60,100, new TextureSettings());
+				firstPic = graphics.createTexture(bb, 60,100, new TextureSettings());
 //				firstPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
 			}
 			if (highscores.getPictureFromPos(LEFT, 1) != null) {
