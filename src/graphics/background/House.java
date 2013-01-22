@@ -1,10 +1,10 @@
-package graphics;
+package graphics.background;
 
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
 
-public class House {
+public class House implements HorizontalDrawable{
 
 	public float offset;
 	public Texture texture;
@@ -12,12 +12,16 @@ public class House {
 	private float width;
 	private float yOffset = 0.2f;
 	private float color[] = {0.3f, 0.3f, 0.3f};
-	public House(float offset, Texture tex) {
-		this.offset = offset;
+	public House(Texture tex) {
 		this.texture = tex;
 		height = tex.getHeight() / 60;
 		width = tex.getWidth() / 60;
 		
+	}
+	
+	@Override
+	public float getWidth(){
+		return width;
 	}
 	
 	public void setColor(float r, float g, float b){
@@ -26,10 +30,15 @@ public class House {
 		color[2] = b;
 	}
 	
+	@Override
+	public void setOffset(float offset){
+		this.offset = offset;
+	}
 	
+	@Override
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D){
 		graphics.bindTexture(texture);
-		graphics2D.setColor(0.3f, 0.3f, 0.3f);
+		graphics2D.setColor(color[0], color[1], color[2]);
 		graphics2D.drawRect(offset, yOffset, offset+width, height, 1, 1, 0, 0);
 		graphics.bindTexture(null);
 	}

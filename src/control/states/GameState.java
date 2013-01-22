@@ -1,12 +1,15 @@
 package control.states;
 
 import java.sql.Time;
+import java.util.List;
 
 import control.GameSettings;
 import control.ProgramState;
 import figure.DrunkenSkeleton;
-import graphics.House;
 import graphics.StandardTextures;
+import graphics.background.HorizontalDrawablePool;
+import graphics.background.HorizontalRow;
+import graphics.background.House;
 import graphics.translator.TextureCoordinates;
 
 
@@ -18,14 +21,17 @@ public class GameState extends WorldState {
 	
 	private float gameOverTime;
 	
+	private boolean bendingLeft;
+	private float reBend;
+	
 	private boolean pause;
 	private float pauseTime;
 	
 	private boolean swingingArms = false;
 	private boolean flailingArms = false;
 	
-	private House house1;
-	private House house2;
+	private HorizontalRow houseRow;
+	
 	
 	public GameState(){
 		super();
@@ -44,13 +50,26 @@ public class GameState extends WorldState {
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
 		
-		house1 = new House(-2.8f, StandardTextures.HOUSE1);
-		house2 = new House(+2.8f, StandardTextures.HOUSE1);
-		house2.setColor(0.4f, 0.2f, 0.2f);
+		HorizontalDrawablePool housePool = new HorizontalDrawablePool();
+		
+		House h;
+		housePool.add(new House(StandardTextures.HOUSE1));
+		h = new House(StandardTextures.HOUSE1);
+		h.setColor(0.4f, 0.2f, 0.2f);
+		housePool.add(h);
+		
+		h = new House( StandardTextures.HOUSE1);
+		h.setColor(0.4f, 0.2f, 0.2f);
+		housePool.add(h);
+		
+		houseRow = new HorizontalRow(housePool);
+		//houseRow.add(e)
 	}
 	
 	@Override
 	public void onBend(float bending){
+		bendingLeft = player.steeredBending > bending;
+		
 		player.steeredBending = bending;
 	}
 	
@@ -75,7 +94,29 @@ public class GameState extends WorldState {
 			float gravity;
 			if(gameSettings.useGravity){
 				gravity = gameSettings.gravityFactor * difficultyFactor;
-				player.bendingSpeed = (float)Math.sin(player.drunkenBending + player.steeredBending*2)*gravity;
+				
+				
+				if(		
+						Math.abs( player.drunkenBending + player.steeredBending) > (Math.PI/6) 
+						&& (bendingLeft ^ (player.drunkenBending + player.steeredBending<0))
+					){
+					
+					//System.out.println(bendingLeft + " " + (player.drunkenBending + player.steeredBending));
+					reBend = bendingLeft ? (float)-Math.PI / 2.0f : (float)Math.PI / 2.0f;
+					//player.steeredBending += (bendingLeft) ? (Math.PI/10) : -(Math.PI/10);
+					//player.drunkenBending += (bendingLeft) ? -(Math.PI/20) : (Math.PI/20);
+				}
+				
+				float addBend = 0;
+				/*if( reBend != 0){
+					reBend *= 0.1f;
+					addBend = reBend;// * 0.5f;
+					if(Math.abs( reBend ) < 0.05){
+						reBend = 0;
+					}
+				}*/
+				player.bendingSpeed = (float)Math.sin(player.drunkenBending + player.steeredBending*2)*gravity +addBend;
+				//player.bendingSpeed = 0;
 				player.drunkenBending += player.bendingSpeed;
 			}
 			
@@ -158,8 +199,9 @@ public class GameState extends WorldState {
 		graphics2D.setWhite();
 		
 		// draw house
-		house1.draw(graphics, graphics2D);
-		house2.draw(graphics, graphics2D);
+		houseRow.draw(graphics, graphics2D,player.posX);
+		//house1.draw(graphics, graphics2D);
+		//house2.draw(graphics, graphics2D);
 		
 		
 		// draw simple tree :)
