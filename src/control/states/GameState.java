@@ -78,7 +78,7 @@ public class GameState extends WorldState {
 			
 			
 			
-			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
+			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.speedFactor;
 			if( gameSettings.speedIsProportionalToBending ){
 				player.setSpeedX( speed );
 			} else {
