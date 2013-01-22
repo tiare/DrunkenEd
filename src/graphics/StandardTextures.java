@@ -15,6 +15,7 @@ public class StandardTextures {
 	public static Texture WINE;
 	public static Texture VODKA;
 	public static Texture ED;
+	public static Texture HOUSE1;
 	
 	public static void init(GraphicsTranslator graphics) {
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
@@ -25,7 +26,8 @@ public class StandardTextures {
 		WINE = gfxLoader.getImage("wine");
 		VODKA = gfxLoader.getImage("vodka");
 		ED = gfxLoader.getImage("ed");
-		
+		HOUSE1 = gfxLoader.getImage("house1");
+
 		Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
 	
