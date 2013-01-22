@@ -3,8 +3,10 @@ package figure;
 import tracking.AbstractTracking;
 import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
+import graphics.defaults.DefaultAnimationPlayer;
 import graphics.skeletons.Skeleton;
 import graphics.skeletons.SkeletonCarrier;
+import graphics.skeletons.animations.AnimationPlayer;
 import graphics.skeletons.constraints.AngleConstraint;
 import graphics.skeletons.constraints.Constraint;
 import graphics.skeletons.elements.Joint;
@@ -23,6 +25,7 @@ public class Player implements SkeletonCarrier {
 	public float posX,posY;
 	public boolean gameOver;
 	private boolean armAnglesByTracking;
+	public DefaultAnimationPlayer animationPlayer;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -43,6 +46,7 @@ public class Player implements SkeletonCarrier {
 		skeleton.init(this);
 		start();
 		setArmAnglesByTracking(true);
+		animationPlayer = new DefaultAnimationPlayer(skeleton,null);
 		return this;
 	}
 	
@@ -174,6 +178,16 @@ public class Player implements SkeletonCarrier {
 	
 	public void setSwingingArms(boolean swing){
 		
+	}
+
+	@Override
+	public void drawCollision() {
+		
+	}
+
+	@Override
+	public AnimationPlayer<?> getAnimationPlayer() {
+		return animationPlayer;
 	}
 	
 }
