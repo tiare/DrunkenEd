@@ -59,7 +59,7 @@ public class ProgramController extends DefaultSurface {
 					}
 					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
 					tracking.step(deltaTime);
-					ProgramController.super.step();
+					ProgramController.super.step(deltaTime);
 					currentState.step(deltaTime);
 					programTimer += deltaTime;
 				}

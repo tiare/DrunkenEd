@@ -1,10 +1,14 @@
 package figure;
 
+import figure.animations.DrunkenAnimationSystem;
 import tracking.AbstractTracking;
+import control.Debug;
 import control.ProgramController;
 import graphics.defaults.Default2DGraphics;
+import graphics.defaults.DefaultAnimationPlayer;
 import graphics.skeletons.Skeleton;
 import graphics.skeletons.SkeletonCarrier;
+import graphics.skeletons.animations.AnimationPlayer;
 import graphics.skeletons.constraints.AngleConstraint;
 import graphics.skeletons.constraints.Constraint;
 import graphics.skeletons.elements.Joint;
@@ -12,6 +16,7 @@ import graphics.translator.GraphicsTranslator;
 
 public class Player implements SkeletonCarrier {
 
+	public final static DrunkenAnimationSystem ANIMATION_SYSTEM = new DrunkenAnimationSystem();
 	public final static float PI = 3.1415926535f;
 	
 	private float velX,velY;
@@ -23,6 +28,10 @@ public class Player implements SkeletonCarrier {
 	public float posX,posY;
 	public boolean gameOver;
 	private boolean armAnglesByTracking;
+	public DefaultAnimationPlayer animationPlayer;
+	public float lifeTime;
+	private boolean mFlail;
+	private boolean mSwing;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -41,20 +50,41 @@ public class Player implements SkeletonCarrier {
 		this.graphics2D = programController.mGraphics2D;
 		tracking = programController.tracking;
 		skeleton.init(this);
-		start();
 		setArmAnglesByTracking(true);
+		animationPlayer = new DefaultAnimationPlayer(skeleton,null);
+		skeleton.mAccuracy = 16;
+		
+		mFlail = false;
+		mSwing = false;
+		
+		start();
 		return this;
 	}
 	
 	private void refreshArms() {
-		if(!armAnglesByTracking)
-			return;
-		skeleton.mLeftShoulderJoint.setPosByConstraint();
-		skeleton.mRightShoulderJoint.setPosByConstraint();
-		skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
-		skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
-		skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
-		skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+		
+		if(mSwing) {
+			skeleton.mLeftShoulderJoint.setPosByConstraint();
+			skeleton.mRightShoulderJoint.setPosByConstraint();
+			boolean up = (int)(lifeTime*1000)/120%2==0;
+			float fac = 0.3f;
+			float angle = (up?PI/2+fac:PI/2-fac);
+			float offset = -(steeredBending+drunkenBending);
+			skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
+			skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
+			skeleton.mRightUpperArmBone.setAngle(angle+offset);
+			skeleton.mRightLowerArmBone.setAngle(angle+offset);
+		}else{
+			if(armAnglesByTracking) {
+				skeleton.mLeftShoulderJoint.setPosByConstraint();
+				skeleton.mRightShoulderJoint.setPosByConstraint();
+				skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
+				skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
+				skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
+				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+			}
+		}
+		
 	}
 	
 	public void setArmAnglesByTracking(boolean enabled) {
@@ -62,9 +92,14 @@ public class Player implements SkeletonCarrier {
 		skeleton.mLeftElbowJoint.mFixed = enabled;
 		skeleton.mLeftHandJoint.mFixed = enabled;
 		skeleton.mRightElbowJoint.mFixed = enabled;
-		skeleton.mRightElbowJoint.mFixed = enabled;
+		skeleton.mRightHandJoint.mFixed = enabled;
 		tracking.trackArms = enabled;
 		refreshArms();
+	}
+	
+	private void setAnimated(Joint joint,boolean animated) {
+		joint.mFixed = animated;
+		joint.mAnimate = true;
 	}
 	
 	public void start() {
@@ -72,12 +107,20 @@ public class Player implements SkeletonCarrier {
 		skeleton.mHipJoint.mFixed = true;
 		skeleton.mConstantForceY = -0.2f;
 		
-		skeleton.mLeftKneeJoint.mFixed = true;
-		skeleton.mLeftFootJoint.mFixed = true;
-		skeleton.mLeftToesJoint.mFixed = true;
-		skeleton.mRightKneeJoint.mFixed = true;
-		skeleton.mRightFootJoint.mFixed = true;
-		skeleton.mRightToesJoint.mFixed = true;
+		skeleton.setAnimated(false);
+		setAnimated(skeleton.mLeftKneeJoint,true);
+		setAnimated(skeleton.mLeftFootJoint,true);
+		setAnimated(skeleton.mLeftToesJoint,true);
+		setAnimated(skeleton.mRightKneeJoint,true);
+		setAnimated(skeleton.mRightFootJoint,true);
+		setAnimated(skeleton.mRightToesJoint,true);
+		setAnimated(skeleton.mBreastJoint,true);
+		setAnimated(skeleton.mHipJoint,true);
+		skeleton.mHeadJoint.mFixed = true;
+		
+		lifeTime = 0;
+		
+		animationPlayer.setAnimation(DrunkenAnimationSystem.WALK);
 	}
 	
 	public void setSpeedX(float speed) {
@@ -89,8 +132,12 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void draw() {
-		skeleton.refreshVisualVars();
-		skeleton.draw();
+		synchronized(skeleton) {
+			skeleton.refreshVisualVars();
+			skeleton.draw();
+			if(Debug.DRAW_SKELETON)
+				skeleton.drawEditing(null);
+		}
 	}
 
 	@Override
@@ -134,17 +181,25 @@ public class Player implements SkeletonCarrier {
 	}
 
 	public void step(float deltaTime) {
+		lifeTime += deltaTime;
 		if(!gameOver) {
-			posX += velX*deltaTime;
-			posY += velY*deltaTime;
-			
-			skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
+			synchronized(skeleton) {
+				posX += velX*deltaTime;
+				posY += velY*deltaTime;
 
-			refreshArms();
+				animationPlayer.proceed(velX*deltaTime);
+				
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
+				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				
+				refreshArms();
+			}
 		}
 		
-		skeleton.mAccuracy = 16;
-		skeleton.applyConstraints(deltaTime);
+		synchronized(skeleton) {
+			if(gameOver)
+				skeleton.applyConstraints(deltaTime);
+		}
 	}
 
 	public void fallDown() {
@@ -169,11 +224,21 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void setFlailingArms(boolean flail){
-		
+		mFlail = flail;
 	}
 	
 	public void setSwingingArms(boolean swing){
+		mSwing = swing;
+	}
+
+	@Override
+	public void drawCollision() {
 		
+	}
+
+	@Override
+	public AnimationPlayer<?> getAnimationPlayer() {
+		return animationPlayer;
 	}
 	
 }
