@@ -265,4 +265,10 @@ public class MainMenuState extends WorldState {
 		return super.MENU;
 	}
 
+	@Override
+	public void userLost() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

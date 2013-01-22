@@ -253,5 +253,11 @@ public class GameState extends WorldState {
 	public int getType() {
 		return ProgramState.GAME;
 	}
+
+	@Override
+	public void userLost() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

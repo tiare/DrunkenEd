@@ -35,4 +35,10 @@ public class TestState extends ProgramState{
 		graphics2D.drawStringL(graphics2D.getScreenLeft()+0.03f, 0.9f, 0.1f, "Time:  "+(int)(stateTimer*10)/10f+"sec");
 	}
 
+	@Override
+	public void userLost() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
