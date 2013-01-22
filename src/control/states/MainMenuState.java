@@ -3,6 +3,7 @@ package control.states;
 import java.nio.ByteBuffer;
 
 import org.OpenNI.SkeletonJoint;
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 import control.ProgramController;
 import figure.DrunkenSkeleton;
@@ -42,6 +43,7 @@ public class MainMenuState extends WorldState {
 	private float stepAngle = 80;
 	private float activationTime = 0;
 	private boolean waitedLongEnough = false;
+	private float hintTimeout = 2.f;
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -73,7 +75,7 @@ public class MainMenuState extends WorldState {
 		oldPlayerPosX = player.posX;
 		
 		if (startLevel) {
-			if (programController.getProgramTime() > restartTime + timeout) {
+			if (programController.getProgramTime() > restartTime + hintTimeout) {
 				//start game
 				super.programController.switchState(new GameState().init(programController));
 			}
@@ -85,15 +87,26 @@ public class MainMenuState extends WorldState {
 		dontLeaveScreen ();
 		updateActiveDoor();
 		
-//		if (activeDoor != NONE && waitedLongEnough)
-//		doDrinkingGesture ((DrunkenSkeleton)shadowPlayer.getSkeleton());
-//		shadowPlayer.posX = player.posX;
-//		shadowPlayer.posY = player.posY;
+		if (activeDoor != NONE && programController.getProgramTime() > activationTime+timeout)
+			waitedLongEnough = true;
+		
+		if (waitedLongEnough)
+			doDrinkingGesture ((DrunkenSkeleton)shadowPlayer.getSkeleton());
+		shadowPlayer.posX = player.posX;
+		shadowPlayer.posY = player.posY;
 	}
 	
 	private void doDrinkingGesture (DrunkenSkeleton shadowSkeleton) {
-		if (elbowAngle > 190 && shoulderAngle > 80 || elbowAngle < 0 && shoulderAngle < 0)
+		if (elbowAngle > 190 && shoulderAngle > 80)
 			stepAngle *= -1;
+		
+		if (elbowAngle < 0 || shoulderAngle < 0) {
+			elbowAngle = 0;
+			shoulderAngle = 0;
+			stepAngle *= -1;
+			
+			waitedLongEnough = false;
+		}
 		elbowAngle += 190/stepAngle;
 		shoulderAngle += 80/stepAngle;
 		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
@@ -151,7 +164,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
-//		shadowPlayer.draw();
+		shadowPlayer.draw();
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -248,6 +261,7 @@ public class MainMenuState extends WorldState {
 	
 	private void updateActiveDoor () {
 		
+		int lastDoor = activeDoor;
 		activeDoor = NONE;
 		
 		float playerLeft = player.posX-0.3f;
@@ -268,6 +282,9 @@ public class MainMenuState extends WorldState {
 		else {
 			activeDoor = CENTER;
 		}
+		
+		if (lastDoor == NONE && activeDoor != NONE)
+			activationTime = programController.getProgramTime();
 	}
 
 	@Override
@@ -281,10 +298,6 @@ public class MainMenuState extends WorldState {
 				
 				//set difficulty in gamesettings!
 				super.gameSettings.difficulty = activeDoor;			
-//				//start game
-//				super.programController.switchState(new GameState().init(programController));
-				
-				//TODO: trigger player animation!
 			}
 		}
 	}
