@@ -6,10 +6,10 @@ public class GameSettings {
 	public float difficultyAddition = 0.25f;
 	
 	public boolean speedIsProportionalToBending = false;
-	public float maxSpeed = 3.0f;
-	public float speedAccelerationFactor = 0.5f;
+	public float maxSpeed = 6.0f;
+	public float speedAccelerationFactor = 1.0f;
 	public float flailingArmsSpeedFactor = 0.9f;
-	public float swingingArmsBendFactor = 0.9f;
+	public float swingingArmsBendFactor = 0.82f;
 	
 	
 	public boolean useGravity = true;

@@ -38,11 +38,14 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	public void start() {
+		
+		StandardTextures.init(mGraphics);
+		
 		switchState( Config.getStartState(this).init(this) );
 		programTimer = 0;
 		tracking.init();
 		
-		StandardTextures.init(mGraphics);
+		
 		
 		new Thread() {
 			@Override
@@ -56,7 +59,7 @@ public class ProgramController extends DefaultSurface {
 					}
 					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
 					tracking.step(deltaTime);
-					ProgramController.super.step();
+					ProgramController.super.step(deltaTime);
 					currentState.step(deltaTime);
 					programTimer += deltaTime;
 				}

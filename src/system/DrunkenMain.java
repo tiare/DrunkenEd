@@ -4,8 +4,8 @@ import javax.swing.ImageIcon;
 
 import pc.fileio.IOCommon;
 import pc.gles.GLESFrame;
-import app.App;
 import control.Config;
+import control.Debug;
 import control.ProgramController;
 
 public class DrunkenMain {
@@ -17,7 +17,7 @@ public class DrunkenMain {
 		Config.preInitialize();
 		
 		GLESFrame frame = new GLESFrame("Drunken Ed");
-		frame.init();
+		frame.init(Debug.RESOLUTION_X,Debug.RESOLUTION_Y);
 		
 		ProgramController mainControl = new ProgramController();
 
