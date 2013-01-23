@@ -164,7 +164,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
-		shadowPlayer.draw();
+//		/shadowPlayer.draw();
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -187,7 +187,7 @@ public class MainMenuState extends WorldState {
 		else {
 			graphics2D.setColor(0.6f, 0.6f, 0.8f);
 		}
-		//graphics.bindTexture(StandardTextures.CUBE);
+		graphics.bindTexture(null);
 		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
 		
 		int[] scores;
@@ -317,6 +317,12 @@ public class MainMenuState extends WorldState {
 	@Override
 	public int getType() {
 		return super.MENU;
+	}
+
+	@Override
+	public void userLost() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

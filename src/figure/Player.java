@@ -63,7 +63,17 @@ public class Player implements SkeletonCarrier {
 	
 	private void refreshArms() {
 		
-		if(mSwing) {
+		if(mFlail) {
+			skeleton.mLeftShoulderJoint.setPosByConstraint();
+			skeleton.mRightShoulderJoint.setPosByConstraint();
+			float angle = -lifeTime*20;
+			if(velX<0)
+				angle *= -1;
+			skeleton.mLeftUpperArmBone.setAngle(angle+PI);
+			skeleton.mLeftLowerArmBone.setAngle(angle+PI);
+			skeleton.mRightUpperArmBone.setAngle(angle);
+			skeleton.mRightLowerArmBone.setAngle(angle);
+		}else if(mSwing) {
 			skeleton.mLeftShoulderJoint.setPosByConstraint();
 			skeleton.mRightShoulderJoint.setPosByConstraint();
 			boolean up = (int)(lifeTime*1000)/120%2==0;

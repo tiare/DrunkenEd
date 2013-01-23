@@ -86,7 +86,7 @@ public class GameState extends WorldState {
 			
 			
 			
-			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.maxSpeed;
+			float speed = (player.steeredBending + player.drunkenBending) / fallingAngle * gameSettings.speedFactor;
 			if( gameSettings.speedIsProportionalToBending ){
 				player.setSpeedX( speed );
 			} else {
@@ -97,12 +97,12 @@ public class GameState extends WorldState {
 				} else{
 					
 					if( flailingArms ){
-						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
 							flailingArms = false;
 							player.setFlailingArms(false);
 						}
 					} else {
-						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor * difficultyFactor) {
+						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
 							flailingArms = true;
 							player.setFlailingArms(true);
 						}
@@ -264,6 +264,12 @@ public class GameState extends WorldState {
 	@Override
 	public int getType() {
 		return ProgramState.GAME;
+	}
+
+	@Override
+	public void userLost() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
