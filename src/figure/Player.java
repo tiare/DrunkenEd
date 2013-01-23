@@ -147,6 +147,7 @@ public class Player implements SkeletonCarrier {
 			skeleton.draw();
 			if(Debug.DRAW_SKELETON)
 				skeleton.drawEditing(null);
+			graphics2D.setDefaultProgram();
 		}
 	}
 

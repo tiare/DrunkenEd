@@ -10,7 +10,7 @@ public class GameSettings {
 	public float maxSpeed = 6.0f;
 	public float speedAccelerationFactor = 0.7f;
 	public float flailingArmsSpeedFactor = 0.85f;
-	public float swingingArmsBendFactor = 0.82f;
+	public float swingingArmsBendFactor = 0.7f;
 	
 	
 	public boolean useGravity = true;
