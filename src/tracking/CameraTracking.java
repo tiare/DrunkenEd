@@ -62,6 +62,12 @@ public class CameraTracking extends AbstractTracking {
 		System.out.println(p.toString());
 	}
 	
+	public void restart(){
+		//app.context.release();
+		//start();
+		//app.activeUser=-1;
+	}
+	
 
 	//@Override
 	//public Bitmap getColorImageBitmap() {
@@ -71,10 +77,10 @@ public class CameraTracking extends AbstractTracking {
 
 	@Override
 	public ByteBuffer getColorImageByteBuffer() {
-		if (app == null) {
+		if (true||app == null ) {
 			p("app was null!");
 		}
-		if (app != null) {
+		if (false&&app != null) {
 			try {
 				ImageGenerator img = ImageGenerator.create(app.context);
 
