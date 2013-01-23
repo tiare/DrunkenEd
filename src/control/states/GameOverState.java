@@ -136,12 +136,12 @@ public class GameOverState extends ProgramState {
 				}
 				if (diffX <= -DISTANCE_TO_MIDDLE+0.01f) {
 					//p("took a picture & returning");
-					//programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer()); 
+					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer()); 
 					super.programController.switchState(new MainMenuState().init(programController));
 				}
-//				graphics.bindTexture(StandardTextures.CUBE);
-//				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
-//				graphics2D.drawRectCentered(diffX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
+				graphics.bindTexture(StandardTextures.CUBE);
+				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
+				graphics2D.drawRectCentered(diffX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
 
 			} else {
 				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
