@@ -1,9 +1,13 @@
 package control.states;
 
+import java.util.LinkedList;
+
 import figure.DrunkenSkeleton;
 import figure.Player;
 import graphics.StandardTextures;
 import graphics.events.Keys;
+import graphics.skeletons.elements.Bone;
+import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 import control.ProgramController;
@@ -43,12 +47,14 @@ public class MainMenuState extends WorldState {
 	private Texture hard3;
 	
 	private Player shadowPlayer;
+	private DrunkenSkeleton shadowSkeleton;
+	private DrunkenSkeleton skeleton;
 	private float elbowAngle = 0.0f;
 	private float shoulderAngle = 0.0f;
 	private float stepAngle = 80;
 	private float activationTime = 0;
 	private boolean waitedLongEnough = false;
-	private float hintTimeout = 2.f;
+	private float hintTimeout = 5.f;
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -66,8 +72,10 @@ public class MainMenuState extends WorldState {
 		
 		shadowPlayer = new Player();
 		shadowPlayer.init(programController);
+		shadowSkeleton = (DrunkenSkeleton)shadowPlayer.getSkeleton();
 		
 		player.setArmAnglesByTracking(true);
+		skeleton = (DrunkenSkeleton)player.getSkeleton();
 		
 		return this;
 	}
@@ -75,7 +83,6 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onStep(float deltaTime) {
 		//camera.set(0, 1, 2);
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX, 1.5f, 2.3f);
 		oldPlayerPosX = player.posX;
 		
@@ -92,16 +99,39 @@ public class MainMenuState extends WorldState {
 		dontLeaveScreen ();
 		updateActiveDoor();
 		
-		if (activeDoor != NONE && programController.getProgramTime() > activationTime+timeout)
+		if (activeDoor != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 			waitedLongEnough = true;
 		
-		if (waitedLongEnough)
-			doDrinkingGesture ((DrunkenSkeleton)shadowPlayer.getSkeleton());
 		shadowPlayer.posX = player.posX;
 		shadowPlayer.posY = player.posY;
+		updateShadowPosition();
+		
+		if (waitedLongEnough)
+			doDrinkingGesture ();
 	}
 	
-	private void doDrinkingGesture (DrunkenSkeleton shadowSkeleton) {
+	private void updateShadowPosition() {
+		LinkedList<Joint> joints = skeleton.mJoints;
+		LinkedList<Joint> shadowJoints = shadowSkeleton.mJoints;
+		Joint currentShadowJoint;
+		Joint currentJoint;
+		
+		for (int i = 0; i < joints.size()-1; i++) {
+			currentJoint = joints.get(i);
+			currentShadowJoint = shadowJoints.get(i);
+			
+			currentShadowJoint.mPosX = currentJoint.mPosX;
+			currentShadowJoint.mPosY = currentJoint.mPosY;
+		}
+		
+		LinkedList<Bone> shadowBones = shadowSkeleton.mBones;
+		for (Bone bone : shadowBones) {
+			bone.mVisible = false;
+		}
+		
+	}
+	
+	private void doDrinkingGesture () {
 		if (elbowAngle > 190 && shoulderAngle > 80)
 			stepAngle *= -1;
 		
@@ -111,11 +141,18 @@ public class MainMenuState extends WorldState {
 			stepAngle *= -1;
 			
 			waitedLongEnough = false;
+			activationTime = programController.getProgramTime();
 		}
 		elbowAngle += 190/stepAngle;
 		shoulderAngle += 80/stepAngle;
-		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
 		shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
+		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+		
+		shadowSkeleton.setModColor(0.f, 0.f, 0.f, 1.f);
+		shadowSkeleton.setAddColor(0.1f, 0.1f, 0.15f);
+		shadowSkeleton.mDrawContour = false;
+		shadowSkeleton.mRightLowerArmBone.mVisible = true;
+		shadowSkeleton.mRightUpperArmBone.mVisible = true;
 	}
 
 	@Override
@@ -170,7 +207,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(0, -0.4f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
-		//shadowPlayer.draw();
+		shadowPlayer.draw();
 		
 		graphics2D.setWhite();
 		player.draw();
