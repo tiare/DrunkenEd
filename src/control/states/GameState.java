@@ -86,6 +86,9 @@ public class GameState extends WorldState {
 		h = new TexturedObject(StandardTextures.TREE1);
 		pool.add(h);
 
+		h = new TexturedObject(StandardTextures.TREE2);
+		pool.add(h);
+		
 		// add Lantern to pool
 		TexturedObject lantern = new TexturedObject(StandardTextures.LANTERN);
 		lantern.setColor(0.2f, 0.2f, 0.2f);
