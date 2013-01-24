@@ -80,9 +80,11 @@ public class GameState extends WorldState {
 
 		// configure random trees
 		pool = new HorizontalDrawablePool();
-		Tree t = new Tree();
+		//Tree t = new Tree();
 		// t.setColor(0.2f, 0.2f, 0.2f);
-		pool.add(t);
+		//pool.add(t);
+		h = new TexturedObject(StandardTextures.TREE1);
+		pool.add(h);
 
 		// add Lantern to pool
 		TexturedObject lantern = new TexturedObject(StandardTextures.LANTERN);

@@ -25,6 +25,8 @@ public class StandardTextures {
 	
 	public static Texture HOUSE1;
 	public static Texture LANTERN;
+	
+	public static Texture TREE1;
 
 	public static AbstractFont FONT_BELLIGERENT_MADNESS_CLEAN;
 	public static AbstractFont FONT_BELLIGERENT_MADNESS;
@@ -49,6 +51,8 @@ public class StandardTextures {
 		
 		HOUSE1 = gfxLoader.getImage("house1");
 		LANTERN = gfxLoader.getImage("lantern");
+		
+		TREE1 = gfxLoader.getImage("tree1");
 
 		//FONT_BELLIGERENT_MADNESS_CLEAN = new FontBelligerentMadnessClean();
 		//FONT_BELLIGERENT_MADNESS_CLEAN.init(graphics, 2, 6);
