@@ -140,9 +140,8 @@ public class GameOverState extends ProgramState {
 					super.programController.switchState(new MainMenuState().init(programController));
 				}
 				graphics.bindTexture(StandardTextures.CUBE);
-				graphics.bindTexture(new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
+				graphics.bindTexture(graphics.createTexture(((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings()));
 				graphics2D.drawRectCentered(diffX, 0f, 0.45f, DISTANCE_TO_MIDDLE);
-
 			} else {
 				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
 			}

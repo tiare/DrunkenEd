@@ -77,10 +77,10 @@ public class CameraTracking extends AbstractTracking {
 
 	@Override
 	public ByteBuffer getColorImageByteBuffer() {
-		if (true||app == null ) {
+		if (app == null ) {
 			p("app was null!");
 		}
-		if (false&&app != null) {
+		if (app != null) {
 			try {
 				ImageGenerator img = ImageGenerator.create(app.context);
 
