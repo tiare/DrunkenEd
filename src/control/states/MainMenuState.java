@@ -1,17 +1,12 @@
 package control.states;
 
-import java.nio.ByteBuffer;
-
-import org.OpenNI.SkeletonJoint;
-
-import control.ProgramController;
 import figure.DrunkenSkeleton;
 import figure.Player;
 import graphics.StandardTextures;
 import graphics.events.Keys;
-import graphics.skeletons.Skeleton;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
+import control.ProgramController;
 
 public class MainMenuState extends WorldState {
 	
@@ -29,12 +24,23 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 	
 	private float restartTime = 0.f;
-	private float timeout = 1.f;
+	private float timeout = 0.f;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
 	private int[] scoresMedium;
 	private int[] scoresHard;
+	
+	//highscore pictures
+	private Texture easy1;
+	private Texture easy2;
+	private Texture easy3;
+	private Texture medium1;
+	private Texture medium2;
+	private Texture medium3;
+	private Texture hard1;
+	private Texture hard2;
+	private Texture hard3;
 	
 	private Player shadowPlayer;
 	private float elbowAngle = 0.0f;
@@ -42,6 +48,7 @@ public class MainMenuState extends WorldState {
 	private float stepAngle = 80;
 	private float activationTime = 0;
 	private boolean waitedLongEnough = false;
+	private float hintTimeout = 2.f;
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -73,7 +80,7 @@ public class MainMenuState extends WorldState {
 		oldPlayerPosX = player.posX;
 		
 		if (startLevel) {
-			if (programController.getProgramTime() > restartTime + timeout) {
+			if (programController.getProgramTime() > restartTime + hintTimeout) {
 				//start game
 				super.programController.switchState(new GameState().init(programController));
 			}
@@ -85,15 +92,26 @@ public class MainMenuState extends WorldState {
 		dontLeaveScreen ();
 		updateActiveDoor();
 		
-//		if (activeDoor != NONE && waitedLongEnough)
-//		doDrinkingGesture ((DrunkenSkeleton)shadowPlayer.getSkeleton());
-//		shadowPlayer.posX = player.posX;
-//		shadowPlayer.posY = player.posY;
+		if (activeDoor != NONE && programController.getProgramTime() > activationTime+timeout)
+			waitedLongEnough = true;
+		
+		if (waitedLongEnough)
+			doDrinkingGesture ((DrunkenSkeleton)shadowPlayer.getSkeleton());
+		shadowPlayer.posX = player.posX;
+		shadowPlayer.posY = player.posY;
 	}
 	
 	private void doDrinkingGesture (DrunkenSkeleton shadowSkeleton) {
-		if (elbowAngle > 190 && shoulderAngle > 80 || elbowAngle < 0 && shoulderAngle < 0)
+		if (elbowAngle > 190 && shoulderAngle > 80)
 			stepAngle *= -1;
+		
+		if (elbowAngle < 0 || shoulderAngle < 0) {
+			elbowAngle = 0;
+			shoulderAngle = 0;
+			stepAngle *= -1;
+			
+			waitedLongEnough = false;
+		}
 		elbowAngle += 190/stepAngle;
 		shoulderAngle += 80/stepAngle;
 		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
@@ -152,7 +170,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
-//		shadowPlayer.draw();
+		//shadowPlayer.draw();
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -180,45 +198,30 @@ public class MainMenuState extends WorldState {
 		graphics.flush();
 		
 		int[] scores;
-		Texture firstPic = StandardTextures.ED;
-		Texture secondPic = StandardTextures.ED;
-		Texture thirdPic = StandardTextures.ED;
+		Texture firstPic;
+		Texture secondPic;
+		Texture thirdPic;
 		if (position == LEFT) {
 			scores = scoresEasy;
 			
 			//Get Highscore Pictures
-			if (highscores.getPictureFromPos(LEFT, 0) != null) {
-				ByteBuffer bb = highscores.getPictureFromPos(LEFT, 0);
-				bb.rewind();
-				firstPic = graphics.createTexture(bb, 60,100, new TextureSettings());
-//				firstPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
-			}
-			if (highscores.getPictureFromPos(LEFT, 1) != null) {
-				secondPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 1), 60, 100, new TextureSettings());
-			}
-			if (highscores.getPictureFromPos(LEFT, 2) != null) {
-				thirdPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 2), 60, 100, new TextureSettings());
-			}
+			firstPic = easy1;
+			secondPic = easy2;
+			thirdPic = easy3;
 		}
 		else if (position == CENTER) {
 			scores = scoresMedium;
 			
-			if(highscores.getPictureFromPos(CENTER, 0) != null)
-				firstPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 0), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(CENTER, 1) != null)	
-				secondPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 1), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(CENTER, 2) != null)
-				thirdPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 2), 60, 100, new TextureSettings());
+			firstPic = medium1;
+			secondPic = medium2;
+			thirdPic = medium3;
 		}
 		else {
 			scores = scoresHard;
 			
-			if(highscores.getPictureFromPos(RIGHT, 0) != null)
-				firstPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 0), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(RIGHT, 1) != null)
-				secondPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 1), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(RIGHT, 2) != null)
-				thirdPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 2), 60, 100, new TextureSettings());
+			firstPic = hard1;
+			secondPic = hard2;
+			thirdPic = hard3;
 		}
 		
 		//Write highscores
@@ -251,6 +254,7 @@ public class MainMenuState extends WorldState {
 	
 	private void updateActiveDoor () {
 		
+		int lastDoor = activeDoor;
 		activeDoor = NONE;
 		
 		float playerLeft = player.posX-0.3f;
@@ -271,6 +275,9 @@ public class MainMenuState extends WorldState {
 		else {
 			activeDoor = CENTER;
 		}
+		
+		if (lastDoor == NONE && activeDoor != NONE)
+			activationTime = programController.getProgramTime();
 	}
 
 	@Override
@@ -284,10 +291,6 @@ public class MainMenuState extends WorldState {
 				
 				//set difficulty in gamesettings!
 				super.gameSettings.difficulty = activeDoor;			
-//				//start game
-//				super.programController.switchState(new GameState().init(programController));
-				
-				//TODO: trigger player animation!
 			}
 		}
 	}
@@ -317,7 +320,36 @@ public class MainMenuState extends WorldState {
 	
 	@Override
 	public void startGraphics() {
-		//TODO implement meeeee
+		//Get Highscore Pictures
+		if (highscores.getPictureFromPos(LEFT, 0) != null)
+			easy1 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
+		else easy1 = StandardTextures.ED;
+		if (highscores.getPictureFromPos(LEFT, 1) != null)
+			easy2 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 1), 60, 100, new TextureSettings());
+		else easy2 = StandardTextures.ED;
+		if (highscores.getPictureFromPos(LEFT, 2) != null)
+			easy3 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 2), 60, 100, new TextureSettings());
+		else easy3 = StandardTextures.ED;
+		
+		if(highscores.getPictureFromPos(CENTER, 0) != null)
+			medium1 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 0), 60, 100, new TextureSettings());
+		else medium1 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(CENTER, 1) != null)	
+			medium2 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 1), 60, 100, new TextureSettings());
+		else medium2 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(CENTER, 2) != null)
+			medium3 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 2), 60, 100, new TextureSettings());
+		else medium3 = StandardTextures.ED;
+		
+		if(highscores.getPictureFromPos(RIGHT, 0) != null)
+			hard1 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 0), 60, 100, new TextureSettings());
+		else hard1 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(RIGHT, 1) != null)
+			hard2 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 1), 60, 100, new TextureSettings());
+		else hard2 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(RIGHT, 2) != null)
+			hard3 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 2), 60, 100, new TextureSettings());
+		else hard3 = StandardTextures.ED;
 	}
 
 }

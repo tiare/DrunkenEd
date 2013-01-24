@@ -19,9 +19,12 @@ public class StandardTextures {
 	public static Texture VODKA;
 	public static Texture ED;
 	public static Texture HOUSE1;
+	public static Texture LANTERN;
+
 	public static AbstractFont FONT_BELLIGERENT_MADNESS_CLEAN;
 	public static AbstractFont FONT_BELLIGERENT_MADNESS;
 	public static AbstractFont FONT_BELLIGERENT_MADNESS_BOLD;
+
 	
 	public static void init(GraphicsTranslator graphics) {
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
@@ -34,6 +37,8 @@ public class StandardTextures {
 		ED = gfxLoader.getImage("ed");
 		HOUSE1 = gfxLoader.getImage("house1");
 		
+		LANTERN = gfxLoader.getImage("lantern");
+
 		//FONT_BELLIGERENT_MADNESS_CLEAN = new FontBelligerentMadnessClean();
 		//FONT_BELLIGERENT_MADNESS_CLEAN.init(graphics, 2, 6);
 		//FONT_BELLIGERENT_MADNESS = new FontBelligerentMadness();
