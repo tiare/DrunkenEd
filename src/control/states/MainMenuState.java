@@ -1,8 +1,5 @@
 package control.states;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import figure.DrunkenSkeleton;
 import figure.Player;
 import graphics.StandardTextures;
@@ -11,6 +8,10 @@ import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import control.ProgramController;
 
 public class MainMenuState extends WorldState {
@@ -40,7 +41,7 @@ public class MainMenuState extends WorldState {
 	private int[] scoresMedium;
 	private int[] scoresHard;
 	
-	//highscore pictures
+	//Highscore pictures
 	ArrayList<Texture> easyWinners;
 	ArrayList<Texture> mediumWinners;
 	ArrayList<Texture> hardWinners;
@@ -164,10 +165,10 @@ public class MainMenuState extends WorldState {
 	
 	private void updateHintText () {
 		if (activeLevel != NONE) {
-			hintText = "Drink to select difficulty!";
+			hintText = DRINK_TEXT;
 		}
 		else {
-			hintText = "What would you like to drink?";
+			hintText = DEFAULT_TEXT;
 		}
 	}
 
@@ -180,23 +181,13 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
 		graphics.bindTexture(null);
 		
-		//draw drinks
-		graphics2D.setWhite();
-		graphics.bindTexture(StandardTextures.BEER);
-		graphics2D.drawRectCentered(stoolLx, stoolsY+0.65f,0.38f,0.4f);
-		graphics.bindTexture(StandardTextures.WINE);
-		graphics2D.drawRectCentered(stoolCx, stoolsY+0.75f,0.38f,0.6f);
-		graphics.bindTexture(StandardTextures.VODKA);
-		graphics2D.drawRectCentered(stoolRx, stoolsY+0.77f,0.3f,0.7f);
-		graphics.bindTexture(null);
-		
 		drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
 		drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
 		drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
 		
-		drawStool(stoolLx, stoolsY, (activeLevel == 0));
-		drawStool(stoolCx, stoolsY, (activeLevel == 1));
-		drawStool(stoolRx, stoolsY, (activeLevel == 2));
+		drawStool(stoolLx, stoolsY, (activeLevel == 0), StandardTextures.BEER);
+		drawStool(stoolCx, stoolsY, (activeLevel == 1), StandardTextures.WINE);
+		drawStool(stoolRx, stoolsY, (activeLevel == 2), StandardTextures.VODKA);
 		
 		//floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
@@ -204,24 +195,19 @@ public class MainMenuState extends WorldState {
 		graphics2D.setColor(0.7f, 0.7f, 0.7f);
 		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
 		
-		// draw left tree
-		graphics2D.setColor(0.3f, 0.1f, 0.0f);
-		graphics2D.drawRectCentered(-3.5f,1.0f, 0.2f,2.0f, 0);
-		graphics2D.setColor(0.0f, 0.66f, 0.0f);
-		graphics2D.drawRectCentered(-3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
-		graphics2D.drawRectCentered(-3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/4.0f);
-		graphics2D.drawRectCentered(-3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/7.0f);
-		// draw right tree
-		graphics2D.setColor(0.3f, 0.1f, 0.0f);
-		graphics2D.drawRectCentered(3.5f,1.0f, 0.2f,2.0f, 0);
-		graphics2D.setColor(0.0f, 0.66f, 0.0f);
-		graphics2D.drawRectCentered(3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/3.0f);
-		graphics2D.drawRectCentered(3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
-		graphics2D.drawRectCentered(3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
+		//Draw columns
+		graphics.bindTexture(StandardTextures.COLUMN);
+		//draw left column
+		graphics2D.drawRectCentered(-3.9f,1.9f, 0.6f,4.0f, 0);
+		graphics2D.drawRectCentered(3.9f,1.9f, 0.6f,4.0f, 0);
+		graphics.bindTexture(null);
 		
+		//Display bottom text
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(player.posX, -0.4f, 0.3f, 0, 0, 0, hintText);
+		graphics2D.switchGameCoordinates(false);
+		graphics2D.drawString(0, -0.85f, 0.13f, 0, 0, 0, hintText);
+		graphics2D.switchGameCoordinates(true);
 		graphics.bindTexture(null);
 		
 		shadowPlayer.draw();
@@ -230,14 +216,15 @@ public class MainMenuState extends WorldState {
 		player.draw();
 	}
 	
-	private void drawStool (float posX, float posY, boolean active) {
+	private void drawStool (float posX, float posY, boolean active, Texture drink) {
 		if (active) {
-			graphics2D.setColor(0.9f, 0.9f, 0.9f);
+			graphics2D.setColor(1.f, 1.f, 1.f);
 		}
 		else {
-			graphics2D.setColor(0.6f, 0.6f, 0.8f);
+			graphics2D.setColor(0.4f, 0.4f, 0.4f);
 		}
-	//	graphics2D.drawRectCentered(posX, posY, stoolWidth, stoolHeight);
+		graphics.bindTexture(drink);
+		graphics2D.drawRectCentered(posX, posY+0.68f,0.38f,0.48f);
 		
 		graphics.bindTexture(StandardTextures.STOOL);
 		graphics2D.drawRectCentered(posX, posY-0.15f, stoolWidth/1.5f, stoolHeight-0.3f);
@@ -256,13 +243,6 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
 		graphics.bindTexture(null);
 		graphics.flush();
-		
-		//Write blackboard title
-		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		if (activeLevel == position) graphics2D.setColor(1.f, 0.2f, 0.4f);
-		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
-		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
-		
 		
 		int[] scores;
 		Texture firstPic;
@@ -293,7 +273,7 @@ public class MainMenuState extends WorldState {
 		
 		//Write highscores
 		graphics2D.setDefaultFont();
-		graphics2D.setColor(1.f, 1.f, 1.f);
+		//graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawStringL(posX-0.75f, posY-0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX-0.75f, posY-0.45f, 0.23f, "2. ");
 		graphics2D.drawStringL(posX-0.75f, posY-0.85f, 0.23f, "3. ");
@@ -311,11 +291,17 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(posX-0.4f, posY-0.7f, 0.3f, 0.35f);
 		graphics.bindTexture(null);
 
+		
+		//Write blackboard title
+		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+		if (activeLevel == position) graphics2D.setColor(1.f, 0.2f, 0.4f);
+		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
+		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
 	}
 	
 	private void dontLeaveScreen () {
 		//Set player back if he walks out
-		if ( player.posX < -3 || player.posX > 3 )
+		if ( player.posX < - 3 || player.posX > 3.4f )
 			player.posX = oldPlayerPosX;
 	}
 	

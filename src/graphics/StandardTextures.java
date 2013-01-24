@@ -1,13 +1,11 @@
 package graphics;
 
-import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
-import graphics.fonts.FontBelligerentMadness;
-import graphics.fonts.FontBelligerentMadnessClean;
 import graphics.skeletons.Skeleton;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 import graphics.translator.TextureWrap;
+import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
 
 public class StandardTextures {
 
@@ -20,8 +18,11 @@ public class StandardTextures {
 	public static Texture STOOL;
 	public static Texture BAR;
 	public static Texture BLACKBOARD;
+	public static Texture COLUMN;
+	
 	public static Texture ED;
 	public static Texture NO_ED;
+	
 	public static Texture HOUSE1;
 	public static Texture LANTERN;
 
@@ -41,8 +42,11 @@ public class StandardTextures {
 		STOOL = gfxLoader.getImage("hocker");
 		BAR = gfxLoader.getImage("theke");
 		BLACKBOARD = gfxLoader.getImage("blackboard");
+		COLUMN = gfxLoader.getImage("column");
+		
 		ED = gfxLoader.getImage("ed");
 		NO_ED = gfxLoader.getImage("ed_silhouette");
+		
 		HOUSE1 = gfxLoader.getImage("house1");
 		LANTERN = gfxLoader.getImage("lantern");
 
