@@ -110,7 +110,8 @@ public class GameState extends WorldState {
 			
 			return;
 		}
-		if( !player.gameOver ){
+		if( !player.gameOver )
+		synchronized(player.getSkeleton()) {
 			// add bending caused by drunkenness
 			float gravity;
 			if(gameSettings.useGravity){
@@ -207,8 +208,11 @@ public class GameState extends WorldState {
 		}
 		
 		
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+		synchronized(player.getSkeleton()) {
+			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+			graphics2D.setCamera(camera);
+		}
 		player.step(deltaTime);
 	}
 
@@ -239,9 +243,10 @@ public class GameState extends WorldState {
 		}
 		
 		//config camera
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-		
+//		synchronized(player.getSkeleton()) {
+//			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+//			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+//		}
 		//draw player
 		player.draw();
 		

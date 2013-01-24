@@ -156,11 +156,12 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(doorRx, doorsY+0.8f,0.3f,0.7f);
 		graphics.bindTexture(null);
 		
+		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(doorLx, highscoresY+0.5f, 0.28f, 0, 0, 0, "Easy");
 		graphics2D.drawString(doorCx, highscoresY+0.5f, 0.28f, 0, 0, 0, "Medium");
 		graphics2D.drawString(doorRx, highscoresY+0.5f, 0.28f, 0, 0, 0, "Hard");
-		graphics2D.setColor(0.f, 0.f, 0.f);
+		graphics2D.setColor(1.f, 0.9f, 0.f);
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
@@ -234,6 +235,7 @@ public class MainMenuState extends WorldState {
 		}
 		
 		//Write highscores
+		graphics2D.setDefaultFont();
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(posX-0.7f, posY+0.15f, 0.2f, 0, 0, 0, "1. ");
 		graphics2D.drawString(posX-0.7f, posY-0.25f, 0.2f, 0, 0, 0, "2. ");
