@@ -32,6 +32,7 @@ public class Player implements SkeletonCarrier {
 	public float lifeTime;
 	private boolean mFlail;
 	private boolean mSwing;
+	private float mSwingTime;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -56,6 +57,7 @@ public class Player implements SkeletonCarrier {
 		
 		mFlail = false;
 		mSwing = false;
+		mSwingTime = -1;
 		
 		start();
 		return this;
@@ -73,13 +75,15 @@ public class Player implements SkeletonCarrier {
 			skeleton.mLeftLowerArmBone.setAngle(angle+PI);
 			skeleton.mRightUpperArmBone.setAngle(angle);
 			skeleton.mRightLowerArmBone.setAngle(angle);
-		}else if(mSwing) {
+		}else if(mSwingTime>0) {
 			skeleton.mLeftShoulderJoint.setPosByConstraint();
 			skeleton.mRightShoulderJoint.setPosByConstraint();
 			boolean up = (int)(lifeTime*1000)/120%2==0;
 			float fac = 0.3f;
 			float angle = (up?PI/2+fac:PI/2-fac);
 			float offset = -(steeredBending+drunkenBending);
+			if(offset<0)
+				offset *= 0.7f;
 			skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
 			skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
 			skeleton.mRightUpperArmBone.setAngle(angle+offset);
@@ -143,7 +147,12 @@ public class Player implements SkeletonCarrier {
 	
 	public void step(float deltaTime) {
 		lifeTime += deltaTime;
+
 		if(!gameOver) {
+			if(mSwing)
+				mSwingTime = 0.25f;
+			else if(mSwingTime>0)
+				mSwingTime -= deltaTime;
 			synchronized(skeleton) {
 				posX += velX*deltaTime;
 				posY += velY*deltaTime;
@@ -165,6 +174,12 @@ public class Player implements SkeletonCarrier {
 	
 	public void draw() {
 		synchronized(skeleton) {
+	
+			if(mFlail || mSwingTime>0) {
+				skeleton.mHeadBone.setTextureCoordinatesIndex(1);
+			}else
+				skeleton.mHeadBone.setTextureCoordinatesIndex(0);	
+			
 			skeleton.refreshVisualVars();
 			skeleton.draw();
 			if(Debug.DRAW_SKELETON)

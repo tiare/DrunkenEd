@@ -19,9 +19,9 @@ public class MainMenuState extends WorldState {
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
 	private int activeLevel = NONE;
 	private float barWidth = 6.f;
-	private float barHeight = 1.5f;
+	private float barHeight = 1.3f;
 	private float barPosX = 0.f;
-	private float barPosY = 0.45f;
+	private float barPosY = 0.65f;
 	private float stoolWidth = 1.f;
 	private float stoolHeight = 1.2f;
 	private float stoolLx = -2.f;
@@ -174,6 +174,7 @@ public class MainMenuState extends WorldState {
 
 	@Override
 	public void onDraw() {
+		graphics.bindTexture(null);
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		
 		//drawBar
@@ -224,7 +225,7 @@ public class MainMenuState extends WorldState {
 			graphics2D.setColor(0.4f, 0.4f, 0.4f);
 		}
 		graphics.bindTexture(drink);
-		graphics2D.drawRectCentered(posX, posY+0.68f,0.38f,0.48f);
+		graphics2D.drawRectCentered(posX, posY+0.8f,0.38f,0.48f);
 		
 		graphics.bindTexture(StandardTextures.STOOL);
 		graphics2D.drawRectCentered(posX, posY-0.15f, stoolWidth/1.5f, stoolHeight-0.3f);
@@ -294,9 +295,10 @@ public class MainMenuState extends WorldState {
 		
 		//Write blackboard title
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		if (activeLevel == position) graphics2D.setColor(1.f, 0.2f, 0.4f);
+		if (activeLevel == position) graphics2D.setColor(0.8f, 0.2f, 0.2f);
 		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
 		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
+		graphics.bindTexture(null);
 	}
 	
 	private void dontLeaveScreen () {
