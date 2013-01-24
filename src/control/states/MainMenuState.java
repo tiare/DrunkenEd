@@ -88,7 +88,7 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onStep(float deltaTime) {
 		//camera.set(0, 1, 2);
-		camera.set(skeleton.mHipJoint.mPosX+player.posX, 1.5f, 2.3f);
+		camera.set(player.posX, 1.5f, 2.3f);
 		oldPlayerPosX = player.posX;
 		
 		if (startLevel) {
@@ -155,7 +155,7 @@ public class MainMenuState extends WorldState {
 		shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
 		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
 		
-		shadowSkeleton.setModColor(0.f, 0.f, 0.f, 1.f);
+		shadowSkeleton.setModColor(0.f, 0.f, 0.f, 0.9f);
 		shadowSkeleton.setAddColor(0.1f, 0.1f, 0.15f);
 		shadowSkeleton.mDrawContour = false;
 		shadowSkeleton.mRightLowerArmBone.mVisible = true;
@@ -178,6 +178,16 @@ public class MainMenuState extends WorldState {
 		//drawBar
 		graphics.bindTexture(StandardTextures.BAR);
 		graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
+		graphics.bindTexture(null);
+		
+		//draw drinks
+		graphics2D.setWhite();
+		graphics.bindTexture(StandardTextures.BEER);
+		graphics2D.drawRectCentered(stoolLx, stoolsY+0.65f,0.38f,0.4f);
+		graphics.bindTexture(StandardTextures.WINE);
+		graphics2D.drawRectCentered(stoolCx, stoolsY+0.75f,0.38f,0.6f);
+		graphics.bindTexture(StandardTextures.VODKA);
+		graphics2D.drawRectCentered(stoolRx, stoolsY+0.77f,0.3f,0.7f);
 		graphics.bindTexture(null);
 		
 		drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
@@ -209,19 +219,9 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawRectCentered(3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/2.0f);
 		graphics2D.drawRectCentered(3.5f,2.5f, 1.0f,1.0f, (float)Math.PI/5.0f);
 		
-		//draw drinks
-		graphics2D.setWhite();
-		graphics.bindTexture(StandardTextures.BEER);
-		graphics2D.drawRectCentered(stoolLx, stoolsY+0.8f,0.38f,0.4f);
-		graphics.bindTexture(StandardTextures.WINE);
-		graphics2D.drawRectCentered(stoolCx, stoolsY+0.8f,0.38f,0.6f);
-		graphics.bindTexture(StandardTextures.VODKA);
-		graphics2D.drawRectCentered(stoolRx, stoolsY+0.8f,0.3f,0.7f);
-		graphics.bindTexture(null);
-		
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(0, -0.4f, 0.3f, 0, 0, 0, hintText);
+		graphics2D.drawString(player.posX, -0.4f, 0.3f, 0, 0, 0, hintText);
 		graphics.bindTexture(null);
 		
 		shadowPlayer.draw();
