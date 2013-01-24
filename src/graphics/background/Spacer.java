@@ -3,7 +3,7 @@ package graphics.background;
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 
-public class Spacer implements HorizontalDrawable {
+public class Spacer implements HorizontalDrawableInterface {
 
 	private float width;
 	public Spacer(float width) {

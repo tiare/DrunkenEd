@@ -8,7 +8,7 @@ import figure.DrunkenSkeleton;
 import graphics.StandardTextures;
 import graphics.background.HorizontalDrawablePool;
 import graphics.background.HorizontalRow;
-import graphics.background.House;
+import graphics.background.TexturedObject;
 import graphics.background.Tree;
 
 
@@ -56,21 +56,21 @@ public class GameState extends WorldState {
 		// configure random houses
 		HorizontalDrawablePool pool = new HorizontalDrawablePool();
 		
-		House h;
-		pool.add(new House(StandardTextures.HOUSE1));
-		h = new House(StandardTextures.HOUSE1);
+		TexturedObject h;
+		pool.add(new TexturedObject(StandardTextures.HOUSE1));
+		h = new TexturedObject(StandardTextures.HOUSE1);
 		h.setColor(0.4f, 0.2f, 0.2f);
 		pool.add(h);
 		
-		h = new House( StandardTextures.HOUSE1);
+		h = new TexturedObject( StandardTextures.HOUSE1);
 		h.setColor(0.2f, 0.2f, 0.2f);
 		pool.add(h);
 		
-		h = new House(StandardTextures.HOUSE1);
+		h = new TexturedObject(StandardTextures.HOUSE1);
 		h.setColor(0.2f, 0.4f, 0.2f);
 		pool.add(h);
 		
-		h = new House( StandardTextures.HOUSE1);
+		h = new TexturedObject( StandardTextures.HOUSE1);
 		h.setColor(0.2f, 0.2f, 0.4f);
 		pool.add(h);
 		
@@ -81,6 +81,11 @@ public class GameState extends WorldState {
 		Tree t = new Tree();
 		//t.setColor(0.2f, 0.2f, 0.2f);
 		pool.add(t);
+		
+		// add Lantern to pool
+		TexturedObject lantern = new TexturedObject(StandardTextures.LANTERN);
+		lantern.setColor(0.2f, 0.2f, 0.2f);
+		pool.add(lantern);
 		
 		treeRow = new HorizontalRow(pool);
 		treeRow.setSpacerWidth(0.3f, 2.7f);
@@ -222,7 +227,6 @@ public class GameState extends WorldState {
 		// draw houses and trees
 		houseRow.draw(graphics, graphics2D,player.posX);
 		treeRow.draw(graphics, graphics2D, player.posX);
-		
 		
 		// draw street
 		graphics2D.setWhite();

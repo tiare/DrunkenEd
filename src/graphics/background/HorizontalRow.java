@@ -14,10 +14,10 @@ public class HorizontalRow {
 	private float drawingWidth = 4.0f;
 	private float spacerWidthMin = 0.4f;
 	private float spacerWidthRange = 0.4f;
-	private LinkedList<HorizontalDrawable> row;
+	private LinkedList<HorizontalDrawableInterface> row;
 	public HorizontalRow(HorizontalDrawablePool pool) {
 		this.pool = pool;
-		row = new LinkedList<HorizontalDrawable>();
+		row = new LinkedList<HorizontalDrawableInterface>();
 	}
 
 	public void setSpacerWidth(float min, float max){
@@ -28,7 +28,7 @@ public class HorizontalRow {
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D, float offset){
 		
 		float start = 0;
-		for( HorizontalDrawable item : row){
+		for( HorizontalDrawableInterface item : row){
 			if( start + item.getWidth() > offset - drawingWidth && start < offset + drawingWidth ){
 				item.draw(graphics, graphics2D);
 			}
@@ -38,7 +38,7 @@ public class HorizontalRow {
 		}
 		while( start < offset + drawingWidth ){
 			// add and draw new house
-			HorizontalDrawable item = pool.getRandom().copy();
+			HorizontalDrawableInterface item = pool.getRandom().copy();
 			item.setOffset(start);
 			row.add(item);
 			item.draw(graphics, graphics2D);
