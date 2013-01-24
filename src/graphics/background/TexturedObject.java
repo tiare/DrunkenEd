@@ -34,8 +34,8 @@ public class TexturedObject extends HorizontalDrawable{
 	
 	public TexturedObject(Texture tex) {
 		this.texture = tex;
-		height = tex.getHeight() / 60.0f;
-		width = tex.getWidth() / 60.0f;
+		height = tex.getHeight() / 80.0f;
+		width = tex.getWidth() / 80.0f;
 		
 	}
 	

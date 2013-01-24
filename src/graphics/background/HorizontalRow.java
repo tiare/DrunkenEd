@@ -15,9 +15,14 @@ public class HorizontalRow {
 	private float spacerWidthMin = 0.4f;
 	private float spacerWidthRange = 0.4f;
 	private LinkedList<HorizontalDrawableInterface> row;
+	private float startOffset = 0;
 	public HorizontalRow(HorizontalDrawablePool pool) {
 		this.pool = pool;
 		row = new LinkedList<HorizontalDrawableInterface>();
+	}
+	
+	public void setStart(float start){
+		this.startOffset = start;
 	}
 
 	public void setSpacerWidth(float min, float max){
@@ -27,7 +32,7 @@ public class HorizontalRow {
 	
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D, float offset){
 		
-		float start = 0;
+		float start = startOffset;
 		for( HorizontalDrawableInterface item : row){
 			if( start + item.getWidth() > offset - drawingWidth && start < offset + drawingWidth ){
 				item.draw(graphics, graphics2D);
