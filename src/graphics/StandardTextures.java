@@ -17,7 +17,11 @@ public class StandardTextures {
 	public static Texture BEER;
 	public static Texture WINE;
 	public static Texture VODKA;
+	public static Texture STOOL;
+	public static Texture BAR;
+	public static Texture BLACKBOARD;
 	public static Texture ED;
+	public static Texture NO_ED;
 	public static Texture HOUSE1;
 	public static Texture LANTERN;
 
@@ -34,9 +38,12 @@ public class StandardTextures {
 		BEER = gfxLoader.getImage("beer");
 		WINE = gfxLoader.getImage("wine");
 		VODKA = gfxLoader.getImage("vodka");
+		STOOL = gfxLoader.getImage("hocker");
+		BAR = gfxLoader.getImage("theke");
+		BLACKBOARD = gfxLoader.getImage("blackboard");
 		ED = gfxLoader.getImage("ed");
+		NO_ED = gfxLoader.getImage("ed_silhouette");
 		HOUSE1 = gfxLoader.getImage("house1");
-		
 		LANTERN = gfxLoader.getImage("lantern");
 
 		//FONT_BELLIGERENT_MADNESS_CLEAN = new FontBelligerentMadnessClean();

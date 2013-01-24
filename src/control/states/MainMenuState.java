@@ -1,5 +1,6 @@
 package control.states;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import figure.DrunkenSkeleton;
@@ -15,16 +16,20 @@ import control.ProgramController;
 public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
-	private int activeDoor = NONE;
-	private float doorWith = 1.f;
-	private float doorHeight = 1.2f;
-	private float doorLx = -2.f;
-	private float doorCx = 0.f;
-	private float doorRx = 2.f;
-	private float doorsY = 0.6f;
-	private float highscoresY = 3.1f;
+	private int activeLevel = NONE;
+	private float barWidth = 6.f;
+	private float barHeight = 1.5f;
+	private float barPosX = 0.f;
+	private float barPosY = 0.45f;
+	private float stoolWidth = 1.f;
+	private float stoolHeight = 1.2f;
+	private float stoolLx = -2.f;
+	private float stoolCx = 0.f;
+	private float stoolRx = 2.f;
+	private float stoolsY = 0.6f;
+	private float highscoresY = 3.05f;
 	private float highscoreWith = 1.8f;
-	private float highscoreHeight = 1.5f;
+	private float highscoreHeight = 1.7f;
 	private float oldPlayerPosX = 0f;
 	
 	private float restartTime = 0.f;
@@ -36,15 +41,9 @@ public class MainMenuState extends WorldState {
 	private int[] scoresHard;
 	
 	//highscore pictures
-	private Texture easy1;
-	private Texture easy2;
-	private Texture easy3;
-	private Texture medium1;
-	private Texture medium2;
-	private Texture medium3;
-	private Texture hard1;
-	private Texture hard2;
-	private Texture hard3;
+	ArrayList<Texture> easyWinners;
+	ArrayList<Texture> mediumWinners;
+	ArrayList<Texture> hardWinners;
 	
 	private Player shadowPlayer;
 	private DrunkenSkeleton shadowSkeleton;
@@ -103,10 +102,10 @@ public class MainMenuState extends WorldState {
 		}
 		//don't let the player walk out of the screen
 		dontLeaveScreen ();
-		updateActiveDoor ();
+		updateActiveLevel ();
 		updateHintText ();
 		
-		if (activeDoor != NONE && programController.getProgramTime() > activationTime+hintTimeout)
+		if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 			waitedLongEnough = true;
 		
 		shadowPlayer.posX = player.posX;
@@ -164,7 +163,7 @@ public class MainMenuState extends WorldState {
 	}
 	
 	private void updateHintText () {
-		if (activeDoor != NONE) {
+		if (activeLevel != NONE) {
 			hintText = "Drink to select difficulty!";
 		}
 		else {
@@ -176,13 +175,18 @@ public class MainMenuState extends WorldState {
 	public void onDraw() {
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		
-		drawHighscores(doorLx, highscoresY, LEFT);
-		drawHighscores(doorCx, highscoresY, CENTER);
-		drawHighscores(doorRx, highscoresY, RIGHT);
+		//drawBar
+		graphics.bindTexture(StandardTextures.BAR);
+		graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
+		graphics.bindTexture(null);
 		
-		drawDoor(doorLx, doorsY, (activeDoor == 0));
-		drawDoor(doorCx, doorsY, (activeDoor == 1));
-		drawDoor(doorRx, doorsY, (activeDoor == 2));
+		drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
+		drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
+		drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
+		
+		drawStool(stoolLx, stoolsY, (activeLevel == 0));
+		drawStool(stoolCx, stoolsY, (activeLevel == 1));
+		drawStool(stoolRx, stoolsY, (activeLevel == 2));
 		
 		//floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
@@ -208,26 +212,14 @@ public class MainMenuState extends WorldState {
 		//draw drinks
 		graphics2D.setWhite();
 		graphics.bindTexture(StandardTextures.BEER);
-		graphics2D.drawRectCentered(doorLx, doorsY+0.8f,0.38f,0.4f);
+		graphics2D.drawRectCentered(stoolLx, stoolsY+0.8f,0.38f,0.4f);
 		graphics.bindTexture(StandardTextures.WINE);
-		graphics2D.drawRectCentered(doorCx, doorsY+0.8f,0.38f,0.6f);
+		graphics2D.drawRectCentered(stoolCx, stoolsY+0.8f,0.38f,0.6f);
 		graphics.bindTexture(StandardTextures.VODKA);
-		graphics2D.drawRectCentered(doorRx, doorsY+0.8f,0.3f,0.7f);
+		graphics2D.drawRectCentered(stoolRx, stoolsY+0.8f,0.3f,0.7f);
 		graphics.bindTexture(null);
 		
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		if (activeDoor == 0) graphics2D.setColor(1.f, 0.f, 0.f);
-		else graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(doorLx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Beer");
-		
-		if (activeDoor == 1) graphics2D.setColor(1.f, 0.f, 0.f);
-		else graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(doorCx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Wine");
-		
-		if (activeDoor == 2) graphics2D.setColor(1.f, 0.f, 0.f);
-		else graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(doorRx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Vodka");
-		
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(0, -0.4f, 0.3f, 0, 0, 0, hintText);
 		graphics.bindTexture(null);
@@ -238,26 +230,39 @@ public class MainMenuState extends WorldState {
 		player.draw();
 	}
 	
-	private void drawDoor (float posX, float posY, boolean active) {
+	private void drawStool (float posX, float posY, boolean active) {
 		if (active) {
-			graphics2D.setColor(0.2f, 0.2f, 0.4f);
+			graphics2D.setColor(0.9f, 0.9f, 0.9f);
 		}
 		else {
 			graphics2D.setColor(0.6f, 0.6f, 0.8f);
 		}
-		graphics2D.drawRectCentered(posX, posY, doorWith, doorHeight);
+	//	graphics2D.drawRectCentered(posX, posY, stoolWidth, stoolHeight);
+		
+		graphics.bindTexture(StandardTextures.STOOL);
+		graphics2D.drawRectCentered(posX, posY-0.15f, stoolWidth/1.5f, stoolHeight-0.3f);
+		graphics.bindTexture(null);
 	}
 	
-	private void drawHighscores (float posX, float posY, int position) {
-		if (position == activeDoor) {
-			graphics2D.setColor(0.2f, 0.2f, 0.4f);
+	private void drawHighscores (float posX, float posY, int position, String title) {
+		if (position == activeLevel) {
+			graphics2D.setColor(1.f, 1.f, 1.f);
 		}
 		else {
-			graphics2D.setColor(0.6f, 0.6f, 0.8f);
+			graphics2D.setColor(0.6f, 0.6f, 0.6f);
 		}
-		graphics.bindTexture(null);
+		
+		graphics.bindTexture(StandardTextures.BLACKBOARD);
 		graphics2D.drawRectCentered(posX, posY-0.15f, highscoreWith, highscoreHeight);
+		graphics.bindTexture(null);
 		graphics.flush();
+		
+		//Write blackboard title
+		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+		if (activeLevel == position) graphics2D.setColor(1.f, 0.2f, 0.4f);
+		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
+		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
+		
 		
 		int[] scores;
 		Texture firstPic;
@@ -267,43 +272,43 @@ public class MainMenuState extends WorldState {
 			scores = scoresEasy;
 			
 			//Get Highscore Pictures
-			firstPic = easy1;
-			secondPic = easy2;
-			thirdPic = easy3;
+			firstPic = easyWinners.get(0);
+			secondPic = easyWinners.get(1);
+			thirdPic = easyWinners.get(2);
 		}
 		else if (position == CENTER) {
 			scores = scoresMedium;
 			
-			firstPic = medium1;
-			secondPic = medium2;
-			thirdPic = medium3;
+			firstPic = mediumWinners.get(0);
+			secondPic = mediumWinners.get(1);
+			thirdPic = mediumWinners.get(2);
 		}
 		else {
 			scores = scoresHard;
 			
-			firstPic = hard1;
-			secondPic = hard2;
-			thirdPic = hard3;
+			firstPic = hardWinners.get(0);
+			secondPic = hardWinners.get(1);
+			thirdPic = hardWinners.get(2);
 		}
 		
 		//Write highscores
 		graphics2D.setDefaultFont();
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawStringL(posX-0.7f, posY+0.f, 0.23f, "1. ");
-		graphics2D.drawStringL(posX-0.7f, posY-0.4f, 0.23f, "2. ");
-		graphics2D.drawStringL(posX-0.7f, posY-0.8f, 0.23f, "3. ");
-		graphics2D.drawStringR(posX+0.8f, posY+0.f, 0.23f, ""+scores[0]);
-		graphics2D.drawStringR(posX+0.8f, posY-0.4f, 0.23f, ""+scores[1]);
-		graphics2D.drawStringR(posX+0.8f, posY-0.8f, 0.23f, ""+scores[2]);
+		graphics2D.drawStringL(posX-0.75f, posY-0.05f, 0.23f, "1. ");
+		graphics2D.drawStringL(posX-0.75f, posY-0.45f, 0.23f, "2. ");
+		graphics2D.drawStringL(posX-0.75f, posY-0.85f, 0.23f, "3. ");
+		graphics2D.drawStringR(posX+0.75f, posY-0.05f, 0.23f, ""+scores[0]);
+		graphics2D.drawStringR(posX+0.75f, posY-0.45f, 0.23f, ""+scores[1]);
+		graphics2D.drawStringR(posX+0.75f, posY-0.85f, 0.23f, ""+scores[2]);
 		graphics.bindTexture(null);
 		
 		//Draw highscore portraits
 		graphics.bindTexture(firstPic);
-		graphics2D.drawRectCentered(posX-0.3f, posY+0.15f, 0.3f, 0.35f);
+		graphics2D.drawRectCentered(posX-0.4f, posY+0.1f, 0.3f, 0.35f);
 		graphics.bindTexture(secondPic);
-		graphics2D.drawRectCentered(posX-0.3f, posY-0.25f, 0.3f, 0.35f);
+		graphics2D.drawRectCentered(posX-0.4f, posY-0.3f, 0.3f, 0.35f);
 		graphics.bindTexture(thirdPic);
-		graphics2D.drawRectCentered(posX-0.3f, posY-0.65f, 0.3f, 0.35f);
+		graphics2D.drawRectCentered(posX-0.4f, posY-0.7f, 0.3f, 0.35f);
 		graphics.bindTexture(null);
 
 	}
@@ -314,56 +319,56 @@ public class MainMenuState extends WorldState {
 			player.posX = oldPlayerPosX;
 	}
 	
-	private void updateActiveDoor () {
+	private void updateActiveLevel () {
 		
-		int lastDoor = activeDoor;
-		activeDoor = NONE;
+		int lastLevel = activeLevel;
+		activeLevel = NONE;
 		
 		float playerLeft = player.posX-0.4f;
 		float playerRight = player.posX;
 		
-		//Check if we're to the left of the center door
-		if (playerRight < doorCx-doorWith/2) {
-			//Then check with left door only
-			if (playerRight > doorLx-doorWith/2 && playerLeft < doorLx + doorWith/2)
-				activeDoor = LEFT;
+		//Check if we're to the left of the center Stool
+		if (playerRight < stoolCx-stoolWidth/2) {
+			//Then check with left Stool only
+			if (playerRight > stoolLx-stoolWidth/2 && playerLeft < stoolLx + stoolWidth/2)
+				activeLevel = LEFT;
 		}
-		//Check if we're to the right of the center door
-		else if (playerLeft > doorCx+doorWith/2) {
-			//Then check with right door only
-			if (playerRight > doorRx-doorWith/2 && playerLeft < doorRx + doorWith/2)
-				activeDoor = RIGHT;
+		//Check if we're to the right of the center Stool
+		else if (playerLeft > stoolCx+stoolWidth/2) {
+			//Then check with right Stool only
+			if (playerRight > stoolRx-stoolWidth/2 && playerLeft < stoolRx + stoolWidth/2)
+				activeLevel = RIGHT;
 		}
 		else {
-			activeDoor = CENTER;
+			activeLevel = CENTER;
 		}
 		
-		if (lastDoor == NONE && activeDoor != NONE)
+		if (lastLevel == NONE && activeLevel != NONE)
 			activationTime = programController.getProgramTime();
 	}
 
 	@Override
 	public void keyDown(int key) {
-		//Enter the selected door
+		//Enter the selected Stool
 		if( key == Keys.UP ) {
 			//Enter level
-			if (activeDoor != NONE) {
+			if (activeLevel != NONE) {
 				restartTime = programController.getProgramTime();
 				startLevel = true;
 				
 				//set difficulty in gamesettings!
-				super.gameSettings.difficulty = activeDoor;			
+				super.gameSettings.difficulty = activeLevel;			
 			}
 		}
 	}
 	
 	@Override
 	public void onDrink() {
-		//Enter the selected door
+		//Enter the selected Stool
 		//Enter level
-		if (activeDoor != NONE && programController.getProgramTime() > restartTime + timeout) {
+		if (activeLevel != NONE && programController.getProgramTime() > restartTime + timeout) {
 			//set difficulty in gamesettings!
-			super.gameSettings.difficulty = activeDoor;			
+			super.gameSettings.difficulty = activeLevel;			
 			//start game
 			super.programController.switchState(new GameState().init(programController));
 		}
@@ -382,36 +387,33 @@ public class MainMenuState extends WorldState {
 	
 	@Override
 	public void startGraphics() {
-		//Get Highscore Pictures
-		if (highscores.getPictureFromPos(LEFT, 0) != null)
-			easy1 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
-		else easy1 = StandardTextures.ED;
-		if (highscores.getPictureFromPos(LEFT, 1) != null)
-			easy2 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 1), 60, 100, new TextureSettings());
-		else easy2 = StandardTextures.ED;
-		if (highscores.getPictureFromPos(LEFT, 2) != null)
-			easy3 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 2), 60, 100, new TextureSettings());
-		else easy3 = StandardTextures.ED;
+		//Set Highscore Pictures
+		easyWinners = setHighscorePictures (LEFT);
+		mediumWinners = setHighscorePictures (CENTER);
+		hardWinners = setHighscorePictures (RIGHT);
+	}
+	
+	private ArrayList<Texture> setHighscorePictures (int level) {
+		ArrayList<Texture> textures = new ArrayList<Texture>();
+		if (highscores.getPictureFromPos(level, 0) != null)
+			textures.add(0, graphics.createTexture(highscores.getPictureFromPos(level, 0), 60, 100, new TextureSettings()));
+		else textures.add(0,getDefaultTexture (level, 0));
+		if (highscores.getPictureFromPos(level, 1) != null)
+			textures.add(1, graphics.createTexture(highscores.getPictureFromPos(level,1), 60, 100, new TextureSettings()));
+		else textures.add(1, getDefaultTexture (level, 1));
+		if (highscores.getPictureFromPos(level, 2) != null)
+			textures.add(2, graphics.createTexture(highscores.getPictureFromPos(level, 2), 60, 100, new TextureSettings()));
+		else textures.add(2, getDefaultTexture (level, 2));
 		
-		if(highscores.getPictureFromPos(CENTER, 0) != null)
-			medium1 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 0), 60, 100, new TextureSettings());
-		else medium1 = StandardTextures.ED;
-		if(highscores.getPictureFromPos(CENTER, 1) != null)	
-			medium2 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 1), 60, 100, new TextureSettings());
-		else medium2 = StandardTextures.ED;
-		if(highscores.getPictureFromPos(CENTER, 2) != null)
-			medium3 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 2), 60, 100, new TextureSettings());
-		else medium3 = StandardTextures.ED;
+		return textures;
+	}
+	private Texture getDefaultTexture (int level, int place) {
+		int[] currentScores = scoresHard;
+		if (level == LEFT) currentScores = scoresEasy;
+		else if (level == CENTER) currentScores = scoresMedium;
 		
-		if(highscores.getPictureFromPos(RIGHT, 0) != null)
-			hard1 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 0), 60, 100, new TextureSettings());
-		else hard1 = StandardTextures.ED;
-		if(highscores.getPictureFromPos(RIGHT, 1) != null)
-			hard2 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 1), 60, 100, new TextureSettings());
-		else hard2 = StandardTextures.ED;
-		if(highscores.getPictureFromPos(RIGHT, 2) != null)
-			hard3 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 2), 60, 100, new TextureSettings());
-		else hard3 = StandardTextures.ED;
+		if (currentScores[place] == 0) return StandardTextures.NO_ED;
+		else return StandardTextures.ED;
 	}
 
 }
