@@ -178,8 +178,8 @@ public class GameOverState extends ProgramState {
 	@Override
 	public void onDrink() {
 		// start game
-		// super.programController.switchState(new
-		// MainMenuState().init(programController));
+		super.programController.switchState(new
+		 MainMenuState().init(programController));
 	}
 
 	@Override

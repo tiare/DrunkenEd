@@ -38,7 +38,7 @@ public class GameState extends WorldState {
 		super();
 		//time = (float)Math.PI/2.0f;
 		worldZoom = 2;
-		df = new DecimalFormat  ( ",##0.00" );
+		df = new DecimalFormat  ( ",#0.0" );
 	}
 	
 	@Override
@@ -115,7 +115,8 @@ public class GameState extends WorldState {
 			
 			return;
 		}
-		if( !player.gameOver ){
+		if( !player.gameOver )
+		synchronized(player.getSkeleton()) {
 			// add bending caused by drunkenness
 			float gravity;
 			if(gameSettings.useGravity){
@@ -174,8 +175,11 @@ public class GameState extends WorldState {
 							player.setFlailingArms(true);
 						}
 					}
-					
-					player.setSpeedX( speed );
+					if( player.posX <= 0.0f && speed < 0){
+						player.setSpeedX(0.0f);
+					} else {
+						player.setSpeedX( speed );
+					}
 				}
 			}
 			
@@ -212,8 +216,11 @@ public class GameState extends WorldState {
 		}
 		
 		
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+		synchronized(player.getSkeleton()) {
+			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+			
+		}
 		player.step(deltaTime);
 	}
 
@@ -243,17 +250,40 @@ public class GameState extends WorldState {
 		}
 		
 		//config camera
-		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-		
+//		synchronized(player.getSkeleton()) {
+//			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+//			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+//		}
 		//draw player
+		
 		player.draw();
+		
+		
 		
 		//draw stats
 		graphics2D.switchGameCoordinates(false);
+		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX ) +"m ");
-		graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed() ).replace("-","")+"m/s");
+//		graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX ) +"m ");
+		//graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed() ).replace("-","")+"m/s");
+		String s = (int)player.posX +"m";
+		while(s.length()<5)
+			s = "0"+s;
+		String t = (int)(stateTimer-pauseTime)%60+"";
+		
+		if(stateTimer-pauseTime < 0) t = "00";
+		
+		if( t.length() < 2){
+			t = "0"+t;
+		}
+		t = (int)(stateTimer-pauseTime)/60+" "+ t;
+		if( t.length() < 5){
+			t = "0"+t;
+		}
+		
+		graphics2D.drawString(graphics2D.getScreenLeft()+0.1f, 0.8f, 0.1f, -1, -1, 0, 0.07f, s);
+		graphics2D.drawString(graphics2D.getScreenLeft()+0.1f, 0.7f, 0.1f, -1, -1, 0, 0.07f, t);
+		graphics2D.drawStringL(graphics2D.getScreenLeft()+0.255f, 0.7f, 0.1f, ":");
 		graphics2D.switchGameCoordinates(true);
 		
 	}

@@ -1,5 +1,8 @@
 package graphics;
 
+import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
+import graphics.fonts.FontBelligerentMadness;
+import graphics.fonts.FontBelligerentMadnessClean;
 import graphics.skeletons.Skeleton;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
@@ -17,6 +20,11 @@ public class StandardTextures {
 	public static Texture ED;
 	public static Texture HOUSE1;
 	public static Texture LANTERN;
+
+	public static AbstractFont FONT_BELLIGERENT_MADNESS_CLEAN;
+	public static AbstractFont FONT_BELLIGERENT_MADNESS;
+	public static AbstractFont FONT_BELLIGERENT_MADNESS_BOLD;
+
 	
 	public static void init(GraphicsTranslator graphics) {
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
@@ -30,6 +38,13 @@ public class StandardTextures {
 		HOUSE1 = gfxLoader.getImage("house1");
 		
 		LANTERN = gfxLoader.getImage("lantern");
+
+		//FONT_BELLIGERENT_MADNESS_CLEAN = new FontBelligerentMadnessClean();
+		//FONT_BELLIGERENT_MADNESS_CLEAN.init(graphics, 2, 6);
+		//FONT_BELLIGERENT_MADNESS = new FontBelligerentMadness();
+		//FONT_BELLIGERENT_MADNESS.init(graphics, 2, 6);
+		FONT_BELLIGERENT_MADNESS_BOLD = new FontBelligerentMadnessBold();
+		FONT_BELLIGERENT_MADNESS_BOLD.init(graphics, 2, 6);
 
 		Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
