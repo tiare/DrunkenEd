@@ -141,6 +141,28 @@ public class Player implements SkeletonCarrier {
 		return velX;
 	}
 	
+	public void step(float deltaTime) {
+		lifeTime += deltaTime;
+		if(!gameOver) {
+			synchronized(skeleton) {
+				posX += velX*deltaTime;
+				posY += velY*deltaTime;
+
+				animationPlayer.proceed(velX*deltaTime);
+				
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
+				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				
+				refreshArms();
+			}
+		}
+		
+		synchronized(skeleton) {
+			if(gameOver)
+				skeleton.applyConstraints(deltaTime);
+		}
+	}
+	
 	public void draw() {
 		synchronized(skeleton) {
 			skeleton.refreshVisualVars();
@@ -189,28 +211,6 @@ public class Player implements SkeletonCarrier {
 	@Override
 	public void setSkeleton(Skeleton skeleton) {
 		
-	}
-
-	public void step(float deltaTime) {
-		lifeTime += deltaTime;
-		if(!gameOver) {
-			synchronized(skeleton) {
-				posX += velX*deltaTime;
-				posY += velY*deltaTime;
-
-				animationPlayer.proceed(velX*deltaTime);
-				
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
-				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
-				
-				refreshArms();
-			}
-		}
-		
-		synchronized(skeleton) {
-			if(gameOver)
-				skeleton.applyConstraints(deltaTime);
-		}
 	}
 
 	public void fallDown() {
