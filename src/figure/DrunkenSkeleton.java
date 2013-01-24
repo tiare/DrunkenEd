@@ -1,29 +1,39 @@
 package figure;
 
-import graphics.skeletons.Skeleton;
 import graphics.skeletons.defaults.HumanSkeleton;
 import graphics.skeletons.elements.Joint;
-import graphics.skeletons.elements.JointNormalConstraint;
+import graphics.translator.TextureFilter;
 import graphics.translator.TextureHolder;
 
 public class DrunkenSkeleton extends HumanSkeleton {
 
 	public DrunkenSkeleton() {
-		mTextureHolder = new TextureHolder("skeleton_ed",Skeleton.DEFAULTFILTER);
+		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
 	}
 	
 	@Override
 	protected void build() {
 		buildHuman(true, 0.07f,0.16f,0.9f);
 		
-		float shift = 0.15f;
+
+		float shift;
 		mHeadBone.mContourX1 += 0.2f;
-		mHeadBone.mContourX2 += 0.1f;
-		mHeadBone.mContourX3 += 0.9f;
+		mHeadBone.mContourX2 += 0.8f;
+		//mHeadBone.mContourX3 += 0.9f;
 		mHeadBone.mContourX4 += 0.9f;
+		mHeadBone.mContourY3 += 0.3f;
+		mHeadBone.mContourX4 -= 0.3f;
+		shift = -0.05f;
+		mHeadBone.mShiftY1 += shift;
+		mHeadBone.mShiftY2 += shift;
+		mHeadBone.mShiftX1 += 0.01f;
+		mHeadBone.mShiftX2 += 0.01f;
+		
+		shift = 0.15f;
 		mRightShoulderJoint.mRelativeX += shift;
-		mLeftShoulderJoint.mRelativeX += shift;
-		mLeftShoulderJoint.mRelativeY -= 0.02f;
+		mLeftShoulderJoint.mRelativeX += shift+0.025f;
+		mLeftShoulderJoint.mRelativeY -= 0.04f;
+		mLeftUpperArmBone.mShiftY1+=0.05f;
 		mLeftElbowJoint.mPosY += shift;
 		mRightElbowJoint.mPosY += shift;
 		mLeftHandJoint.mPosY += shift;
@@ -47,11 +57,11 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mLeftUpperLegBone,3);
 		super.addBone(mLeftLowerLegBone,3);
 		super.addBone(mBodyBone,3);
-		super.addBone(mHeadBone,3);
-		super.addBone(mLeftUpperArmBone,4);
-		super.addBone(mLeftLowerArmBone,4);
+		super.addBone(mHeadBone,4);
+		super.addBone(mLeftUpperArmBone,5);
+		super.addBone(mLeftLowerArmBone,5);
 		
-		mContourFactor = 0.03f;
+		mContourFactor = 0.035f;
 	}
 
 	public void setAnimated(boolean animated) {

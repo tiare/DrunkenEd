@@ -2,14 +2,13 @@ package control.states;
 
 import java.text.DecimalFormat;
 
+import figure.DrunkenSkeleton;
 import control.GameSettings;
 import control.ProgramState;
-import figure.DrunkenSkeleton;
 import graphics.StandardTextures;
 import graphics.background.HorizontalDrawablePool;
 import graphics.background.HorizontalRow;
 import graphics.background.TexturedObject;
-import graphics.background.Tree;
 
 public class GameState extends WorldState {
 
