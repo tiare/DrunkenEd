@@ -56,6 +56,8 @@ public class MainMenuState extends WorldState {
 	private boolean waitedLongEnough = false;
 	private float hintTimeout = 5.f;
 	
+	private String hintText = "";
+	
 	@Override
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
@@ -97,7 +99,8 @@ public class MainMenuState extends WorldState {
 		}
 		//don't let the player walk out of the screen
 		dontLeaveScreen ();
-		updateActiveDoor();
+		updateActiveDoor ();
+		updateHintText ();
 		
 		if (activeDoor != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 			waitedLongEnough = true;
@@ -154,6 +157,15 @@ public class MainMenuState extends WorldState {
 		shadowSkeleton.mRightLowerArmBone.mVisible = true;
 		shadowSkeleton.mRightUpperArmBone.mVisible = true;
 	}
+	
+	private void updateHintText () {
+		if (activeDoor != NONE) {
+			hintText = "Drink to select difficulty!";
+		}
+		else {
+			hintText = "What would you like to drink?";
+		}
+	}
 
 	@Override
 	public void onDraw() {
@@ -199,12 +211,20 @@ public class MainMenuState extends WorldState {
 		graphics.bindTexture(null);
 		
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+		if (activeDoor == 0) graphics2D.setColor(1.f, 0.f, 0.f);
+		else graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(doorLx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Beer");
+		
+		if (activeDoor == 1) graphics2D.setColor(1.f, 0.f, 0.f);
+		else graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(doorCx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Wine");
+		
+		if (activeDoor == 2) graphics2D.setColor(1.f, 0.f, 0.f);
+		else graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(doorRx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Vodka");
+		
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(doorLx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Easy");
-		graphics2D.drawString(doorCx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Medium");
-		graphics2D.drawString(doorRx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Hard");
-		graphics2D.setColor(1.f, 0.9f, 0.f);
-		graphics2D.drawString(0, -0.4f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
+		graphics2D.drawString(0, -0.4f, 0.3f, 0, 0, 0, hintText);
 		graphics.bindTexture(null);
 		
 		shadowPlayer.draw();
