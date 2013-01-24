@@ -65,7 +65,7 @@ public class MainMenuState extends WorldState {
 		this.programController = programController;
 		super.init(programController);
 		restartTime = programController.getProgramTime();
-		player.posX = -1;
+		player.posX = -0.8f;
 		startLevel = false;
 		
 		
@@ -89,7 +89,7 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onStep(float deltaTime) {
 		//camera.set(0, 1, 2);
-		camera.set(skeleton.mHipJoint.mPosX, 1.5f, 2.3f);
+		camera.set(skeleton.mHipJoint.mPosX+player.posX, 1.5f, 2.3f);
 		oldPlayerPosX = player.posX;
 		
 		if (startLevel) {
