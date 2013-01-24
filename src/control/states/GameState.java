@@ -252,9 +252,15 @@ public class GameState extends WorldState {
 		
 		//draw stats
 		graphics2D.switchGameCoordinates(false);
+		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX ) +"m ");
-		graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed() ).replace("-","")+"m/s");
+//		graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX ) +"m ");
+		//graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed() ).replace("-","")+"m/s");
+		String s = df.format( player.posX ) +"m";
+		while(s.length()<7)
+			s = "0"+s;
+		graphics2D.drawString(graphics2D.getScreenLeft()+0.1f, 0.8f, 0.1f, -1, -1, 0, 0.07f, s);
+		graphics2D.drawString(graphics2D.getScreenLeft()+0.1f, 0.7f, 0.1f, -1, -1, 0, 0.07f, df.format( player.getSpeed() ).replace("-","")+"m/s");
 		graphics2D.switchGameCoordinates(true);
 		
 	}
