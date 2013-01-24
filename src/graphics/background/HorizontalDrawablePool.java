@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 
-public class HorizontalDrawablePool extends LinkedList<HorizontalDrawable> {
+public class HorizontalDrawablePool extends LinkedList<HorizontalDrawableInterface> {
 	
 	private Random randomGenerator;
 	
@@ -12,11 +12,13 @@ public class HorizontalDrawablePool extends LinkedList<HorizontalDrawable> {
 		randomGenerator = new Random();
 	}
 	
-	public HorizontalDrawable getRandom(){
+	public HorizontalDrawableInterface getRandom(){
+		
 		switch( size() ){
 			case 0: return null;
 			case 1: return get(0);
-			default: return get(randomGenerator.nextInt(size()-1)); 
+			default:
+				return get(randomGenerator.nextInt(size()));
 		}
 	}
 	

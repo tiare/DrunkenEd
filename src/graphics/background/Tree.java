@@ -3,14 +3,14 @@ package graphics.background;
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 
-public class Tree extends ColorableHorizontalDrawable {
+public class Tree extends HorizontalDrawable {
 
 	public Tree() {
 		this.width = 1.4f;
 	}
 
 	@Override
-	public HorizontalDrawable copy() {
+	public HorizontalDrawableInterface copy() {
 		Tree t = new Tree();
 		super.copyInto(t);
 		return t;

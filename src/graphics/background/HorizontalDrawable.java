@@ -1,11 +1,33 @@
 package graphics.background;
 
-import graphics.defaults.Default2DGraphics;
-import graphics.translator.GraphicsTranslator;
 
-public interface HorizontalDrawable {
-	public HorizontalDrawable copy();
-	public float getWidth();
-	public void setOffset(float offset);
-	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D);
+public abstract class HorizontalDrawable implements HorizontalDrawableInterface {
+
+	
+	public float offset;
+	protected float width;
+	protected float yOffset = 0.2f;
+	protected String name = "horizontalDrawable";
+	
+	public HorizontalDrawable copyInto( HorizontalDrawable drawable) {
+		drawable.offset = offset;
+		drawable.width = width;
+		drawable.yOffset = yOffset;
+		return drawable;
+	}
+
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	@Override
+	public float getWidth() {
+		return width;
+	}
+
+	@Override
+	public void setOffset(float offset) {
+		this.offset = offset;
+	}
 }

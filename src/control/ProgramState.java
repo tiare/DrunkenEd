@@ -23,6 +23,7 @@ public abstract class ProgramState implements TrackingListener {
 	
 	public ProgramState() {
 		camera = new Camera2D();
+		camera.mAdaption = 0.3f;
 	}
 	
 	public ProgramState init(ProgramController programController) {
