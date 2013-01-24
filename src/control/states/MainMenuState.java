@@ -37,6 +37,17 @@ public class MainMenuState extends WorldState {
 	private int[] scoresMedium;
 	private int[] scoresHard;
 	
+	//highscore pictures
+	Texture easy1;
+	Texture easy2;
+	Texture easy3;
+	Texture medium1;
+	Texture medium2;
+	Texture medium3;
+	Texture hard1;
+	Texture hard2;
+	Texture hard3;
+	
 	private Player shadowPlayer;
 	private float elbowAngle = 0.0f;
 	private float shoulderAngle = 0.0f;
@@ -165,7 +176,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
-//		/shadowPlayer.draw();
+		//shadowPlayer.draw();
 		
 		graphics2D.setWhite();
 		player.draw();
@@ -193,45 +204,30 @@ public class MainMenuState extends WorldState {
 		graphics.flush();
 		
 		int[] scores;
-		Texture firstPic = StandardTextures.ED;
-		Texture secondPic = StandardTextures.ED;
-		Texture thirdPic = StandardTextures.ED;
+		Texture firstPic;
+		Texture secondPic;
+		Texture thirdPic;
 		if (position == LEFT) {
 			scores = scoresEasy;
 			
 			//Get Highscore Pictures
-			if (highscores.getPictureFromPos(LEFT, 0) != null) {
-				ByteBuffer bb = highscores.getPictureFromPos(LEFT, 0);
-				bb.rewind();
-				firstPic = graphics.createTexture(bb, 60,100, new TextureSettings());
-//				firstPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
-			}
-			if (highscores.getPictureFromPos(LEFT, 1) != null) {
-				secondPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 1), 60, 100, new TextureSettings());
-			}
-			if (highscores.getPictureFromPos(LEFT, 2) != null) {
-				thirdPic = graphics.createTexture(highscores.getPictureFromPos(LEFT, 2), 60, 100, new TextureSettings());
-			}
+			firstPic = easy1;
+			secondPic = easy2;
+			thirdPic = easy3;
 		}
 		else if (position == CENTER) {
 			scores = scoresMedium;
 			
-			if(highscores.getPictureFromPos(CENTER, 0) != null)
-				firstPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 0), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(CENTER, 1) != null)	
-				secondPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 1), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(CENTER, 2) != null)
-				thirdPic = graphics.createTexture(highscores.getPictureFromPos(CENTER, 2), 60, 100, new TextureSettings());
+			firstPic = medium1;
+			secondPic = medium2;
+			thirdPic = medium3;
 		}
 		else {
 			scores = scoresHard;
 			
-			if(highscores.getPictureFromPos(RIGHT, 0) != null)
-				firstPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 0), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(RIGHT, 1) != null)
-				secondPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 1), 60, 100, new TextureSettings());
-			if(highscores.getPictureFromPos(RIGHT, 2) != null)
-				thirdPic = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 2), 60, 100, new TextureSettings());
+			firstPic = hard1;
+			secondPic = hard2;
+			thirdPic = hard3;
 		}
 		
 		//Write highscores
@@ -330,7 +326,36 @@ public class MainMenuState extends WorldState {
 	
 	@Override
 	public void startGraphics() {
-		//TODO implement meeeee
+		//Get Highscore Pictures
+		if (highscores.getPictureFromPos(LEFT, 0) != null)
+			easy1 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 0), 60, 100, new TextureSettings());
+		else easy1 = StandardTextures.ED;
+		if (highscores.getPictureFromPos(LEFT, 1) != null)
+			easy2 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 1), 60, 100, new TextureSettings());
+		else easy2 = StandardTextures.ED;
+		if (highscores.getPictureFromPos(LEFT, 2) != null)
+			easy3 = graphics.createTexture(highscores.getPictureFromPos(LEFT, 2), 60, 100, new TextureSettings());
+		else easy3 = StandardTextures.ED;
+		
+		if(highscores.getPictureFromPos(CENTER, 0) != null)
+			medium1 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 0), 60, 100, new TextureSettings());
+		else medium1 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(CENTER, 1) != null)	
+			medium2 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 1), 60, 100, new TextureSettings());
+		else medium2 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(CENTER, 2) != null)
+			medium3 = graphics.createTexture(highscores.getPictureFromPos(CENTER, 2), 60, 100, new TextureSettings());
+		else medium3 = StandardTextures.ED;
+		
+		if(highscores.getPictureFromPos(RIGHT, 0) != null)
+			hard1 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 0), 60, 100, new TextureSettings());
+		else hard1 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(RIGHT, 1) != null)
+			hard2 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 1), 60, 100, new TextureSettings());
+		else hard2 = StandardTextures.ED;
+		if(highscores.getPictureFromPos(RIGHT, 2) != null)
+			hard3 = graphics.createTexture(highscores.getPictureFromPos(RIGHT, 2), 60, 100, new TextureSettings());
+		else hard3 = StandardTextures.ED;
 	}
 
 }
