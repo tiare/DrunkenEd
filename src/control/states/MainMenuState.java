@@ -57,6 +57,8 @@ public class MainMenuState extends WorldState {
 	private float hintTimeout = 5.f;
 	
 	private String hintText = "";
+	private static final String DEFAULT_TEXT = "What would you like to drink?";
+	private static final String DRINK_TEXT = "Drink to select difficulty!";
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -78,6 +80,8 @@ public class MainMenuState extends WorldState {
 		
 		player.setArmAnglesByTracking(true);
 		skeleton = (DrunkenSkeleton)player.getSkeleton();
+		
+		hintText = DEFAULT_TEXT;
 		
 		return this;
 	}
@@ -135,6 +139,7 @@ public class MainMenuState extends WorldState {
 	}
 	
 	private void doDrinkingGesture () {
+		//TODO: make text flash
 		if (elbowAngle > 190 && shoulderAngle > 80)
 			stepAngle *= -1;
 		
@@ -314,8 +319,8 @@ public class MainMenuState extends WorldState {
 		int lastDoor = activeDoor;
 		activeDoor = NONE;
 		
-		float playerLeft = player.posX-0.3f;
-		float playerRight = player.posX+0.3f;
+		float playerLeft = player.posX-0.4f;
+		float playerRight = player.posX;
 		
 		//Check if we're to the left of the center door
 		if (playerRight < doorCx-doorWith/2) {
