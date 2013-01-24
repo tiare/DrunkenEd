@@ -25,6 +25,7 @@ public class GameState extends WorldState {
 	
 	private boolean pause;
 	private float pauseTime;
+	private float pauseFadeOut;
 	
 	private boolean swingingArms = false;
 	private boolean flailingArms = false;
@@ -47,7 +48,7 @@ public class GameState extends WorldState {
 		player.bendingSpeed = 0;
 		difficultyFactor = (1-(2*gameSettings.difficultyAddition) + gameSettings.difficulty * gameSettings.difficultyAddition);
 		pause = true;
-		pauseTime = 2.0f;
+		pauseTime = 3.0f;
 		
 		DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
@@ -75,6 +76,7 @@ public class GameState extends WorldState {
 		pool.add(h);
 		
 		houseRow = new HorizontalRow(pool);
+		houseRow.setStart(-2);
 		
 		// configure random trees
 		pool = new HorizontalDrawablePool();
@@ -89,7 +91,7 @@ public class GameState extends WorldState {
 		
 		treeRow = new HorizontalRow(pool);
 		treeRow.setSpacerWidth(0.3f, 2.7f);
-		
+		treeRow.setStart(-1.5f);
 	}
 	
 	@Override
@@ -108,13 +110,17 @@ public class GameState extends WorldState {
 		
 		if( pause ){
 			if (stateTimer > pauseTime){
+				pauseFadeOut = 1;
 				pause = false;
 			}
 			
 			player.step(deltaTime);
 			
 			return;
+		} else if( pauseFadeOut > 0) {
+			pauseFadeOut -= 0.05f;
 		}
+		
 		if( !player.gameOver )
 		synchronized(player.getSkeleton()) {
 			// add bending caused by drunkenness
@@ -165,12 +171,14 @@ public class GameState extends WorldState {
 				} else{
 					
 					if( flailingArms ){
-						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
+						if(Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor
+						|| ((player.steeredBending + player.drunkenBending) < 0) != (player.getSpeed() < 0 )) {
 							flailingArms = false;
 							player.setFlailingArms(false);
 						}
 					} else {
-						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor) {
+						if(Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor
+							&& ((player.steeredBending + player.drunkenBending) < 0) == (player.getSpeed() < 0 )) {
 							flailingArms = true;
 							player.setFlailingArms(true);
 						}
@@ -244,9 +252,12 @@ public class GameState extends WorldState {
 		graphics.bindTexture(null);
 		
 		// draw initial start sequence
-		if( pause){
+		if( pause ){
 			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics2D.drawString(0.0f, 2.5f, 1.0f, 0, 0, 0, (int)(pauseTime-stateTimer+1)+" ");
+			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, (int)Math.ceil(pauseTime-stateTimer)+" ");
+		} else if ( pauseFadeOut > 0){
+			graphics2D.setColor(1.f, 1.f, 1.f, pauseFadeOut);
+			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
 		}
 		
 		//config camera
