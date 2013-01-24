@@ -1,18 +1,12 @@
 package control.states;
 
-import java.nio.ByteBuffer;
-
-import org.OpenNI.SkeletonJoint;
-import org.omg.CORBA.PRIVATE_MEMBER;
-
-import control.ProgramController;
 import figure.DrunkenSkeleton;
 import figure.Player;
 import graphics.StandardTextures;
 import graphics.events.Keys;
-import graphics.skeletons.Skeleton;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
+import control.ProgramController;
 
 public class MainMenuState extends WorldState {
 	
@@ -30,7 +24,7 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 	
 	private float restartTime = 0.f;
-	private float timeout = 1.f;
+	private float timeout = 0.f;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -38,15 +32,15 @@ public class MainMenuState extends WorldState {
 	private int[] scoresHard;
 	
 	//highscore pictures
-	Texture easy1;
-	Texture easy2;
-	Texture easy3;
-	Texture medium1;
-	Texture medium2;
-	Texture medium3;
-	Texture hard1;
-	Texture hard2;
-	Texture hard3;
+	private Texture easy1;
+	private Texture easy2;
+	private Texture easy3;
+	private Texture medium1;
+	private Texture medium2;
+	private Texture medium3;
+	private Texture hard1;
+	private Texture hard2;
+	private Texture hard3;
 	
 	private Player shadowPlayer;
 	private float elbowAngle = 0.0f;
