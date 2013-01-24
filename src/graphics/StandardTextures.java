@@ -24,6 +24,7 @@ public class StandardTextures {
 	public static Texture NO_ED;
 	
 	public static Texture HOUSE1;
+	public static Texture MOES;
 	public static Texture LANTERN;
 	
 	public static Texture TREE1;
@@ -51,6 +52,7 @@ public class StandardTextures {
 		NO_ED = gfxLoader.getImage("ed_silhouette");
 		
 		HOUSE1 = gfxLoader.getImage("house1");
+		MOES = gfxLoader.getImage("moes");
 		LANTERN = gfxLoader.getImage("lantern");
 		
 		TREE1 = gfxLoader.getImage("tree1");

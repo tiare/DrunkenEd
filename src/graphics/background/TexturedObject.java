@@ -8,7 +8,7 @@ public class TexturedObject extends HorizontalDrawable{
 
 	public Texture texture;
 	protected float height;
-	protected float color[] = {0.3f, 0.3f, 0.3f};
+	protected float color[] = {1f, 1f, 1f};
 	
 	public TexturedObject copyInto(TexturedObject drawable ){
 		super.copyInto(drawable);
@@ -43,7 +43,7 @@ public class TexturedObject extends HorizontalDrawable{
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D){
 		graphics.bindTexture(texture);
 		graphics2D.setColor(color[0], color[1], color[2]);
-		graphics2D.drawRect(offset, yOffset, offset+width, yOffset+height, 1, 1, 0, 0);
+		graphics2D.drawRect(offset, yOffset, offset+width, yOffset+height, 0, 1, 1, 0);
 		graphics.bindTexture(null);
 	}
 }

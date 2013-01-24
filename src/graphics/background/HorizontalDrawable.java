@@ -26,6 +26,10 @@ public abstract class HorizontalDrawable implements HorizontalDrawableInterface 
 		return width;
 	}
 
+	public void setYOffset(float yOffset){
+		this.yOffset = yOffset;
+	}
+	
 	@Override
 	public void setOffset(float offset) {
 		this.offset = offset;

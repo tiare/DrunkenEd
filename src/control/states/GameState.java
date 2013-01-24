@@ -9,7 +9,6 @@ import graphics.StandardTextures;
 import graphics.background.HorizontalDrawablePool;
 import graphics.background.HorizontalRow;
 import graphics.background.TexturedObject;
-import graphics.background.Tree;
 
 public class GameState extends WorldState {
 
@@ -30,7 +29,10 @@ public class GameState extends WorldState {
 	private boolean flailingArms = false;
 
 	private HorizontalRow houseRow;
-	private HorizontalRow treeRow;
+	private HorizontalRow streetRow;
+	private HorizontalRow streetItemRow;
+	
+	private TexturedObject moes;
 
 	private DecimalFormat df;
 
@@ -57,46 +59,70 @@ public class GameState extends WorldState {
 		// configure random houses
 		HorizontalDrawablePool pool = new HorizontalDrawablePool();
 
-		TexturedObject h;
+		TexturedObject to;
 		pool.add(new TexturedObject(StandardTextures.HOUSE1));
-		h = new TexturedObject(StandardTextures.HOUSE1);
-		h.setColor(0.4f, 0.2f, 0.2f);
-		pool.add(h);
+		to = new TexturedObject(StandardTextures.HOUSE1);
+		to.setColor(0.25f, 0.2f, 0.2f);
+		pool.add(to);
 
-		h = new TexturedObject(StandardTextures.HOUSE1);
-		h.setColor(0.2f, 0.2f, 0.2f);
-		pool.add(h);
+		to = new TexturedObject(StandardTextures.HOUSE1);
+		to.setColor(0.2f, 0.2f, 0.2f);
+		pool.add(to);
 
-		h = new TexturedObject(StandardTextures.HOUSE1);
-		h.setColor(0.2f, 0.4f, 0.2f);
-		pool.add(h);
+		to = new TexturedObject(StandardTextures.HOUSE1);
+		to.setColor(0.2f, 0.25f, 0.2f);
+		pool.add(to);
 
-		h = new TexturedObject(StandardTextures.HOUSE1);
-		h.setColor(0.2f, 0.2f, 0.4f);
-		pool.add(h);
+		to = new TexturedObject(StandardTextures.HOUSE1);
+		to.setColor(0.2f, 0.2f, 0.25f);
+		pool.add(to);
 
 		houseRow = new HorizontalRow(pool);
-		houseRow.setStart(-2);
+		houseRow.setStart(-2.4f);
+		
+		// add moes tavern only once
+		moes = new TexturedObject(StandardTextures.MOES);
+		
+		houseRow.add(moes);
+		
 
 		// configure random trees
+		float yOffset = +0.17f;
 		pool = new HorizontalDrawablePool();
 		//Tree t = new Tree();
 		// t.setColor(0.2f, 0.2f, 0.2f);
 		//pool.add(t);
-		h = new TexturedObject(StandardTextures.TREE1);
-		pool.add(h);
+		to = new TexturedObject(StandardTextures.TREE1);
+		to.setYOffset(yOffset);
+		pool.add(to);
+		
 
-		h = new TexturedObject(StandardTextures.TREE2);
-		pool.add(h);
+		to = new TexturedObject(StandardTextures.TREE2);
+		to.setYOffset(yOffset);
+		pool.add(to);
 		
 		// add Lantern to pool
-		TexturedObject lantern = new TexturedObject(StandardTextures.LANTERN);
-		lantern.setColor(0.2f, 0.2f, 0.2f);
-		pool.add(lantern);
+		to = new TexturedObject(StandardTextures.LANTERN);
+		to.setColor(0.2f, 0.2f, 0.2f);
+		to.setYOffset(yOffset+0.1f);
+		pool.add(to);
 
-		treeRow = new HorizontalRow(pool);
-		treeRow.setSpacerWidth(0.3f, 2.7f);
-		treeRow.setStart(-1.5f);
+		streetItemRow = new HorizontalRow(pool);
+		streetItemRow.setSpacerWidth(0.3f, 2.7f);
+		streetItemRow.setStart(-1.5f);
+		
+		
+		// street stuff
+		pool = new HorizontalDrawablePool();
+		
+		to = new TexturedObject(StandardTextures.STREET);
+		to.setYOffset(-2.6f);
+		pool.add(to);
+		streetRow = new HorizontalRow(pool);
+		streetRow.setSpacerWidth(0, 0);
+		streetRow.setStart(-5);
+		
+		
 	}
 
 	@Override
@@ -254,19 +280,25 @@ public class GameState extends WorldState {
 		graphics2D.setWhite();
 
 		synchronized (camera) {
-			// draw houses and trees
+			
+			// draw houses
 			houseRow.draw(graphics, graphics2D, player.posX);
-			treeRow.draw(graphics, graphics2D, player.posX);
-
+			
 			// draw street
-			graphics2D.setWhite();
+			streetRow.draw(graphics, graphics2D, player.posX);
+			/*graphics2D.setWhite();
 			graphics.bindTexture(StandardTextures.STREET);
-
 			float streetWidth = 10;
-			graphics2D.drawRectCentered(player.posX, -0.5f, streetWidth, 2.0f,
-					0.0f, 4 * (2 * player.posX / streetWidth - 1), 0, 4 * (2
-							* player.posX / streetWidth + 1), 1);
-			graphics.bindTexture(null);
+			graphics2D.drawRectCentered(player.posX, -1.0f, streetWidth, 2.75f,
+					0.0f, 4 * (2 * player.posX / streetWidth - 1), 1, 4 * (2
+							* player.posX / streetWidth + 1), 0);
+			graphics.bindTexture(null);*/
+			
+			
+			// draw trees lanterns and banks
+			streetItemRow.draw(graphics, graphics2D, player.posX);
+			
+			
 
 			// draw initial start sequence
 			if (pause) {
