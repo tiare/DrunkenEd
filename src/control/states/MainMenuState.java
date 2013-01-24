@@ -289,12 +289,12 @@ public class MainMenuState extends WorldState {
 		//Write highscores
 		graphics2D.setDefaultFont();
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(posX-0.7f, posY+0.15f, 0.2f, 0, 0, 0, "1. ");
-		graphics2D.drawString(posX-0.7f, posY-0.25f, 0.2f, 0, 0, 0, "2. ");
-		graphics2D.drawString(posX-0.7f, posY-0.65f, 0.2f, 0, 0, 0, "3. ");
-		graphics2D.drawString(posX+0.5f, posY+0.15f, 0.2f, 0, 0, 0, ""+scores[0]);
-		graphics2D.drawString(posX+0.5f, posY-0.25f, 0.2f, 0, 0, 0, ""+scores[1]);
-		graphics2D.drawString(posX+0.5f, posY-0.65f, 0.2f, 0, 0, 0, ""+scores[2]);
+		graphics2D.drawStringL(posX-0.7f, posY+0.f, 0.23f, "1. ");
+		graphics2D.drawStringL(posX-0.7f, posY-0.4f, 0.23f, "2. ");
+		graphics2D.drawStringL(posX-0.7f, posY-0.8f, 0.23f, "3. ");
+		graphics2D.drawStringR(posX+0.8f, posY+0.f, 0.23f, ""+scores[0]);
+		graphics2D.drawStringR(posX+0.8f, posY-0.4f, 0.23f, ""+scores[1]);
+		graphics2D.drawStringR(posX+0.8f, posY-0.8f, 0.23f, ""+scores[2]);
 		graphics.bindTexture(null);
 		
 		//Draw highscore portraits
