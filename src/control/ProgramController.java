@@ -21,6 +21,7 @@ public class ProgramController extends DefaultSurface {
 	public GameSettings gameSettings;
 	private boolean mFirstDraw;
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
+	private boolean mChangingState;
 	
 	public ProgramController() {
 		super(true,false,true);
@@ -32,6 +33,7 @@ public class ProgramController extends DefaultSurface {
 		else
 			tracking = new CameraTracking(this);
 		running = true;
+		mChangingState = false;
 		
 		highscores = new Highscores();
 		gameSettings = new GameSettings();
@@ -75,6 +77,7 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	public void switchState(ProgramState newState) {
+		mChangingState = true;
 		tracking.restart();
 		mFirstDraw = true;
 		if(currentState!=null) {
@@ -82,6 +85,7 @@ public class ProgramController extends DefaultSurface {
 		}
 		currentState = newState;
 		currentState.onStart();
+		mChangingState = false;
 	}
 	
 	public ProgramState getCurrentState() {
@@ -94,7 +98,7 @@ public class ProgramController extends DefaultSurface {
 
 	@Override
 	public void draw() {
-		if(currentState!=null) {
+		if(currentState!=null && !mChangingState) {
 			if(mFirstDraw) {
 				currentState.startGraphics();
 				mFirstDraw = false;
