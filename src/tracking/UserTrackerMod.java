@@ -346,10 +346,10 @@ public class UserTrackerMod {
 			Vector3d vecRightUpperArmAngle=new Vector3d(rightelbow.getX()-rightshoulder.getX(),rightelbow.getY()-rightshoulder.getY(),rightelbow.getZ()-rightshoulder.getZ());
 			Vector3d vecLeftLowerArmAngle=new Vector3d(lefthand.getX()-leftelbow.getX(),lefthand.getY()-leftelbow.getY(),lefthand.getZ()-leftelbow.getZ());
 			Vector3d vecRightLowerArmAngle=new Vector3d(righthand.getX()-rightelbow.getX(),righthand.getY()-rightelbow.getY(),righthand.getZ()-rightelbow.getZ());
-			programController.tracking.rightUpperArmAngle=(float) (Math.PI-Math.atan2(vecLeftUpperArmAngle.x,vecLeftUpperArmAngle.y));//-bendingangle;
-			programController.tracking.leftUpperArmAngle=(float) (-Math.PI-Math.atan2(vecRightUpperArmAngle.x,vecRightUpperArmAngle.y));//-bendingangle;
-			programController.tracking.rightLowerArmAngle=(float) (Math.PI-Math.atan2(vecLeftLowerArmAngle.x,vecLeftLowerArmAngle.y));//-programController.tracking.rightUpperArmAngle;
-			programController.tracking.leftLowerArmAngle=(float) (-Math.PI-Math.atan2(vecRightLowerArmAngle.x,vecRightLowerArmAngle.y));//-programController.tracking.leftUpperArmAngle;
+			programController.tracking.leftUpperArmAngle=(float) (Math.PI-Math.atan2(vecLeftUpperArmAngle.x,vecLeftUpperArmAngle.y));//-bendingangle;
+			programController.tracking.rightUpperArmAngle=(float) (-Math.PI-Math.atan2(vecRightUpperArmAngle.x,vecRightUpperArmAngle.y));//-bendingangle;
+			programController.tracking.leftLowerArmAngle=(float) (Math.PI-Math.atan2(vecLeftLowerArmAngle.x,vecLeftLowerArmAngle.y));//-programController.tracking.rightUpperArmAngle;
+			programController.tracking.rightLowerArmAngle=(float) (-Math.PI-Math.atan2(vecRightLowerArmAngle.x,vecRightLowerArmAngle.y));//-programController.tracking.leftUpperArmAngle;
 			programController.tracking.trackArms=true;
 		//	p("leftupper: "+(programController.tracking.leftUpperArmAngle*180/Math.PI)+"||leftlower: "+(programController.tracking.leftLowerArmAngle*180/Math.PI)
 		//			+"||rightupper: "+(programController.tracking.rightUpperArmAngle*180/Math.PI)+"||rightlower: "+(programController.tracking.rightLowerArmAngle*180/Math.PI)+"||"+(bendingangle*180/Math.PI));

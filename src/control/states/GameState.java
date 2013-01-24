@@ -208,10 +208,9 @@ public class GameState extends WorldState {
 		}
 		
 		
-		synchronized(player.getSkeleton()) {
+		synchronized(camera) {
 			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-			graphics2D.setCamera(camera);
 		}
 		player.step(deltaTime);
 	}
@@ -223,32 +222,34 @@ public class GameState extends WorldState {
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 		
-		// draw houses and trees
-		houseRow.draw(graphics, graphics2D,player.posX);
-		treeRow.draw(graphics, graphics2D, player.posX);
-		
-		
-		// draw street
-		graphics2D.setWhite();
-		graphics.bindTexture(StandardTextures.STREET);
-		
-		float streetWidth = 10;
-		graphics2D.drawRectCentered(player.posX, -0.5f, streetWidth, 2.0f,0.0f, 4*(2*player.posX/streetWidth-1) , 0, 4*(2*player.posX/streetWidth+1),1);
-		graphics.bindTexture(null);
-		
-		// draw initial start sequence
-		if( pause){
-			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics2D.drawString(0.0f, 2.5f, 1.0f, 0, 0, 0, (int)(pauseTime-stateTimer+1)+" ");
+		synchronized(camera) {
+			// draw houses and trees
+			houseRow.draw(graphics, graphics2D,player.posX);
+			treeRow.draw(graphics, graphics2D, player.posX);
+			
+			
+			// draw street
+			graphics2D.setWhite();
+			graphics.bindTexture(StandardTextures.STREET);
+			
+			float streetWidth = 10;
+			graphics2D.drawRectCentered(player.posX, -0.5f, streetWidth, 2.0f,0.0f, 4*(2*player.posX/streetWidth-1) , 0, 4*(2*player.posX/streetWidth+1),1);
+			graphics.bindTexture(null);
+			
+			// draw initial start sequence
+			if( pause){
+				graphics2D.setColor(1.f, 1.f, 1.f);
+				graphics2D.drawString(0.0f, 2.5f, 1.0f, 0, 0, 0, (int)(pauseTime-stateTimer+1)+" ");
+			}
+			
+			//config camera
+	//		synchronized(player.getSkeleton()) {
+	//			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+	//			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+	//		}
+			//draw player
+			player.draw();
 		}
-		
-		//config camera
-//		synchronized(player.getSkeleton()) {
-//			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-//			camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-//		}
-		//draw player
-		player.draw();
 		
 		//draw stats
 		graphics2D.switchGameCoordinates(false);
