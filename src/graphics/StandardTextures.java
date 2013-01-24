@@ -42,7 +42,7 @@ public class StandardTextures {
 		WINE = gfxLoader.getImage("wine");
 		VODKA = gfxLoader.getImage("vodka");
 		STOOL = gfxLoader.getImage("hocker");
-		BAR = gfxLoader.getImage("theke");
+		BAR = gfxLoader.getImage("bar");
 		BLACKBOARD = gfxLoader.getImage("blackboard");
 		COLUMN = gfxLoader.getImage("column");
 		
