@@ -163,11 +163,11 @@ public class MainMenuState extends WorldState {
 		
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(doorLx, highscoresY+0.5f, 0.28f, 0, 0, 0, "Easy");
-		graphics2D.drawString(doorCx, highscoresY+0.5f, 0.28f, 0, 0, 0, "Medium");
-		graphics2D.drawString(doorRx, highscoresY+0.5f, 0.28f, 0, 0, 0, "Hard");
+		graphics2D.drawString(doorLx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Easy");
+		graphics2D.drawString(doorCx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Medium");
+		graphics2D.drawString(doorRx, highscoresY+0.45f, 0.2f, 0, 0, 0, "Hard");
 		graphics2D.setColor(1.f, 0.9f, 0.f);
-		graphics2D.drawString(0, -0.3f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
+		graphics2D.drawString(0, -0.4f, 0.3f, 0, 0, 0, "Drink (or press up) to select!");
 		graphics.bindTexture(null);
 		
 		//shadowPlayer.draw();
