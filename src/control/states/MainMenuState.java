@@ -67,14 +67,14 @@ public class MainMenuState extends WorldState {
 		restartTime = programController.getProgramTime();
 		player.posX = -0.8f;
 		startLevel = false;
-		
+		player.inGame = false;
 		
 		//Get Highscores
 		scoresEasy = highscores.highscoresEasy;
 		scoresMedium = highscores.highscoresMedium;
 		scoresHard = highscores.highscoresHard;
 		
-		shadowPlayer = new Player();
+		shadowPlayer = new Player(false);
 		shadowPlayer.init(programController);
 		shadowSkeleton = (DrunkenSkeleton)shadowPlayer.getSkeleton();
 		
@@ -136,6 +136,8 @@ public class MainMenuState extends WorldState {
 			bone.mVisible = false;
 		}
 		
+		shadowSkeleton.refreshBottle();
+		
 	}
 	
 	private void doDrinkingGesture () {
@@ -161,6 +163,8 @@ public class MainMenuState extends WorldState {
 		shadowSkeleton.mDrawContour = false;
 		shadowSkeleton.mRightLowerArmBone.mVisible = true;
 		shadowSkeleton.mRightUpperArmBone.mVisible = true;
+		
+		shadowSkeleton.refreshBottle();
 	}
 	
 	private void updateHintText () {
@@ -211,6 +215,8 @@ public class MainMenuState extends WorldState {
 		graphics2D.switchGameCoordinates(true);
 		graphics.bindTexture(null);
 		
+		player.skeleton.setDrinkId(activeLevel);
+		shadowPlayer.skeleton.setDrinkId(activeLevel);
 		shadowPlayer.draw();
 		
 		graphics2D.setWhite();
@@ -224,9 +230,10 @@ public class MainMenuState extends WorldState {
 		else {
 			graphics2D.setColor(0.4f, 0.4f, 0.4f);
 		}
-		graphics.bindTexture(drink);
-		graphics2D.drawRectCentered(posX, posY+0.8f,0.38f,0.48f);
-		
+		if(!active) {
+			graphics.bindTexture(drink);
+			graphics2D.drawRectCentered(posX, posY+0.8f,0.38f,0.48f);
+		}
 		graphics.bindTexture(StandardTextures.STOOL);
 		graphics2D.drawRectCentered(posX, posY-0.15f, stoolWidth/1.5f, stoolHeight-0.3f);
 		graphics.bindTexture(null);

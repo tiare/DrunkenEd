@@ -12,7 +12,7 @@ public abstract class WorldState extends ProgramState {
 	
 	public WorldState() {
 		super();
-		player = new Player();
+		player = new Player(true);
 	}
 	
 	public WorldState init(ProgramController programController) {

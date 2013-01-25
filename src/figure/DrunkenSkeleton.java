@@ -1,13 +1,24 @@
 package figure;
 
 import graphics.skeletons.defaults.HumanSkeleton;
+import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
+import graphics.skeletons.elements.JointNormalConstraint;
 import graphics.translator.TextureFilter;
 import graphics.translator.TextureHolder;
 
 public class DrunkenSkeleton extends HumanSkeleton {
 
+	public Joint mBottleJoint;
+	public Bone mBottleBone;
+	//private static final float[] Y_BOTTLES = {0,2f/8,5f/8,1};
+	public static final int DRINK_ANIMS = 4;
+	public int mDrinkId;
+	public int mDrinkEmpty;
+	public boolean mBottleVisible;
+	
 	public DrunkenSkeleton() {
+		mBottleVisible = true;
 		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
 	}
 	
@@ -48,8 +59,24 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mLeftKneeJoint.mPosY *= fac;
 		mRightKneeJoint.mPosY *= fac;
 		
+		
+		mBottleJoint = new Joint("BottleNeck",mRightHandJoint,0.5f,mRightHandJoint.mPosY,0.4f,this);
+		mBottleBone = new Bone(mGraphics,"Bottle",mBottleJoint,mRightHandJoint);
+
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<DRINK_ANIMS;j++)
+				mBottleBone.putTextureCoords(0.5f+0.5f*j/DRINK_ANIMS, 0.25f+i/4f, 0.5f+0.5f*(j+1)/DRINK_ANIMS, 0.25f+(i+1)/4f);
+		}
+		mBottleBone.setWidth(0.22f);
+		mBottleBone.mCelShading = false;
+		mBottleBone.mVisible = true;
+		mBottleBone.setShift(0.05f,0.05f,0.05f,-0.4f);
+		super.addJoint(mBottleJoint);
+		
+		
 		super.addBone(mRightLowerArmBone,1);
 		super.addBone(mRightUpperArmBone,1);
+		super.addBone(mBottleBone,1);
 		super.addBone(mRightFootBone,2);
 		super.addBone(mRightLowerLegBone,2);
 		super.addBone(mRightUpperLegBone,2);
@@ -64,6 +91,30 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		
 		mContourFactor = 0.035f;
 	}
+	
+	private void refreshBottleCoords() {
+		if(!mBottleVisible || mDrinkId<0) {
+			mBottleBone.mVisible = false;
+		}else{
+			mBottleBone.mVisible = true;
+			mBottleBone.setTextureCoordinatesIndex(mDrinkId*DRINK_ANIMS+mDrinkEmpty);
+			if(mDrinkId==0)
+				mBottleBone.setShiftX(0.12f);
+			else
+				mBottleBone.setShiftX(0.05f);
+		}
+	}
+	
+	public void refreshBottle() {
+		mBottleJoint.setPosByAngle(mRightHandJoint.getParentAngle()+PI/2);
+		refreshBottleCoords();
+	}
+	
+	public void setDrinkId(int drinkId) {
+		mDrinkId = drinkId;
+		refreshBottleCoords();
+	}
+	
 
 	public void setAnimated(boolean animated) {
 		for(Joint joint:mJoints) {

@@ -22,7 +22,7 @@ public class Player implements SkeletonCarrier {
 	private float velX,velY;
 	private ProgramController programController;
 	private AbstractTracking tracking;
-	private DrunkenSkeleton skeleton;
+	public DrunkenSkeleton skeleton;
 	private GraphicsTranslator graphics;
 	private Default2DGraphics graphics2D;
 	public float posX,posY;
@@ -33,12 +33,14 @@ public class Player implements SkeletonCarrier {
 	private boolean mFlail;
 	private boolean mSwing;
 	private float mSwingTime;
+	public boolean inGame;
 	
 	public float steeredBending;
 	public float bendingSpeed;
 	public float drunkenBending;
 	
-	public Player() {
+	public Player(boolean inGame) {
+		this.inGame = inGame;
 		skeleton = new DrunkenSkeleton();
 		steeredBending = 0;
 		drunkenBending = 0;
@@ -98,7 +100,7 @@ public class Player implements SkeletonCarrier {
 				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
 			}
 		}
-		
+		skeleton.refreshBottle();
 	}
 	
 	public void setArmAnglesByTracking(boolean enabled) {
@@ -175,6 +177,7 @@ public class Player implements SkeletonCarrier {
 	public void draw() {
 		synchronized(skeleton) {
 	
+			skeleton.mBottleVisible = !inGame;
 			if(mFlail || mSwingTime>0) {
 				skeleton.mHeadBone.setTextureCoordinatesIndex(1);
 			}else
