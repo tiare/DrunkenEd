@@ -1,16 +1,19 @@
 package graphics;
 
+import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
+import graphics.fonts.FontBelligerentMadnessChalk;
+import graphics.shaders.ChalkShader;
 import graphics.skeletons.Skeleton;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 import graphics.translator.TextureWrap;
-import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
 
 public class StandardTextures {
 
 	public static Texture CUBE;
 	public static Texture CIRCLE;
+	public static Texture PERLIN;
 	public static Texture STREET;
 	public static Texture BEER;
 	public static Texture WINE;
@@ -30,15 +33,18 @@ public class StandardTextures {
 	public static Texture TREE1;
 	public static Texture TREE2;
 
-	public static AbstractFont FONT_BELLIGERENT_MADNESS_CLEAN;
-	public static AbstractFont FONT_BELLIGERENT_MADNESS;
+	public static AbstractFont FONT_BELLIGERENT_MADNESS_CHALK;
 	public static AbstractFont FONT_BELLIGERENT_MADNESS_BOLD;
+	
+	public static ChalkShader CHALK_SHADER;
 
 	
 	public static void init(GraphicsTranslator graphics) {
+		
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
 		CUBE = gfxLoader.getImage("cube");
 		CIRCLE = gfxLoader.getImage("circle");
+		PERLIN = gfxLoader.getImage("perlin1");
 		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT));
 		BEER = gfxLoader.getImage("beer");
 		WINE = gfxLoader.getImage("wine");
@@ -62,9 +68,14 @@ public class StandardTextures {
 		//FONT_BELLIGERENT_MADNESS_CLEAN.init(graphics, 2, 6);
 		//FONT_BELLIGERENT_MADNESS = new FontBelligerentMadness();
 		//FONT_BELLIGERENT_MADNESS.init(graphics, 2, 6);
+		FONT_BELLIGERENT_MADNESS_CHALK  = new FontBelligerentMadnessChalk();
+		FONT_BELLIGERENT_MADNESS_CHALK.init(graphics, 2, 6);
 		FONT_BELLIGERENT_MADNESS_BOLD = new FontBelligerentMadnessBold();
 		FONT_BELLIGERENT_MADNESS_BOLD.init(graphics, 2, 6);
 
+		CHALK_SHADER = new ChalkShader();
+		CHALK_SHADER.init(graphics, gfxLoader);
+		
 		Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
 	

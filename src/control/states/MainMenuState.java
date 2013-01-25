@@ -273,7 +273,9 @@ public class MainMenuState extends WorldState {
 		}
 		
 		//Write highscores
-		graphics2D.setDefaultFont();
+		//graphics2D.setDefaultFont();
+		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
+		graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
 		//graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawStringL(posX-0.75f, posY-0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX-0.75f, posY-0.45f, 0.23f, "2. ");
@@ -282,6 +284,7 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawStringR(posX+0.75f, posY-0.45f, 0.23f, ""+scores[1]);
 		graphics2D.drawStringR(posX+0.75f, posY-0.85f, 0.23f, ""+scores[2]);
 		graphics.bindTexture(null);
+		graphics2D.setDefaultProgram();
 		
 		//Draw highscore portraits
 		graphics.bindTexture(firstPic);

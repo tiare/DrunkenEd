@@ -103,6 +103,7 @@ public class ProgramController extends DefaultSurface {
 				currentState.startGraphics();
 				mFirstDraw = false;
 			}
+			mGraphics2D.setTime((int)(programTimer*100));
 			currentState.draw();
 			mGraphics.flush();
 		}

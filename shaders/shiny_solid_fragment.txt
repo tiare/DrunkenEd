@@ -1,0 +1,24 @@
+precision mediump float;
+uniform float time;
+uniform sampler2D texSampler;
+uniform sampler2D texSamplerNoise;
+uniform vec4 ambientColor;
+
+varying vec2 texCoord;
+varying vec4 color;
+varying vec2 screenPos;
+
+void main()
+{
+	vec4 texCl1 = texture2D(texSampler, vec2(texCoord.x,texCoord.y));
+	float r = max(texCl1.r,max(texCl1.g,texCl1.b));
+	vec4 texCl = texture2D(texSamplerNoise, vec2(screenPos.x*0.5+time*0.002,screenPos.y*0.5-time*0.001));
+	vec4 cl1 = texCl1 * color * ambientColor;
+	cl1 *= 0.2+texCl*0.8;
+	vec4 clAdd = -0.05+texture2D(texSamplerNoise, vec2(screenPos.x*0.5-time*0.001+0.1,screenPos.y*0.5+time*0.002+0.2))*0.3;
+	clAdd *= clAdd;
+	clAdd.a = 0.0;
+	cl1 += clAdd;
+	
+	gl_FragColor = cl1;
+}
