@@ -181,6 +181,31 @@ public class MainMenuState extends WorldState {
 		graphics.bindTexture(null);
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		
+		//floor
+		graphics2D.setColor(0.5f, 0.5f, 0.5f);
+		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+		graphics2D.setColor(0.7f, 0.7f, 0.7f);
+		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
+		
+		//Draw back wall
+		graphics2D.setColor(0.4f, 0.3f, 0.2f);
+		graphics2D.drawRectCentered(0, 2.f, 8 ,4.0f);
+
+		graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics.bindTexture(StandardTextures.WALL);
+		//graphics2D.drawRectCentered(-4, 0.65f, 4, 1.25f);
+		graphics2D.drawRectCentered(-2, 0.65f, 4, 1.25f);
+		graphics2D.drawRectCentered( 2, 0.65f, 4, 1.25f);
+		//graphics2D.drawRectCentered( 4, 0.65f, 4, 1.25f);
+		graphics.bindTexture(null);
+		
+		//Draw side walls
+		graphics.bindTexture(StandardTextures.BRICK_WALL);
+		//draw left column
+		graphics2D.drawRectCentered(-4.f,1.79f, 0.4f,4.0f, 0);
+		graphics2D.drawRectCentered( 4.f,1.79f, 0.4f,4.0f, 0);
+		graphics.bindTexture(null);
+		
 		//drawBar
 		graphics.bindTexture(StandardTextures.BAR);
 		graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
@@ -193,19 +218,6 @@ public class MainMenuState extends WorldState {
 		drawStool(stoolLx, stoolsY, (activeLevel == 0), StandardTextures.BEER);
 		drawStool(stoolCx, stoolsY, (activeLevel == 1), StandardTextures.WINE);
 		drawStool(stoolRx, stoolsY, (activeLevel == 2), StandardTextures.VODKA);
-		
-		//floor
-		graphics2D.setColor(0.5f, 0.5f, 0.5f);
-		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
-		graphics2D.setColor(0.7f, 0.7f, 0.7f);
-		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
-		
-		//Draw columns
-		graphics.bindTexture(StandardTextures.COLUMN);
-		//draw left column
-		graphics2D.drawRectCentered(-3.9f,1.9f, 0.6f,4.0f, 0);
-		graphics2D.drawRectCentered(3.9f,1.9f, 0.6f,4.0f, 0);
-		graphics.bindTexture(null);
 		
 		//Display bottom text
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
@@ -313,7 +325,7 @@ public class MainMenuState extends WorldState {
 	
 	private void dontLeaveScreen () {
 		//Set player back if he walks out
-		if ( player.posX < - 3 || player.posX > 3.4f )
+		if ( player.posX < - 3.2f || player.posX > 3.5f )
 			player.posX = oldPlayerPosX;
 	}
 	

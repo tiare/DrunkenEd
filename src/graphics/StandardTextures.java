@@ -22,6 +22,8 @@ public class StandardTextures {
 	public static Texture BAR;
 	public static Texture BLACKBOARD;
 	public static Texture COLUMN;
+	public static Texture WALL;
+	public static Texture BRICK_WALL;
 	
 	public static Texture ED;
 	public static Texture NO_ED;
@@ -53,6 +55,8 @@ public class StandardTextures {
 		BAR = gfxLoader.getImage("bar");
 		BLACKBOARD = gfxLoader.getImage("blackboard");
 		COLUMN = gfxLoader.getImage("column");
+		WALL = gfxLoader.getImage("lowerwall");
+		BRICK_WALL = gfxLoader.getImage("brickWall");
 		
 		ED = gfxLoader.getImage("ed");
 		NO_ED = gfxLoader.getImage("ed_silhouette");
