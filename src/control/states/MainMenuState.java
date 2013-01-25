@@ -17,6 +17,8 @@ import control.ProgramController;
 public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
+	public static final float SPEED_FACTOR = 3;
+	
 	private int activeLevel = NONE;
 	private float barWidth = 6.f;
 	private float barHeight = 1.3f;
@@ -115,6 +117,12 @@ public class MainMenuState extends WorldState {
 		
 		if (waitedLongEnough)
 			doDrinkingGesture ();
+	}
+	
+	@Override
+	public void onBend(float bending){
+		player.steeredBending = bending;
+		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
 	}
 	
 	private void updateShadowPosition() {
