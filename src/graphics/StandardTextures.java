@@ -20,10 +20,12 @@ public class StandardTextures {
 	public static Texture VODKA;
 	public static Texture STOOL;
 	public static Texture BAR;
+	public static Texture TAP;
 	public static Texture BLACKBOARD;
 	public static Texture COLUMN;
 	public static Texture WALL;
-	public static Texture BRICK_WALL;
+	public static Texture BRICK_LEFT;
+	public static Texture BRICK_RIGHT;
 	
 	public static Texture ED;
 	public static Texture NO_ED;
@@ -53,10 +55,12 @@ public class StandardTextures {
 		VODKA = gfxLoader.getImage("vodka");
 		STOOL = gfxLoader.getImage("hocker");
 		BAR = gfxLoader.getImage("bar");
+		TAP = gfxLoader.getImage("tap");
 		BLACKBOARD = gfxLoader.getImage("blackboard");
 		COLUMN = gfxLoader.getImage("column");
 		WALL = gfxLoader.getImage("lowerwall");
-		BRICK_WALL = gfxLoader.getImage("brickWall");
+		BRICK_LEFT = gfxLoader.getImage("brickLeft");
+		BRICK_RIGHT = gfxLoader.getImage("brickRight");
 		
 		ED = gfxLoader.getImage("ed");
 		NO_ED = gfxLoader.getImage("ed_silhouette");
