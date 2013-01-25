@@ -20,10 +20,16 @@ public class StandardTextures {
 	public static Texture BAR;
 	public static Texture TAP;
 	public static Texture BLACKBOARD;
-	public static Texture COLUMN;
 	public static Texture WALL;
 	public static Texture BRICK_LEFT;
 	public static Texture BRICK_RIGHT;
+	
+	public static Texture DART;
+	public static Texture PICTURE1;
+	public static Texture PICTURE2;
+	public static Texture PICTURE3;
+	public static Texture FLAG1;
+	public static Texture FLAG2;
 	
 	public static Texture ED;
 	public static Texture NO_ED;
@@ -53,10 +59,16 @@ public class StandardTextures {
 		BAR = gfxLoader.getImage("bar");
 		TAP = gfxLoader.getImage("tap");
 		BLACKBOARD = gfxLoader.getImage("blackboard");
-		COLUMN = gfxLoader.getImage("column");
 		WALL = gfxLoader.getImage("lowerwall");
 		BRICK_LEFT = gfxLoader.getImage("brickLeft");
 		BRICK_RIGHT = gfxLoader.getImage("brickRight");
+		
+		DART = gfxLoader.getImage("dart");
+		PICTURE1 = gfxLoader.getImage("picture1");
+		PICTURE2 = gfxLoader.getImage("picture2");
+		PICTURE3 = gfxLoader.getImage("picture3");
+		FLAG1 = gfxLoader.getImage("flag1");
+		FLAG2 = gfxLoader.getImage("flag2");
 		
 		ED = gfxLoader.getImage("ed");
 		NO_ED = gfxLoader.getImage("ed_silhouette");
