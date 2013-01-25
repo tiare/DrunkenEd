@@ -77,6 +77,8 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	public void switchState(ProgramState newState) {
+		if(!newState.isInitialized()) 
+			newState.init(this);
 		mChangingState = true;
 		tracking.restart();
 		mFirstDraw = true;

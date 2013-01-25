@@ -17,6 +17,7 @@ public abstract class ProgramState implements TrackingListener {
 	protected GameSettings gameSettings;
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	protected Camera2D camera;
+	private boolean initialized;
 	
 	protected abstract void onStep(float deltaTime);
 	protected abstract void onDraw();
@@ -24,9 +25,11 @@ public abstract class ProgramState implements TrackingListener {
 	public ProgramState() {
 		camera = new Camera2D();
 		camera.mAdaption = 0.3f;
+		initialized = false;
 	}
 	
 	public ProgramState init(ProgramController programController) {
+		initialized = true;
 		this.programController = programController;
 		graphics = programController.mGraphics;
 		graphics2D = programController.mGraphics2D;
@@ -110,5 +113,8 @@ public abstract class ProgramState implements TrackingListener {
 	
 	public void startGraphics() {
 		
+	}
+	public boolean isInitialized() {
+		return initialized;
 	}
 }

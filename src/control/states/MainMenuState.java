@@ -366,9 +366,9 @@ public class MainMenuState extends WorldState {
 		//Enter level
 		if (activeLevel != NONE && programController.getProgramTime() > restartTime + timeout) {
 			//set difficulty in gamesettings!
-			super.gameSettings.difficulty = activeLevel;			
+			super.gameSettings.difficulty = activeLevel;
 			//start game
-			super.programController.switchState(new GameState().init(programController));
+			super.programController.switchState(new GameState());
 		}
 	}
 	

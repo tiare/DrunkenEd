@@ -2,6 +2,7 @@ package control;
 
 public class Debug {
 	
+	public static boolean USE_COUNTDOWN = true;
 	public static boolean FAKE_CONTROLS = false;
 	public static int RESOLUTION_X = 1200;
 	public static int RESOLUTION_Y = 768;

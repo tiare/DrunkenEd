@@ -2,16 +2,13 @@ package graphics.background;
 
 import java.util.LinkedList;
 
-import control.Debug;
-import control.GameSettings;
-
 import graphics.defaults.Default2DGraphics;
 import graphics.translator.GraphicsTranslator;
 
 public class HorizontalRow {
 
 	private HorizontalDrawablePool pool;
-	private float drawingWidth = 4.0f;
+	private float drawingWidth = 5.0f;
 	private float spacerWidthMin = 0.4f;
 	private float spacerWidthRange = 0.4f;
 	private LinkedList<HorizontalDrawableInterface> row;

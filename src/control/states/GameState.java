@@ -3,6 +3,7 @@ package control.states;
 import java.text.DecimalFormat;
 
 import figure.DrunkenSkeleton;
+import control.Debug;
 import control.GameSettings;
 import control.ProgramState;
 import graphics.StandardTextures;
@@ -16,6 +17,7 @@ public class GameState extends WorldState {
 	private float fallingAngle;
 	private float difficultyFactor;
 
+	private boolean fixedCameraMode;
 	private float gameOverTime;
 
 	private boolean bendingLeft;
@@ -47,10 +49,14 @@ public class GameState extends WorldState {
 	public void onStart() {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
 		player.bendingSpeed = 0;
-		difficultyFactor = (1 - (2 * gameSettings.difficultyAddition) + gameSettings.difficulty
-				* gameSettings.difficultyAddition);
+		//difficultyFactor = (1 - (2 * gameSettings.difficultyAddition) + gameSettings.difficulty * gameSettings.difficultyAddition);
+		difficultyFactor = gameSettings.difficulty;
 		pause = true;
-		pauseTime = 3.0f;
+		if(Debug.USE_COUNTDOWN)
+			pauseTime = 3.0f;
+		else
+			pauseTime = 0;
+		fixedCameraMode = false;
 
 		DrunkenSkeleton skeleton = (DrunkenSkeleton) player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX,
@@ -157,33 +163,12 @@ public class GameState extends WorldState {
 					float gravity;
 					if (gameSettings.useGravity) {
 						gravity = gameSettings.gravityFactor * difficultyFactor;
+						
+						//Gravity
+						player.bendingSpeed = 
+								(float) Math.sin(player.drunkenBending
+										+ player.steeredBending * 2) * gravity;
 
-						if (Math.abs(player.drunkenBending
-								+ player.steeredBending) > (Math.PI / 6)
-								&& (bendingLeft ^ (player.drunkenBending
-										+ player.steeredBending < 0))) {
-
-							// System.out.println(bendingLeft + " " +
-							// (player.drunkenBending + player.steeredBending));
-							reBend = bendingLeft ? (float) -Math.PI / 2.0f
-									: (float) Math.PI / 2.0f;
-							// player.steeredBending += (bendingLeft) ?
-							// (Math.PI/10) : -(Math.PI/10);
-							// player.drunkenBending += (bendingLeft) ?
-							// -(Math.PI/20) : (Math.PI/20);
-						}
-
-						float addBend = 0;
-						/*
-						 * if( reBend != 0){ reBend *= 0.1f; addBend = reBend;//
-						 * * 0.5f; if(Math.abs( reBend ) < 0.05){ reBend = 0; }
-						 * }
-						 */
-						player.bendingSpeed = (float) Math
-								.sin(player.drunkenBending
-										+ player.steeredBending * 2)
-								* gravity + addBend;
-						// player.bendingSpeed = 0;
 						player.drunkenBending += player.bendingSpeed;
 					}
 
@@ -267,7 +252,12 @@ public class GameState extends WorldState {
 				}
 			}
 			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-			camera.set(skeleton.mHipJoint.mPosX+player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending );
+			if(!fixedCameraMode)
+				camera.set(skeleton.mHipJoint.mPosX+player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending );
+			else
+				if(player.getWorldX()>camera.getX()+8) {
+					fixedCameraMode = false;
+				}
 		}
 		player.step(deltaTime);
 	}
@@ -282,10 +272,10 @@ public class GameState extends WorldState {
 		synchronized (camera) {
 			
 			// draw houses
-			houseRow.draw(graphics, graphics2D, player.posX);
+			houseRow.draw(graphics, graphics2D, camera.getX());
 			
 			// draw street
-			streetRow.draw(graphics, graphics2D, player.posX);
+			streetRow.draw(graphics, graphics2D, camera.getX());
 			/*graphics2D.setWhite();
 			graphics.bindTexture(StandardTextures.STREET);
 			float streetWidth = 10;
@@ -296,7 +286,7 @@ public class GameState extends WorldState {
 			
 			
 			// draw trees lanterns and banks
-			streetItemRow.draw(graphics, graphics2D, player.posX);
+			streetItemRow.draw(graphics, graphics2D, camera.getX());
 			
 			
 
@@ -356,7 +346,11 @@ public class GameState extends WorldState {
 
 	@Override
 	public void keyDown(int key) {
-
+		if(key == 'f') {
+			fixedCameraMode = true;
+			camera.setPos(camera.getX()+8f, camera.getY());
+			camera.setRotation(0);
+		}
 	}
 
 	@Override

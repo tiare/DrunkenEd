@@ -1,4 +1,4 @@
-precision mediump float;
+#ANDROID precision mediump float;
 uniform float time;
 uniform sampler2D texSampler;
 uniform sampler2D texSamplerNoise;
