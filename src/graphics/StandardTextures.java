@@ -15,9 +15,7 @@ public class StandardTextures {
 	public static Texture CIRCLE;
 	public static Texture PERLIN;
 	public static Texture STREET;
-	public static Texture BEER;
-	public static Texture WINE;
-	public static Texture VODKA;
+
 	public static Texture STOOL;
 	public static Texture BAR;
 	public static Texture TAP;
@@ -50,9 +48,7 @@ public class StandardTextures {
 		CIRCLE = gfxLoader.getImage("circle");
 		PERLIN = gfxLoader.getImage("perlin1");
 		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT));
-		BEER = gfxLoader.getImage("beer");
-		WINE = gfxLoader.getImage("wine");
-		VODKA = gfxLoader.getImage("vodka");
+		
 		STOOL = gfxLoader.getImage("hocker");
 		BAR = gfxLoader.getImage("bar");
 		TAP = gfxLoader.getImage("tap");

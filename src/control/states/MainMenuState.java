@@ -222,11 +222,10 @@ public class MainMenuState extends WorldState {
 		drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
 		drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
 		drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
-		graphics2D.setColor(1.f, 1.f, 1.f);
 		
-		drawStool(stoolLx, stoolsY, (activeLevel == 0), StandardTextures.BEER);
-		drawStool(stoolCx, stoolsY, (activeLevel == 1), StandardTextures.WINE);
-		drawStool(stoolRx, stoolsY, (activeLevel == 2), StandardTextures.VODKA);
+		drawStool(stoolLx, stoolsY, (activeLevel == 0), LEFT);
+		drawStool(stoolCx, stoolsY, (activeLevel == 1), CENTER);
+		drawStool(stoolRx, stoolsY, (activeLevel == 2), RIGHT);
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		
 		//Display bottom text
@@ -245,11 +244,14 @@ public class MainMenuState extends WorldState {
 		player.draw();
 	}
 	
-	private void drawStool (float posX, float posY, boolean active, Texture drink) {
+	private void drawStool (float posX, float posY, boolean active, int drink) {
 		if(!active) {
+			float drinkY = (drink > 0? posY + 0.9f: posY + 0.72f);
 			//display the drinks
-			graphics.bindTexture(drink);
-			graphics2D.drawRectCentered(posX, posY+0.8f,0.38f,0.48f);
+			graphics2D.setColor(1.f, 1.f, 1.f);
+			graphics.bindTextureInHolder(skeleton.mTextureHolder);
+			graphics2D.drawRectCentered(posX, drinkY,3.f,3.f, 0,
+					skeleton.mBottleBone.mTexCoords.get(drink * 4));
 		}
 		
 		if (active) {
