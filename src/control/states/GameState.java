@@ -48,7 +48,10 @@ public class GameState extends WorldState {
 	@Override
 	public void onStart() {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
+		fallingAngle = (float)Math.toRadians(80);
 		player.bendingSpeed = 0;
+		player.inGame = true;
+		player.setArmAnglesByTracking(false);
 		//difficultyFactor = (1 - (2 * gameSettings.difficultyAddition) + gameSettings.difficulty * gameSettings.difficultyAddition);
 		difficultyFactor = gameSettings.difficulty;
 		pause = true;
@@ -142,7 +145,8 @@ public class GameState extends WorldState {
 	public void onStep(float deltaTime) {
 		// calculate world rotation while considering difficulty
 		// worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
-
+		synchronized (camera) {
+			
 		if (pause) {
 			if (stateTimer > pauseTime) {
 				pauseFadeOut = 1;
@@ -156,8 +160,11 @@ public class GameState extends WorldState {
 			pauseFadeOut -= 0.05f;
 		}
 
-		synchronized (camera) {
+		
 			if (!player.gameOver) {
+				
+				//---PLAYER-CONTROLS---
+				
 				synchronized (player.getSkeleton()) {
 					// add bending caused by drunkenness
 					float gravity;
@@ -165,67 +172,76 @@ public class GameState extends WorldState {
 						gravity = gameSettings.gravityFactor * difficultyFactor;
 						
 						//Gravity
+						int sign = player.steeredBending<0?-1:1;
 						player.bendingSpeed = 
-								(float) Math.sin(player.drunkenBending
-										+ player.steeredBending * 2) * gravity;
+								(float) (player.drunkenBending + player.steeredBending * player.steeredBending * sign * 6) * gravity;
 
 						player.drunkenBending += player.bendingSpeed;
 					}
 
-					player.drunkenBending += gameSettings.drunkenBendingFactor
-							* ((float) Math.sin(stateTimer + Math.PI / 2) / 250.0f + (float) Math
-									.sin(stateTimer * 1.7) / 350.0f)
-							* difficultyFactor;
+					//Oszillation
+					player.drunkenBending += gameSettings.drunkenBendingFactor * ((float) Math.sin(stateTimer + Math.PI / 2) / 250.0f 
+							+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * difficultyFactor;
 
-					float speed = (player.steeredBending + player.drunkenBending)
-							/ fallingAngle * gameSettings.speedFactor;
+					float bendingSum = player.steeredBending + player.drunkenBending;
+					float acceleration = 0.01f;
+					if(bendingSum * player.getSpeed()>0) {
+						if(Math.abs(player.getSpeed())*0.3f<Math.abs(bendingSum))
+							acceleration = bendingSum * 0.8f;
+					}else
+						acceleration = bendingSum * 2;
+					acceleration *= 2 / fallingAngle * gameSettings.speedFactor;
+					acceleration *= (difficultyFactor*0.4f+0.5f);
 					if (gameSettings.speedIsProportionalToBending) {
-						player.setSpeedX(speed);
+						player.setSpeedX(acceleration);
 					} else {
-						speed = (speed / 50.0f)
-								* gameSettings.speedAccelerationFactor
-								+ player.getSpeed();
+						float speed;
+						speed = (acceleration / 50.0f) * gameSettings.speedAccelerationFactor + player.getSpeed();
+						//Maximum speed
 						if (Math.abs(speed) > gameSettings.maxSpeed) {
 							player.fallDown();
 							gameOverTime = programController.getProgramTime();
 						} else {
 
+							//Flailing
 							if (flailingArms) {
-								if (Math.abs(speed) < gameSettings.maxSpeed
-										* gameSettings.flailingArmsSpeedFactor
-										|| ((player.steeredBending + player.drunkenBending) < 0) != (player
-												.getSpeed() < 0)) {
+								if (Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor
+										|| ((player.steeredBending + player.drunkenBending) < 0) != (player.getSpeed() < 0)) {
 									flailingArms = false;
 									player.setFlailingArms(false);
 								}
 							} else {
-								if (Math.abs(speed) > gameSettings.maxSpeed
-										* gameSettings.flailingArmsSpeedFactor
-										&& ((player.steeredBending + player.drunkenBending) < 0) == (player
-												.getSpeed() < 0)) {
+								if (Math.abs(speed) > gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor
+										&& ((player.steeredBending + player.drunkenBending) < 0) == (player.getSpeed() < 0)) {
 									flailingArms = true;
 									player.setFlailingArms(true);
 								}
-								if (player.posX <= 0.0f && speed < 0) {
-									player.setSpeedX(0.0f);
-								} else {
-									player.setSpeedX(speed);
-								}
+							}
+							
+							//Limit
+							if (player.posX <= 0.0f && speed < 0) {
+								player.setSpeedX(0.0f);
+								player.posX = 0;
+							} else {
+								player.setSpeedX(speed);
 							}
 						}
 
+						//Sine Zoom effect
 						if (gameSettings.difficulty == GameSettings.GAME_HARD) {
 							worldZoom += ((float) Math.sin(stateTimer
 									* gameSettings.zoomFrequencyFactor) / 200.0)
 									* gameSettings.zoomIntensityFactor;
 						}
 
-						float bending = Math.abs(player.drunkenBending
-								+ player.steeredBending);
+						float bending = Math.abs(player.drunkenBending + player.steeredBending);
+						//Overbend
 						if (bending > fallingAngle) {
 							player.fallDown();
 							gameOverTime = programController.getProgramTime();
 						} else {
+							
+							//Swinging
 							if (swingingArms) {
 								if (bending < fallingAngle
 										* gameSettings.swingingArmsBendFactor) {
@@ -243,6 +259,8 @@ public class GameState extends WorldState {
 					}
 				}
 			} else {
+				
+				//---GAME-OVER---
 				if (programController.getProgramTime() > gameOverTime
 						+ gameSettings.dyingTimeout) {
 					// TODO: -1f, -1f -> distance, time
@@ -258,8 +276,9 @@ public class GameState extends WorldState {
 				if(player.getWorldX()>camera.getX()+8) {
 					fixedCameraMode = false;
 				}
+		
+			player.step(deltaTime);
 		}
-		player.step(deltaTime);
 	}
 
 	@Override
@@ -269,46 +288,43 @@ public class GameState extends WorldState {
 		graphics.clear(0.3f, 0.3f, 0.3f);
 		graphics2D.setWhite();
 
-		synchronized (camera) {
-			
-			// draw houses
-			houseRow.draw(graphics, graphics2D, camera.getX());
-			
-			// draw street
-			streetRow.draw(graphics, graphics2D, camera.getX());
-			/*graphics2D.setWhite();
-			graphics.bindTexture(StandardTextures.STREET);
-			float streetWidth = 10;
-			graphics2D.drawRectCentered(player.posX, -1.0f, streetWidth, 2.75f,
-					0.0f, 4 * (2 * player.posX / streetWidth - 1), 1, 4 * (2
-							* player.posX / streetWidth + 1), 0);
-			graphics.bindTexture(null);*/
-			
-			
-			// draw trees lanterns and banks
-			streetItemRow.draw(graphics, graphics2D, camera.getX());
-			
-			
+		// draw houses
+		houseRow.draw(graphics, graphics2D, camera.getX());
+		
+		// draw street
+		streetRow.draw(graphics, graphics2D, camera.getX());
+		/*graphics2D.setWhite();
+		graphics.bindTexture(StandardTextures.STREET);
+		float streetWidth = 10;
+		graphics2D.drawRectCentered(player.posX, -1.0f, streetWidth, 2.75f,
+				0.0f, 4 * (2 * player.posX / streetWidth - 1), 1, 4 * (2
+						* player.posX / streetWidth + 1), 0);
+		graphics.bindTexture(null);*/
+		
+		
+		// draw trees lanterns and banks
+		streetItemRow.draw(graphics, graphics2D, camera.getX());
+		
+		
 
-			// draw initial start sequence
-			if (pause) {
-				graphics2D.setColor(1.f, 1.f, 1.f);
-				graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0,
-						(int) Math.ceil(pauseTime - stateTimer) + " ");
-			} else if (pauseFadeOut > 0) {
-				graphics2D.setColor(1.f, 1.f, 1.f, pauseFadeOut);
-				graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
-			}
-
-			// config camera
-			// synchronized(player.getSkeleton()) {
-			// DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-			// camera.set(skeleton.mHipJoint.mPosX + player.posX,
-			// skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-			// }
-			// draw player
-			player.draw();
+		// draw initial start sequence
+		if (pause) {
+			graphics2D.setColor(1.f, 1.f, 1.f);
+			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0,
+					(int) Math.ceil(pauseTime - stateTimer) + " ");
+		} else if (pauseFadeOut > 0) {
+			graphics2D.setColor(1.f, 1.f, 1.f, pauseFadeOut);
+			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
 		}
+
+		// config camera
+		// synchronized(player.getSkeleton()) {
+		// DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+		// camera.set(skeleton.mHipJoint.mPosX + player.posX,
+		// skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+		// }
+		// draw player
+		player.draw();
 
 		// draw stats
 		graphics2D.switchGameCoordinates(false);

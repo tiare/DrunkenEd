@@ -91,14 +91,20 @@ public class Player implements SkeletonCarrier {
 			skeleton.mRightUpperArmBone.setAngle(angle+offset);
 			skeleton.mRightLowerArmBone.setAngle(angle+offset);
 		}else{
+			skeleton.mLeftShoulderJoint.setPosByConstraint();
+			skeleton.mRightShoulderJoint.setPosByConstraint();
 			if(armAnglesByTracking) {
-				skeleton.mLeftShoulderJoint.setPosByConstraint();
-				skeleton.mRightShoulderJoint.setPosByConstraint();
 				skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
 				skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
 				skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
 				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+			}else{
+				skeleton.mLeftUpperArmBone.setAngle(0);
+				skeleton.mLeftLowerArmBone.setAngle(0);
+				skeleton.mRightUpperArmBone.setAngle(0);
+				skeleton.mRightLowerArmBone.setAngle(0);
 			}
+				
 		}
 		skeleton.refreshBottle();
 	}
