@@ -194,6 +194,8 @@ public class GameState extends WorldState {
 						player.drunkenBending += push*Math.min(0.014f,stateTimer*0.0003f)*pushDir;
 					}
 					
+					player.drunkenBending -= player.getSpeed()*0.005f;
+					
 					// add bending caused by drunkenness
 					float gravity;
 					if (gameSettings.useGravity) {
@@ -212,10 +214,11 @@ public class GameState extends WorldState {
 							+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.01f);
 
 					bendingSum = player.steeredBending + player.drunkenBending;
-					float acceleration = 0.01f;
+					int sign = bendingSum<0?-1:1;
+					float acceleration = 0.0f;
 					if(bendingSum * player.getSpeed()>0) {
 						if(Math.abs(player.getSpeed())*0.3f<Math.abs(bendingSum))
-							acceleration = bendingSum * 0.8f;
+							acceleration = (float)Math.pow(Math.min(0.8*Math.PI/2,sign*bendingSum),0.9f)*sign * 1.1f;
 					}else
 						acceleration = bendingSum * 2;
 					acceleration *= 2 / fallingAngle * gameSettings.speedFactor;
@@ -265,8 +268,8 @@ public class GameState extends WorldState {
 						float bending = Math.abs(player.drunkenBending + player.steeredBending);
 						//Overbend
 						if (bending > fallingAngle) {
-							player.fallDown();
-							gameOverTime = programController.getProgramTime();
+							//player.fallDown();
+							//gameOverTime = programController.getProgramTime();
 						} else {
 							
 							//Swinging
