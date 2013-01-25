@@ -13,7 +13,7 @@ void main()
 	vec4 texCl = texture2D(texSampler, vec2(texCoord.x,texCoord.y));
 	vec4 noiseCl = texture2D(texSamplerNoise, vec2(texCoord.x*4.5,texCoord.y*4.5));
 	vec4 cl1 = texCl * color * ambientColor;
-	cl1.a *= (noiseCl.r*(noiseCl.r+0.2f))+0.3;
+	cl1.a *= (noiseCl.r*(noiseCl.r+0.2))+0.3;
 	
 	gl_FragColor = cl1;
 }
