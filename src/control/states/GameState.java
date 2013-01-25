@@ -13,6 +13,8 @@ import graphics.background.TexturedObject;
 
 public class GameState extends WorldState {
 
+	private static final float PUSH_TIME = 0;
+	
 	private float worldZoom;
 	private float fallingAngle;
 	private float difficultyFactor;
@@ -29,6 +31,9 @@ public class GameState extends WorldState {
 
 	private boolean swingingArms = false;
 	private boolean flailingArms = false;
+	private float nextEvent;
+	private float push;
+	private int pushDir;
 
 	private HorizontalRow houseRow;
 	private HorizontalRow streetRow;
@@ -48,7 +53,7 @@ public class GameState extends WorldState {
 	@Override
 	public void onStart() {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
-		fallingAngle = (float)Math.toRadians(80);
+		fallingAngle = (float)Math.toRadians(95);
 		player.bendingSpeed = 0;
 		player.inGame = true;
 		player.setArmAnglesByTracking(false);
@@ -150,6 +155,7 @@ public class GameState extends WorldState {
 		if (pause) {
 			if (stateTimer > pauseTime) {
 				pauseFadeOut = 1;
+				nextEvent = 2+(float)Math.random()*5;
 				pause = false;
 			}
 
@@ -162,28 +168,50 @@ public class GameState extends WorldState {
 
 		
 			if (!player.gameOver) {
-				
+				float t = stateTimer-6;
+				if(t<0)
+					t=0;
+				difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.8f)*0.05f);
 				//---PLAYER-CONTROLS---
 				
 				synchronized (player.getSkeleton()) {
+					
+					float bendingSum = player.steeredBending + player.drunkenBending;
+					
+					if(stateTimer>=nextEvent) {
+						nextEvent = stateTimer+3+(float)Math.random()*3;
+						if(Math.abs(bendingSum)<Math.PI/4) {
+							push = (1.5f+(float)Math.random()*0.1f)*PUSH_TIME;
+							if(bendingSum>0)
+								pushDir = 1;
+							else
+								pushDir = -1;
+						}
+					}
+			
+					if(push>0) {
+						push-=deltaTime;
+						player.drunkenBending += push*Math.min(0.014f,stateTimer*0.0003f)*pushDir;
+					}
+					
 					// add bending caused by drunkenness
 					float gravity;
 					if (gameSettings.useGravity) {
-						gravity = gameSettings.gravityFactor * difficultyFactor;
+						gravity = gameSettings.gravityFactor;
 						
 						//Gravity
 						int sign = player.steeredBending<0?-1:1;
 						player.bendingSpeed = 
-								(float) (player.drunkenBending + player.steeredBending * player.steeredBending * sign * 6) * gravity;
+								(float) (player.drunkenBending * gravity + player.steeredBending * player.steeredBending * sign * 0.1f) * difficultyFactor;
 
 						player.drunkenBending += player.bendingSpeed;
 					}
 
 					//Oszillation
 					player.drunkenBending += gameSettings.drunkenBendingFactor * ((float) Math.sin(stateTimer + Math.PI / 2) / 250.0f 
-							+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * difficultyFactor;
+							+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.01f);
 
-					float bendingSum = player.steeredBending + player.drunkenBending;
+					bendingSum = player.steeredBending + player.drunkenBending;
 					float acceleration = 0.01f;
 					if(bendingSum * player.getSpeed()>0) {
 						if(Math.abs(player.getSpeed())*0.3f<Math.abs(bendingSum))

@@ -167,7 +167,13 @@ public class Player implements SkeletonCarrier {
 
 				animationPlayer.proceed(velX*deltaTime);
 				
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
+				float bending = (drunkenBending+steeredBending);
+				float limit = 0.9f*PI/2;
+				if(bending>limit)
+					bending = limit;
+				if(bending<-limit)
+					bending = -limit;
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
 				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
 				
 				refreshArms();

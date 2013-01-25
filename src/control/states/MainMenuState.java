@@ -17,7 +17,7 @@ import control.ProgramController;
 public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
-	public static final float SPEED_FACTOR = 3;
+	public static final float SPEED_FACTOR = 3.5f;
 	
 	private int activeLevel = NONE;
 	private float barWidth = 6.f;

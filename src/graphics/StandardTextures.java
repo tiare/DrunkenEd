@@ -19,6 +19,7 @@ public class StandardTextures {
 	public static Texture WINE;
 	public static Texture VODKA;
 	public static Texture STOOL;
+	public static Texture ED_SKELETON;
 	public static Texture BAR;
 	public static Texture BLACKBOARD;
 	public static Texture COLUMN;
@@ -56,6 +57,7 @@ public class StandardTextures {
 		
 		ED = gfxLoader.getImage("ed");
 		NO_ED = gfxLoader.getImage("ed_silhouette");
+		ED_SKELETON = gfxLoader.getImage("skeleton_ed");
 		
 		HOUSE1 = gfxLoader.getImage("house1");
 		MOES = gfxLoader.getImage("moes");

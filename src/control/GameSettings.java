@@ -14,7 +14,7 @@ public class GameSettings {
 	
 	
 	public boolean useGravity = true;
-	public float gravityFactor = 0.02f;
+	public float gravityFactor = 0.015f;
 	
 	public float zoomFrequencyFactor = 1.3f;
 	public float zoomIntensityFactor = 1.0f;
