@@ -90,33 +90,35 @@ public class MainMenuState extends WorldState {
 	
 	@Override
 	public void onStep(float deltaTime) {
-		//camera.set(0, 1, 2);
-		camera.set(player.posX, 1.5f, 2.3f);
-		oldPlayerPosX = player.posX;
-		
-		if (startLevel) {
-			if (programController.getProgramTime() > restartTime + hintTimeout) {
-				//start game
-				super.programController.switchState(new GameState().init(programController));
+		synchronized(camera) {
+			//camera.set(0, 1, 2);
+			camera.set(player.posX, 1.5f, 2.3f);
+			oldPlayerPosX = player.posX;
+			
+			if (startLevel) {
+				if (programController.getProgramTime() > restartTime + hintTimeout) {
+					//start game
+					super.programController.switchState(new GameState().init(programController));
+				}
 			}
+			else {
+				player.step(deltaTime);
+			}
+			//don't let the player walk out of the screen
+			dontLeaveScreen ();
+			updateActiveLevel ();
+			updateHintText ();
+			
+			if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
+				waitedLongEnough = true;
+			
+			shadowPlayer.posX = player.posX;
+			shadowPlayer.posY = player.posY;
+			updateShadowPosition();
+			
+			if (waitedLongEnough)
+				doDrinkingGesture ();
 		}
-		else {
-			player.step(deltaTime);
-		}
-		//don't let the player walk out of the screen
-		dontLeaveScreen ();
-		updateActiveLevel ();
-		updateHintText ();
-		
-		if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
-			waitedLongEnough = true;
-		
-		shadowPlayer.posX = player.posX;
-		shadowPlayer.posY = player.posY;
-		updateShadowPosition();
-		
-		if (waitedLongEnough)
-			doDrinkingGesture ();
 	}
 	
 	@Override
