@@ -36,10 +36,12 @@ public class GameOverState extends ProgramState {
 	private float worldZoom = 2.3f;
 	private float timeLeft = 0;
 	boolean tookPicture;
+	private GameState gameState;
 
-	public GameOverState(ProgramController programController, float distance, float time) {
+	public GameOverState(ProgramController programController, GameState gameState, float distance, float time) {
 		// player.init(programController);
 		this.programController = programController;
+		this.gameState = gameState;
 		this.score = (int) getScore(distance, time);
 		this.distance = distance;
 		this.time = time;
@@ -64,28 +66,24 @@ public class GameOverState extends ProgramState {
 
 	@Override
 	public void onStep(float deltaTime) {
+		gameState.gameOverOverlay = true;
+		gameState.step(deltaTime);
 		timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() - countdownTime) / 1000L);
 		if (timeLeft < 0 && !tookPicture) {
 			p("Countdown expired, returning to main menu");
-			super.fadeToState(new MainMenuState());
+			programController.fadeToState(new MainMenuState());
 		}
 		camera.set(0.f, 2.f, worldZoom);
 	}
 
 	private void drawBackground() {
-		graphics.clear(0.3f, 0.3f, 0.3f);
 
+		gameState.draw();
+		
+		graphics.setAmbientColor(programController.fade);
 		graphics2D.switchGameCoordinates(false);
 		graphics2D.setWhite();
-
-		graphics.bindTexture(null);
-
-		// floor
-		graphics2D.setColor(0.5f, 0.5f, 0.5f);
-		graphics2D.drawRectCentered(0, -5.0f, 20, 10.0f, 0);
-		graphics2D.setColor(0.7f, 0.7f, 0.7f);
-		graphics2D.drawRectCentered(0, -0.05f, 20, 0.1f, 0);
-
+		
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
 	}
@@ -99,7 +97,7 @@ public class GameOverState extends ProgramState {
 				// super.fadeToState(new
 				// MainMenuState().init(programController));
 
-				super.fadeToState(new MainMenuState());
+				programController.fadeToState(new MainMenuState());
 				//return;
 
 				// super.programController.switchState(new
@@ -198,7 +196,7 @@ public class GameOverState extends ProgramState {
 		// Enter the selected door
 		if (key == Keys.UP) {
 			// switch to menu
-			super.fadeToState(new MainMenuState());
+			programController.fadeToState(new MainMenuState());
 		}
 	}
 	

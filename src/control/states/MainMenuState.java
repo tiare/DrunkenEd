@@ -98,7 +98,7 @@ public class MainMenuState extends WorldState {
 			if (startLevel) {
 				if (programController.getProgramTime() > restartTime + hintTimeout) {
 					//start game
-					super.fadeToState(new GameState());
+					programController.fadeToState(new GameState());
 				}
 			}
 			else {
@@ -411,7 +411,7 @@ public class MainMenuState extends WorldState {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeLevel;
 			//start game
-			super.fadeToState(new GameState());
+			programController.fadeToState(new GameState());
 		}
 	}
 	

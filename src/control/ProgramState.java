@@ -7,8 +7,7 @@ import graphics.defaults.Default3DGraphics;
 import graphics.translator.GraphicsTranslator;
 
 public abstract class ProgramState implements TrackingListener {
-	
-	public static float DEFAULT_FADESPEED = 2.5f;
+
 	protected GraphicsTranslator graphics;
 	protected Default2DGraphics graphics2D;
 	protected Default3DGraphics graphics3D;
@@ -19,9 +18,6 @@ public abstract class ProgramState implements TrackingListener {
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	protected Camera2D camera;
 	private boolean initialized;
-	private ProgramState fadeState;
-	protected float fade;
-	private float fadeSpeed;
 	
 	protected abstract void onStep(float deltaTime);
 	protected abstract void onDraw();
@@ -30,8 +26,6 @@ public abstract class ProgramState implements TrackingListener {
 		camera = new Camera2D();
 		camera.mAdaption = 0.3f;
 		initialized = false;
-		fade = 1;
-		fadeState = null;
 	}
 	
 	public ProgramState init(ProgramController programController) {
@@ -57,38 +51,12 @@ public abstract class ProgramState implements TrackingListener {
 	
 	public void step(float deltaTime) {
 		stateTimer += deltaTime;
-		if(fadeState==null) {
-			if(fade<1) {
-				fade += deltaTime*fadeSpeed;
-				if(fade>1)
-					fade = 1;
-			}
-			onStep(deltaTime);
-		}else{
-			fade -= deltaTime*fadeSpeed;
-			if(fade<0) {
-				fade = 0;
-				programController.switchState(fadeState);
-				fadeState.setFadeIn();
-			}
-		}
-	}
-	
-	private void setFadeIn() {
-		fade = 0;
-		fadeSpeed = DEFAULT_FADESPEED;
-	}
-	
-	public void fadeToState(ProgramState state) {
-		fade = 1;
-		fadeSpeed = DEFAULT_FADESPEED;
-		fadeState = state;
+		onStep(deltaTime);
 	}
 	
 	public void draw() {
 		graphics.clear(0, 0, 0);
 		graphics.setShaderProgram(graphics2D.getDefaultProgram());
-		graphics.setAmbientColor(fade, fade, fade);
 		onDraw();
 	}
 	
