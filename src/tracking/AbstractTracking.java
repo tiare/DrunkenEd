@@ -23,6 +23,8 @@ public abstract class AbstractTracking {
 	public float rightUpperArmAngle;
 	public float rightLowerArmAngle;
 	public float headangle;
+	public float gpareaz;
+	public float gpareax;
 	
 	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;

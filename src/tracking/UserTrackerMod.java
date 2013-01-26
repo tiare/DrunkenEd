@@ -390,7 +390,7 @@ public class UserTrackerMod {
 			Point3D head3d = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.HEAD).getPosition();
 			Point3D torso3d = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.TORSO).getPosition();
 			Point3D neck3d=skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.NECK).getPosition();
-			Point3D headtorso=new Point3D(head3d.getX()-torso3d.getX(),head3d.getY()-torso3d.getY(),head3d.getZ()-torso3d.getZ());
+			Point3D headtorso=new Point3D(neck3d.getX()-torso3d.getX(),neck3d.getY()-torso3d.getY(),neck3d.getZ()-torso3d.getZ());
 			Point3D headneck=new Point3D(head3d.getX()-neck3d.getX(),head3d.getY()-neck3d.getY(),head3d.getZ()-neck3d.getZ());
 			//System.out.println(temp.getX()+"::"+temp.getY());
 			float test=(float) Math.atan2(headtorso.getX(),headtorso.getY());
@@ -402,10 +402,16 @@ public class UserTrackerMod {
 			bendingangle=test/BENDINGANGLEFACTOR;
 			//System.out.println(test*180/Math.PI+"::"+bendingangle);
 			boolean wrongz =false;
-			if (torso3d.getZ()<1500){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
-        	if (torso3d.getZ()>3000){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
-        	if (!wrongz && torso3d.getX()/torso3d.getZ()>0.25){System.out.println("STEP LEFT,more TO THE MIDDLE");}
-        	if (!wrongz && torso3d.getX()/torso3d.getZ()<-0.25){System.out.println("STEP RIGHT, more TO THE MIDDLE");}
+			programController.tracking.gpareaz=(torso3d.getZ()-2250)/750;
+			programController.tracking.gpareax=(4*torso3d.getX()/torso3d.getZ());
+			if (programController.tracking.gpareaz<=-1){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
+        	if (programController.tracking.gpareaz>=1){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
+        	if (programController.tracking.gpareax>=1){System.out.println("STEP LEFT,more TO THE MIDDLE");}
+        	if (programController.tracking.gpareax<=-1){System.out.println("STEP RIGHT, more TO THE MIDDLE");}
+//			if (torso3d.getZ()<1500){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
+//        	if (torso3d.getZ()>3000){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
+//        	if (!wrongz && torso3d.getX()/torso3d.getZ()>0.25){System.out.println("STEP LEFT,more TO THE MIDDLE");}
+//        	if (!wrongz && torso3d.getX()/torso3d.getZ()<-0.25){System.out.println("STEP RIGHT, more TO THE MIDDLE");}
 			
 		} catch (StatusException e) {
 			// TODO Auto-generated catch block
