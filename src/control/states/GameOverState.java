@@ -115,9 +115,9 @@ public class GameOverState extends ProgramState {
 		graphics2D.setWhite();
 
 		if (isHighScore) {
-			graphics2D.drawString(-1f, 0.25f, 0.1f, 0, 0, 0, "You walked " + (int)score + " meter" + (score > 1 ? "s" : "")+" home!");
+			graphics2D.drawString(-1f, 0.25f, 0.1f, 0, 0, 0, "You walked " + (int)score + " meter" + (score > 1 ? "s" : "")+"!");
 			graphics2D.drawString(-1f, 0.15f, 0.1f, 0, 0, 0, "New Highscore!");
-			graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning in " + (timeLeft > 0 ? (int) timeLeft : "0") + " seconds");
+			graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning to bar in " + (timeLeft > 0 ? (int) timeLeft : "0") + " seconds");
 
 			float DISTANCE_TO_MIDDLE = 1.2f;
 			if (!tookPicture) {
@@ -159,7 +159,7 @@ public class GameOverState extends ProgramState {
 					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings());
 				}
 				graphics.bindTexture(playerImageTexture);
-				graphics2D.drawRectCentered(diffX, 0f, 0.45f, 0.7f);
+				graphics2D.drawRectCentered(tookPicture?1f:diffX, 0f, 0.45f, 0.7f);
 
 			} else {
 				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
