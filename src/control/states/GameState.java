@@ -168,7 +168,7 @@ public class GameState extends WorldState {
 
 		
 			if (!player.gameOver) {
-				float t = stateTimer-6;
+				float t = stateTimer-10;
 				if(t<0)
 					t=0;
 				difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.8f)*0.05f);

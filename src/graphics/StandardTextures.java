@@ -76,7 +76,7 @@ public class StandardTextures {
 		
 		ED = gfxLoader.getImage("ed",defSettings);
 		NO_ED = gfxLoader.getImage("ed_silhouette",defSettings);
-		ED_SKELETON = gfxLoader.getImage("skeleton_ed");
+		ED_SKELETON = gfxLoader.getImage("skeleton_ed",defSettings);
 		
 		HOUSE1 = gfxLoader.getImage("house1",defSettings);
 		MOES = gfxLoader.getImage("moes",defSettings);
