@@ -189,7 +189,9 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onDraw() {
 		graphics.bindTexture(null);
-		graphics.clear(0.3f, 0.3f, 0.3f);
+		
+		super.drawBackground(1.6f,0);
+		graphics.bindTexture(null);
 		
 		//floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);

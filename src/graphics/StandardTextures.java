@@ -13,10 +13,12 @@ import graphics.translator.TextureWrap;
 
 public class StandardTextures {
 
+	
 	public static Texture CUBE;
 	public static Texture CIRCLE;
 	public static Texture PERLIN;
 	public static Texture STREET;
+	public static Texture GAME_BACKGROUND;
 
 	public static Texture STOOL;
 	public static Texture ED_SKELETON;
@@ -59,6 +61,7 @@ public class StandardTextures {
 		CIRCLE = gfxLoader.getImage("circle",defSettings);
 		PERLIN = gfxLoader.getImage("perlin1",TextureFilter.LINEAR_MIP_LINEAR);
 		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT,TextureFilter.LINEAR_MIP_LINEAR));
+		GAME_BACKGROUND = gfxLoader.getImage("nightsky",defSettings);
 		
 		STOOL = gfxLoader.getImage("hocker",defSettings);
 		BAR = gfxLoader.getImage("bar",defSettings);
