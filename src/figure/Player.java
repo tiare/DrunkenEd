@@ -173,7 +173,19 @@ public class Player implements SkeletonCarrier {
 					bending = limit;
 				if(bending<-limit)
 					bending = -limit;
+				float prevX = skeleton.mBreastJoint.mPosX;
+				float prevY = skeleton.mBreastJoint.mPosY;
 				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
+				float fac = 0.5f;
+				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
+				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
+				skeleton.mRightShoulderJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mRightElbowJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mRightHandJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftShoulderJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
 				if(inGame)
 					skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
 				else
@@ -257,7 +269,7 @@ public class Player implements SkeletonCarrier {
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
 			joint.mFriction = 0.99f;
-			joint.vX = velX;
+			joint.mVelX += velX;
 		}
 		
 		for(Constraint constraint:skeleton.mConstraints) {

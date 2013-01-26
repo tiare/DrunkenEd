@@ -124,7 +124,10 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onBend(float bending){
 		player.steeredBending = bending;
-		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
+		if(true || Math.abs(player.steeredBending+player.drunkenBending)>0.1f) {
+			player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
+		}else
+			player.setSpeedX(0);
 	}
 	
 	private void updateShadowPosition() {

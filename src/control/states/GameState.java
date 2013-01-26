@@ -60,7 +60,7 @@ public class GameState extends WorldState {
 	@Override
 	public void onStart() {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
-		fallingAngle = (float)Math.toRadians(115);
+		fallingAngle = (float)Math.toRadians(125);
 		player.bendingSpeed = 0;
 		player.inGame = true;
 		player.setArmAnglesByTracking(false);
@@ -233,16 +233,20 @@ public class GameState extends WorldState {
 						player.drunkenBending += gameSettings.drunkenBendingFactor * ((float) Math.sin(stateTimer + Math.PI / 2) / 250.0f 
 								+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.005f);
 	
+						//Acceleration
 						bendingSum = player.steeredBending + player.drunkenBending;
-						int sign = bendingSum<0?-1:1;
 						float acceleration = 0.0f;
-						if(bendingSum * player.getSpeed()>0) {
-							if(Math.abs(player.getSpeed())*0.15f<Math.abs(bendingSum))
-								acceleration = (float)Math.pow(Math.min(0.7*Math.PI/2,sign*bendingSum),0.5f)*sign * 0.3f;
-						}else
-							acceleration = bendingSum * 2;
-						acceleration *= 2 / fallingAngle * gameSettings.speedFactor;
-						acceleration *= (difficultyFactor*0.2f+0.7f);
+						if(Math.abs(bendingSum)>0.05f) {
+							int sign = bendingSum<0?-1:1;
+							if(bendingSum * player.getSpeed()>0) {
+								if(Math.abs(player.getSpeed())*0.15f<Math.abs(bendingSum))
+									acceleration = (float)Math.pow(Math.min(0.7*Math.PI/2,sign*bendingSum),0.5f)*sign * 0.3f;
+							}else
+								acceleration = bendingSum * 2;
+							acceleration *= 2 / fallingAngle * gameSettings.speedFactor;
+							acceleration *= (difficultyFactor*0.2f+0.7f);
+						}
+						
 						if (gameSettings.speedIsProportionalToBending) {
 							player.setSpeedX(acceleration);
 						} else {
