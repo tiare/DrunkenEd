@@ -12,8 +12,8 @@ import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
 
-	static int TIMEOUT = 15; // in seconds
-	static int SECONDTIMEOUT = 2;
+	static int TIMEOUT = 20; // in seconds
+	static int SECONDTIMEOUT = 3;
 	static boolean DEBUG = false;
 
 	ImageGenerator imgGen;
@@ -37,6 +37,9 @@ public class GameOverState extends ProgramState {
 	private float timeLeft = 0;
 	boolean tookPicture;
 	private GameState gameState;
+	boolean returnWithoutHighscore;
+	
+	boolean noPicture;
 
 	public GameOverState(ProgramController programController, GameState gameState, float distance, float time) {
 		// player.init(programController);
@@ -46,30 +49,44 @@ public class GameOverState extends ProgramState {
 		this.distance = distance;
 		this.time = time;
 		this.isHighScore = programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)) < 4;
-		isHighScore = DEBUG;
+		//isHighScore = DEBUG;
 		p("highscore pos is: " + programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)));
 		countdownTime = System.currentTimeMillis();
 		initialMeasure = true;
 		playerCenterX = 0.0f;
 		range = 0.1f;
 		tookPicture = false;
+		noPicture = false;
+		returnWithoutHighscore = false;
 	}
 
 	private float getScore(float distance, float time) {
-		return distance * time;
+		return distance;
 	}
 
 	public static void p(String p) {
 		if (control.Debug.GAME_OVER_SYSTEM_OUT_PRINTLN)
 			System.out.println(p);
 	}
+	
 
 	@Override
 	public void onStep(float deltaTime) {
-		gameState.gameOverOverlay = true;
-		gameState.step(deltaTime);
-		timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() - countdownTime) / 1000L);
-		if (timeLeft < 0 && !tookPicture) {
+		if (gameState != null) {
+			gameState.gameOverOverlay = true;
+			gameState.step(deltaTime);
+		}
+		if (tookPicture) {
+			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
+				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
+			}
+		}
+		if (tookPicture) {
+			timeLeft = SECONDTIMEOUT - (int) ((System.currentTimeMillis() - secondCountdownTime)/1000L);
+		} else 
+			timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() -  countdownTime) / 1000L);
+		
+		if (timeLeft < 0 || noPicture || returnWithoutHighscore) {
 			p("Countdown expired, returning to main menu");
 			programController.fadeToState(new MainMenuState());
 		}
@@ -78,51 +95,30 @@ public class GameOverState extends ProgramState {
 
 	private void drawBackground() {
 
-		gameState.draw();
-		
+		if (gameState != null)
+			gameState.draw();
+
 		graphics.setAmbientColor(programController.fade);
 		graphics2D.switchGameCoordinates(false);
 		graphics2D.setWhite();
-		
+
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
 	}
 
 	@Override
 	public void onDraw() {
-
-		if (tookPicture) {
-			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
-				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
-				// super.fadeToState(new
-				// MainMenuState().init(programController));
-
-				programController.fadeToState(new MainMenuState());
-				//return;
-
-				// super.programController.switchState(new
-				// MainMenuState().init(programController));
-			}
-		}
+		if (noPicture) return;
 
 		drawBackground();
 
 		graphics2D.setWhite();
 
-
 		if (isHighScore) {
-
-			if (!tookPicture)
-				graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to take a picture!");
-
-			graphics2D.drawString(-1f, 0.25f, 0.1f, 0, 0, 0, "Score: " + score + " point" + (score > 1 ? "s" : ""));
+			graphics2D.drawString(-1f, 0.25f, 0.1f, 0, 0, 0, "You walked " + (int)score + " meter" + (score > 1 ? "s" : "")+"!");
 			graphics2D.drawString(-1f, 0.15f, 0.1f, 0, 0, 0, "New Highscore!");
-			if (!tookPicture)
-				graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning in " + (timeLeft > 0 ? (int)timeLeft : "0") +" seconds");
-			else {
-				graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning in " + ((int)((System.currentTimeMillis()-secondCountdownTime)/1000)) +" seconds");
-			}
-			
+			graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning to bar in " + (timeLeft > 0 ? (int) timeLeft : "0") + " seconds");
+
 			float DISTANCE_TO_MIDDLE = 1.2f;
 			if (!tookPicture) {
 				graphics2D.drawString(0, 0.45f, 0.1f, 0, 0, 0, "Photo");
@@ -146,10 +142,14 @@ public class GameOverState extends ProgramState {
 				if (diffX >= DISTANCE_TO_MIDDLE - 0.01f) {
 					// p("not taking a picture & returning");
 					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
-					super.programController.switchState(new MainMenuState().init(programController));
+					noPicture = true;
 				}
 				if (diffX < 0.0f)
 					diffX = 0.0f;
+				
+
+				if (!tookPicture && diffX < range)
+					graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to take a picture!");
 
 				graphics.bindTexture(StandardTextures.CUBE);
 				if (playerImageTexture != null) {
@@ -159,10 +159,11 @@ public class GameOverState extends ProgramState {
 					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings());
 				}
 				graphics.bindTexture(playerImageTexture);
-				graphics2D.drawRectCentered(diffX, 0f, 0.45f, 0.7f);
+				graphics2D.drawRectCentered(tookPicture?1f:diffX, 0f, 0.45f, 0.7f);
 
 			} else {
 				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
+				//noPicture = true;
 			}
 
 			graphics.bindTexture(null);
@@ -178,9 +179,9 @@ public class GameOverState extends ProgramState {
 				graphics2D.drawLine(DISTANCE_TO_MIDDLE + 0.25f - 0.05f, 0.3f, DISTANCE_TO_MIDDLE - 0.25f + 0.05f, -0.3f, 0.01f);
 			}
 		} else {
-			graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to restart!");
-			graphics2D.drawString(-0f, 0.3f, 0.1f, 0, 0, 0, "You only scored " + score + " points :-(");
-			graphics2D.drawString(-0f, 0.2f, 0.1f, 0, 0, 0, "Try again!");
+			graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Only "+(int)distance+" meters");
+			graphics2D.drawString(0f, 0.1f, 0.1f, 0, 0, 0, "You didn't make it home :-(");
+			graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to try again!");
 		}
 
 	}
@@ -199,8 +200,8 @@ public class GameOverState extends ProgramState {
 			programController.fadeToState(new MainMenuState());
 		}
 	}
-	
-	long drinkWait =-1L;
+
+	long drinkWait = -1L;
 
 	@Override
 	public void onDrink() {
@@ -214,6 +215,9 @@ public class GameOverState extends ProgramState {
 			p("took a picture & returning");
 			// super.programController.switchState(new
 			// MainMenuState().init(programController));
+		}
+		if (!isHighScore) {
+			returnWithoutHighscore = true;
 		}
 	}
 

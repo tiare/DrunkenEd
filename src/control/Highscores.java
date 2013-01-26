@@ -98,8 +98,9 @@ public class Highscores {
 						temp.renameTo(new File(getFileName(gameLevel) + (j+1)+".bb"));
 					} 
 				}
-				for (int j = i + 1; j < 3; j++) {
-					table[j] = table[j - 1];
+				
+				for (int j = 2; j>i; j--) {
+					table[j] = table[j-1];
 				}
 				table[i] = score;
 				saveFile(gameLevel, table);
