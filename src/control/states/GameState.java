@@ -297,7 +297,7 @@ public class GameState extends WorldState {
 					// TODO: -1f, -1f -> distance, time
 					super.programController.switchState(new GameOverState(
 							programController, player.getWorldX(), stateTimer
-									- pauseTime).init(programController));
+									- pauseTime));
 				}
 			}
 			DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();

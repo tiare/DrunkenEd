@@ -139,7 +139,7 @@ public class ProgramController extends DefaultSurface {
 			}
 			//Otherwise jump out to the menu
 			else {
-				switchState(new MainMenuState().init(this));
+				switchState(new MainMenuState());
 			}
 		}
 		if(currentState!=null)

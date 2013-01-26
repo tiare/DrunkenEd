@@ -43,12 +43,13 @@ public class GameOverState extends ProgramState {
 		return distance * time;
 	}
 
-	private static void p(String p) {
+	public static void p(String p) {
 		if (control.Debug.GAME_OVER_SYSTEM_OUT_PRINTLN)
 			System.out.println(p);
 	}
 
 	private float worldZoom = 2.3f;
+	private float timeLeft = 0;
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -60,6 +61,11 @@ public class GameOverState extends ProgramState {
 		// if (!player.gameOver)
 		// player.fallDown();
 		// p("pos: "+programController.tracking.getHeadPos());
+		timeLeft = TIMEOUT-(int)((System.currentTimeMillis() - countdownTime)/1000L);
+		if (timeLeft < 0) {
+			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
+			super.fadeToState(new MainMenuState().init(programController));
+		}
 		camera.set(0.f, 2.f, worldZoom);
 	}
 
@@ -68,14 +74,6 @@ public class GameOverState extends ProgramState {
 
 	@Override
 	public void onDraw() {
-		int timeLeft = TIMEOUT-(int)((System.currentTimeMillis() - countdownTime)/1000L);
-
-		if (timeLeft < 0) {
-			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null); 
-			super.programController.switchState(new MainMenuState().init(programController));
-		}
-		
-
 		
 		graphics2D.drawString(0f, 0.35f, 0.1f, 0, 0, 0, ""+timeLeft);
 		
@@ -171,15 +169,14 @@ public class GameOverState extends ProgramState {
 		// Enter the selected door
 		if (key == Keys.UP) {
 			// switch to menu
-			super.programController.switchState(new MainMenuState().init(programController));
+			super.fadeToState(new MainMenuState());
 		}
 	}
-
+	
 	@Override
 	public void onDrink() {
 		// start game
-		super.programController.switchState(new
-		 MainMenuState().init(programController));
+		super.fadeToState(new MainMenuState());
 	}
 
 	@Override
@@ -189,7 +186,6 @@ public class GameOverState extends ProgramState {
 
 	@Override
 	public void userLost() {
-		// TODO Auto-generated method stub
 		
 	}
 
