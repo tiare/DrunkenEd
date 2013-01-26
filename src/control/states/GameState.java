@@ -24,6 +24,7 @@ public class GameState extends WorldState {
 
 	private boolean bendingLeft;
 	private float reBend;
+	private float maxSpeedTime;
 
 	private boolean pause;
 	private float pauseTime;
@@ -65,6 +66,7 @@ public class GameState extends WorldState {
 		else
 			pauseTime = 0;
 		fixedCameraMode = false;
+		maxSpeedTime = 0;
 
 		DrunkenSkeleton skeleton = (DrunkenSkeleton) player.getSkeleton();
 		camera.set(skeleton.mHipJoint.mPosX + player.posX,
@@ -203,26 +205,32 @@ public class GameState extends WorldState {
 						
 						//Gravity
 						int sign = player.steeredBending<0?-1:1;
+						float uBend = player.drunkenBending;
+						float limit = (float)Math.PI/2*0.8f;
+						if(uBend>limit)
+							uBend = limit;
+						if(uBend<-limit)
+							uBend=-limit;
 						player.bendingSpeed = 
-								(float) (player.drunkenBending * gravity + player.steeredBending * player.steeredBending * sign * 0.1f) * difficultyFactor;
+								(float) (uBend * gravity + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor;
 
 						player.drunkenBending += player.bendingSpeed;
 					}
 
 					//Oszillation
 					player.drunkenBending += gameSettings.drunkenBendingFactor * ((float) Math.sin(stateTimer + Math.PI / 2) / 250.0f 
-							+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.005f);
+							+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.000f);
 
 					bendingSum = player.steeredBending + player.drunkenBending;
 					int sign = bendingSum<0?-1:1;
 					float acceleration = 0.0f;
 					if(bendingSum * player.getSpeed()>0) {
 						if(Math.abs(player.getSpeed())*0.15f<Math.abs(bendingSum))
-							acceleration = (float)Math.pow(Math.min(0.8*Math.PI/2,sign*bendingSum),0.5f)*sign * 0.3f;
+							acceleration = (float)Math.pow(Math.min(0.7*Math.PI/2,sign*bendingSum),0.5f)*sign * 0.3f;
 					}else
 						acceleration = bendingSum * 2;
 					acceleration *= 2 / fallingAngle * gameSettings.speedFactor;
-					acceleration *= (difficultyFactor*0.4f+0.5f);
+					acceleration *= (difficultyFactor*0.2f+0.7f);
 					if (gameSettings.speedIsProportionalToBending) {
 						player.setSpeedX(acceleration);
 					} else {
@@ -230,10 +238,14 @@ public class GameState extends WorldState {
 						speed = (acceleration / 50.0f) * gameSettings.speedAccelerationFactor + player.getSpeed();
 						//Maximum speed
 						if (Math.abs(speed) > gameSettings.maxSpeed) {
-							player.fallDown();
-							gameOverTime = programController.getProgramTime();
+							if(maxSpeedTime>0.45f) {
+								player.fallDown();
+								gameOverTime = programController.getProgramTime();	
+							}else
+								maxSpeedTime += deltaTime;
+							
 						} else {
-
+							maxSpeedTime = 0;
 							//Flailing
 							if (flailingArms) {
 								if (Math.abs(speed) < gameSettings.maxSpeed * gameSettings.flailingArmsSpeedFactor
