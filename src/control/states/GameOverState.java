@@ -12,9 +12,9 @@ import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
 
-	static int TIMEOUT = 50; // in seconds
-	static int SECONDTIMEOUT = 10;
-	static boolean DEBUG = true;
+	static int TIMEOUT = 20; // in seconds
+	static int SECONDTIMEOUT = 3;
+	static boolean DEBUG = false;
 
 	ImageGenerator imgGen;
 
