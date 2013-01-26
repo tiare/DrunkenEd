@@ -174,7 +174,10 @@ public class Player implements SkeletonCarrier {
 				if(bending<-limit)
 					bending = -limit;
 				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
-				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				if(inGame)
+					skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				else
+					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+PI);
 				
 				refreshArms();
 			}

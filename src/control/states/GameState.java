@@ -213,9 +213,7 @@ public class GameState extends WorldState {
 						//player.drunkenBending -= player.getSpeed()*0.005f;
 						
 						// add bending caused by drunkenness
-						float gravity;
 						if (gameSettings.useGravity) {
-							gravity = gameSettings.gravityFactor;
 							
 							//Gravity
 							int sign = player.steeredBending<0?-1:1;
@@ -226,14 +224,14 @@ public class GameState extends WorldState {
 							if(uBend<-limit)
 								uBend=-limit;
 							player.bendingSpeed = 
-									(float) (uBend * gravity + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor;
+									(float) (uBend * gameSettings.gravityFactor + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor;
 	
 							player.drunkenBending += player.bendingSpeed;
 						}
 	
 						//Oszillation
 						player.drunkenBending += gameSettings.drunkenBendingFactor * ((float) Math.sin(stateTimer + Math.PI / 2) / 250.0f 
-								+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.000f);
+								+ (float) Math.sin(stateTimer * 1.7) / 350.0f) * (stateTimer*0.005f);
 	
 						bendingSum = player.steeredBending + player.drunkenBending;
 						int sign = bendingSum<0?-1:1;
@@ -400,8 +398,10 @@ public class GameState extends WorldState {
 			// graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed()
 			// ).replace("-","")+"m/s");
 			String s = (int) player.posX + "m";
+			while (s.length() < 4)
+				s = " " + s;
 			while (s.length() < 5)
-				s = "0" + s;
+				s = " " + s;
 			String t = (int) (stateTimer - pauseTime) % 60 + "";
 	
 			if (stateTimer - pauseTime < 0)
@@ -415,12 +415,10 @@ public class GameState extends WorldState {
 				t = "0" + t;
 			}
 	
-			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f, 0.1f,
-					-1, -1, 0, 0.07f, s);
-			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f, 0.1f,
-					-1, -1, 0, 0.07f, t);
-			graphics2D.drawStringL(graphics2D.getScreenLeft() + 0.255f, 0.7f, 0.1f,
-					":");
+			graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
+			//graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f, 0.1f,-1, -1, 0, 0.07f, s);
+//			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f, 0.1f,-1, -1, 0, 0.07f, t);
+//			graphics2D.drawStringL(graphics2D.getScreenLeft() + 0.255f, 0.7f, 0.1f,":");
 			graphics2D.switchGameCoordinates(true);
 		}
 
