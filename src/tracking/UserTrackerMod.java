@@ -168,6 +168,7 @@ public class UserTrackerMod {
 	public int activeUser=-1;
 	public int users[];
 	private boolean drinkAlreadyCalled=false;
+	public float headangle=0;
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -287,7 +288,11 @@ public class UserTrackerMod {
 			if (skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.HEAD).getPosition().getY()
 					>=skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getY()
 				&&	skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getY()
-					>=skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()){
+					>=skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()
+					&& skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getX()
+					<= skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()
+					&& skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getX()
+					>= skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.HEAD).getPosition().getX()){
 				//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("TRINKbewegung erkannt");
 				hasDrinkingPose=true;
 			}
@@ -384,14 +389,22 @@ public class UserTrackerMod {
 		try {
 			Point3D head3d = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.HEAD).getPosition();
 			Point3D torso3d = skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.TORSO).getPosition();
-			Point3D temp=new Point3D(head3d.getX()-torso3d.getX(),head3d.getY()-torso3d.getY(),head3d.getZ()-torso3d.getZ());
+			Point3D neck3d=skeletonCap.getSkeletonJointPosition(1,SkeletonJoint.NECK).getPosition();
+			Point3D headtorso=new Point3D(head3d.getX()-torso3d.getX(),head3d.getY()-torso3d.getY(),head3d.getZ()-torso3d.getZ());
+			Point3D headneck=new Point3D(head3d.getX()-neck3d.getX(),head3d.getY()-neck3d.getY(),head3d.getZ()-neck3d.getZ());
 			//System.out.println(temp.getX()+"::"+temp.getY());
-			float test=(float) Math.atan2(temp.getX(),temp.getY());
+			float test=(float) Math.atan2(headtorso.getX(),headtorso.getY());
+			headangle =(float) Math.atan2(headneck.getX(),headneck.getY());
 //			Point2d head2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d torso2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d temp2d=new Point2d();
 			bendingangle=test/BENDINGANGLEFACTOR;
 			//System.out.println(test*180/Math.PI+"::"+bendingangle);
+			boolean wrongz =false;
+			if (torso3d.getZ()<1500){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
+        	if (torso3d.getZ()>3000){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
+        	if (!wrongz && torso3d.getX()/torso3d.getZ()>0.25){System.out.println("STEP LEFT,more TO THE MIDDLE");}
+        	if (!wrongz && torso3d.getX()/torso3d.getZ()<-0.25){System.out.println("STEP RIGHT, more TO THE MIDDLE");}
 			
 		} catch (StatusException e) {
 			// TODO Auto-generated catch block
