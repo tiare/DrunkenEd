@@ -22,6 +22,7 @@ public abstract class AbstractTracking {
 	public float leftLowerArmAngle;
 	public float rightUpperArmAngle;
 	public float rightLowerArmAngle;
+	public float headangle;
 	
 	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;
@@ -31,6 +32,7 @@ public abstract class AbstractTracking {
 
 	public abstract Point2d getHeadPos();
 	public abstract ByteBuffer getColorImageByteBuffer(); 
+	
 
 	public abstract void init();
 	public abstract float getTorsoBending();

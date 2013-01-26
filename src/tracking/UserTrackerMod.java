@@ -395,6 +395,7 @@ public class UserTrackerMod {
 			//System.out.println(temp.getX()+"::"+temp.getY());
 			float test=(float) Math.atan2(headtorso.getX(),headtorso.getY());
 			headangle =(float) Math.atan2(headneck.getX(),headneck.getY());
+			programController.tracking.headangle=headangle;
 //			Point2d head2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d torso2d=new Point2d(head3d.getX(),head3d.getY());
 //			Point2d temp2d=new Point2d();

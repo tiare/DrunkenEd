@@ -17,6 +17,7 @@ public class CameraTracking extends AbstractTracking {
 	public UserTrackerMod app;
 	private ByteBuffer userPicByteBuffer;
 	private ByteBuffer picByteBuffer;
+	public float headangle=0;
 
 	public CameraTracking(ProgramController programController) {
 		super(programController);
