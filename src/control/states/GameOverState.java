@@ -206,8 +206,8 @@ public class GameOverState extends ProgramState {
 			tookPicture = true;
 			secondCountdownTime = System.currentTimeMillis();
 			p("took a picture & returning");
-			 super.programController.switchState(new
-			 MainMenuState().init(programController));
+			// super.programController.switchState(new
+			// MainMenuState().init(programController));
 		}
 	}
 
