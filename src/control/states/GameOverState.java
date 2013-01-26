@@ -12,7 +12,8 @@ import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
 
-	static int TIMEOUT = 200; // in seconds
+	static int TIMEOUT = 15; // in seconds
+	static int SECONDTIMEOUT = 2;
 	static boolean DEBUG = false;
 
 	ImageGenerator imgGen;
@@ -21,6 +22,7 @@ public class GameOverState extends ProgramState {
 	float distance, time;
 	int score;
 	long countdownTime;
+	long secondCountdownTime;
 	boolean initialMeasure;
 
 	boolean isHighScore;
@@ -81,6 +83,23 @@ public class GameOverState extends ProgramState {
 	@Override
 	public void onDraw() {
 
+		if (tookPicture) {
+			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
+
+				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
+
+				super.fadeToState(new MainMenuState().init(programController));
+				return;
+
+				// super.programController.switchState(new
+				// MainMenuState().init(programController));
+			}
+			graphics.bindTexture(StandardTextures.CUBE);
+			graphics.bindTexture(playerImageTexture);
+			graphics2D.drawRectCentered(diffX, 0f, 0.45f, 0.7f);
+			return;
+		}
+
 		graphics2D.drawString(0f, 0.35f, 0.1f, 0, 0, 0, "" + (timeLeft > 0 ? timeLeft : "0"));
 
 		graphics.clear(0.3f, 0.3f, 0.3f);
@@ -98,9 +117,6 @@ public class GameOverState extends ProgramState {
 
 		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
-		graphics2D.setColor(0.f, 0.f, 0.f);// graphics2D.drawString(0, -0.5f,
-											// 0.2f, 0, 0, 0,
-											// "Drink (or press up) to restart!");
 
 		graphics2D.setWhite();
 
@@ -118,9 +134,9 @@ public class GameOverState extends ProgramState {
 			graphics.bindTexture(null);
 
 			// left & right white squares
-			//graphics2D.setColor(1f, 1f, 1f);
-			//graphics2D.drawRectCentered(0, 0, 0.5f, 0.6f);
-			//graphics2D.drawRectCentered(DISTANCE_TO_MIDDLE, 0, 0.5f, 0.6f);
+			// graphics2D.setColor(1f, 1f, 1f);
+			// graphics2D.drawRectCentered(0, 0, 0.5f, 0.6f);
+			// graphics2D.drawRectCentered(DISTANCE_TO_MIDDLE, 0, 0.5f, 0.6f);
 
 			if (!control.Debug.FAKE_CONTROLS && ((CameraTracking) programController.tracking).app.users.length > 0) {
 				if (initialMeasure || playerCenterX == 0.0f) {
@@ -152,14 +168,14 @@ public class GameOverState extends ProgramState {
 
 			graphics.bindTexture(null);
 
-			graphics2D.setColor(0f, diffX < 0.3f?1f:0f, 0f);
+			graphics2D.setColor(0f, diffX < 0.3f ? 1f : 0f, 0f);
 			drawSquareAround(0, 0.07f, 0.5f, 0.7f);
-			graphics2D.setColor(0f, diffX > DISTANCE_TO_MIDDLE - 0.3f?1f:0f, 0f);
+			graphics2D.setColor(0f, diffX > DISTANCE_TO_MIDDLE - 0.3f ? 1f : 0f, 0f);
 			drawSquareAround(DISTANCE_TO_MIDDLE, 0.07f, 0.5f, 0.7f);
 			graphics2D.setColor(1, 0, 0);
-			//red cross
-			graphics2D.drawLine(DISTANCE_TO_MIDDLE-0.25f+0.05f, 0.3f, DISTANCE_TO_MIDDLE+0.25f-0.05f, -0.3f, 0.01f);
-			graphics2D.drawLine(DISTANCE_TO_MIDDLE+0.25f-0.05f, 0.3f, DISTANCE_TO_MIDDLE-0.25f+0.05f, -0.3f, 0.01f);
+			// red cross
+			graphics2D.drawLine(DISTANCE_TO_MIDDLE - 0.25f + 0.05f, 0.3f, DISTANCE_TO_MIDDLE + 0.25f - 0.05f, -0.3f, 0.01f);
+			graphics2D.drawLine(DISTANCE_TO_MIDDLE + 0.25f - 0.05f, 0.3f, DISTANCE_TO_MIDDLE - 0.25f + 0.05f, -0.3f, 0.01f);
 		} else {
 			graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to restart!");
 			graphics2D.drawString(-0f, 0.3f, 0.1f, 0, 0, 0, "You only scored " + score + " points :-(");
@@ -182,22 +198,17 @@ public class GameOverState extends ProgramState {
 			super.fadeToState(new MainMenuState());
 		}
 	}
-	
 
 	@Override
 	public void onDrink() {
 		// start game
-		if (isHighScore && diffX <= 0.1f) {
+		if (!tookPicture && isHighScore && diffX <= 0.1f) {
 			tookPicture = true;
-
+			secondCountdownTime = System.currentTimeMillis();
 			p("took a picture & returning");
-			// programController.highscores.addHighscore(programController.gameSettings.difficulty,
-			// (int) getScore(distance, time), ((CameraTracking)
-			// programController.tracking).getColorImageByteBuffer());
 			// super.programController.switchState(new
 			// MainMenuState().init(programController));
 		}
-		super.fadeToState(new MainMenuState());
 	}
 
 	@Override
