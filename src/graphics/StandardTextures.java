@@ -3,6 +3,7 @@ package graphics;
 import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
 import graphics.fonts.FontBelligerentMadnessChalk;
 import graphics.shaders.ChalkShader;
+import graphics.shaders.DrunkenShader;
 import graphics.skeletons.Skeleton;
 import graphics.translator.GraphicsTranslator;
 import graphics.translator.Texture;
@@ -47,7 +48,7 @@ public class StandardTextures {
 	public static AbstractFont FONT_BELLIGERENT_MADNESS_BOLD;
 	
 	public static ChalkShader CHALK_SHADER;
-
+	public static DrunkenShader DRUNKEN_SHADER;
 	
 	public static void init(GraphicsTranslator graphics) {
 		
@@ -96,6 +97,8 @@ public class StandardTextures {
 
 		CHALK_SHADER = new ChalkShader();
 		CHALK_SHADER.init(graphics, gfxLoader);
+		DRUNKEN_SHADER = new DrunkenShader();
+		DRUNKEN_SHADER.init(graphics, gfxLoader);
 		
 		Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
