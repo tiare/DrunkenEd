@@ -264,11 +264,11 @@ public class MainMenuState extends WorldState {
 	
 	private void drawStool (float posX, float posY, boolean active, int drink) {
 		if(!active) {
-			float drinkY = (drink > 0? posY + 0.9f: posY + 0.72f);
+			float drinkY = (drink > 0? posY + 0.96f: posY + 0.79f);
 			//display the drinks
 			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics.bindTextureInHolder(skeleton.mTextureHolder);
-			graphics2D.drawRectCentered(posX, drinkY,3.f,3.f, 0,
+			graphics.bindTexture(StandardTextures.ED_SKELETON);
+			graphics2D.drawRectCentered(posX, drinkY,3.5f,3.5f, 0,
 					skeleton.mBottleBone.mTexCoords.get(drink * 4));
 		}
 		

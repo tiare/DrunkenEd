@@ -53,7 +53,7 @@ public class GameState extends WorldState {
 	@Override
 	public void onStart() {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
-		fallingAngle = (float)Math.toRadians(95);
+		fallingAngle = (float)Math.toRadians(90);
 		player.bendingSpeed = 0;
 		player.inGame = true;
 		player.setArmAnglesByTracking(false);
@@ -168,7 +168,7 @@ public class GameState extends WorldState {
 
 		
 			if (!player.gameOver) {
-				float t = stateTimer-6;
+				float t = stateTimer-10;
 				if(t<0)
 					t=0;
 				difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.8f)*0.05f);
@@ -217,8 +217,8 @@ public class GameState extends WorldState {
 					int sign = bendingSum<0?-1:1;
 					float acceleration = 0.0f;
 					if(bendingSum * player.getSpeed()>0) {
-						if(Math.abs(player.getSpeed())*0.3f<Math.abs(bendingSum))
-							acceleration = (float)Math.pow(Math.min(0.8*Math.PI/2,sign*bendingSum),0.9f)*sign * 1.1f;
+						if(Math.abs(player.getSpeed())*0.15f<Math.abs(bendingSum))
+							acceleration = (float)Math.pow(Math.min(0.8*Math.PI/2,sign*bendingSum),0.5f)*sign * 0.3f;
 					}else
 						acceleration = bendingSum * 2;
 					acceleration *= 2 / fallingAngle * gameSettings.speedFactor;
@@ -320,6 +320,7 @@ public class GameState extends WorldState {
 		graphics2D.setWhite();
 
 		// draw houses
+		//graphics2D.setShaderProgram(StandardTextures.DRUNKEN_SHADER);
 		houseRow.draw(graphics, graphics2D, camera.getX());
 		
 		// draw street

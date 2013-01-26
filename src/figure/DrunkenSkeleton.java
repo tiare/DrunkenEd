@@ -20,6 +20,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	public DrunkenSkeleton() {
 		mBottleVisible = true;
 		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
+		mContourTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
 	}
 	
 	@Override
