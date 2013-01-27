@@ -30,13 +30,13 @@ public class MainMenuState extends WorldState {
 	private float stoolCx = 0.f;
 	private float stoolRx = 2.f;
 	private float stoolsY = 0.6f;
-	private float highscoresY = 3.05f;
+	private float highscoresY = 2.9f;
 	private float highscoreWith = 1.8f;
 	private float highscoreHeight = 1.7f;
 	private float oldPlayerPosX = 0f;
 	
-	private float restartTime = 0.f;
-	private float timeout = 0.f;
+	private float drinkTime = 0.f;
+	private float timeout = 1.f;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -51,14 +51,13 @@ public class MainMenuState extends WorldState {
 	private Player shadowPlayer;
 	private DrunkenSkeleton shadowSkeleton;
 	private DrunkenSkeleton skeleton;
-	private float elbowAngle = 0.0f;
-	private float shoulderAngle = 0.0f;
+	private float elbowAngle = 90.0f;
+	private float shoulderAngle = 90.0f;
 	private float stepAngle = 80;
 	private float activationTime = 0;
-	private boolean waitedLongEnough = false;
 	private float hintTimeout = 5.f;
+	private boolean waitedLongEnough = false;
 	
-	private String hintText = "";
 	private static final String DEFAULT_TEXT = "What would you like to drink?";
 	private static final String DRINK_TEXT = "Drink to select difficulty!";
 	
@@ -66,7 +65,7 @@ public class MainMenuState extends WorldState {
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
 		super.init(programController);
-		restartTime = programController.getProgramTime();
+		drinkTime = programController.getProgramTime();
 		player.posX = -0.8f;
 		startLevel = false;
 		player.inGame = false;
@@ -83,8 +82,6 @@ public class MainMenuState extends WorldState {
 		player.setArmAnglesByTracking(true);
 		skeleton = (DrunkenSkeleton)player.getSkeleton();
 		
-		hintText = DEFAULT_TEXT;
-		
 		return this;
 	}
 	
@@ -92,11 +89,11 @@ public class MainMenuState extends WorldState {
 	public void onStep(float deltaTime) {
 		synchronized(camera) {
 			//camera.set(0, 1, 2);
-			camera.set(player.posX, 1.5f, 2.3f);
+			camera.set(player.posX, 1.7f, 2.3f);
 			oldPlayerPosX = player.posX;
 			
 			if (startLevel) {
-				if (programController.getProgramTime() > restartTime + hintTimeout) {
+				if (programController.getProgramTime() > drinkTime + timeout) {
 					//start game
 					programController.fadeToState(new GameState());
 				}
@@ -107,17 +104,21 @@ public class MainMenuState extends WorldState {
 			//don't let the player walk out of the screen
 			dontLeaveScreen ();
 			updateActiveLevel ();
-			updateHintText ();
 			
 			if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 				waitedLongEnough = true;
+			else {
+				waitedLongEnough = false;
+//				activationTime = programController.getProgramTime();
+			}
 			
 			shadowPlayer.posX = player.posX;
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
-			if (waitedLongEnough)
+			if (waitedLongEnough) {
 				doDrinkingGesture ();
+			}
 		}
 	}
 	
@@ -155,16 +156,16 @@ public class MainMenuState extends WorldState {
 	
 	private void doDrinkingGesture () {
 		//TODO: make text flash
-		if (elbowAngle > 190 && shoulderAngle > 80)
+		if (elbowAngle > 190 && shoulderAngle > 60)
 			stepAngle *= -1;
 		
-		if (elbowAngle < 0 || shoulderAngle < 0) {
-			elbowAngle = 0;
-			shoulderAngle = 0;
+		if (elbowAngle < 90 || shoulderAngle < 45) {
+			elbowAngle = 90;
+			shoulderAngle = 45;
 			stepAngle *= -1;
 			
-			waitedLongEnough = false;
-			activationTime = programController.getProgramTime();
+//			waitedLongEnough = false;
+//			activationTime = programController.getProgramTime();
 		}
 		elbowAngle += 190/stepAngle;
 		shoulderAngle += 80/stepAngle;
@@ -178,15 +179,6 @@ public class MainMenuState extends WorldState {
 		shadowSkeleton.mRightUpperArmBone.mVisible = true;
 		
 		shadowSkeleton.refreshBottle();
-	}
-	
-	private void updateHintText () {
-		if (activeLevel != NONE) {
-			hintText = DRINK_TEXT;
-		}
-		else {
-			hintText = DEFAULT_TEXT;
-		}
 	}
 
 	@Override
@@ -253,9 +245,14 @@ public class MainMenuState extends WorldState {
 		
 		//Display bottom text
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.switchGameCoordinates(false);
-		graphics2D.drawString(0, -0.85f, 0.13f, 0, 0, 0, hintText);
+		if (waitedLongEnough) {
+			graphics2D.setColor(1.f, 1.f, (float)Math.abs(Math.sin(stateTimer*3)));
+			graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
+		}
+	
+		graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
 		graphics2D.switchGameCoordinates(true);
 		graphics.bindTexture(null);
 		
@@ -353,7 +350,7 @@ public class MainMenuState extends WorldState {
 		
 		//Write blackboard title
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		if (activeLevel == position) graphics2D.setColor(0.8f, 0.2f, 0.2f);
+		if (activeLevel == position) graphics2D.setColor(1.f, 0.f, 0.f);//graphics2D.setColor(0.8f, 0.2f, 0.2f);
 		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
 		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
 		graphics.bindTexture(null);
@@ -395,28 +392,28 @@ public class MainMenuState extends WorldState {
 
 	@Override
 	public void keyDown(int key) {
-		//Enter the selected Stool
+		//Select drink - enter level
 		if( key == Keys.UP ) {
 			//Enter level
 			if (activeLevel != NONE) {
-				restartTime = programController.getProgramTime();
-				startLevel = true;
-				
 				//set difficulty in gamesettings!
-				super.gameSettings.difficulty = activeLevel;			
+				super.gameSettings.difficulty = activeLevel;
+				drinkTime = programController.getProgramTime();
+				startLevel = true;
 			}
 		}
 	}
 	
 	@Override
 	public void onDrink() {
-		//Enter the selected Stool
-		//Enter level
-		if (activeLevel != NONE && programController.getProgramTime() > restartTime + timeout) {
+		//Drink - enter level
+		if (activeLevel != NONE) {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeLevel;
+			drinkTime = programController.getProgramTime();
+			startLevel = true;
 			//start game
-			programController.fadeToState(new GameState());
+			//programController.fadeToState(new GameState());
 		}
 	}
 	

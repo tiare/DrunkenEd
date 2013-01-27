@@ -58,6 +58,10 @@ public abstract class ProgramState implements TrackingListener {
 		graphics.clear(0, 0, 0);
 		graphics.setShaderProgram(graphics2D.getDefaultProgram());
 		onDraw();
+		
+		if(Debug.DRAW_USER_SKELETON) {
+			
+		}
 	}
 	
 	protected void onStop() {
