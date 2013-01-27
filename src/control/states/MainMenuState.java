@@ -35,8 +35,8 @@ public class MainMenuState extends WorldState {
 	private float highscoreHeight = 1.7f;
 	private float oldPlayerPosX = 0f;
 	
-	private float restartTime = 0.f;
-	private float timeout = 0.f;
+	private float drinkTime = 0.f;
+	private float timeout = 1.f;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -66,7 +66,7 @@ public class MainMenuState extends WorldState {
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
 		super.init(programController);
-		restartTime = programController.getProgramTime();
+		drinkTime = programController.getProgramTime();
 		player.posX = -0.8f;
 		startLevel = false;
 		player.inGame = false;
@@ -95,7 +95,7 @@ public class MainMenuState extends WorldState {
 		oldPlayerPosX = player.posX;
 		
 		if (startLevel) {
-			if (programController.getProgramTime() > restartTime + hintTimeout) {
+			if (programController.getProgramTime() > drinkTime + timeout) {
 				//start game
 				super.programController.switchState(new GameState().init(programController));
 			}
@@ -388,28 +388,26 @@ public class MainMenuState extends WorldState {
 
 	@Override
 	public void keyDown(int key) {
-		//Enter the selected Stool
+		//Select drink - enter level
 		if( key == Keys.UP ) {
 			//Enter level
 			if (activeLevel != NONE) {
-				restartTime = programController.getProgramTime();
-				startLevel = true;
-				
 				//set difficulty in gamesettings!
-				super.gameSettings.difficulty = activeLevel;			
+				super.gameSettings.difficulty = activeLevel;
+				drinkTime = programController.getProgramTime();
+				startLevel = true;
 			}
 		}
 	}
 	
 	@Override
 	public void onDrink() {
-		//Enter the selected Stool
-		//Enter level
-		if (activeLevel != NONE && programController.getProgramTime() > restartTime + timeout) {
+		//Drink - enter level
+		if (activeLevel != NONE) {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeLevel;
-			//start game
-			super.programController.switchState(new GameState());
+			drinkTime = programController.getProgramTime();
+			startLevel = true;
 		}
 	}
 	
