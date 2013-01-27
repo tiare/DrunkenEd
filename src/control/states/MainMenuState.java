@@ -112,7 +112,7 @@ public class MainMenuState extends WorldState {
 			
 			if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 				waitedLongEnough = true;
-			else {
+			else if (waitedLongEnough) {
 				waitedLongEnough = false;
 				prepareForDrinkingGesture(true);
 			}
@@ -185,21 +185,24 @@ public class MainMenuState extends WorldState {
 			shadowSkeleton.refreshBottle();
 		}
 		else {
-			
-			if (elbowAngle < 160)
+			if (elbowAngle < 160) {
 				elbowAngle += 160/stepAngle;
-			else if (elbowAngle > 165)
+			}
+			else if (elbowAngle > 165) {
 				elbowAngle -= 160/stepAngle;
+			}
 			
-			if (shoulderAngle < 60)				
+			if (shoulderAngle < 60) {				
 				shoulderAngle += 60/stepAngle;	
-			else if (shoulderAngle > 65)
+			}
+			else if (shoulderAngle > 65) {
 				shoulderAngle -= 60/stepAngle;
-
-				skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
-				skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
-				
-				skeleton.refreshBottle();
+			}
+			
+			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
+			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+			
+			skeleton.refreshBottle();
 		}
 	}
 
