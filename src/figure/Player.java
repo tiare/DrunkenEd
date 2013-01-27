@@ -18,6 +18,7 @@ public class Player implements SkeletonCarrier {
 
 	public final static DrunkenAnimationSystem ANIMATION_SYSTEM = new DrunkenAnimationSystem();
 	public final static float PI = 3.1415926535f;
+	public final static boolean CONTROL_HEAD = false;
 	
 	private float velX,velY;
 	private ProgramController programController;
@@ -167,8 +168,29 @@ public class Player implements SkeletonCarrier {
 
 				animationPlayer.proceed(velX*deltaTime);
 				
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
-				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				float bending = (drunkenBending+steeredBending);
+				float limit = 0.9f*PI/2;
+				if(bending>limit)
+					bending = limit;
+				if(bending<-limit)
+					bending = -limit;
+				float prevX = skeleton.mBreastJoint.mPosX;
+				float prevY = skeleton.mBreastJoint.mPosY;
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
+				float fac = 0.5f;
+				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
+				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
+				skeleton.mRightShoulderJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mRightElbowJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mRightHandJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftShoulderJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
+				if(inGame || !CONTROL_HEAD)
+					skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				else
+					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
 				
 				refreshArms();
 			}
@@ -194,6 +216,8 @@ public class Player implements SkeletonCarrier {
 			if(Debug.DRAW_SKELETON)
 				skeleton.drawEditing(null);
 			graphics2D.setDefaultProgram();
+			
+			//graphics2D.drawRectCentered(0, 0, 1, 2, tracking.headangle);
 		}
 	}
 
@@ -248,7 +272,7 @@ public class Player implements SkeletonCarrier {
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
 			joint.mFriction = 0.99f;
-			joint.vX = velX;
+			joint.mVelX += velX;
 		}
 		
 		for(Constraint constraint:skeleton.mConstraints) {

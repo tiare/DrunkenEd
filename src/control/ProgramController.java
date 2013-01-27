@@ -12,6 +12,7 @@ import graphics.events.PointerEvent;
 
 public class ProgramController extends DefaultSurface {
 
+	public static float DEFAULT_FADESPEED = 2.5f;
 	private ProgramState currentState;
 	public AbstractTracking tracking;
 	private float programTimer;
@@ -22,6 +23,9 @@ public class ProgramController extends DefaultSurface {
 	private boolean mFirstDraw;
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	private boolean mChangingState;
+	private ProgramState fadeState;
+	public float fade;
+	private float fadeSpeed;
 	
 	public ProgramController() {
 		super(true,false,true);
@@ -37,6 +41,9 @@ public class ProgramController extends DefaultSurface {
 		
 		highscores = new Highscores();
 		gameSettings = new GameSettings();
+		
+		fade = 1;
+		fadeState = null;
 	}
 	
 	public void start() {
@@ -60,15 +67,40 @@ public class ProgramController extends DefaultSurface {
 						e.printStackTrace();
 					}
 					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
-					tracking.step(deltaTime);
-					ProgramController.super.step(deltaTime);
-					currentState.step(deltaTime);
-					programTimer += deltaTime;
+					step(deltaTime);
+					
 				}
 			}
 		}.start();
 		
 		started = true;
+	}
+	
+	public void step(float deltaTime) {
+		if(fadeState==null) {
+			if(fade<1) {
+				fade += deltaTime*fadeSpeed;
+				if(fade>1)
+					fade = 1;
+			}
+			tracking.step(deltaTime);
+			ProgramController.super.step(deltaTime);
+			currentState.step(deltaTime);
+		}else{
+			fade -= deltaTime*fadeSpeed;
+			if(fade<0) {
+				fade = 0;
+				switchState(fadeState);
+				fadeState = null;
+			}
+		}
+		programTimer += deltaTime;
+	}
+	
+	public void fadeToState(ProgramState state) {
+		fade = 1;
+		fadeSpeed = DEFAULT_FADESPEED;
+		fadeState = state;
 	}
 	
 	@Override
@@ -106,6 +138,7 @@ public class ProgramController extends DefaultSurface {
 				mFirstDraw = false;
 			}
 			mGraphics2D.setTime((int)(programTimer*100));
+			mGraphics.setAmbientColor(fade, fade, fade);
 			currentState.draw();
 			mGraphics.flush();
 		}
@@ -139,7 +172,7 @@ public class ProgramController extends DefaultSurface {
 			}
 			//Otherwise jump out to the menu
 			else {
-				switchState(new MainMenuState().init(this));
+				switchState(new MainMenuState());
 			}
 		}
 		if(currentState!=null)

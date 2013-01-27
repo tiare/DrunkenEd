@@ -7,7 +7,7 @@ import graphics.defaults.Default3DGraphics;
 import graphics.translator.GraphicsTranslator;
 
 public abstract class ProgramState implements TrackingListener {
-	
+
 	protected GraphicsTranslator graphics;
 	protected Default2DGraphics graphics2D;
 	protected Default3DGraphics graphics3D;
@@ -39,11 +39,11 @@ public abstract class ProgramState implements TrackingListener {
 		return this;
 	}
 	
-	private static void p(String p) {
+	public static void p(String p) {
 		System.out.println(p);
 	}
 	
-	private static void p(String p, boolean print) {
+	public static void p(String p, boolean print) {
 		if(print){
 			System.out.println(p);
 		}

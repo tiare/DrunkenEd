@@ -7,7 +7,6 @@ import javax.vecmath.Point2d;
 
 import org.OpenNI.Point3D;
 
-
 import control.ProgramController;
 
 public abstract class AbstractTracking {
@@ -22,6 +21,9 @@ public abstract class AbstractTracking {
 	public float leftLowerArmAngle;
 	public float rightUpperArmAngle;
 	public float rightLowerArmAngle;
+	public float headangle;
+	public float gpareaz;
+	public float gpareax;
 	
 	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;
@@ -31,7 +33,7 @@ public abstract class AbstractTracking {
 
 	public abstract Point2d getHeadPos();
 	public abstract ByteBuffer getColorImageByteBuffer(); 
-
+	public abstract Point3D[] getSkeletonPoints();
 	public abstract void init();
 	public abstract float getTorsoBending();
 	

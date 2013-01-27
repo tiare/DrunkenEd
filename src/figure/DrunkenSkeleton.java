@@ -20,6 +20,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	public DrunkenSkeleton() {
 		mBottleVisible = true;
 		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
+		mContourTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
 	}
 	
 	@Override
@@ -29,11 +30,21 @@ public class DrunkenSkeleton extends HumanSkeleton {
 
 		float shift;
 		mHeadBone.mContourX1 += 0.2f;
-		mHeadBone.mContourX2 += 0.8f;
+		mHeadBone.mContourX2 += 0.6f;
 		//mHeadBone.mContourX3 += 0.9f;
-		mHeadBone.mContourX4 += 0.9f;
+		mHeadBone.mContourX4 += 0.6f;
 		mHeadBone.mContourY3 += 0.3f;
 		mHeadBone.mContourX4 -= 0.3f;
+		shift = 0.3f;
+		mLeftFootBone.mContourY1 += shift;
+		mLeftFootBone.mContourY2 += shift;
+		mRightFootBone.mContourY1 += shift;
+		mRightFootBone.mContourY2 += shift;
+		mLeftFootBone.mContourX1 += shift;
+		mLeftFootBone.mContourX4 += shift;
+		mRightFootBone.mContourX1 += shift;
+		mRightFootBone.mContourX3 += shift;
+		mRightFootBone.mContourX4 += shift;
 		shift = -0.05f;
 		mHeadBone.mShiftY1 += shift;
 		mHeadBone.mShiftY2 += shift;
@@ -89,7 +100,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mLeftUpperArmBone,5);
 		super.addBone(mLeftLowerArmBone,5);
 		
-		mContourFactor = 0.035f;
+		mContourFactor = 0.04f;
 	}
 	
 	private void refreshBottleCoords() {

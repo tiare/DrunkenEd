@@ -1,5 +1,6 @@
 package control.states;
 
+import graphics.StandardTextures;
 import figure.Player;
 import control.ProgramController;
 import control.ProgramState;
@@ -33,6 +34,12 @@ public abstract class WorldState extends ProgramState {
 			graphics2D.setCamera(camera);
 			super.draw();
 		}
+	}
+	
+	protected void drawBackground(float zoom,float offset) {
+		float fac = zoom*camera.getZoom();
+		graphics.bindTexture(StandardTextures.GAME_BACKGROUND);
+		graphics2D.drawRect(camera.getX()-fac,offset,camera.getX()+fac,fac*1.26f);
 	}
 	
 	@Override

@@ -17,7 +17,7 @@ import control.ProgramController;
 public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
-	public static final float SPEED_FACTOR = 3;
+	public static final float SPEED_FACTOR = 3.5f;
 	
 	private int activeLevel = NONE;
 	private float barWidth = 6.f;
@@ -90,39 +90,44 @@ public class MainMenuState extends WorldState {
 	
 	@Override
 	public void onStep(float deltaTime) {
-		//camera.set(0, 1, 2);
-		camera.set(player.posX, 1.5f, 2.3f);
-		oldPlayerPosX = player.posX;
-		
-		if (startLevel) {
-			if (programController.getProgramTime() > drinkTime + timeout) {
-				//start game
-				super.programController.switchState(new GameState().init(programController));
+		synchronized(camera) {
+			//camera.set(0, 1, 2);
+			camera.set(player.posX, 1.5f, 2.3f);
+			oldPlayerPosX = player.posX;
+			
+			if (startLevel) {
+				if (programController.getProgramTime() > drinkTime + timeout) {
+					//start game
+					programController.fadeToState(new GameState());
+				}
 			}
+			else {
+				player.step(deltaTime);
+			}
+			//don't let the player walk out of the screen
+			dontLeaveScreen ();
+			updateActiveLevel ();
+			updateHintText ();
+			
+			if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
+				waitedLongEnough = true;
+			
+			shadowPlayer.posX = player.posX;
+			shadowPlayer.posY = player.posY;
+			updateShadowPosition();
+			
+			if (waitedLongEnough)
+				doDrinkingGesture ();
 		}
-		else {
-			player.step(deltaTime);
-		}
-		//don't let the player walk out of the screen
-		dontLeaveScreen ();
-		updateActiveLevel ();
-		updateHintText ();
-		
-		if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
-			waitedLongEnough = true;
-		
-		shadowPlayer.posX = player.posX;
-		shadowPlayer.posY = player.posY;
-		updateShadowPosition();
-		
-		if (waitedLongEnough)
-			doDrinkingGesture ();
 	}
 	
 	@Override
 	public void onBend(float bending){
 		player.steeredBending = bending;
-		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
+		if(true || Math.abs(player.steeredBending+player.drunkenBending)>0.1f) {
+			player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
+		}else
+			player.setSpeedX(0);
 	}
 	
 	private void updateShadowPosition() {
@@ -187,7 +192,9 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onDraw() {
 		graphics.bindTexture(null);
-		graphics.clear(0.3f, 0.3f, 0.3f);
+		
+		super.drawBackground(1.6f,0);
+		graphics.bindTexture(null);
 		
 		//floor
 		graphics2D.setColor(0.5f, 0.5f, 0.5f);
@@ -262,11 +269,11 @@ public class MainMenuState extends WorldState {
 	
 	private void drawStool (float posX, float posY, boolean active, int drink) {
 		if(!active) {
-			float drinkY = (drink > 0? posY + 0.9f: posY + 0.72f);
+			float drinkY = (drink > 0? posY + 0.96f: posY + 0.79f);
 			//display the drinks
 			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics.bindTextureInHolder(skeleton.mTextureHolder);
-			graphics2D.drawRectCentered(posX, drinkY,3.f,3.f, 0,
+			graphics.bindTexture(StandardTextures.ED_SKELETON);
+			graphics2D.drawRectCentered(posX, drinkY,3.5f,3.5f, 0,
 					skeleton.mBottleBone.mTexCoords.get(drink * 4));
 		}
 		
@@ -408,6 +415,8 @@ public class MainMenuState extends WorldState {
 			super.gameSettings.difficulty = activeLevel;
 			drinkTime = programController.getProgramTime();
 			startLevel = true;
+			//start game
+			//programController.fadeToState(new GameState());
 		}
 	}
 	

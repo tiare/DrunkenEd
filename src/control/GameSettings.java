@@ -7,14 +7,14 @@ public class GameSettings {
 	
 	public boolean speedIsProportionalToBending = false;
 	public float speedFactor = 9.0f;
-	public float maxSpeed = 5.0f;
+	public float maxSpeed = 6.2f;
 	public float speedAccelerationFactor = 0.7f;
-	public float flailingArmsSpeedFactor = 0.85f;
-	public float swingingArmsBendFactor = 0.7f;
+	public float flailingArmsSpeedFactor = 0.8f;
+	public float swingingArmsBendFactor = 0.8f;
 	
 	
 	public boolean useGravity = true;
-	public float gravityFactor = 0.02f;
+	public float gravityFactor = 0.015f;
 	
 	public float zoomFrequencyFactor = 1.3f;
 	public float zoomIntensityFactor = 1.0f;
