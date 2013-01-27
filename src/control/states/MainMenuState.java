@@ -35,8 +35,8 @@ public class MainMenuState extends WorldState {
 	private float highscoreHeight = 1.7f;
 	private float oldPlayerPosX = 0f;
 	
-	private float restartTime = 0.f;
-	private float timeout = 0.f;
+	private float drinkTime = 0.f;
+	private float timeout = 1.f;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -51,8 +51,8 @@ public class MainMenuState extends WorldState {
 	private Player shadowPlayer;
 	private DrunkenSkeleton shadowSkeleton;
 	private DrunkenSkeleton skeleton;
-	private float elbowAngle = 0.0f;
-	private float shoulderAngle = 0.0f;
+	private float elbowAngle = 90.0f;
+	private float shoulderAngle = 90.0f;
 	private float stepAngle = 80;
 	private float activationTime = 0;
 	private boolean waitedLongEnough = false;
@@ -66,7 +66,7 @@ public class MainMenuState extends WorldState {
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
 		super.init(programController);
-		restartTime = programController.getProgramTime();
+		drinkTime = programController.getProgramTime();
 		player.posX = -0.8f;
 		startLevel = false;
 		player.inGame = false;
@@ -96,7 +96,7 @@ public class MainMenuState extends WorldState {
 			oldPlayerPosX = player.posX;
 			
 			if (startLevel) {
-				if (programController.getProgramTime() > restartTime + hintTimeout) {
+				if (programController.getProgramTime() > drinkTime + timeout) {
 					//start game
 					programController.fadeToState(new GameState());
 				}
@@ -155,12 +155,12 @@ public class MainMenuState extends WorldState {
 	
 	private void doDrinkingGesture () {
 		//TODO: make text flash
-		if (elbowAngle > 190 && shoulderAngle > 80)
+		if (elbowAngle > 190 && shoulderAngle > 60)
 			stepAngle *= -1;
 		
-		if (elbowAngle < 0 || shoulderAngle < 0) {
-			elbowAngle = 0;
-			shoulderAngle = 0;
+		if (elbowAngle < 90 || shoulderAngle < 45) {
+			elbowAngle = 90;
+			shoulderAngle = 45;
 			stepAngle *= -1;
 			
 			waitedLongEnough = false;
@@ -395,28 +395,28 @@ public class MainMenuState extends WorldState {
 
 	@Override
 	public void keyDown(int key) {
-		//Enter the selected Stool
+		//Select drink - enter level
 		if( key == Keys.UP ) {
 			//Enter level
 			if (activeLevel != NONE) {
-				restartTime = programController.getProgramTime();
-				startLevel = true;
-				
 				//set difficulty in gamesettings!
-				super.gameSettings.difficulty = activeLevel;			
+				super.gameSettings.difficulty = activeLevel;
+				drinkTime = programController.getProgramTime();
+				startLevel = true;
 			}
 		}
 	}
 	
 	@Override
 	public void onDrink() {
-		//Enter the selected Stool
-		//Enter level
-		if (activeLevel != NONE && programController.getProgramTime() > restartTime + timeout) {
+		//Drink - enter level
+		if (activeLevel != NONE) {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeLevel;
+			drinkTime = programController.getProgramTime();
+			startLevel = true;
 			//start game
-			programController.fadeToState(new GameState());
+			//programController.fadeToState(new GameState());
 		}
 	}
 	
