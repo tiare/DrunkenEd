@@ -60,7 +60,7 @@ public class GameState extends WorldState {
 	@Override
 	public void onStart() {
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
-		fallingAngle = (float)Math.toRadians(125);
+		fallingAngle = (float)Math.toRadians(105);
 		player.bendingSpeed = 0;
 		player.inGame = true;
 		player.setArmAnglesByTracking(false);

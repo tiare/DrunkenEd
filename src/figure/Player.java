@@ -18,6 +18,7 @@ public class Player implements SkeletonCarrier {
 
 	public final static DrunkenAnimationSystem ANIMATION_SYSTEM = new DrunkenAnimationSystem();
 	public final static float PI = 3.1415926535f;
+	public final static boolean CONTROL_HEAD = false;
 	
 	private float velX,velY;
 	private ProgramController programController;
@@ -186,10 +187,10 @@ public class Player implements SkeletonCarrier {
 				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
 				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
 				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
-				if(inGame)
+				if(inGame || !CONTROL_HEAD)
 					skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
 				else
-					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+PI);
+					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
 				
 				refreshArms();
 			}
@@ -215,6 +216,8 @@ public class Player implements SkeletonCarrier {
 			if(Debug.DRAW_SKELETON)
 				skeleton.drawEditing(null);
 			graphics2D.setDefaultProgram();
+			
+			//graphics2D.drawRectCentered(0, 0, 1, 2, tracking.headangle);
 		}
 	}
 
