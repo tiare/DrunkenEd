@@ -105,7 +105,7 @@ public class GameOverState extends ProgramState {
 		if (gameState != null)
 			gameState.draw();
 
-		graphics.setAmbientColor(programController.fade);
+		graphics.setAmbientColor(programController.getBrightness());
 		graphics2D.switchGameCoordinates(false);
 
 		//graphics2D.setWhite();

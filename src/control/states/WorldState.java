@@ -37,9 +37,9 @@ public abstract class WorldState extends ProgramState {
 	}
 	
 	protected void drawBackground(float zoom,float offset) {
-		float fac = zoom*camera.getZoom();
+		float fac = zoom*camera.getZoom()*1.3f;
 		graphics.bindTexture(StandardTextures.GAME_BACKGROUND);
-		graphics2D.drawRect(camera.getX()-fac,offset,camera.getX()+fac,fac*1.26f);
+		graphics2D.drawRect(camera.getX()-fac,offset,camera.getX()+fac,fac*1.1f);
 	}
 	
 	@Override
