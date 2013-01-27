@@ -123,7 +123,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mLeftUpperLegBone.mShiftY1-=0.02f;
 		
 		mContourFactor = 0.04f;
-		mFloorFriction = 0.9f;
+		mFloorFriction = 0.85f;
 	}
 	
 	private void refreshBottleCoords() {

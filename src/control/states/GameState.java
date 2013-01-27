@@ -162,6 +162,7 @@ public class GameState extends WorldState {
 		// worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
 		synchronized (camera) {
 			
+			player.setWorldPosition(player.getWorldX(), 0.1f);
 			if(gameOverOverlay) {
 				brightness += (0.4f-brightness)*0.05f;
 				camera.mAdaption = 0.06f;
@@ -329,7 +330,7 @@ public class GameState extends WorldState {
 				}
 				DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
 				if(!fixedCameraMode)
-					camera.set(skeleton.mHipJoint.mPosX+player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending );
+					camera.set(skeleton.mHipJoint.mPosX+player.posX, skeleton.mHipJoint.mPosY+player.posY+0.2f, worldZoom, player.drunkenBending );
 				else
 					if(player.getWorldX()>camera.getX()+8) {
 						fixedCameraMode = false;
