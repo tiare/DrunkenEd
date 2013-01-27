@@ -34,8 +34,7 @@ public abstract class AbstractTracking {
 
 	public abstract Point2d getHeadPos();
 	public abstract ByteBuffer getColorImageByteBuffer(); 
-	
-
+	public abstract Point3D[] getSkeletonPoints();
 	public abstract void init();
 	public abstract float getTorsoBending();
 	

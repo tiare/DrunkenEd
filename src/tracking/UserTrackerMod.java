@@ -169,6 +169,10 @@ public class UserTrackerMod {
 	public int users[];
 	private boolean drinkAlreadyCalled=false;
 	public float headangle=0;
+	public SkeletonJoint[] body= {SkeletonJoint.HEAD,SkeletonJoint.LEFT_SHOULDER,SkeletonJoint.LEFT_ELBOW,SkeletonJoint.LEFT_HAND,
+			SkeletonJoint.RIGHT_SHOULDER,SkeletonJoint.RIGHT_ELBOW,SkeletonJoint.RIGHT_HAND,SkeletonJoint.NECK,SkeletonJoint.TORSO,
+			SkeletonJoint.LEFT_HIP,SkeletonJoint.LEFT_KNEE,SkeletonJoint.LEFT_FOOT,SkeletonJoint.RIGHT_HIP,SkeletonJoint.RIGHT_KNEE,SkeletonJoint.RIGHT_FOOT};
+	public Point3D[] skeletonpoints=new Point3D[body.length];
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -317,6 +321,12 @@ public class UserTrackerMod {
 			lefthandpos=new Point2d(temp.getX(), temp.getY());
 			temp=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition());
 			righthandpos=new Point2d(temp.getX(), temp.getY());
+			
+			for (int i =0;i<body.length;i++){
+				skeletonpoints[i]=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(users[activeUser], body[i]).getPosition());
+			}
+			
+			
 			calculateBendingAngle();
 			//calculateShoulderAngle();
 			calculateArmsAngle();
@@ -404,10 +414,11 @@ public class UserTrackerMod {
 			boolean wrongz =false;
 			programController.tracking.gpareaz=(torso3d.getZ()-2250)/750;
 			programController.tracking.gpareax=(4*torso3d.getX()/torso3d.getZ());
-			if (programController.tracking.gpareaz<=-1){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
-        	if (programController.tracking.gpareaz>=1){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
-        	if (programController.tracking.gpareax>=1){System.out.println("STEP LEFT,more TO THE MIDDLE");}
-        	if (programController.tracking.gpareax<=-1){System.out.println("STEP RIGHT, more TO THE MIDDLE");}
+			p("kopfwinkel::"+programController.tracking.headangle*180/Math.PI+"|| bendingangle: "+bendingangle*180/Math.PI);
+			if (programController.tracking.gpareaz<=-1){p("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
+        	if (programController.tracking.gpareaz>=1){p("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
+        	if (programController.tracking.gpareax>=1){p("STEP LEFT,more TO THE MIDDLE");}
+        	if (programController.tracking.gpareax<=-1){p("STEP RIGHT, more TO THE MIDDLE");}
 //			if (torso3d.getZ()<1500){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
 //        	if (torso3d.getZ()>3000){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
 //        	if (!wrongz && torso3d.getX()/torso3d.getZ()>0.25){System.out.println("STEP LEFT,more TO THE MIDDLE");}

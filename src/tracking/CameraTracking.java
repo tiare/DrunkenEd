@@ -9,6 +9,7 @@ import jogamp.opengl.util.av.impl.FFMPEGMediaPlayer.PixelFormat;
 
 import org.OpenNI.GeneralException;
 import org.OpenNI.ImageGenerator;
+import org.OpenNI.Point3D;
 
 import control.ProgramController;
 
@@ -107,5 +108,11 @@ public class CameraTracking extends AbstractTracking {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Point3D[] getSkeletonPoints() {
+		// TODO Auto-generated method stub
+		return app.skeletonpoints;
 	}
 }
