@@ -14,7 +14,7 @@ public class GameOverState extends ProgramState {
 
 	 int TIMEOUT = 20; // in seconds
 	 int SECONDTIMEOUT = 2;
-	static boolean DEBUG = true;
+	static boolean DEBUG = false;
 
 	ImageGenerator imgGen;
 
