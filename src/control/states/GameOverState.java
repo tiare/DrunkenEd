@@ -92,7 +92,9 @@ public class GameOverState extends ProgramState {
 			timeLeft = SECONDTIMEOUT - (int) ((System.currentTimeMillis() - secondCountdownTime)/1000L);
 		} else 
 			timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() -  countdownTime) / 1000L);
-		
+		if ( timeLeft < 0 && control.Debug.FAKE_CONTROLS &&  isHighScore ) {
+			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
+		}
 		if (timeLeft < 0 || noPicture || returnWithoutHighscore) {
 			p("Countdown expired, returning to main menu");
 			programController.fadeToState(new MainMenuState());
@@ -110,7 +112,7 @@ public class GameOverState extends ProgramState {
 
 		//graphics2D.setWhite();
 		graphics2D.setColor(0f, 0f, 1f);
-		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
+		graphics2D.drawString(0, 0.75f, 0.5f, 0, 0, 0, "Game Over");
 	}
 
 	@Override
@@ -123,19 +125,19 @@ public class GameOverState extends ProgramState {
 		if (isHighScore) {
 			//graphics2D.setColor(0.8f, 0.8f, 0f);
 			graphics2D.setColor(0f, 0f, 1f);
-			graphics2D.drawString(-0.15f, 0.55f, 0.1f, 0, 0, 0, "Distance: "); 
+			graphics2D.drawString(-0.2f, 0.5f, 0.1f, 0, 0, 0, "Distance: "); 
 			graphics2D.setWhite();
-			graphics2D.drawString(0.15f, 0.55f, 0.12f, 0, 0, 0, (int)score + "m");
+			graphics2D.drawString(0.2f, 0.5f, 0.12f, 0, 0, 0, (int)score + "m");
 			//graphics2D.draws
 			graphics2D.setColor(1f,0f,0f);
-			graphics2D.drawString(0f, 0.45f, (float)Math.abs(Math.sin(stateTimer*3))*.005f+0.1f, 0, 0, 0, "New Highscore!");
+			graphics2D.drawString(0f, 0.4f, (float)Math.abs(Math.sin(stateTimer*3))*.005f+0.1f, 0, 0, 0, "New Highscore!");
 			graphics2D.setWhite();
 
-			graphics2D.drawString(-0.6f, 0.05f, 0.1f, 0, 0, 0, "Drink to take");
-			graphics2D.drawString(-0.6f, -0.05f, 0.1f, 0, 0, 0, "a picture!");
+			graphics2D.drawString(-0.7f, 0f, 0.1f, 0, 0, 0, "Drink to take");
+			graphics2D.drawString(-0.7f, -0.1f, 0.1f, 0, 0, 0, "a picture!");
 			
 			graphics2D.setWhite();
-			graphics2D.drawString(0f, -0.6f, 0.1f, 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
+			graphics2D.drawString(0f, -0.65f, 0.1f, 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
 
 			float DISTANCE_TO_MIDDLE = 1.2f;
 			if (!tookPicture) {
@@ -178,10 +180,10 @@ public class GameOverState extends ProgramState {
 					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 80, 125, new TextureSettings());
 				}
 				graphics.bindTexture(playerImageTexture);
-				graphics2D.drawRectCentered(0f, 0f, 0.45f, 0.7f);
+				graphics2D.drawRectCentered(0f, -0.5f, 0.45f, 0.7f);
 
 			} else {
-				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
+				//programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
 				//noPicture = true;
 			}
 
@@ -198,11 +200,10 @@ public class GameOverState extends ProgramState {
 				//graphics2D.drawLine(DISTANCE_TO_MIDDLE + 0.25f - 0.05f, 0.3f, DISTANCE_TO_MIDDLE - 0.25f + 0.05f, -0.3f, 0.01f);
 			}
 		} else {
-
 			graphics2D.setColor(0f, 0f, 1f);
-			graphics2D.drawString(-0.15f, 0.4f, 0.1f, 0, 0, 0, "Distance: "); 
+			graphics2D.drawString(-0.2f, 0.4f, 0.1f, 0, 0, 0, "Distance: "); 
 			graphics2D.setWhite();
-			graphics2D.drawString(0.15f, 0.4f, 0.12f, 0, 0, 0, (int)score + "m");
+			graphics2D.drawString(0.2f, 0.4f, 0.12f, 0, 0, 0, (int)score + "m");
 			//graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Ran for "+(int)distance+" meter"+(distance!=1?"s":""));
 			//graphics2D.drawString(0f, 0.1f, 0.1f, 0, 0, 0, "You didn't make it home :-(");
 			graphics2D.drawString(0, -0f, 0.2f, 0, 0, 0, "Drink to try again!");
@@ -216,16 +217,17 @@ public class GameOverState extends ProgramState {
 	}
 
 	private void drawSquareAround(float around, float thickness, float width, float height) {
-		graphics2D.drawRectCentered(around - width / 2, 0, thickness, height);
-		graphics2D.drawRectCentered(around + width / 2, 0, thickness, height);
-		graphics2D.drawRectCentered(around, height / 2, width + thickness, thickness);
-		graphics2D.drawRectCentered(around, -height / 2, width + thickness, thickness);
+		graphics2D.drawRectCentered(around - width / 2, -0.05f, thickness, height);
+		graphics2D.drawRectCentered(around + width / 2, -0.05f, thickness, height);
+		graphics2D.drawRectCentered(around, height / 2-0.05f, width + thickness, thickness);
+		graphics2D.drawRectCentered(around, -height / 2-0.05f, width + thickness, thickness);
 	}
 
 	public void keyDown(int key) {
 		// Enter the selected door
 		if (key == Keys.UP) {
 			// switch to menu
+			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
 			programController.fadeToState(new MainMenuState());
 		}
 	}

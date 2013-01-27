@@ -4,7 +4,7 @@ public class Debug {
 	
 	public static boolean DRAW_USER_SKELETON = false;
 	public static boolean USE_COUNTDOWN = true;
-	public static boolean FAKE_CONTROLS = false;
+	public static boolean FAKE_CONTROLS = true;
 	public static int RESOLUTION_X = 1200;
 	public static int RESOLUTION_Y = 768;
 	public static boolean GAME_OVER_SYSTEM_OUT_PRINTLN = true;

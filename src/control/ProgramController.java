@@ -179,6 +179,9 @@ public class ProgramController extends DefaultSurface {
 	
 	@Override
 	public void keyDown(int key) {
+		if(key == 'c') {
+			Debug.DRAW_SKELETON ^= true;
+		}
 		if(key == Keys.ESC) {
 			//Only end game if we are in the menu
 			if (currentState.getType() == MENU) {

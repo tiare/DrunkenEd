@@ -9,8 +9,11 @@ import graphics.translator.TextureHolder;
 
 public class DrunkenSkeleton extends HumanSkeleton {
 
+	public static final float BUTT_OFFSET = 0.25f;
 	public Joint mBottleJoint;
+	public Joint mButtJoint;
 	public Bone mBottleBone;
+	public Bone mButtBone;
 	//private static final float[] Y_BOTTLES = {0,2f/8,5f/8,1};
 	public static final int DRINK_ANIMS = 4;
 	public int mDrinkId;
@@ -26,6 +29,12 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	@Override
 	protected void build() {
 		buildHuman(true, 0.07f,0.16f,0.9f);
+		
+		for(Joint joint:mJoints) {
+			if(joint.isSubChildOf(mHipJoint))
+				joint.mPosY *= 0.9f;
+		}
+		recalculateConstraints();
 		
 		float shift;
 		mHeadBone.mContourX1 += 0.2f;
@@ -61,13 +70,16 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mRightHandJoint.mPosY += shift;
 		mBodyBone.setWidth(0.35f);
 		mBodyBone.setShiftX(0.05f);
+		mBodyBone.mShiftY2 -= 0.075f;
 		mHeadBone.setShiftX(0.05f);
 		mLeftFootBone.setWidth(0.1f);
 		mRightFootBone.setWidth(mLeftFootBone.mWidth1);
-		float fac = 0.6f;
-		mHipJoint.mPosY *= fac;
-		mLeftKneeJoint.mPosY *= fac;
-		mRightKneeJoint.mPosY *= fac;
+		
+		mLeftLegJoint.mRelativeY-=0.01f;
+		//mRightLegJoint.mRelativeY-=0.1f;
+		mLeftLegJoint.mRelativeX+=0.16f;
+		//mRightLegJoint.mRelativeX-=0.1f;
+		mLeftUpperLegBone.mShiftY1-=0.02f;
 		
 		
 		mBottleJoint = new Joint("BottleNeck",mRightHandJoint,0.5f,mRightHandJoint.mPosY,0.4f,this);
@@ -83,19 +95,28 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mBottleBone.setShift(0.05f,0.05f,0.05f,-0.4f);
 		super.addJoint(mBottleJoint);
 		
+//		mButtJoint = new JointNormalConstraint("Butt",mHipJoint,mBodyBone,mHipJoint.mPosX,mHipJoint.mPosY-BUTT_OFFSET,0.4f,this);
+//		mButtBone = new Bone(mGraphics,"ButtBone",mHipJoint,mButtJoint);
+//		mButtBone.putTextureCoords(1/8f,7/8f,2/8f,1);
+//		mButtBone.setWidth(0.26f);
+//		mButtBone.setShift(0,0.2f,0,0);
+//		super.addJoint(mButtJoint);
 		
 		super.addBone(mRightLowerArmBone,1);
 		super.addBone(mRightUpperArmBone,1);
 		super.addBone(mBottleBone,1);
+		//super.addBone(mButtBone,2);
 		super.addBone(mRightFootBone,2);
 		super.addBone(mRightLowerLegBone,2);
 		super.addBone(mRightUpperLegBone,2);
 		
-		super.addBone(mLeftFootBone,3);
-		super.addBone(mLeftUpperLegBone,3);
-		super.addBone(mLeftLowerLegBone,3);
-		super.addBone(mBodyBone,3);
-		super.addBone(mHeadBone,4);
+		super.addBone(mBodyBone,2);
+		super.addBone(mHeadBone,3);
+		
+		super.addBone(mLeftFootBone,4);
+		super.addBone(mLeftUpperLegBone,4);
+		super.addBone(mLeftLowerLegBone,4);
+
 		super.addBone(mLeftUpperArmBone,5);
 		super.addBone(mLeftLowerArmBone,5);
 		
