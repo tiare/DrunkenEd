@@ -24,7 +24,7 @@ public class CameraTracking extends AbstractTracking {
 
 	public CameraTracking(ProgramController programController) {
 		super(programController);
-		userPicByteBuffer = ByteBuffer.allocateDirect(60 * 100 * 4);
+		userPicByteBuffer = ByteBuffer.allocateDirect(80 * 125 * 4);
 		picByteBuffer = ByteBuffer.allocateDirect(640 * 480 * 4);
 	}
 
@@ -86,8 +86,8 @@ public class CameraTracking extends AbstractTracking {
 				picByteBuffer = img.getImageMap().createByteBuffer();
 				if (getHeadPos().x != 0 && getHeadPos().y != 0) {
 					userPicByteBuffer.rewind();
-					for (int y = (int) (getHeadPos().y - 20); y < (int) (getHeadPos().y + 80); y++) {
-						for (int x = (int) (getHeadPos().x - 40); x < ((int) getHeadPos().x + 20); x++) {
+					for (int y = (int) (getHeadPos().y - 25); y < (int) (getHeadPos().y + 100); y++) {
+						for (int x = (int) (getHeadPos().x - 50); x < ((int) getHeadPos().x + 30); x++) {
 							int index = y * 640 * 3 + x * 3;
 							try {
 								userPicByteBuffer.put(picByteBuffer.get(index));
