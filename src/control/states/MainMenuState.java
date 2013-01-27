@@ -222,9 +222,9 @@ public class MainMenuState extends WorldState {
 		
 		//Draw side walls
 		graphics.bindTexture(StandardTextures.BRICK_LEFT);
-		graphics2D.drawRectCentered(-4.f,1.79f, 0.3f,4.0f, 0);
+		graphics2D.drawRectCentered(-4.f,1.9f, 0.3f,4.22f, 0);
 		graphics.bindTexture(StandardTextures.BRICK_RIGHT);
-		graphics2D.drawRectCentered( 4.5f,1.79f, 1.2f,4.0f, 0);
+		graphics2D.drawRectCentered( 4.5f,1.9f, 1.2f,4.22f, 0);
 		graphics.bindTexture(null);
 		
 		//drawBar
