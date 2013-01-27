@@ -14,7 +14,7 @@ public class GameOverState extends ProgramState {
 
 	 int TIMEOUT = 20; // in seconds
 	 int SECONDTIMEOUT = 2;
-	static boolean DEBUG = false;
+	static boolean DEBUG = true;
 
 	ImageGenerator imgGen;
 
@@ -53,7 +53,7 @@ public class GameOverState extends ProgramState {
 			TIMEOUT = 10;
 		}
 		if (DEBUG) {
-			this.isHighScore = !true;
+			this.isHighScore = true;
 			TIMEOUT = 50;
 			SECONDTIMEOUT = 15;
 		}
@@ -175,7 +175,7 @@ graphics2D.setWhite();
 					if (!tookPicture)
 						playerImageTexture.update(((CameraTracking) programController.tracking).getColorImageByteBuffer());
 				} else {
-					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings());
+					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 80, 125, new TextureSettings());
 				}
 				graphics.bindTexture(playerImageTexture);
 				graphics2D.drawRectCentered(0f, 0f, 0.45f, 0.7f);
