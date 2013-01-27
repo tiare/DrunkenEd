@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import javax.vecmath.Point2d;
 
+import org.OpenNI.Point3D;
+
 import control.ProgramController;
 
 public abstract class AbstractTracking {
