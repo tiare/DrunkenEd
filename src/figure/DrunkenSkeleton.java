@@ -1,9 +1,9 @@
 package figure;
 
+import graphics.skeletons.constraints.AngleConstraint;
 import graphics.skeletons.defaults.HumanSkeleton;
 import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
-import graphics.skeletons.elements.JointNormalConstraint;
 import graphics.translator.TextureFilter;
 import graphics.translator.TextureHolder;
 
@@ -34,6 +34,47 @@ public class DrunkenSkeleton extends HumanSkeleton {
 			if(joint.isSubChildOf(mHipJoint))
 				joint.mPosY *= 0.9f;
 		}
+		
+		mBottleJoint = new Joint("BottleNeck",mRightHandJoint,0.5f,mRightHandJoint.mPosY,0.4f,this);
+		mBottleBone = new Bone(mGraphics,"Bottle",mBottleJoint,mRightHandJoint);
+
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<DRINK_ANIMS;j++)
+				mBottleBone.putTextureCoords(0.5f+0.5f*j/DRINK_ANIMS, 0.25f+i/4f, 0.5f+0.5f*(j+1)/DRINK_ANIMS, 0.25f+(i+1)/4f);
+		}
+		mBottleBone.setWidth(0.22f);
+		mBottleBone.mCelShading = false;
+		mBottleBone.mVisible = true;
+		mBottleBone.setShift(0.07f,0.05f,0.07f,-0.4f);
+		super.addJoint(mBottleJoint);
+		
+//		mButtJoint = new JointNormalConstraint("Butt",mHipJoint,mBodyBone,mHipJoint.mPosX,mHipJoint.mPosY-BUTT_OFFSET,0.4f,this);
+//		mButtBone = new Bone(mGraphics,"ButtBone",mHipJoint,mButtJoint);
+//		mButtBone.putTextureCoords(1/8f,7/8f,2/8f,1);
+//		mButtBone.setWidth(0.26f);
+//		mButtBone.setShift(0,0.2f,0,0);
+//		super.addJoint(mButtJoint);
+		
+		super.addBone(mRightLowerArmBone,1);
+		super.addBone(mRightUpperArmBone,1);
+		super.addBone(mBottleBone,1);
+		//super.addBone(mButtBone,2);
+		super.addBone(mRightFootBone,2);
+		super.addBone(mRightLowerLegBone,2);
+		super.addBone(mRightUpperLegBone,2);
+		
+		super.addBone(mBodyBone,2);
+		super.addBone(mHeadBone,3);
+		
+		super.addBone(mLeftFootBone,4);
+		super.addBone(mLeftUpperLegBone,4);
+		super.addBone(mLeftLowerLegBone,4);
+
+		super.addBone(mLeftUpperArmBone,5);
+		super.addBone(mLeftLowerArmBone,5);
+		
+		super.getBoneConstraint(mHeadBone, AngleConstraint.class).mSpanAngle *= 0.55f;
+
 		recalculateConstraints();
 		
 		float shift;
@@ -75,50 +116,11 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mLeftFootBone.setWidth(0.1f);
 		mRightFootBone.setWidth(mLeftFootBone.mWidth1);
 		
-		mLeftLegJoint.mRelativeY-=0.01f;
-		//mRightLegJoint.mRelativeY-=0.1f;
+		mLeftLegJoint.mRelativeY-=0.005f;
+		mRightLegJoint.mRelativeY+=0.03f;
 		mLeftLegJoint.mRelativeX+=0.16f;
-		//mRightLegJoint.mRelativeX-=0.1f;
+		mRightLegJoint.mRelativeX+=0.09f;
 		mLeftUpperLegBone.mShiftY1-=0.02f;
-		
-		
-		mBottleJoint = new Joint("BottleNeck",mRightHandJoint,0.5f,mRightHandJoint.mPosY,0.4f,this);
-		mBottleBone = new Bone(mGraphics,"Bottle",mBottleJoint,mRightHandJoint);
-
-		for(int i=0;i<3;i++) {
-			for(int j=0;j<DRINK_ANIMS;j++)
-				mBottleBone.putTextureCoords(0.5f+0.5f*j/DRINK_ANIMS, 0.25f+i/4f, 0.5f+0.5f*(j+1)/DRINK_ANIMS, 0.25f+(i+1)/4f);
-		}
-		mBottleBone.setWidth(0.22f);
-		mBottleBone.mCelShading = false;
-		mBottleBone.mVisible = true;
-		mBottleBone.setShift(0.05f,0.05f,0.05f,-0.4f);
-		super.addJoint(mBottleJoint);
-		
-//		mButtJoint = new JointNormalConstraint("Butt",mHipJoint,mBodyBone,mHipJoint.mPosX,mHipJoint.mPosY-BUTT_OFFSET,0.4f,this);
-//		mButtBone = new Bone(mGraphics,"ButtBone",mHipJoint,mButtJoint);
-//		mButtBone.putTextureCoords(1/8f,7/8f,2/8f,1);
-//		mButtBone.setWidth(0.26f);
-//		mButtBone.setShift(0,0.2f,0,0);
-//		super.addJoint(mButtJoint);
-		
-		super.addBone(mRightLowerArmBone,1);
-		super.addBone(mRightUpperArmBone,1);
-		super.addBone(mBottleBone,1);
-		//super.addBone(mButtBone,2);
-		super.addBone(mRightFootBone,2);
-		super.addBone(mRightLowerLegBone,2);
-		super.addBone(mRightUpperLegBone,2);
-		
-		super.addBone(mBodyBone,2);
-		super.addBone(mHeadBone,3);
-		
-		super.addBone(mLeftFootBone,4);
-		super.addBone(mLeftUpperLegBone,4);
-		super.addBone(mLeftLowerLegBone,4);
-
-		super.addBone(mLeftUpperArmBone,5);
-		super.addBone(mLeftLowerArmBone,5);
 		
 		mContourFactor = 0.04f;
 		mFloorFriction = 0.9f;
