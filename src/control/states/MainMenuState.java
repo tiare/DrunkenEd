@@ -4,6 +4,7 @@ import figure.DrunkenSkeleton;
 import figure.Player;
 import graphics.StandardTextures;
 import graphics.events.Keys;
+import graphics.skeletons.Skeleton;
 import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
@@ -36,7 +37,7 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 	
 	private float drinkTime = 0.f;
-	private float timeout = 1.f;
+	private float timeout = 4.f;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -51,15 +52,15 @@ public class MainMenuState extends WorldState {
 	private Player shadowPlayer;
 	private DrunkenSkeleton shadowSkeleton;
 	private DrunkenSkeleton skeleton;
-	private float elbowAngle = 90.0f;
-	private float shoulderAngle = 90.0f;
-	private float stepAngle = 80;
+	private float elbowAngle = 0;
+	private float shoulderAngle = 0;
+	private float stepAngle = 160;
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
 	
-	private static final String DEFAULT_TEXT = "What would you like to drink?";
-	private static final String DRINK_TEXT = "Drink to select difficulty!";
+	private static final String DEFAULT_TEXT = "Choose your drink";
+	private static final String DRINK_TEXT = "Drink to start!";
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -97,10 +98,14 @@ public class MainMenuState extends WorldState {
 					//start game
 					programController.fadeToState(new GameState());
 				}
+				else {
+					doDrinkingGesture(false);
+				}
 			}
 			else {
 				player.step(deltaTime);
 			}
+			
 			//don't let the player walk out of the screen
 			dontLeaveScreen ();
 			updateActiveLevel ();
@@ -109,26 +114,17 @@ public class MainMenuState extends WorldState {
 				waitedLongEnough = true;
 			else {
 				waitedLongEnough = false;
-//				activationTime = programController.getProgramTime();
+				prepareForDrinkingGesture(true);
 			}
 			
 			shadowPlayer.posX = player.posX;
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
-			if (waitedLongEnough) {
-				doDrinkingGesture ();
+			if (waitedLongEnough && !startLevel) {
+				doDrinkingGesture (true);
 			}
 		}
-	}
-	
-	@Override
-	public void onBend(float bending){
-		player.steeredBending = bending;
-		if(true || Math.abs(player.steeredBending+player.drunkenBending)>0.1f) {
-			player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
-		}else
-			player.setSpeedX(0);
 	}
 	
 	private void updateShadowPosition() {
@@ -154,31 +150,64 @@ public class MainMenuState extends WorldState {
 		
 	}
 	
-	private void doDrinkingGesture () {
-		//TODO: make text flash
-		if (elbowAngle > 190 && shoulderAngle > 60)
-			stepAngle *= -1;
-		
-		if (elbowAngle < 90 || shoulderAngle < 45) {
-			elbowAngle = 90;
-			shoulderAngle = 45;
-			stepAngle *= -1;
-			
-//			waitedLongEnough = false;
-//			activationTime = programController.getProgramTime();
+	private void prepareForDrinkingGesture (boolean hint) {
+		if (hint) {
+			elbowAngle = 0;
+			shoulderAngle = 0;
 		}
-		elbowAngle += 190/stepAngle;
-		shoulderAngle += 80/stepAngle;
-		shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
-		shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
-		
-		shadowSkeleton.setModColor(0.f, 0.f, 0.f, 0.9f);
-		shadowSkeleton.setAddColor(0.1f, 0.1f, 0.15f);
-		shadowSkeleton.mDrawContour = false;
-		shadowSkeleton.mRightLowerArmBone.mVisible = true;
-		shadowSkeleton.mRightUpperArmBone.mVisible = true;
-		
-		shadowSkeleton.refreshBottle();
+		else {
+			elbowAngle = (float)Math.toDegrees(skeleton.mRightHandJoint.getParentAngle());
+			shoulderAngle = (float)Math.toDegrees(skeleton.mRightElbowJoint.getParentAngle());
+		}
+	}
+	
+	private void doDrinkingGesture (boolean hint) {
+		if (hint) {
+			if (elbowAngle > 160 && shoulderAngle > 60)
+				stepAngle *= -1;
+			
+			if (elbowAngle < 90 || shoulderAngle < 30) {
+				elbowAngle = 90;
+				shoulderAngle = 30;
+				stepAngle *= -1;
+			}
+			elbowAngle += 160/stepAngle;
+			shoulderAngle += 60/stepAngle;
+			shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
+			shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+			
+			shadowSkeleton.setModColor(0.f, 0.f, 0.f, 0.9f);
+			shadowSkeleton.setAddColor(0.1f, 0.1f, 0.15f);
+			shadowSkeleton.mDrawContour = false;
+			shadowSkeleton.mRightLowerArmBone.mVisible = true;
+			shadowSkeleton.mRightUpperArmBone.mVisible = true;
+			
+			shadowSkeleton.refreshBottle();
+		}
+		else {
+			
+			if (elbowAngle < 160)
+				elbowAngle += 160/stepAngle;
+			else if (elbowAngle > 165)
+				elbowAngle -= 160/stepAngle;
+			
+			if (shoulderAngle < 60)				
+				shoulderAngle += 60/stepAngle;	
+			else if (shoulderAngle > 65)
+				shoulderAngle -= 60/stepAngle;
+			
+					//stepAngle *= -1;
+				
+	//			if (elbowAngle < 90 || shoulderAngle < 45) {
+	////				elbowAngle = 90;
+	////				shoulderAngle = 45;
+	//				stepAngle *= -1;
+	//			}
+				skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
+				skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+				
+				skeleton.refreshBottle();
+		}
 	}
 
 	@Override
@@ -246,7 +275,7 @@ public class MainMenuState extends WorldState {
 		//Display bottom text
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		graphics2D.switchGameCoordinates(false);
-		if (waitedLongEnough) {
+		if (waitedLongEnough && !startLevel) {
 			graphics2D.setColor(1.f, 1.f, (float)Math.abs(Math.sin(stateTimer*3)));
 			graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
 		}
@@ -391,15 +420,27 @@ public class MainMenuState extends WorldState {
 	}
 
 	@Override
+	public void onBend(float bending){
+		if (!startLevel) {
+			player.steeredBending = bending;
+			if(true || Math.abs(player.steeredBending+player.drunkenBending)>0.1f) {
+				player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
+			}else
+				player.setSpeedX(0);
+		}
+	}
+	
+	@Override
 	public void keyDown(int key) {
 		//Select drink - enter level
-		if( key == Keys.UP ) {
+		if( key == Keys.UP) {
 			//Enter level
-			if (activeLevel != NONE) {
+			if (activeLevel != NONE && !startLevel) {
 				//set difficulty in gamesettings!
 				super.gameSettings.difficulty = activeLevel;
 				drinkTime = programController.getProgramTime();
 				startLevel = true;
+				prepareForDrinkingGesture(false);
 			}
 		}
 	}
@@ -407,13 +448,12 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onDrink() {
 		//Drink - enter level
-		if (activeLevel != NONE) {
+		if (activeLevel != NONE && !startLevel) {
 			//set difficulty in gamesettings!
 			super.gameSettings.difficulty = activeLevel;
 			drinkTime = programController.getProgramTime();
 			startLevel = true;
-			//start game
-			//programController.fadeToState(new GameState());
+			prepareForDrinkingGesture(false);
 		}
 	}
 	
@@ -439,13 +479,13 @@ public class MainMenuState extends WorldState {
 	private ArrayList<Texture> setHighscorePictures (int level) {
 		ArrayList<Texture> textures = new ArrayList<Texture>();
 		if (highscores.getPictureFromPos(level, 0) != null)
-			textures.add(0, graphics.createTexture(highscores.getPictureFromPos(level, 0), 60, 100, new TextureSettings()));
+			textures.add(0, graphics.createTexture(highscores.getPictureFromPos(level, 0), 80, 125, new TextureSettings()));
 		else textures.add(0,getDefaultTexture (level, 0));
 		if (highscores.getPictureFromPos(level, 1) != null)
-			textures.add(1, graphics.createTexture(highscores.getPictureFromPos(level,1), 60, 100, new TextureSettings()));
+			textures.add(1, graphics.createTexture(highscores.getPictureFromPos(level,1), 80, 125, new TextureSettings()));
 		else textures.add(1, getDefaultTexture (level, 1));
 		if (highscores.getPictureFromPos(level, 2) != null)
-			textures.add(2, graphics.createTexture(highscores.getPictureFromPos(level, 2), 60, 100, new TextureSettings()));
+			textures.add(2, graphics.createTexture(highscores.getPictureFromPos(level, 2), 80, 125, new TextureSettings()));
 		else textures.add(2, getDefaultTexture (level, 2));
 		
 		return textures;
