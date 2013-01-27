@@ -342,88 +342,90 @@ public class GameState extends WorldState {
 	@Override
 	public void onDraw() {
 		// reset color stuff
-		float c = 0.82f*brightness*programController.fade;
+		float c = 0.82f*brightness*programController.getBrightness();
 		graphics.clear(c, c, c);
 		
 		graphics.bindTexture(null);
 		graphics2D.setWhite();
 
-		graphics.setAmbientColor(programController.fade*brightness);
+		graphics.setAmbientColor(programController.getBrightness()*brightness);
 		
-		super.drawBackground(2,0.35f);
-		
-		//graphics2D.setShaderProgram(StandardTextures.DRUNKEN_SHADER);
-		// draw houses
-		
-		houseRow.draw(graphics, graphics2D, camera.getX());
-		
-		// draw street
-		streetRow.draw(graphics, graphics2D, camera.getX());
-		/*graphics2D.setWhite();
-		graphics.bindTexture(StandardTextures.STREET);
-		float streetWidth = 10;
-		graphics2D.drawRectCentered(player.posX, -1.0f, streetWidth, 2.75f,
-				0.0f, 4 * (2 * player.posX / streetWidth - 1), 1, 4 * (2
-						* player.posX / streetWidth + 1), 0);
-		graphics.bindTexture(null);*/
-		
-		
-		// draw trees lanterns and banks
-		streetItemRow.draw(graphics, graphics2D, camera.getX());
-		
-		
-
-		// draw initial start sequence
-		if (pause) {
-			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0,
-					(int) Math.ceil(pauseTime - stateTimer) + " ");
-		} else if (pauseFadeOut > 0) {
-			graphics2D.setColor(1.f, 1.f, 1.f, pauseFadeOut);
-			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
-		}
-
-		// config camera
-		// synchronized(player.getSkeleton()) {
-		// DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
-		// camera.set(skeleton.mHipJoint.mPosX + player.posX,
-		// skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
-		// }
-		// draw player
-		player.draw();
-
-		// Draw stats
-		if(!gameOverOverlay) {
-			graphics2D.switchGameCoordinates(false);
-			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-			graphics2D.setColor(1.f, 1.f, 1.f);
-			// graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX )
-			// +"m ");
-			// graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed()
-			// ).replace("-","")+"m/s");
-			String s = (int) player.posX + "m";
-			while (s.length() < 4)
-				s = " " + s;
-			while (s.length() < 5)
-				s = " " + s;
-			String t = (int) (stateTimer - pauseTime) % 60 + "";
+		synchronized(camera) {
+			super.drawBackground(2,0.35f);
+			
+			//graphics2D.setShaderProgram(StandardTextures.DRUNKEN_SHADER);
+			// draw houses
+			
+			houseRow.draw(graphics, graphics2D, camera.getX());
+			
+			// draw street
+			streetRow.draw(graphics, graphics2D, camera.getX());
+			/*graphics2D.setWhite();
+			graphics.bindTexture(StandardTextures.STREET);
+			float streetWidth = 10;
+			graphics2D.drawRectCentered(player.posX, -1.0f, streetWidth, 2.75f,
+					0.0f, 4 * (2 * player.posX / streetWidth - 1), 1, 4 * (2
+							* player.posX / streetWidth + 1), 0);
+			graphics.bindTexture(null);*/
+			
+			
+			// draw trees lanterns and banks
+			streetItemRow.draw(graphics, graphics2D, camera.getX());
+			
+			
 	
-			if (stateTimer - pauseTime < 0)
-				t = "00";
-	
-			if (t.length() < 2) {
-				t = "0" + t;
-			}
-			t = (int) (stateTimer - pauseTime) / 60 + " " + t;
-			if (t.length() < 5) {
-				t = "0" + t;
+			// draw initial start sequence
+			if (pause) {
+				graphics2D.setColor(1.f, 1.f, 1.f);
+				graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0,
+						(int) Math.ceil(pauseTime - stateTimer) + " ");
+			} else if (pauseFadeOut > 0) {
+				graphics2D.setColor(1.f, 1.f, 1.f, pauseFadeOut);
+				graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
 			}
 	
-			graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
-			//graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f, 0.1f,-1, -1, 0, 0.07f, s);
-//			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f, 0.1f,-1, -1, 0, 0.07f, t);
-//			graphics2D.drawStringL(graphics2D.getScreenLeft() + 0.255f, 0.7f, 0.1f,":");
-			graphics2D.switchGameCoordinates(true);
+			// config camera
+			// synchronized(player.getSkeleton()) {
+			// DrunkenSkeleton skeleton = (DrunkenSkeleton)player.getSkeleton();
+			// camera.set(skeleton.mHipJoint.mPosX + player.posX,
+			// skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+			// }
+			// draw player
+			player.draw();
+	
+			// Draw stats
+			if(!gameOverOverlay) {
+				graphics2D.switchGameCoordinates(false);
+				graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+				graphics2D.setColor(1.f, 1.f, 1.f);
+				// graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX )
+				// +"m ");
+				// graphics2D.drawStringL(1.2f, 0.7f, 0.1f, df.format( player.getSpeed()
+				// ).replace("-","")+"m/s");
+				String s = (int) player.posX + "m";
+				while (s.length() < 4)
+					s = " " + s;
+				while (s.length() < 5)
+					s = " " + s;
+				String t = (int) (stateTimer - pauseTime) % 60 + "";
+		
+				if (stateTimer - pauseTime < 0)
+					t = "00";
+		
+				if (t.length() < 2) {
+					t = "0" + t;
+				}
+				t = (int) (stateTimer - pauseTime) / 60 + " " + t;
+				if (t.length() < 5) {
+					t = "0" + t;
+				}
+		
+				graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
+				//graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f, 0.1f,-1, -1, 0, 0.07f, s);
+	//			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f, 0.1f,-1, -1, 0, 0.07f, t);
+	//			graphics2D.drawStringL(graphics2D.getScreenLeft() + 0.255f, 0.7f, 0.1f,":");
+				graphics2D.switchGameCoordinates(true);
+			}
 		}
 
 	}

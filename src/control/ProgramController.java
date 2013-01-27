@@ -24,7 +24,8 @@ public class ProgramController extends DefaultSurface {
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	private boolean mChangingState;
 	private ProgramState fadeState;
-	public float fade;
+	public boolean markWarning;
+	private float fade;
 	private float fadeSpeed;
 	
 	public ProgramController() {
@@ -84,8 +85,15 @@ public class ProgramController extends DefaultSurface {
 					fade = 1;
 			}
 			tracking.step(deltaTime);
-			ProgramController.super.step(deltaTime);
-			currentState.step(deltaTime);
+			super.step(deltaTime);
+			if(currentState.showMarkWarnings) {
+				float limit = markWarning?0.5f:0.75f;
+				markWarning = Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
+			}
+			if(markWarning) {
+				
+			}else
+				currentState.step(deltaTime);
 		}else{
 			fade -= deltaTime*fadeSpeed;
 			if(fade<0) {
@@ -138,10 +146,17 @@ public class ProgramController extends DefaultSurface {
 				mFirstDraw = false;
 			}
 			mGraphics2D.setTime((int)(programTimer*100));
-			mGraphics.setAmbientColor(fade, fade, fade);
+			mGraphics.setAmbientColor(getBrightness());
 			currentState.draw();
-			mGraphics.flush();
 		}
+		
+		if(markWarning) {
+			mGraphics.setAmbientColor(1);
+			mGraphics2D.setColor(1, 0.1f, 0);
+			mGraphics2D.drawStringC(0, 0.3f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+		}
+		
+		mGraphics.flush();
 	}
 	
 	@Override
@@ -195,5 +210,11 @@ public class ProgramController extends DefaultSurface {
 		System.out.println("Testing switch");
 	}
 	
+	public float getBrightness() {
+		if(markWarning)
+			return fade * 0.18f;
+		else
+			return fade;
+	}
 	
 }

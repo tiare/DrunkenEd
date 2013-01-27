@@ -52,7 +52,7 @@ public class Highscores {
 
 	public ByteBuffer getPictureFromPos(final int gameLevel, int pos) {
 		try {
-			ByteBuffer bb =ByteBuffer.allocateDirect(60 * 100 * 4);
+			ByteBuffer bb =ByteBuffer.allocateDirect(80 * 125 * 4);
 			bb.rewind();
 
 			File file = new File(getFileName(gameLevel) + pos+".bb");

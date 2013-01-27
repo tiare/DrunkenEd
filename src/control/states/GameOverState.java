@@ -13,7 +13,7 @@ import graphics.translator.TextureSettings;
 public class GameOverState extends ProgramState {
 
 	 int TIMEOUT = 20; // in seconds
-	 int SECONDTIMEOUT = 3;
+	 int SECONDTIMEOUT = 2;
 	static boolean DEBUG = false;
 
 	ImageGenerator imgGen;
@@ -49,6 +49,9 @@ public class GameOverState extends ProgramState {
 		this.distance = distance;
 		this.time = time;
 		this.isHighScore = programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)) < 4;
+		if (!isHighScore) {
+			TIMEOUT = 10;
+		}
 		if (DEBUG) {
 			this.isHighScore = true;
 			TIMEOUT = 50;
@@ -102,11 +105,11 @@ public class GameOverState extends ProgramState {
 		if (gameState != null)
 			gameState.draw();
 
-		graphics.setAmbientColor(programController.fade);
+		graphics.setAmbientColor(programController.getBrightness());
 		graphics2D.switchGameCoordinates(false);
-		graphics2D.setWhite();
 
-		graphics2D.setColor(1.f, 1.f, 1.f);
+		//graphics2D.setWhite();
+		graphics2D.setColor(0f, 0f, 1f);
 		graphics2D.drawString(0, 0.8f, 0.5f, 0, 0, 0, "Game Over");
 	}
 
@@ -116,18 +119,28 @@ public class GameOverState extends ProgramState {
 
 		drawBackground();
 
-		graphics2D.setWhite();
 
 		if (isHighScore) {
-			graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Staggered for " + (int)score + " meter" + (score > 1 ? "s" : "")+"!");
-			graphics2D.drawString(-1f, -0.05f, 0.1f, 0, 0, 0, "New Highscore!");
-			//graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning to bar in " + (timeLeft > 0 ? (int) timeLeft : "0") + " seconds");
-			graphics2D.drawString(1.44f, -0.8f, 0.1f, 0, 0, 0, (timeLeft > 0 ? String.valueOf((int) timeLeft) : "0"));
+			//graphics2D.setColor(0.8f, 0.8f, 0f);
+			graphics2D.setColor(0f, 0f, 1f);
+			graphics2D.drawString(-0.15f, 0.55f, 0.1f, 0, 0, 0, "Distance: "); 
+			graphics2D.setWhite();
+			graphics2D.drawString(0.15f, 0.55f, 0.12f, 0, 0, 0, (int)score + "m");
+			//graphics2D.draws
+			graphics2D.setColor(1f,0f,0f);
+			graphics2D.drawString(0f, 0.45f, (float)Math.abs(Math.sin(stateTimer*3))*.005f+0.1f, 0, 0, 0, "New Highscore!");
+			graphics2D.setWhite();
+
+			graphics2D.drawString(-0.6f, 0.05f, 0.1f, 0, 0, 0, "Drink to take");
+			graphics2D.drawString(-0.6f, -0.05f, 0.1f, 0, 0, 0, "a picture!");
+			
+			graphics2D.setWhite();
+			graphics2D.drawString(0f, -0.6f, 0.1f, 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
 
 			float DISTANCE_TO_MIDDLE = 1.2f;
 			if (!tookPicture) {
-				graphics2D.drawString(0, 0.45f, 0.1f, 0, 0, 0, "Photo");
-				graphics2D.drawString(DISTANCE_TO_MIDDLE, 0.5f, 0.1f, 0, 0, 0, "Exit");
+				//graphics2D.drawString(0, 0.45f, 0.1f, 0, 0, 0, "Photo");
+				//graphics2D.drawString(DISTANCE_TO_MIDDLE, 0.5f, 0.1f, 0, 0, 0, "Exit");
 			}
 			graphics.bindTexture(null);
 
@@ -154,17 +167,18 @@ public class GameOverState extends ProgramState {
 				
 
 				if (!tookPicture && diffX < range)
-					graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to take a picture!");
+					//graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to take a picture!");
 
-				graphics.bindTexture(StandardTextures.CUBE);
+				//graphics.bindTexture(StandardTextures.CUBE);
+					graphics2D.setWhite();
 				if (playerImageTexture != null) {
 					if (!tookPicture)
 						playerImageTexture.update(((CameraTracking) programController.tracking).getColorImageByteBuffer());
 				} else {
-					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 60, 100, new TextureSettings());
+					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 80, 125, new TextureSettings());
 				}
 				graphics.bindTexture(playerImageTexture);
-				graphics2D.drawRectCentered(tookPicture?1f:diffX, 0f, 0.45f, 0.7f);
+				graphics2D.drawRectCentered(0f, 0f, 0.45f, 0.7f);
 
 			} else {
 				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
@@ -174,20 +188,28 @@ public class GameOverState extends ProgramState {
 			graphics.bindTexture(null);
 
 			if (!tookPicture) {
-				graphics2D.setColor(0f, diffX < 0.3f ? 1f : 0f, 0f);
+				graphics2D.setColor(0f, 1f, 0f);
 				drawSquareAround(0, 0.07f, 0.5f, 0.7f);
-				graphics2D.setColor(0f, diffX > DISTANCE_TO_MIDDLE - 0.3f ? 1f : 0f, 0f);
-				drawSquareAround(DISTANCE_TO_MIDDLE, 0.07f, 0.5f, 0.7f);
-				graphics2D.setColor(1, 0, 0);
+				//graphics2D.setColor(0f, diffX > DISTANCE_TO_MIDDLE - 0.3f ? 1f : 0f, 0f);
+				//drawSquareAround(DISTANCE_TO_MIDDLE, 0.07f, 0.5f, 0.7f);
+				//graphics2D.setColor(1, 0, 0);
 				// red cross
-				graphics2D.drawLine(DISTANCE_TO_MIDDLE - 0.25f + 0.05f, 0.3f, DISTANCE_TO_MIDDLE + 0.25f - 0.05f, -0.3f, 0.01f);
-				graphics2D.drawLine(DISTANCE_TO_MIDDLE + 0.25f - 0.05f, 0.3f, DISTANCE_TO_MIDDLE - 0.25f + 0.05f, -0.3f, 0.01f);
+				//graphics2D.drawLine(DISTANCE_TO_MIDDLE - 0.25f + 0.05f, 0.3f, DISTANCE_TO_MIDDLE + 0.25f - 0.05f, -0.3f, 0.01f);
+				//graphics2D.drawLine(DISTANCE_TO_MIDDLE + 0.25f - 0.05f, 0.3f, DISTANCE_TO_MIDDLE - 0.25f + 0.05f, -0.3f, 0.01f);
 			}
 		} else {
-			graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Ran for "+(int)distance+" meter"+(distance!=1?"s":""));
+
+			graphics2D.setColor(0f, 0f, 1f);
+			graphics2D.drawString(-0.15f, 0.4f, 0.1f, 0, 0, 0, "Distance: "); 
+			graphics2D.setWhite();
+			graphics2D.drawString(0.15f, 0.4f, 0.12f, 0, 0, 0, (int)score + "m");
+			//graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Ran for "+(int)distance+" meter"+(distance!=1?"s":""));
 			//graphics2D.drawString(0f, 0.1f, 0.1f, 0, 0, 0, "You didn't make it home :-(");
 			graphics2D.drawString(0, -0f, 0.2f, 0, 0, 0, "Drink to try again!");
-			graphics2D.drawString(1.44f, -0.8f, 0.1f, 0, 0, 0, (timeLeft > 0 ? String.valueOf((int) timeLeft) : "0"));
+			
+			graphics2D.drawString(0f, -0.6f, 0.1f, 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
+
+			//graphics2D.drawString(1.44f, -0.8f, 0.1f, 0, 0, 0, (timeLeft > 0 ? String.valueOf((int) timeLeft) : "0"));
 
 		}
 
