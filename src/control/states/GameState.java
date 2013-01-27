@@ -102,7 +102,7 @@ public class GameState extends WorldState {
 		pool.add(to);
 
 		houseRow = new HorizontalRow(pool);
-		houseRow.setStart(-2.4f);
+		houseRow.setStart(-2.5f);
 		
 		// add moes tavern only once
 		moes = new TexturedObject(StandardTextures.MOES);
@@ -133,7 +133,7 @@ public class GameState extends WorldState {
 
 		streetItemRow = new HorizontalRow(pool);
 		streetItemRow.setSpacerWidth(0.3f, 2.7f);
-		streetItemRow.setStart(-1.5f);
+		streetItemRow.setStart(3.0f);
 		
 		
 		// street stuff
