@@ -177,7 +177,7 @@ public class Player implements SkeletonCarrier {
 				float prevX = skeleton.mBreastJoint.mPosX;
 				float prevY = skeleton.mBreastJoint.mPosY;
 				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
-				float fac = 0.5f;
+				float fac = 0.15f;
 				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
 				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
 				skeleton.mRightShoulderJoint.setSpeed(skeleton.mBreastJoint);
@@ -271,8 +271,8 @@ public class Player implements SkeletonCarrier {
 		
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
-			joint.mFriction = 0.99f;
-			joint.mVelX += velX;
+			joint.mFriction = 0.998f;
+			joint.mVelX = velX;
 		}
 		
 		for(Constraint constraint:skeleton.mConstraints) {

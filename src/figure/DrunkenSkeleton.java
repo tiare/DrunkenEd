@@ -27,7 +27,6 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	protected void build() {
 		buildHuman(true, 0.07f,0.16f,0.9f);
 		
-
 		float shift;
 		mHeadBone.mContourX1 += 0.2f;
 		mHeadBone.mContourX2 += 0.6f;
@@ -101,6 +100,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mLeftLowerArmBone,5);
 		
 		mContourFactor = 0.04f;
+		mFloorFriction = 0.9f;
 	}
 	
 	private void refreshBottleCoords() {
