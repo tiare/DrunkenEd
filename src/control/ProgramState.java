@@ -2,6 +2,7 @@ package control;
 
 import org.OpenNI.Point3D;
 
+import tracking.AbstractTracking;
 import tracking.TrackingListener;
 import graphics.Camera2D;
 import graphics.defaults.Default2DGraphics;
@@ -14,6 +15,7 @@ public abstract class ProgramState implements TrackingListener {
 	protected Default2DGraphics graphics2D;
 	protected Default3DGraphics graphics3D;
 	protected ProgramController programController;
+	protected boolean showMarkWarnings;
 	protected float stateTimer;
 	protected Highscores highscores;
 	protected GameSettings gameSettings;
@@ -28,6 +30,7 @@ public abstract class ProgramState implements TrackingListener {
 		camera = new Camera2D();
 		camera.mAdaption = 0.3f;
 		initialized = false;
+		showMarkWarnings = true;
 	}
 	
 	public ProgramState init(ProgramController programController) {

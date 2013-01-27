@@ -105,7 +105,7 @@ public class GameOverState extends ProgramState {
 		if (gameState != null)
 			gameState.draw();
 
-		graphics.setAmbientColor(programController.fade);
+		graphics.setAmbientColor(programController.getBrightness());
 		graphics2D.switchGameCoordinates(false);
 
 		//graphics2D.setWhite();
@@ -134,7 +134,7 @@ public class GameOverState extends ProgramState {
 			graphics2D.drawString(-0.6f, 0.05f, 0.1f, 0, 0, 0, "Drink to take");
 			graphics2D.drawString(-0.6f, -0.05f, 0.1f, 0, 0, 0, "a picture!");
 			
-graphics2D.setWhite();
+			graphics2D.setWhite();
 			graphics2D.drawString(0f, -0.6f, 0.1f, 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
 
 			float DISTANCE_TO_MIDDLE = 1.2f;

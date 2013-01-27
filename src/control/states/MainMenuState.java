@@ -185,83 +185,85 @@ public class MainMenuState extends WorldState {
 	public void onDraw() {
 		graphics.bindTexture(null);
 		
-		super.drawBackground(1.6f,0);
-		graphics.bindTexture(null);
-		
-		//floor
-		graphics2D.setColor(0.5f, 0.5f, 0.5f);
-		graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
-		graphics2D.setColor(0.7f, 0.7f, 0.7f);
-		graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
-		
-		//Draw back wall
-		graphics2D.setColor(0.4f, 0.3f, 0.2f);
-		graphics2D.drawRectCentered(0, 2.f, 8 ,4.0f);
-
-		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics.bindTexture(StandardTextures.WALL);
-		graphics2D.drawRectCentered(-2, 0.65f, 4, 1.25f);
-		graphics2D.drawRectCentered( 2, 0.65f, 4, 1.25f);
-		graphics.bindTexture(null);
-		
-		//Draw stuff on walls
-		graphics.bindTexture(StandardTextures.DART);
-		graphics2D.drawRectCentered(-3.4f, 1.8f, 0.7f, 0.7f);
-		graphics.bindTexture(StandardTextures.FLAG1);
-		graphics2D.drawRectCentered(-3.3f, 2.9f, 0.5f, 0.5f);
-		graphics.bindTexture(StandardTextures.FLAG2);
-		graphics2D.drawRectCentered(-3.5f, 3.2f, 0.6f, 0.4f);
-		graphics.bindTexture(StandardTextures.PICTURE1);
-		graphics2D.drawRectCentered(3.5f, 2.5f, 0.35f, 0.5f);
-		graphics.bindTexture(StandardTextures.PICTURE2);
-		graphics2D.drawRectCentered(3.2f, 3.f,0.45f, 0.45f);
-		graphics.bindTexture(StandardTextures.PICTURE3);
-		graphics2D.drawRectCentered(3.3f, 1.7f, 0.5f, 0.4f);
-		
-		graphics.bindTexture(null);
-		
-		//Draw side walls
-		graphics.bindTexture(StandardTextures.BRICK_LEFT);
-		graphics2D.drawRectCentered(-4.f,1.79f, 0.3f,4.0f, 0);
-		graphics.bindTexture(StandardTextures.BRICK_RIGHT);
-		graphics2D.drawRectCentered( 4.5f,1.79f, 1.2f,4.0f, 0);
-		graphics.bindTexture(null);
-		
-		//drawBar
-		graphics.bindTexture(StandardTextures.TAP);
-		graphics2D.drawRectCentered(0.7f, 1.44f, 0.2f, 0.3f);
-		graphics.bindTexture(StandardTextures.BAR);
-		graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
-		graphics.bindTexture(null);
-		
-		drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
-		drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
-		drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
-		
-		drawStool(stoolLx, stoolsY, (activeLevel == 0), LEFT);
-		drawStool(stoolCx, stoolsY, (activeLevel == 1), CENTER);
-		drawStool(stoolRx, stoolsY, (activeLevel == 2), RIGHT);
-		graphics2D.setColor(1.f, 1.f, 1.f);
-		
-		//Display bottom text
-		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		graphics2D.switchGameCoordinates(false);
-		if (waitedLongEnough) {
-			graphics2D.setColor(1.f, 1.f, (float)Math.abs(Math.sin(stateTimer*3)));
-			graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
-		}
+		synchronized(camera) {
+			super.drawBackground(1.6f,0);
+			graphics.bindTexture(null);
+			
+			//floor
+			graphics2D.setColor(0.5f, 0.5f, 0.5f);
+			graphics2D.drawRectCentered(0,-5.0f, 20,10.0f, 0);
+			graphics2D.setColor(0.7f, 0.7f, 0.7f);
+			graphics2D.drawRectCentered(0,-0.1f, 20,0.2f, 0);
+			
+			//Draw back wall
+			graphics2D.setColor(0.4f, 0.3f, 0.2f);
+			graphics2D.drawRectCentered(0, 2.f, 8 ,4.0f);
 	
-		graphics2D.setColor(1.f, 1.f, 1.f);
-		graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
-		graphics2D.switchGameCoordinates(true);
-		graphics.bindTexture(null);
+			graphics2D.setColor(1.f, 1.f, 1.f);
+			graphics.bindTexture(StandardTextures.WALL);
+			graphics2D.drawRectCentered(-2, 0.65f, 4, 1.25f);
+			graphics2D.drawRectCentered( 2, 0.65f, 4, 1.25f);
+			graphics.bindTexture(null);
+			
+			//Draw stuff on walls
+			graphics.bindTexture(StandardTextures.DART);
+			graphics2D.drawRectCentered(-3.4f, 1.8f, 0.7f, 0.7f);
+			graphics.bindTexture(StandardTextures.FLAG1);
+			graphics2D.drawRectCentered(-3.3f, 2.9f, 0.5f, 0.5f);
+			graphics.bindTexture(StandardTextures.FLAG2);
+			graphics2D.drawRectCentered(-3.5f, 3.2f, 0.6f, 0.4f);
+			graphics.bindTexture(StandardTextures.PICTURE1);
+			graphics2D.drawRectCentered(3.5f, 2.5f, 0.35f, 0.5f);
+			graphics.bindTexture(StandardTextures.PICTURE2);
+			graphics2D.drawRectCentered(3.2f, 3.f,0.45f, 0.45f);
+			graphics.bindTexture(StandardTextures.PICTURE3);
+			graphics2D.drawRectCentered(3.3f, 1.7f, 0.5f, 0.4f);
+			
+			graphics.bindTexture(null);
+			
+			//Draw side walls
+			graphics.bindTexture(StandardTextures.BRICK_LEFT);
+			graphics2D.drawRectCentered(-4.f,1.79f, 0.3f,4.0f, 0);
+			graphics.bindTexture(StandardTextures.BRICK_RIGHT);
+			graphics2D.drawRectCentered( 4.5f,1.79f, 1.2f,4.0f, 0);
+			graphics.bindTexture(null);
+			
+			//drawBar
+			graphics.bindTexture(StandardTextures.TAP);
+			graphics2D.drawRectCentered(0.7f, 1.44f, 0.2f, 0.3f);
+			graphics.bindTexture(StandardTextures.BAR);
+			graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
+			graphics.bindTexture(null);
+			
+			drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
+			drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
+			drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
+			
+			drawStool(stoolLx, stoolsY, (activeLevel == 0), LEFT);
+			drawStool(stoolCx, stoolsY, (activeLevel == 1), CENTER);
+			drawStool(stoolRx, stoolsY, (activeLevel == 2), RIGHT);
+			graphics2D.setColor(1.f, 1.f, 1.f);
+			
+			//Display bottom text
+			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+			graphics2D.switchGameCoordinates(false);
+			if (waitedLongEnough) {
+				graphics2D.setColor(1.f, 1.f, (float)Math.abs(Math.sin(stateTimer*3)));
+				graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
+			}
 		
-		player.skeleton.setDrinkId(activeLevel);
-		shadowPlayer.skeleton.setDrinkId(activeLevel);
-		shadowPlayer.draw();
-		
-		graphics2D.setWhite();
-		player.draw();
+			graphics2D.setColor(1.f, 1.f, 1.f);
+			graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
+			graphics2D.switchGameCoordinates(true);
+			graphics.bindTexture(null);
+			
+			player.skeleton.setDrinkId(activeLevel);
+			shadowPlayer.skeleton.setDrinkId(activeLevel);
+			shadowPlayer.draw();
+			
+			graphics2D.setWhite();
+			player.draw();
+		}
 	}
 	
 	private void drawStool (float posX, float posY, boolean active, int drink) {
