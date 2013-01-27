@@ -123,18 +123,18 @@ public class GameOverState extends ProgramState {
 		if (isHighScore) {
 			//graphics2D.setColor(0.8f, 0.8f, 0f);
 			graphics2D.setColor(0f, 0f, 1f);
-			graphics2D.drawString(-0.15f, 0.55f, 0.1f, 0, 0, 0, "Distance: "); 
+			graphics2D.drawString(-0.2f, 0.55f, 0.1f, 0, 0, 0, "Distance: "); 
 			graphics2D.setWhite();
-			graphics2D.drawString(0.15f, 0.55f, 0.12f, 0, 0, 0, (int)score + "m");
+			graphics2D.drawString(0.2f, 0.55f, 0.12f, 0, 0, 0, (int)score + "m");
 			//graphics2D.draws
 			graphics2D.setColor(1f,0f,0f);
 			graphics2D.drawString(0f, 0.45f, (float)Math.abs(Math.sin(stateTimer*3))*.005f+0.1f, 0, 0, 0, "New Highscore!");
 			graphics2D.setWhite();
 
-			graphics2D.drawString(-0.6f, 0.05f, 0.1f, 0, 0, 0, "Drink to take");
-			graphics2D.drawString(-0.6f, -0.05f, 0.1f, 0, 0, 0, "a picture!");
+			graphics2D.drawString(-0.7f, 0.05f, 0.1f, 0, 0, 0, "Drink to take");
+			graphics2D.drawString(-0.7f, -0.05f, 0.1f, 0, 0, 0, "a picture!");
 			
-graphics2D.setWhite();
+			graphics2D.setWhite();
 			graphics2D.drawString(0f, -0.6f, 0.1f, 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
 
 			float DISTANCE_TO_MIDDLE = 1.2f;
@@ -200,9 +200,9 @@ graphics2D.setWhite();
 		} else {
 
 			graphics2D.setColor(0f, 0f, 1f);
-			graphics2D.drawString(-0.15f, 0.4f, 0.1f, 0, 0, 0, "Distance: "); 
+			graphics2D.drawString(-0.2f, 0.4f, 0.1f, 0, 0, 0, "Distance: "); 
 			graphics2D.setWhite();
-			graphics2D.drawString(0.15f, 0.4f, 0.12f, 0, 0, 0, (int)score + "m");
+			graphics2D.drawString(0.2f, 0.4f, 0.12f, 0, 0, 0, (int)score + "m");
 			//graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Ran for "+(int)distance+" meter"+(distance!=1?"s":""));
 			//graphics2D.drawString(0f, 0.1f, 0.1f, 0, 0, 0, "You didn't make it home :-(");
 			graphics2D.drawString(0, -0f, 0.2f, 0, 0, 0, "Drink to try again!");
