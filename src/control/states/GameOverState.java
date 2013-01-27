@@ -12,8 +12,8 @@ import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
 
-	static int TIMEOUT = 20; // in seconds
-	static int SECONDTIMEOUT = 3;
+	 int TIMEOUT = 20; // in seconds
+	 int SECONDTIMEOUT = 3;
 	static boolean DEBUG = false;
 
 	ImageGenerator imgGen;
@@ -49,7 +49,11 @@ public class GameOverState extends ProgramState {
 		this.distance = distance;
 		this.time = time;
 		this.isHighScore = programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)) < 4;
-		//isHighScore = DEBUG;
+		if (DEBUG) {
+			this.isHighScore = true;
+			TIMEOUT = 50;
+			SECONDTIMEOUT = 15;
+		}
 		p("highscore pos is: " + programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)));
 		countdownTime = System.currentTimeMillis();
 		initialMeasure = true;
@@ -115,9 +119,10 @@ public class GameOverState extends ProgramState {
 		graphics2D.setWhite();
 
 		if (isHighScore) {
-			graphics2D.drawString(-1f, 0.25f, 0.1f, 0, 0, 0, "You walked " + (int)score + " meter" + (score > 1 ? "s" : "")+"!");
-			graphics2D.drawString(-1f, 0.15f, 0.1f, 0, 0, 0, "New Highscore!");
-			graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning to bar in " + (timeLeft > 0 ? (int) timeLeft : "0") + " seconds");
+			graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Staggered for " + (int)score + " meter" + (score > 1 ? "s" : "")+"!");
+			graphics2D.drawString(-1f, -0.05f, 0.1f, 0, 0, 0, "New Highscore!");
+			//graphics2D.drawString(-1f, 0.05f, 0.1f, 0, 0, 0, "Returning to bar in " + (timeLeft > 0 ? (int) timeLeft : "0") + " seconds");
+			graphics2D.drawString(1.44f, -0.8f, 0.1f, 0, 0, 0, (timeLeft > 0 ? String.valueOf((int) timeLeft) : "0"));
 
 			float DISTANCE_TO_MIDDLE = 1.2f;
 			if (!tookPicture) {
@@ -179,9 +184,11 @@ public class GameOverState extends ProgramState {
 				graphics2D.drawLine(DISTANCE_TO_MIDDLE + 0.25f - 0.05f, 0.3f, DISTANCE_TO_MIDDLE - 0.25f + 0.05f, -0.3f, 0.01f);
 			}
 		} else {
-			graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Only "+(int)distance+" meters");
-			graphics2D.drawString(0f, 0.1f, 0.1f, 0, 0, 0, "You didn't make it home :-(");
-			graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to try again!");
+			graphics2D.drawString(0f, 0.3f, 0.1f, 0, 0, 0, "Ran for "+(int)distance+" meter"+(distance!=1?"s":""));
+			//graphics2D.drawString(0f, 0.1f, 0.1f, 0, 0, 0, "You didn't make it home :-(");
+			graphics2D.drawString(0, -0f, 0.2f, 0, 0, 0, "Drink to try again!");
+			graphics2D.drawString(1.44f, -0.8f, 0.1f, 0, 0, 0, (timeLeft > 0 ? String.valueOf((int) timeLeft) : "0"));
+
 		}
 
 	}
