@@ -181,7 +181,7 @@ public class GameOverState extends ProgramState {
 				graphics2D.drawRectCentered(0f, 0f, 0.45f, 0.7f);
 
 			} else {
-				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
+				//programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
 				//noPicture = true;
 			}
 
@@ -226,6 +226,7 @@ public class GameOverState extends ProgramState {
 		// Enter the selected door
 		if (key == Keys.UP) {
 			// switch to menu
+			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
 			programController.fadeToState(new MainMenuState());
 		}
 	}
