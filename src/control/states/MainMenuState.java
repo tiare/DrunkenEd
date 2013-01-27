@@ -51,8 +51,8 @@ public class MainMenuState extends WorldState {
 	private Player shadowPlayer;
 	private DrunkenSkeleton shadowSkeleton;
 	private DrunkenSkeleton skeleton;
-	private float elbowAngle = 0.0f;
-	private float shoulderAngle = 0.0f;
+	private float elbowAngle = 90.0f;
+	private float shoulderAngle = 90.0f;
 	private float stepAngle = 80;
 	private float activationTime = 0;
 	private boolean waitedLongEnough = false;
@@ -155,12 +155,12 @@ public class MainMenuState extends WorldState {
 	
 	private void doDrinkingGesture () {
 		//TODO: make text flash
-		if (elbowAngle > 190 && shoulderAngle > 80)
+		if (elbowAngle > 190 && shoulderAngle > 60)
 			stepAngle *= -1;
 		
-		if (elbowAngle < 0 || shoulderAngle < 0) {
-			elbowAngle = 0;
-			shoulderAngle = 0;
+		if (elbowAngle < 90 || shoulderAngle < 45) {
+			elbowAngle = 90;
+			shoulderAngle = 45;
 			stepAngle *= -1;
 			
 			waitedLongEnough = false;
