@@ -170,7 +170,9 @@ public class Player implements SkeletonCarrier {
 				
 				float bending = (drunkenBending+steeredBending);
 				float upLimit = 0.9f*PI/2;
-				float downLimit = -0.8f*upLimit;
+				if(!inGame)
+					upLimit *= 0.55f;
+				float downLimit = -0.9f*upLimit;
 				if(bending>upLimit)
 					bending = upLimit;
 				if(bending<downLimit)
