@@ -1,5 +1,7 @@
 package control;
 
+import org.OpenNI.Point3D;
+
 import tracking.TrackingListener;
 import graphics.Camera2D;
 import graphics.defaults.Default2DGraphics;
@@ -57,10 +59,22 @@ public abstract class ProgramState implements TrackingListener {
 	public void draw() {
 		graphics.clear(0, 0, 0);
 		graphics.setShaderProgram(graphics2D.getDefaultProgram());
+		graphics2D.setWhite();
 		onDraw();
 		
 		if(Debug.DRAW_USER_SKELETON) {
-			
+			graphics2D.switchGameCoordinates(false);
+			graphics.bindTexture(null);
+			graphics2D.setColor(0.7f, 0, 0, 0.5f);
+			Point3D[] points = programController.tracking.getSkeletonPoints();
+			if(points!=null) {
+				for(Point3D point:points)
+					if(point!=null){
+						//System.out.println(point.getX()+" "+point.getY());
+						graphics2D.drawRectCentered((point.getX()/640f*2-0.5f), (-point.getY()/480f*2+0.5f), 0.1f);
+					
+					}
+			}
 		}
 	}
 	
