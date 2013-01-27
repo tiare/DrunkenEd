@@ -10,6 +10,6 @@ varying vec2 screenPos;
 
 void main()
 {
-	vec4 texCl = texture2D(texSampler, vec2(texCoord.x*(1.0+sin(screenPos.y*10.0)*cos(screenPos.x*20.0)*0.1),texCoord.y*(1+sin(screenPos.y*10.0)*cos(screenPos.x*20.0)*0.1)));
+	vec4 texCl = texture2D(texSampler, vec2(texCoord.x*(1.0+sin(screenPos.y*10.0)*cos(screenPos.x*20.0)*0.1),texCoord.y*(1.0+sin(screenPos.y*10.0)*cos(screenPos.x*20.0)*0.1)));
 	gl_FragColor = (texCl * color) * ambientColor;
 }
