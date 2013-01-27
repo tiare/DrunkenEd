@@ -30,7 +30,7 @@ public class MainMenuState extends WorldState {
 	private float stoolCx = 0.f;
 	private float stoolRx = 2.f;
 	private float stoolsY = 0.6f;
-	private float highscoresY = 3.05f;
+	private float highscoresY = 2.9f;
 	private float highscoreWith = 1.8f;
 	private float highscoreHeight = 1.7f;
 	private float oldPlayerPosX = 0f;
@@ -55,10 +55,9 @@ public class MainMenuState extends WorldState {
 	private float shoulderAngle = 90.0f;
 	private float stepAngle = 80;
 	private float activationTime = 0;
-	private boolean waitedLongEnough = false;
 	private float hintTimeout = 5.f;
+	private boolean waitedLongEnough = false;
 	
-	private String hintText = "";
 	private static final String DEFAULT_TEXT = "What would you like to drink?";
 	private static final String DRINK_TEXT = "Drink to select difficulty!";
 	
@@ -83,8 +82,6 @@ public class MainMenuState extends WorldState {
 		player.setArmAnglesByTracking(true);
 		skeleton = (DrunkenSkeleton)player.getSkeleton();
 		
-		hintText = DEFAULT_TEXT;
-		
 		return this;
 	}
 	
@@ -92,7 +89,7 @@ public class MainMenuState extends WorldState {
 	public void onStep(float deltaTime) {
 		synchronized(camera) {
 			//camera.set(0, 1, 2);
-			camera.set(player.posX, 1.5f, 2.3f);
+			camera.set(player.posX, 1.7f, 2.3f);
 			oldPlayerPosX = player.posX;
 			
 			if (startLevel) {
@@ -107,17 +104,21 @@ public class MainMenuState extends WorldState {
 			//don't let the player walk out of the screen
 			dontLeaveScreen ();
 			updateActiveLevel ();
-			updateHintText ();
 			
 			if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 				waitedLongEnough = true;
+			else {
+				waitedLongEnough = false;
+//				activationTime = programController.getProgramTime();
+			}
 			
 			shadowPlayer.posX = player.posX;
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
-			if (waitedLongEnough)
+			if (waitedLongEnough) {
 				doDrinkingGesture ();
+			}
 		}
 	}
 	
@@ -163,8 +164,8 @@ public class MainMenuState extends WorldState {
 			shoulderAngle = 45;
 			stepAngle *= -1;
 			
-			waitedLongEnough = false;
-			activationTime = programController.getProgramTime();
+//			waitedLongEnough = false;
+//			activationTime = programController.getProgramTime();
 		}
 		elbowAngle += 190/stepAngle;
 		shoulderAngle += 80/stepAngle;
@@ -178,15 +179,6 @@ public class MainMenuState extends WorldState {
 		shadowSkeleton.mRightUpperArmBone.mVisible = true;
 		
 		shadowSkeleton.refreshBottle();
-	}
-	
-	private void updateHintText () {
-		if (activeLevel != NONE) {
-			hintText = DRINK_TEXT;
-		}
-		else {
-			hintText = DEFAULT_TEXT;
-		}
 	}
 
 	@Override
@@ -253,9 +245,14 @@ public class MainMenuState extends WorldState {
 		
 		//Display bottom text
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.switchGameCoordinates(false);
-		graphics2D.drawString(0, -0.85f, 0.13f, 0, 0, 0, hintText);
+		if (waitedLongEnough) {
+			graphics2D.setColor(1.f, 1.f, (float)Math.abs(Math.sin(stateTimer*3)));
+			graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
+		}
+	
+		graphics2D.setColor(1.f, 1.f, 1.f);
+		graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
 		graphics2D.switchGameCoordinates(true);
 		graphics.bindTexture(null);
 		
@@ -353,7 +350,7 @@ public class MainMenuState extends WorldState {
 		
 		//Write blackboard title
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		if (activeLevel == position) graphics2D.setColor(0.8f, 0.2f, 0.2f);
+		if (activeLevel == position) graphics2D.setColor(1.f, 0.f, 0.f);//graphics2D.setColor(0.8f, 0.2f, 0.2f);
 		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
 		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
 		graphics.bindTexture(null);
