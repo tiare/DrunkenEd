@@ -74,7 +74,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mLeftUpperArmBone,5);
 		super.addBone(mLeftLowerArmBone,5);
 		
-		super.getBoneConstraint(mHeadBone, AngleConstraint.class).mSpanAngle *= 0.55f;
+		super.getBoneConstraint(mHeadBone, AngleConstraint.class).mSpanAngle *= 0.99f;
 
 		recalculateConstraints();
 		
