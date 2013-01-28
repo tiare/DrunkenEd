@@ -36,6 +36,9 @@ public class StandardTextures {
 	public static Texture FLAG1;
 	public static Texture FLAG2;
 	
+	public static Texture ARROW_L;
+	public static Texture ARROW_R;
+	
 	public static Texture ED;
 	public static Texture NO_ED;
 	
@@ -78,6 +81,9 @@ public class StandardTextures {
 		FLAG1 = gfxLoader.getImage("flag1",defSettings);
 		FLAG2 = gfxLoader.getImage("flag2",defSettings);
 		
+		ARROW_L = gfxLoader.getImage("arrow_left", defSettings);
+		ARROW_R = gfxLoader.getImage("arrow_right", defSettings);
+				
 		ED = gfxLoader.getImage("ed",defSettings);
 		NO_ED = gfxLoader.getImage("ed_silhouette",defSettings);
 		ED_SKELETON = gfxLoader.getImage("skeleton_ed",defSettings);
