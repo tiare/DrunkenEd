@@ -37,6 +37,7 @@ public class Player implements SkeletonCarrier {
 	public boolean inGame;
 	public boolean fellDown;
 	public float fellTime;
+	public boolean moved;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -49,6 +50,7 @@ public class Player implements SkeletonCarrier {
 		drunkenBending = 0;
 		fellDown = false;
 		gameOver = false;
+		moved = false;
 	}
 	
 	public Player init(ProgramController programController) {
@@ -176,6 +178,14 @@ public class Player implements SkeletonCarrier {
 
 				animationPlayer.proceed(velX*deltaTime);
 				
+				float angleOffset = 0;
+				if(!inGame && !moved) {
+					angleOffset = (float)Math.sin(lifeTime*5)*0.04f+0.08f;
+				}
+				
+				if(Math.abs(velX)>0.001f)
+					moved = true;
+				
 				float bending = (drunkenBending+steeredBending);
 				float upLimit = 0.9f*PI/2;
 				if(!inGame)
@@ -187,7 +197,7 @@ public class Player implements SkeletonCarrier {
 					bending = downLimit;
 				float prevX = skeleton.mBreastJoint.mPosX;
 				float prevY = skeleton.mBreastJoint.mPosY;
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
 				float fac = 0.15f;
 				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
 				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
@@ -199,7 +209,7 @@ public class Player implements SkeletonCarrier {
 				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
 				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
 				if(inGame || !CONTROL_HEAD)
-					skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+					skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);
 				else
 					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
 				

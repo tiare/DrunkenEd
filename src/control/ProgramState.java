@@ -98,6 +98,10 @@ public abstract class ProgramState implements TrackingListener {
 		onStart();
 	}
 	
+	protected void onAbort() {
+		
+	}
+	
 	public void pointerDown(float x,float y,int pId) {
 		
 	}

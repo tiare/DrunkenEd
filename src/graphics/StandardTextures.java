@@ -17,9 +17,11 @@ public class StandardTextures {
 	public static Texture CUBE;
 	public static Texture CIRCLE;
 	public static Texture PERLIN;
+	public static Texture ARROW;
+	
+	public static Texture CROSS;
 	public static Texture STREET;
 	public static Texture GAME_BACKGROUND;
-
 	public static Texture STOOL;
 	public static Texture ED_SKELETON;
 	public static Texture BAR;
@@ -63,9 +65,11 @@ public class StandardTextures {
 		CUBE = gfxLoader.getImage("cube");
 		CIRCLE = gfxLoader.getImage("circle",defSettings);
 		PERLIN = gfxLoader.getImage("perlin1",TextureFilter.LINEAR_MIP_LINEAR);
+		
+		ARROW = gfxLoader.getImage("arrow",defSettings);
 		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT,TextureFilter.LINEAR_MIP_LINEAR));
 		GAME_BACKGROUND = gfxLoader.getImage("nightsky",defSettings);
-		
+		CROSS = gfxLoader.getImage("cross",defSettings);
 		STOOL = gfxLoader.getImage("hocker",defSettings);
 		BAR = gfxLoader.getImage("bar",defSettings);
 		TAP = gfxLoader.getImage("tap",defSettings);

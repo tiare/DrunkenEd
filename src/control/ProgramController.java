@@ -4,6 +4,7 @@ package control;
 import tracking.AbstractTracking;
 import tracking.CameraTracking;
 import tracking.FakedTracking;
+import util.Util;
 import control.states.MainMenuState;
 import graphics.StandardTextures;
 import graphics.defaults.DefaultSurface;
@@ -153,7 +154,24 @@ public class ProgramController extends DefaultSurface {
 		if(markWarning) {
 			mGraphics.setAmbientColor(1);
 			mGraphics2D.setColor(1, 0.1f, 0);
-			mGraphics2D.drawStringC(0, 0.3f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+			mGraphics2D.drawStringC(0, 0.7f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+			mGraphics.bindTexture(StandardTextures.CROSS);
+			mGraphics2D.drawRectCentered(0,0,0.15f);
+			float fac = 0.3f;
+			mGraphics2D.setColor(0.2f, 0.8f, 0);
+			mGraphics.bindTexture(StandardTextures.CIRCLE);
+			float x = tracking.gpareax*fac;
+			float y = -tracking.gpareaz*fac-0.1f;
+			mGraphics2D.drawRectCentered(x,y,0.17f);
+			float a = Util.getAngle(x, y);
+			mGraphics.bindTexture(StandardTextures.ARROW);
+			float r = 0.135f+(float)Math.abs(Math.sin(programTimer*10)*0.06f);
+			float dX = -(float)Math.cos(a) * r;
+			float dY = -(float)Math.sin(a) * r;	
+			mGraphics2D.drawRectCentered(x+dX, y+dY, 0.1f, 0.1f, a-Util.F_PI/2);
+			mGraphics2D.setColor(1,1,1);
+			mGraphics2D.drawStringC(x, y, 0.12f, "You");
+			
 		}
 		
 		mGraphics.flush();
