@@ -21,7 +21,7 @@ public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
 	public static final float SPEED_FACTOR = 3.5f;
-	public static final float HELP_FREQUENCY = 8;
+	public static final float HELP_FREQUENCY = 6;
 	public static final float HELP_INTENSITY = 0.018f;
 	
 	private int activeLevel = NONE;
@@ -60,7 +60,7 @@ public class MainMenuState extends WorldState {
 	private float shoulderAngle = 0;
 	private float stepAngle = 160;
 	private float activationTime = 0;
-	private float hintTimeout = 1.f;
+	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
 	private LinkedList<Float> traveledDistances;
 	private float minDistance = 0.6f;
@@ -314,7 +314,7 @@ public class MainMenuState extends WorldState {
 					graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
 				}
 				else {
-					graphics2D.drawString(0, -0.9f, 0.13f+pulse(8,HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
+					graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
 				}
 			}
 		
