@@ -1,0 +1,21 @@
+float addBend = 0;
+/*
+ * if( reBend != 0){ reBend *= 0.1f; addBend = reBend;//
+ * * 0.5f; if(Math.abs( reBend ) < 0.05){ reBend = 0; }
+ * }
+ */
+
+if (Math.abs(player.drunkenBending + player.steeredBending) > (Math.PI / 6)
+		&& (bendingLeft ^ (player.drunkenBending + player.steeredBending < 0))) {
+
+	// System.out.println(bendingLeft + " " +
+	// (player.drunkenBending + player.steeredBending));
+	reBend = bendingLeft ? (float) -Math.PI / 2.0f
+			: (float) Math.PI / 2.0f;
+	// player.steeredBending += (bendingLeft) ?
+	// (Math.PI/10) : -(Math.PI/10);
+	// player.drunkenBending += (bendingLeft) ?
+	// -(Math.PI/20) : (Math.PI/20);
+}
+
+							

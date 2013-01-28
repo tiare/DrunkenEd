@@ -18,11 +18,12 @@ public class Player implements SkeletonCarrier {
 
 	public final static DrunkenAnimationSystem ANIMATION_SYSTEM = new DrunkenAnimationSystem();
 	public final static float PI = 3.1415926535f;
+	public final static boolean CONTROL_HEAD = false;
 	
 	private float velX,velY;
 	private ProgramController programController;
 	private AbstractTracking tracking;
-	private DrunkenSkeleton skeleton;
+	public DrunkenSkeleton skeleton;
 	private GraphicsTranslator graphics;
 	private Default2DGraphics graphics2D;
 	public float posX,posY;
@@ -32,15 +33,21 @@ public class Player implements SkeletonCarrier {
 	public float lifeTime;
 	private boolean mFlail;
 	private boolean mSwing;
+	private float mSwingTime;
+	public boolean inGame;
+	public boolean fellDown;
+	public float fellTime;
 	
 	public float steeredBending;
 	public float bendingSpeed;
 	public float drunkenBending;
 	
-	public Player() {
+	public Player(boolean inGame) {
+		this.inGame = inGame;
 		skeleton = new DrunkenSkeleton();
 		steeredBending = 0;
 		drunkenBending = 0;
+		fellDown = false;
 		gameOver = false;
 	}
 	
@@ -56,6 +63,10 @@ public class Player implements SkeletonCarrier {
 		
 		mFlail = false;
 		mSwing = false;
+		mSwingTime = -1;
+		
+		fellTime = 0;
+		lifeTime = 0;
 		
 		start();
 		return this;
@@ -73,28 +84,36 @@ public class Player implements SkeletonCarrier {
 			skeleton.mLeftLowerArmBone.setAngle(angle+PI);
 			skeleton.mRightUpperArmBone.setAngle(angle);
 			skeleton.mRightLowerArmBone.setAngle(angle);
-		}else if(mSwing) {
+		}else if(mSwingTime>0) {
 			skeleton.mLeftShoulderJoint.setPosByConstraint();
 			skeleton.mRightShoulderJoint.setPosByConstraint();
 			boolean up = (int)(lifeTime*1000)/120%2==0;
 			float fac = 0.3f;
 			float angle = (up?PI/2+fac:PI/2-fac);
 			float offset = -(steeredBending+drunkenBending);
+			if(offset<0)
+				offset *= 0.7f;
 			skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
 			skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
 			skeleton.mRightUpperArmBone.setAngle(angle+offset);
 			skeleton.mRightLowerArmBone.setAngle(angle+offset);
 		}else{
+			skeleton.mLeftShoulderJoint.setPosByConstraint();
+			skeleton.mRightShoulderJoint.setPosByConstraint();
 			if(armAnglesByTracking) {
-				skeleton.mLeftShoulderJoint.setPosByConstraint();
-				skeleton.mRightShoulderJoint.setPosByConstraint();
 				skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
 				skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
 				skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
 				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+			}else{
+				skeleton.mLeftUpperArmBone.setAngle(0);
+				skeleton.mLeftLowerArmBone.setAngle(0);
+				skeleton.mRightUpperArmBone.setAngle(0);
+				skeleton.mRightLowerArmBone.setAngle(0);
 			}
+				
 		}
-		
+		skeleton.refreshBottle();
 	}
 	
 	public void setArmAnglesByTracking(boolean enabled) {
@@ -143,33 +162,85 @@ public class Player implements SkeletonCarrier {
 	
 	public void step(float deltaTime) {
 		lifeTime += deltaTime;
+		if(fellDown)
+			fellTime += deltaTime;
+
 		if(!gameOver) {
+			if(mSwing)
+				mSwingTime = 0.25f;
+			else if(mSwingTime>0)
+				mSwingTime -= deltaTime;
 			synchronized(skeleton) {
 				posX += velX*deltaTime;
 				posY += velY*deltaTime;
 
 				animationPlayer.proceed(velX*deltaTime);
 				
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -(drunkenBending+steeredBending)+PI);
-				skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				float bending = (drunkenBending+steeredBending);
+				float upLimit = 0.9f*PI/2;
+				if(!inGame)
+					upLimit *= 0.55f;
+				float downLimit = -0.9f*upLimit;
+				if(bending>upLimit)
+					bending = upLimit;
+				if(bending<downLimit)
+					bending = downLimit;
+				float prevX = skeleton.mBreastJoint.mPosX;
+				float prevY = skeleton.mBreastJoint.mPosY;
+				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI);
+				float fac = 0.15f;
+				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
+				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
+				skeleton.mRightShoulderJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mRightElbowJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mRightHandJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftShoulderJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
+				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
+				if(inGame || !CONTROL_HEAD)
+					skeleton.mHeadJoint.setPosByAngle(PI*0.9f);
+				else
+					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
+				
+//				skeleton.mButtJoint.mPosX = skeleton.mHipJoint.mPosX;
+//				skeleton.mButtJoint.mPosY = skeleton.mHipJoint.mPosY-0.2f;
 				
 				refreshArms();
 			}
 		}
 		
 		synchronized(skeleton) {
-			if(gameOver)
+			if(gameOver && fellTime<0.2f)
 				skeleton.applyConstraints(deltaTime);
 		}
 	}
 	
 	public void draw() {
 		synchronized(skeleton) {
+	
+			skeleton.mBottleVisible = !inGame;
+			if(fellDown) {
+				if(true || (int)(fellTime*1000)/500 % 2==0)
+					skeleton.mHeadBone.setTextureCoordinatesIndex(2);
+				else
+					skeleton.mHeadBone.setTextureCoordinatesIndex(3);
+			}else{
+				if(mFlail || mSwingTime>0) {
+					skeleton.mHeadBone.setTextureCoordinatesIndex(1);
+				}else
+					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
+			}
+			
 			skeleton.refreshVisualVars();
 			skeleton.draw();
 			if(Debug.DRAW_SKELETON)
 				skeleton.drawEditing(null);
 			graphics2D.setDefaultProgram();
+			
+			
+			
+			//graphics2D.drawRectCentered(0, 0, 1, 2, tracking.headangle);
 		}
 	}
 
@@ -223,8 +294,8 @@ public class Player implements SkeletonCarrier {
 		
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
-			joint.mFriction = 0.99f;
-			joint.vX = velX;
+			joint.mFriction = 0.998f;
+			joint.mVelX = velX;
 		}
 		
 		for(Constraint constraint:skeleton.mConstraints) {

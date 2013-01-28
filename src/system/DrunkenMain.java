@@ -13,6 +13,7 @@ public class DrunkenMain {
 	public static void main(String[] args) {
 		
 		IOCommon.IMAGE_PATH = "textures/";
+		IOCommon.SHADER_PATH = "shaders/";
 		
 		Config.preInitialize();
 		

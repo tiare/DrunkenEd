@@ -12,6 +12,7 @@ import graphics.events.PointerEvent;
 
 public class ProgramController extends DefaultSurface {
 
+	public static float DEFAULT_FADESPEED = 2.5f;
 	private ProgramState currentState;
 	public AbstractTracking tracking;
 	private float programTimer;
@@ -22,6 +23,10 @@ public class ProgramController extends DefaultSurface {
 	private boolean mFirstDraw;
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	private boolean mChangingState;
+	private ProgramState fadeState;
+	public boolean markWarning;
+	private float fade;
+	private float fadeSpeed;
 	
 	public ProgramController() {
 		super(true,false,true);
@@ -37,6 +42,9 @@ public class ProgramController extends DefaultSurface {
 		
 		highscores = new Highscores();
 		gameSettings = new GameSettings();
+		
+		fade = 1;
+		fadeState = null;
 	}
 	
 	public void start() {
@@ -60,15 +68,47 @@ public class ProgramController extends DefaultSurface {
 						e.printStackTrace();
 					}
 					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
-					tracking.step(deltaTime);
-					ProgramController.super.step(deltaTime);
-					currentState.step(deltaTime);
-					programTimer += deltaTime;
+					step(deltaTime);
+					
 				}
 			}
 		}.start();
 		
 		started = true;
+	}
+	
+	public void step(float deltaTime) {
+		if(fadeState==null) {
+			if(fade<1) {
+				fade += deltaTime*fadeSpeed;
+				if(fade>1)
+					fade = 1;
+			}
+			tracking.step(deltaTime);
+			super.step(deltaTime);
+			if(currentState.showMarkWarnings) {
+				float limit = markWarning?0.5f:0.75f;
+				markWarning = Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
+			}
+			if(markWarning) {
+				
+			}else
+				currentState.step(deltaTime);
+		}else{
+			fade -= deltaTime*fadeSpeed;
+			if(fade<0) {
+				fade = 0;
+				switchState(fadeState);
+				fadeState = null;
+			}
+		}
+		programTimer += deltaTime;
+	}
+	
+	public void fadeToState(ProgramState state) {
+		fade = 1;
+		fadeSpeed = DEFAULT_FADESPEED;
+		fadeState = state;
 	}
 	
 	@Override
@@ -77,6 +117,8 @@ public class ProgramController extends DefaultSurface {
 	}
 	
 	public void switchState(ProgramState newState) {
+		if(!newState.isInitialized()) 
+			newState.init(this);
 		mChangingState = true;
 		tracking.restart();
 		mFirstDraw = true;
@@ -103,9 +145,18 @@ public class ProgramController extends DefaultSurface {
 				currentState.startGraphics();
 				mFirstDraw = false;
 			}
+			mGraphics2D.setTime((int)(programTimer*100));
+			mGraphics.setAmbientColor(getBrightness());
 			currentState.draw();
-			mGraphics.flush();
 		}
+		
+		if(markWarning) {
+			mGraphics.setAmbientColor(1);
+			mGraphics2D.setColor(1, 0.1f, 0);
+			mGraphics2D.drawStringC(0, 0.3f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+		}
+		
+		mGraphics.flush();
 	}
 	
 	@Override
@@ -128,6 +179,9 @@ public class ProgramController extends DefaultSurface {
 	
 	@Override
 	public void keyDown(int key) {
+		if(key == 'c') {
+			Debug.DRAW_SKELETON ^= true;
+		}
 		if(key == Keys.ESC) {
 			//Only end game if we are in the menu
 			if (currentState.getType() == MENU) {
@@ -136,7 +190,7 @@ public class ProgramController extends DefaultSurface {
 			}
 			//Otherwise jump out to the menu
 			else {
-				switchState(new MainMenuState().init(this));
+				switchState(new MainMenuState());
 			}
 		}
 		if(currentState!=null)
@@ -159,5 +213,11 @@ public class ProgramController extends DefaultSurface {
 		System.out.println("Testing switch");
 	}
 	
+	public float getBrightness() {
+		if(markWarning)
+			return fade * 0.18f;
+		else
+			return fade;
+	}
 	
 }

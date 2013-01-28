@@ -1,5 +1,6 @@
 package control.states;
 
+import graphics.StandardTextures;
 import figure.Player;
 import control.ProgramController;
 import control.ProgramState;
@@ -8,11 +9,10 @@ public abstract class WorldState extends ProgramState {
 
 	protected Player player;
 	protected ProgramController programController;
-	public static final float SPEED_FACTOR = 2;
 	
 	public WorldState() {
 		super();
-		player = new Player();
+		player = new Player(true);
 	}
 	
 	public WorldState init(ProgramController programController) {
@@ -29,15 +29,17 @@ public abstract class WorldState extends ProgramState {
 	}
 	
 	public void draw() {
-		graphics2D.switchGameCoordinates(true);
-		graphics2D.setCamera(camera);
-		super.draw();
+		synchronized (camera) {
+			graphics2D.switchGameCoordinates(true);
+			graphics2D.setCamera(camera);
+			super.draw();
+		}
 	}
 	
-	@Override
-	public void onBend(float bending){
-		player.steeredBending = bending;
-		player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
+	protected void drawBackground(float zoom,float offset) {
+		float fac = zoom*camera.getZoom()*1.3f;
+		graphics.bindTexture(StandardTextures.GAME_BACKGROUND);
+		graphics2D.drawRect(camera.getX()-fac,offset,camera.getX()+fac,fac*1.1f);
 	}
 	
 	@Override

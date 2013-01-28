@@ -52,7 +52,7 @@ public class Highscores {
 
 	public ByteBuffer getPictureFromPos(final int gameLevel, int pos) {
 		try {
-			ByteBuffer bb =ByteBuffer.allocateDirect(60 * 100 * 4);
+			ByteBuffer bb =ByteBuffer.allocateDirect(80 * 125 * 4);
 			bb.rewind();
 
 			File file = new File(getFileName(gameLevel) + pos+".bb");
@@ -98,8 +98,9 @@ public class Highscores {
 						temp.renameTo(new File(getFileName(gameLevel) + (j+1)+".bb"));
 					} 
 				}
-				for (int j = i + 1; j < 3; j++) {
-					table[j] = table[j - 1];
+				
+				for (int j = 2; j>i; j--) {
+					table[j] = table[j-1];
 				}
 				table[i] = score;
 				saveFile(gameLevel, table);
