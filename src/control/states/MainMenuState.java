@@ -112,7 +112,7 @@ public class MainMenuState extends WorldState {
 			
 			if (activeLevel != NONE && programController.getProgramTime() > activationTime+hintTimeout)
 				waitedLongEnough = true;
-			else {
+			else if (waitedLongEnough) {
 				waitedLongEnough = false;
 				prepareForDrinkingGesture(true);
 			}
@@ -185,28 +185,24 @@ public class MainMenuState extends WorldState {
 			shadowSkeleton.refreshBottle();
 		}
 		else {
-			
-			if (elbowAngle < 160)
+			if (elbowAngle < 160) {
 				elbowAngle += 160/stepAngle;
-			else if (elbowAngle > 165)
+			}
+			else if (elbowAngle > 165) {
 				elbowAngle -= 160/stepAngle;
+			}
 			
-			if (shoulderAngle < 60)				
+			if (shoulderAngle < 60) {				
 				shoulderAngle += 60/stepAngle;	
-			else if (shoulderAngle > 65)
+			}
+			else if (shoulderAngle > 65) {
 				shoulderAngle -= 60/stepAngle;
+			}
 			
-					//stepAngle *= -1;
-				
-	//			if (elbowAngle < 90 || shoulderAngle < 45) {
-	////				elbowAngle = 90;
-	////				shoulderAngle = 45;
-	//				stepAngle *= -1;
-	//			}
-				skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
-				skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
-				
-				skeleton.refreshBottle();
+			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
+			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+			
+			skeleton.refreshBottle();
 		}
 	}
 
@@ -262,9 +258,9 @@ public class MainMenuState extends WorldState {
 			graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
 			graphics.bindTexture(null);
 			
-			drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
-			drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
-			drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
+			drawHighscores(stoolLx, highscoresY, LEFT, "Beer", "Easy");
+			drawHighscores(stoolCx, highscoresY, CENTER, "Wine", "Medium");
+			drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka", "Hard");
 			
 			drawStool(stoolLx, stoolsY, (activeLevel == 0), LEFT);
 			drawStool(stoolCx, stoolsY, (activeLevel == 1), CENTER);
@@ -314,7 +310,7 @@ public class MainMenuState extends WorldState {
 		graphics.bindTexture(null);
 	}
 	
-	private void drawHighscores (float posX, float posY, int position, String title) {
+	private void drawHighscores (float posX, float posY, int position, String title, String altTitle) {
 		if (position == activeLevel) {
 			graphics2D.setColor(1.f, 1.f, 1.f);
 		}
@@ -379,9 +375,14 @@ public class MainMenuState extends WorldState {
 		
 		//Write blackboard title
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-		if (activeLevel == position) graphics2D.setColor(1.f, 0.f, 0.f);//graphics2D.setColor(0.8f, 0.2f, 0.2f);
-		else graphics2D.setColor(0.8f, 0.8f, 0.8f);
-		graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
+		if (activeLevel == position) {
+			graphics2D.setColor(1.f, 0.f, 0.f);//graphics2D.setColor(0.8f, 0.2f, 0.2f);
+			graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, altTitle);
+		}
+		else {
+			graphics2D.setColor(0.8f, 0.8f, 0.8f);
+			graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
+		}
 		graphics.bindTexture(null);
 	}
 	
