@@ -4,7 +4,6 @@ import figure.DrunkenSkeleton;
 import figure.Player;
 import graphics.StandardTextures;
 import graphics.events.Keys;
-import graphics.skeletons.Skeleton;
 import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
@@ -58,9 +57,17 @@ public class MainMenuState extends WorldState {
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
+	private LinkedList<Float> traveledDistances;
+//	private float accumulationTime = 3.0f;
+//	private float startCounting;
+	private float minDistance = 0.6f;
+	private boolean showArrows = false;
+//	private float arrowActivationTime = 0;
+//	private float arrowHintTime = 1;
 	
 	private static final String DEFAULT_TEXT = "Choose your drink";
 	private static final String DRINK_TEXT = "Drink to start!";
+	private static final String BEND_TEXT = "Bend to move!";
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -75,6 +82,9 @@ public class MainMenuState extends WorldState {
 		scoresEasy = highscores.highscoresEasy;
 		scoresMedium = highscores.highscoresMedium;
 		scoresHard = highscores.highscoresHard;
+		
+		traveledDistances = new LinkedList<Float>();
+		//startCounting = programController.getProgramTime();
 		
 		shadowPlayer = new Player(false);
 		shadowPlayer.init(programController);
@@ -124,6 +134,13 @@ public class MainMenuState extends WorldState {
 			if (waitedLongEnough && !startLevel) {
 				doDrinkingGesture (true);
 			}
+			
+			traveledDistances.push(Math.abs(oldPlayerPosX-player.posX));
+			//if (programController.getProgramTime() > startCounting+accumulationTime) {
+				//does the player need a hint?
+				needBendingHint();
+			//	startCounting = programController.getProgramTime();
+			//}
 		}
 	}
 	
@@ -205,6 +222,34 @@ public class MainMenuState extends WorldState {
 			skeleton.refreshBottle();
 		}
 	}
+	
+	private void needBendingHint () {
+//		if (showArrows && programController.getProgramTime() > arrowActivationTime+arrowHintTime) {
+//				showArrows = false;
+//		}
+//		else {
+			if (traveledDistances.size() > 150) {
+				float totalDistance = 0;
+				for (Float distance : traveledDistances) {
+					totalDistance += distance;
+				}
+				System.out.println("Total distance: " + totalDistance + ", distances " + traveledDistances.size());
+	//			traveledDistances.clear();
+				
+				if(traveledDistances.size() > 299) {
+					traveledDistances.removeLast();
+					
+				}
+				
+				if (totalDistance > minDistance)
+					showArrows = false;
+				else {
+					showArrows = true;
+					//arrowActivationTime = programController.getProgramTime();
+				}
+			}
+		//}
+	}
 
 	@Override
 	public void onDraw() {
@@ -270,15 +315,24 @@ public class MainMenuState extends WorldState {
 			//Display bottom text
 			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			graphics2D.switchGameCoordinates(false);
-			if (waitedLongEnough && !startLevel) {
-				graphics2D.setColor(1.f, 1.f, (float)Math.abs(Math.sin(stateTimer*3)));
-				graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
+			if ((waitedLongEnough || showArrows) && !startLevel) {
+				float changingValue = (float)Math.abs(Math.sin(stateTimer*3));
+				if (waitedLongEnough) {
+					graphics2D.setColor(1.f, 1.f, changingValue);
+					graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
+				}
+				else {
+					graphics2D.setColor(changingValue, 1.f, changingValue);
+					graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, BEND_TEXT);
+				}
 			}
 		
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
 			graphics2D.switchGameCoordinates(true);
 			graphics.bindTexture(null);
+			
+			showBendingHint ();
 			
 			player.skeleton.setDrinkId(activeLevel);
 			shadowPlayer.skeleton.setDrinkId(activeLevel);
@@ -384,6 +438,18 @@ public class MainMenuState extends WorldState {
 			graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, title);
 		}
 		graphics.bindTexture(null);
+	}
+	
+	private void showBendingHint() {
+		if (showArrows && !waitedLongEnough) {
+			float changingValue = (float)Math.abs(Math.sin(stateTimer*3));
+			graphics2D.setColor(changingValue, 1.f, changingValue);
+			graphics.bindTexture(StandardTextures.ARROW_L);
+			graphics2D.drawRectCentered(player.posX-1, player.posY+1.f, 0.6f, 0.3f);
+			graphics.bindTexture(StandardTextures.ARROW_R);
+			graphics2D.drawRectCentered(player.posX+0.4f, player.posY+1.f, 0.6f, 0.3f);
+			graphics.bindTexture(null);
+		}
 	}
 	
 	private void dontLeaveScreen () {
