@@ -2,6 +2,7 @@ package control.states;
 
 import figure.DrunkenSkeleton;
 import figure.Player;
+import graphics.FloatColor;
 import graphics.StandardTextures;
 import graphics.events.Keys;
 import graphics.skeletons.elements.Bone;
@@ -11,6 +12,8 @@ import graphics.translator.TextureSettings;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import control.ProgramController;
 
@@ -60,10 +63,12 @@ public class MainMenuState extends WorldState {
 	private LinkedList<Float> traveledDistances;
 	private float minDistance = 0.6f;
 	private boolean showArrows = false;
+	private float blinkValue = 0;
 	
 	private static final String DEFAULT_TEXT = "Choose your drink";
 	private static final String DRINK_TEXT = "Drink to start!";
 	private static final String BEND_TEXT = "Bend to move!";
+	private static final FloatColor HELP_COLOR = new FloatColor(0.5f, 0.8f, 1.f);
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -126,6 +131,7 @@ public class MainMenuState extends WorldState {
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
+			blinkValue = (float)Math.abs(Math.sin(stateTimer*2.5));
 			if (waitedLongEnough && !startLevel) {
 				doDrinkingGesture (true);
 			}
@@ -300,13 +306,12 @@ public class MainMenuState extends WorldState {
 			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			graphics2D.switchGameCoordinates(false);
 			if ((waitedLongEnough || showArrows) && !startLevel) {
-				float changingValue = (float)Math.abs(Math.sin(stateTimer*3));
+				graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
+						HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
 				if (waitedLongEnough) {
-					graphics2D.setColor(1.f, 1.f, changingValue);
 					graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
 				}
 				else {
-					graphics2D.setColor(changingValue, 1.f, changingValue);
 					graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, BEND_TEXT);
 				}
 			}
@@ -426,8 +431,8 @@ public class MainMenuState extends WorldState {
 	
 	private void showBendingHint() {
 		if (showArrows && !waitedLongEnough) {
-			float changingValue = (float)Math.abs(Math.sin(stateTimer*3));
-			graphics2D.setColor(changingValue, 1.f, changingValue);
+			graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
+					HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
 			graphics.bindTexture(StandardTextures.ARROW_L);
 			graphics2D.drawRectCentered(player.posX-1, player.posY+1.f, 0.6f, 0.3f);
 			graphics.bindTexture(StandardTextures.ARROW_R);
