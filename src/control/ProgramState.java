@@ -11,6 +11,8 @@ import graphics.translator.GraphicsTranslator;
 
 public abstract class ProgramState implements TrackingListener {
 
+	public static final float PI = 3.1415926535f;
+	
 	protected GraphicsTranslator graphics;
 	protected Default2DGraphics graphics2D;
 	protected Default3DGraphics graphics3D;

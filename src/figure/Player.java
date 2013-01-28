@@ -332,5 +332,13 @@ public class Player implements SkeletonCarrier {
 	public AnimationPlayer<?> getAnimationPlayer() {
 		return animationPlayer;
 	}
+
+	public float getCenterX() {
+		return posX+skeleton.mHipJoint.mPosX;
+	}
+	
+	public float getCenterY() {
+		return posY+0.9f;
+	}
 	
 }

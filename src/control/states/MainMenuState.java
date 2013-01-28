@@ -21,6 +21,8 @@ public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
 	public static final float SPEED_FACTOR = 3.5f;
+	public static final float HELP_FREQUENCY = 8;
+	public static final float HELP_INTENSITY = 0.018f;
 	
 	private int activeLevel = NONE;
 	private float barWidth = 6.f;
@@ -58,7 +60,7 @@ public class MainMenuState extends WorldState {
 	private float shoulderAngle = 0;
 	private float stepAngle = 160;
 	private float activationTime = 0;
-	private float hintTimeout = 5.f;
+	private float hintTimeout = 1.f;
 	private boolean waitedLongEnough = false;
 	private LinkedList<Float> traveledDistances;
 	private float minDistance = 0.6f;
@@ -100,7 +102,7 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onStep(float deltaTime) {
 		synchronized(camera) {
-			camera.set(player.posX, 1.7f, 2.3f);
+			camera.set(player.getCenterX(), 1.7f, 2.3f);
 			oldPlayerPosX = player.posX;
 			
 			if (startLevel) {
@@ -131,7 +133,7 @@ public class MainMenuState extends WorldState {
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
-			blinkValue = (float)Math.abs(Math.sin(stateTimer*2.5));
+			blinkValue = pulse(2.5f,1);
 			if (waitedLongEnough && !startLevel) {
 				doDrinkingGesture (true);
 			}
@@ -309,10 +311,10 @@ public class MainMenuState extends WorldState {
 				graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
 						HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
 				if (waitedLongEnough) {
-					graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, DRINK_TEXT);
+					graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
 				}
 				else {
-					graphics2D.drawString(0, -0.9f, 0.13f, 0, 0, 0, BEND_TEXT);
+					graphics2D.drawString(0, -0.9f, 0.13f+pulse(8,HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
 				}
 			}
 		
@@ -332,6 +334,10 @@ public class MainMenuState extends WorldState {
 		}
 	}
 	
+	private float pulse(float frequency, float intensity) {
+		return (float)Math.abs(Math.sin(stateTimer*frequency)*intensity);
+	}
+
 	private void drawStool (float posX, float posY, boolean active, int drink) {
 		if(!active) {
 			float drinkY = (drink > 0? posY + 0.96f: posY + 0.79f);
@@ -433,10 +439,15 @@ public class MainMenuState extends WorldState {
 		if (showArrows && !waitedLongEnough) {
 			graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
 					HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
+			float a = PI/2*0.27f+pulse(HELP_FREQUENCY,0.13f);
+			float r = 1.5f;
+			float angleOffset = -0.3f;
+			float dX = (float)Math.sin(a)*r;
+			float y = -r+1.1f+player.posY+(float)Math.cos(a)*r;
 			graphics.bindTexture(StandardTextures.ARROW_L);
-			graphics2D.drawRectCentered(player.posX-1, player.posY+1.f, 0.6f, 0.3f);
+			graphics2D.drawRectCentered(player.getCenterX()-dX, player.posY+y, 0.6f, 0.32f,a*1.01f+angleOffset);
 			graphics.bindTexture(StandardTextures.ARROW_R);
-			graphics2D.drawRectCentered(player.posX+0.4f, player.posY+1.f, 0.6f, 0.3f);
+			graphics2D.drawRectCentered(player.getCenterX()+dX, player.posY+y, 0.6f, 0.32f,-a*1.01f-angleOffset);
 			graphics.bindTexture(null);
 		}
 	}
