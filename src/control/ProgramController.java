@@ -152,6 +152,7 @@ public class ProgramController extends DefaultSurface {
 		}
 		
 		if(markWarning) {
+			mGraphics2D.switchGameCoordinates(false);
 			mGraphics.setAmbientColor(1);
 			mGraphics2D.setColor(1, 0.1f, 0);
 			mGraphics2D.drawStringC(0, 0.74f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
@@ -162,9 +163,10 @@ public class ProgramController extends DefaultSurface {
 			mGraphics2D.setColor(0.2f, 0.8f, 0);
 			mGraphics.bindTexture(StandardTextures.CIRCLE);
 			float x = tracking.gpareax*fac;
-			float y = -tracking.gpareaz*fac-yOffset;
-			mGraphics2D.drawRectCentered(x,y,0.17f);
+			float y = -tracking.gpareaz*fac;
 			float a = Util.getAngle(x, y);
+			y -= yOffset;
+			mGraphics2D.drawRectCentered(x,y,0.17f);
 			mGraphics.bindTexture(StandardTextures.ARROW);
 			float r = 0.135f+(float)Math.abs(Math.sin(programTimer*10)*0.06f);
 			float dX = -(float)Math.cos(a) * r;

@@ -1,7 +1,11 @@
 package control.states;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import figure.DrunkenSkeleton;
 import figure.Player;
+import control.ProgramController;
 import graphics.FloatColor;
 import graphics.StandardTextures;
 import graphics.events.Keys;
@@ -9,13 +13,6 @@ import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
-import control.ProgramController;
 
 public class MainMenuState extends WorldState {
 	
@@ -310,16 +307,19 @@ public class MainMenuState extends WorldState {
 			if ((waitedLongEnough || showArrows) && !startLevel) {
 				graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
 						HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
-				if (waitedLongEnough) {
-					graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
-				}
-				else {
-					graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
+				if(!programController.markWarning) {
+					if (waitedLongEnough) {
+						graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
+					}
+					else {
+						graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
+					}
 				}
 			}
-		
+
 			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
+			if(!programController.markWarning)
+				graphics2D.drawString(0, 0.92f, 0.13f, 0, 0, 0, DEFAULT_TEXT);
 			graphics2D.switchGameCoordinates(true);
 			graphics.bindTexture(null);
 			
@@ -332,10 +332,6 @@ public class MainMenuState extends WorldState {
 			graphics2D.setWhite();
 			player.draw();
 		}
-	}
-	
-	private float pulse(float frequency, float intensity) {
-		return (float)Math.abs(Math.sin(stateTimer*frequency)*intensity);
 	}
 
 	private void drawStool (float posX, float posY, boolean active, int drink) {
@@ -436,6 +432,8 @@ public class MainMenuState extends WorldState {
 	}
 	
 	private void showBendingHint() {
+		if(programController.markWarning)
+			return;
 		if (showArrows && !waitedLongEnough) {
 			graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
 					HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());

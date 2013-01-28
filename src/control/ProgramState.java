@@ -144,4 +144,8 @@ public abstract class ProgramState implements TrackingListener {
 	public boolean isInitialized() {
 		return initialized;
 	}
+	
+	protected float pulse(float frequency, float intensity) {
+		return (float)Math.abs(Math.sin(stateTimer*frequency)*intensity);
+	}
 }
