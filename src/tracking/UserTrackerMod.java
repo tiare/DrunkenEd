@@ -284,7 +284,7 @@ public class UserTrackerMod {
 			//hasDrinkingPose=false;
 			//makesStep=false;
 			users = userGen.getUsers();
-			//Point3D drinkbuffer=new Point3d(skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition()-skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition());
+			float drinkbuffer=Math.abs(skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()-skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.LEFT_SHOULDER).getPosition().getX());
 			if (users.length>0 && skeletonCap.isSkeletonTracking(users[activeUser])){
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY());
@@ -295,10 +295,10 @@ public class UserTrackerMod {
 					>=skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getY()
 				&&	skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getY()
 					>=skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()
-//					&& skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getX()
-//					<= skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()
-//					&& skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getX()
-//					>= skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.HEAD).getPosition().getX()
+					&& skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getX()
+					<= skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()+drinkbuffer
+					&& skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.RIGHT_HAND).getPosition().getX()
+					>= skeletonCap.getSkeletonJointPosition(users[activeUser], SkeletonJoint.HEAD).getPosition().getX()
 					){
 				//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("TRINKbewegung erkannt");
 				hasDrinkingPose=true;
