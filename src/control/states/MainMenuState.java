@@ -38,7 +38,7 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 	
 	private float drinkTime = 0.f;
-	private float timeout = 4.f;
+	private float timeout;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -53,9 +53,12 @@ public class MainMenuState extends WorldState {
 	private Player shadowPlayer;
 	private DrunkenSkeleton shadowSkeleton;
 	private DrunkenSkeleton skeleton;
+	private float shadowElbowAngle = 0;
+	private float shadowShoulderAngle = 0;
+	private float shadowStepAngle = 160;
 	private float elbowAngle = 0;
 	private float shoulderAngle = 0;
-	private float stepAngle = 160;
+	private float stepAngle = 100;
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
@@ -92,6 +95,8 @@ public class MainMenuState extends WorldState {
 		
 		player.setArmAnglesByTracking(true);
 		skeleton = (DrunkenSkeleton)player.getSkeleton();
+		
+		timeout = 4.f;
 		
 		return this;
 	}
@@ -166,8 +171,8 @@ public class MainMenuState extends WorldState {
 	
 	private void prepareForDrinkingGesture (boolean hint) {
 		if (hint) {
-			elbowAngle = 0;
-			shoulderAngle = 0;
+			shadowElbowAngle = 0;
+			shadowShoulderAngle = 0;
 		}
 		else {
 			elbowAngle = (float)Math.toDegrees(skeleton.mRightHandJoint.getParentAngle());
@@ -177,18 +182,18 @@ public class MainMenuState extends WorldState {
 	
 	private void doDrinkingGesture (boolean hint) {
 		if (hint) {
-			if (elbowAngle > 160 && shoulderAngle > 60)
-				stepAngle *= -1;
+			if (shadowElbowAngle > 160 && shadowShoulderAngle > 60)
+				shadowStepAngle *= -1;
 			
-			if (elbowAngle < 90 || shoulderAngle < 30) {
-				elbowAngle = 90;
-				shoulderAngle = 30;
-				stepAngle *= -1;
+			if (shadowElbowAngle < 90 || shadowShoulderAngle < 30) {
+				shadowElbowAngle = 90;
+				shadowShoulderAngle = 30;
+				shadowStepAngle *= -1;
 			}
-			elbowAngle += 160/stepAngle;
-			shoulderAngle += 60/stepAngle;
-			shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
-			shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
+			shadowElbowAngle += 160/shadowStepAngle;
+			shadowShoulderAngle += 60/shadowStepAngle;
+			shadowSkeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shadowShoulderAngle));
+			shadowSkeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(shadowElbowAngle));
 			
 			shadowSkeleton.setModColor(0.f, 0.f, 0.f, 0.9f);
 			shadowSkeleton.setAddColor(0.1f, 0.1f, 0.15f);
@@ -212,6 +217,9 @@ public class MainMenuState extends WorldState {
 			else if (shoulderAngle > 65) {
 				shoulderAngle -= 60/stepAngle;
 			}
+			
+			if (elbowAngle > 160 && elbowAngle < 165 && shoulderAngle > 60 && shoulderAngle < 65)
+				timeout = 0;
 			
 			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
 			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
@@ -434,7 +442,7 @@ public class MainMenuState extends WorldState {
 	private void showBendingHint() {
 		if(programController.markWarning)
 			return;
-		if (showArrows && !waitedLongEnough) {
+		if (showArrows && !waitedLongEnough && !startLevel) {
 			graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
 					HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
 			float a = PI/2*0.27f+pulse(HELP_FREQUENCY,0.13f);
