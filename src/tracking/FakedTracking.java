@@ -14,6 +14,7 @@ public class FakedTracking extends AbstractTracking{
 	public float headangle=0;
 	public float gpareaz=0;
 	public float gpareax=0;
+	public float drinking=0;
 	
 	public FakedTracking(ProgramController programController) {
 		super(programController);
