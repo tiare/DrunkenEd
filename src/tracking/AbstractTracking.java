@@ -24,6 +24,7 @@ public abstract class AbstractTracking {
 	public float headangle;
 	public float gpareaz;
 	public float gpareax;
+	public float drinking;
 	
 	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;
