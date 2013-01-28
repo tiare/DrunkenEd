@@ -17,13 +17,14 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	//private static final float[] Y_BOTTLES = {0,2f/8,5f/8,1};
 	public static final int DRINK_ANIMS = 4;
 	public int mDrinkId;
-	public int mDrinkEmpty;
 	public boolean mBottleVisible;
+	public int mDrinkState;
 	
 	public DrunkenSkeleton() {
 		mBottleVisible = true;
 		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
 		mContourTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
+		mDrinkState = 0;
 	}
 	
 	@Override
@@ -45,7 +46,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mBottleBone.setWidth(0.22f);
 		mBottleBone.mCelShading = false;
 		mBottleBone.mVisible = true;
-		mBottleBone.setShift(0.07f,0.05f,0.07f,-0.4f);
+		mBottleBone.setShift(0.0f,0.05f,0.0f,-0.4f);
 		super.addJoint(mBottleJoint);
 		
 //		mButtJoint = new JointNormalConstraint("Butt",mHipJoint,mBodyBone,mHipJoint.mPosX,mHipJoint.mPosY-BUTT_OFFSET,0.4f,this);
@@ -99,6 +100,8 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mHeadBone.mShiftY2 += shift;
 		mHeadBone.mShiftX1 += 0.01f;
 		mHeadBone.mShiftX2 += 0.01f;
+		mHeadBone.putTextureCoords(0.5f, 0, 0.75f, 0.25f);
+		mHeadBone.putTextureCoords(0.75f, 0, 1f, 0.25f);
 		
 		shift = 0.15f;
 		mRightShoulderJoint.mRelativeX += shift;
@@ -123,7 +126,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mLeftUpperLegBone.mShiftY1-=0.02f;
 		
 		mContourFactor = 0.04f;
-		mFloorFriction = 0.85f;
+		mFloorFriction = 0.7f;
 	}
 	
 	private void refreshBottleCoords() {
@@ -131,11 +134,11 @@ public class DrunkenSkeleton extends HumanSkeleton {
 			mBottleBone.mVisible = false;
 		}else{
 			mBottleBone.mVisible = true;
-			mBottleBone.setTextureCoordinatesIndex(mDrinkId*DRINK_ANIMS+mDrinkEmpty);
+			mBottleBone.setTextureCoordinatesIndex(mDrinkId*DRINK_ANIMS+mDrinkState+1);
 			if(mDrinkId==0)
-				mBottleBone.setShiftX(0.12f);
+				mBottleBone.setShiftX(0.15f);
 			else
-				mBottleBone.setShiftX(0.05f);
+				mBottleBone.setShiftX(0.07f);
 		}
 	}
 	
@@ -149,6 +152,16 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		refreshBottleCoords();
 	}
 	
+	/**
+	 * 0: full
+	 * 1: drinking
+	 * 2: empty
+	 * @param state
+	 */
+	public void setDrinkState(int state) {
+		mDrinkState = state;
+		refreshBottleCoords();
+	}
 
 	public void setAnimated(boolean animated) {
 		for(Joint joint:mJoints) {

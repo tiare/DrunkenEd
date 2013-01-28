@@ -35,6 +35,8 @@ public class Player implements SkeletonCarrier {
 	private boolean mSwing;
 	private float mSwingTime;
 	public boolean inGame;
+	public boolean fellDown;
+	public float fellTime;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -45,6 +47,7 @@ public class Player implements SkeletonCarrier {
 		skeleton = new DrunkenSkeleton();
 		steeredBending = 0;
 		drunkenBending = 0;
+		fellDown = false;
 		gameOver = false;
 	}
 	
@@ -61,6 +64,9 @@ public class Player implements SkeletonCarrier {
 		mFlail = false;
 		mSwing = false;
 		mSwingTime = -1;
+		
+		fellTime = 0;
+		lifeTime = 0;
 		
 		start();
 		return this;
@@ -156,6 +162,8 @@ public class Player implements SkeletonCarrier {
 	
 	public void step(float deltaTime) {
 		lifeTime += deltaTime;
+		if(fellDown)
+			fellTime += deltaTime;
 
 		if(!gameOver) {
 			if(mSwing)
@@ -212,16 +220,25 @@ public class Player implements SkeletonCarrier {
 		synchronized(skeleton) {
 	
 			skeleton.mBottleVisible = !inGame;
-			if(mFlail || mSwingTime>0) {
-				skeleton.mHeadBone.setTextureCoordinatesIndex(1);
-			}else
-				skeleton.mHeadBone.setTextureCoordinatesIndex(0);	
+			if(fellDown) {
+				if(true || (int)(fellTime*1000)/500 % 2==0)
+					skeleton.mHeadBone.setTextureCoordinatesIndex(2);
+				else
+					skeleton.mHeadBone.setTextureCoordinatesIndex(3);
+			}else{
+				if(mFlail || mSwingTime>0) {
+					skeleton.mHeadBone.setTextureCoordinatesIndex(1);
+				}else
+					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
+			}
 			
 			skeleton.refreshVisualVars();
 			skeleton.draw();
 			if(Debug.DRAW_SKELETON)
 				skeleton.drawEditing(null);
 			graphics2D.setDefaultProgram();
+			
+			
 			
 			//graphics2D.drawRectCentered(0, 0, 1, 2, tracking.headangle);
 		}
