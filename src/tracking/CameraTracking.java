@@ -21,6 +21,7 @@ public class CameraTracking extends AbstractTracking {
 	public float headangle=0;
 	public float gpareaz=0;
 	public float gpareax=0;
+	public float drinking=0;
 
 	public CameraTracking(ProgramController programController) {
 		super(programController);
@@ -45,13 +46,13 @@ public class CameraTracking extends AbstractTracking {
 
 	public void start() {
 		app = new UserTrackerMod(programController);
-		app.updateDepth();
+		app.updateDepth(0);
 	}
 
 	public void step(float deltatime) {
 		// p(deltatime);
 		if (app != null)
-			app.updateDepth();
+			app.updateDepth(deltatime);
 	}
 
 	@Override
