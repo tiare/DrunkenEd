@@ -237,11 +237,16 @@ public class GameState extends WorldState {
 						//Acceleration
 						bendingSum = player.steeredBending + player.drunkenBending;
 						float acceleration = 0.0f;
+						boolean noFlail = true;
 						if(Math.abs(bendingSum)>0.05f) {
 							int sign = bendingSum<0?-1:1;
 							if(bendingSum * player.getSpeed()>0) {
-								if(Math.abs(player.getSpeed())*0.15f<Math.abs(bendingSum))
+								//noFlail = Math.abs(player.getSpeed())*0.08f>Math.abs(bendingSum);
+								//noFlail = Math.abs(player.getSpeed())>0.02f && Math.abs(bendingSum)<0.4f;
+								noFlail = false;
+								if(!noFlail)
 									acceleration = (float)Math.pow(Math.min(0.7*Math.PI/2,sign*bendingSum),0.5f)*sign * 0.3f;
+								
 							}else
 								acceleration = bendingSum * 2;
 							acceleration *= 2 / fallingAngle * gameSettings.speedFactor;

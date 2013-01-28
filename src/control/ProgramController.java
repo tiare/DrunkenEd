@@ -88,7 +88,7 @@ public class ProgramController extends DefaultSurface {
 			tracking.step(deltaTime);
 			super.step(deltaTime);
 			if(currentState.showMarkWarnings) {
-				float limit = markWarning?0.5f:0.75f;
+				float limit = markWarning?0.6f:0.85f;
 				markWarning = Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
 			}
 			if(markWarning) {
@@ -154,14 +154,15 @@ public class ProgramController extends DefaultSurface {
 		if(markWarning) {
 			mGraphics.setAmbientColor(1);
 			mGraphics2D.setColor(1, 0.1f, 0);
-			mGraphics2D.drawStringC(0, 0.7f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+			mGraphics2D.drawStringC(0, 0.74f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+			float yOffset = 0.1f;
 			mGraphics.bindTexture(StandardTextures.CROSS);
-			mGraphics2D.drawRectCentered(0,0,0.15f);
-			float fac = 0.3f;
+			mGraphics2D.drawRectCentered(0,-yOffset,0.15f);
+			float fac = 0.36f;
 			mGraphics2D.setColor(0.2f, 0.8f, 0);
 			mGraphics.bindTexture(StandardTextures.CIRCLE);
 			float x = tracking.gpareax*fac;
-			float y = -tracking.gpareaz*fac-0.1f;
+			float y = -tracking.gpareaz*fac-yOffset;
 			mGraphics2D.drawRectCentered(x,y,0.17f);
 			float a = Util.getAngle(x, y);
 			mGraphics.bindTexture(StandardTextures.ARROW);
