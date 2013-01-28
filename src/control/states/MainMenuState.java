@@ -58,12 +58,8 @@ public class MainMenuState extends WorldState {
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
 	private LinkedList<Float> traveledDistances;
-//	private float accumulationTime = 3.0f;
-//	private float startCounting;
 	private float minDistance = 0.6f;
 	private boolean showArrows = false;
-//	private float arrowActivationTime = 0;
-//	private float arrowHintTime = 1;
 	
 	private static final String DEFAULT_TEXT = "Choose your drink";
 	private static final String DRINK_TEXT = "Drink to start!";
@@ -99,7 +95,6 @@ public class MainMenuState extends WorldState {
 	@Override
 	public void onStep(float deltaTime) {
 		synchronized(camera) {
-			//camera.set(0, 1, 2);
 			camera.set(player.posX, 1.7f, 2.3f);
 			oldPlayerPosX = player.posX;
 			
@@ -136,11 +131,8 @@ public class MainMenuState extends WorldState {
 			}
 			
 			traveledDistances.push(Math.abs(oldPlayerPosX-player.posX));
-			//if (programController.getProgramTime() > startCounting+accumulationTime) {
-				//does the player need a hint?
-				needBendingHint();
-			//	startCounting = programController.getProgramTime();
-			//}
+			//does the player need a hint?
+			needBendingHint();
 		}
 	}
 	
@@ -224,17 +216,11 @@ public class MainMenuState extends WorldState {
 	}
 	
 	private void needBendingHint () {
-//		if (showArrows && programController.getProgramTime() > arrowActivationTime+arrowHintTime) {
-//				showArrows = false;
-//		}
-//		else {
 			if (traveledDistances.size() > 150) {
 				float totalDistance = 0;
 				for (Float distance : traveledDistances) {
 					totalDistance += distance;
 				}
-				System.out.println("Total distance: " + totalDistance + ", distances " + traveledDistances.size());
-	//			traveledDistances.clear();
 				
 				if(traveledDistances.size() > 299) {
 					traveledDistances.removeLast();
@@ -245,10 +231,8 @@ public class MainMenuState extends WorldState {
 					showArrows = false;
 				else {
 					showArrows = true;
-					//arrowActivationTime = programController.getProgramTime();
 				}
 			}
-		//}
 	}
 
 	@Override
