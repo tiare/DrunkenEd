@@ -78,6 +78,7 @@ public class UserTrackerMod {
 			regusers.remove(args.getId());
 			if (activeUser==args.getId()) {
 				activeUser=-1;
+				programController.tracking.trackedUser=true;
 				p("RESTART TRIGGERED");
 				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
