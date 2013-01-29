@@ -21,6 +21,10 @@ public class GameOverState extends ProgramState {
 
 	private static final FloatColor GAMEOVER_CL1 = new FloatColor(1,0.4f,0.1f);
 	private static final FloatColor GAMEOVER_CL2 = new FloatColor(1,0.55f,0.1f);
+	//private static final FloatColor TAKEPHOTO_CL1 = new FloatColor(1,1,0);
+	//private static final FloatColor TAKEPHOTO_CL2 = new FloatColor(1,1,0.8f);
+	private static final FloatColor TAKEPHOTO_CL1 = new FloatColor(0.6f,0.6f,0.9f);
+	private static final FloatColor TAKEPHOTO_CL2 = new FloatColor(0.8f,0.8f,1);
 	float distance, time;
 	int score;
 	long countdownTime;
@@ -156,17 +160,19 @@ public class GameOverState extends ProgramState {
 
 				//graphics2D.draws
 				graphics2D.setColor(1f,1f,0f);
-				graphics2D.drawString(0f, 0.34f, (0.2f+pulse(pulseFreq,0.035f))*appear(scoreAppear+0.5f,0.6f,1.7f), 0, 0, 0, "New Highscore!");
+				//graphics2D.setColorWeighted(TAKEPHOTO_CL1,TAKEPHOTO_CL2,pulse(pulseFreq/2,1));
+				graphics2D.drawString(0f, 0.34f, (0.24f+pulse(pulseFreq,0.035f))*appear(scoreAppear+0.5f,0.6f,1.7f), 0, 0, 0, "New Highscore!");
 				scoreAppear += 0.35f;
-				a = 0.45f;
-				float height = 0.1f*appear(scoreAppear+1.4f,0.5f);
-				float s = appear(scoreAppear+1.65f,0.6f,1)*1.15f;
-				float x = -0.65f-pulse(pulseFreq,0.05f);
+				a = 0.37f+0.08f*appear(scoreAppear+1.4f,0.4f,1);
+				float height = 0.122f*appear(scoreAppear+1.4f,0.5f,1.1f);
+				float s = appear(scoreAppear+1.45f,0.6f,1)*1.15f;
+				float x = -0.05f-pulse(pulseFreq,0.05f)-0.66f*appear(scoreAppear+1.4f,0.4f,1);
 				float shiftY = 0.2f;
 				if(!tookPicture) {
-					graphics2D.setColor(1,1,0);
+					//graphics2D.setColor(1,1,0);
+					graphics2D.setColorWeighted(TAKEPHOTO_CL1,TAKEPHOTO_CL2,pulse(pulseFreq/2,1));
 					graphics2D.drawString(x, -shiftY, height, 0, 0, a, "Drink to take");
-					graphics2D.drawString(x+0.05f, -0.12f-shiftY, height, 0, 0, a, "a photo!");
+					graphics2D.drawString(x+0.05f, -0.13f-shiftY, height, 0, 0, a, "a photo!");
 				}else{
 					graphics2D.setColor(0,1,0);
 					graphics2D.drawString(-0.65f, -shiftY-0.06f, height*1.5f, 0, 0, a, "OK!");
@@ -252,7 +258,7 @@ public class GameOverState extends ProgramState {
 					graphics2D.setColor(c*0.08f,c*0.08f,c*0.3f);//graphics2D.setColor(0.25f,0.25f,0.8f);
 				graphics2D.drawRectCentered(0f, -0.25f, 0.45f*s*1.15f, 0.7f*s*1.1f);
 				
-				returnTime = 2f;
+				returnTime = 2.5f;
 			} else {
 
 				//graphics2D.setColor(0.8f, 0.8f, 1);
