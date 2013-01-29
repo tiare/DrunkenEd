@@ -21,6 +21,7 @@ public class StandardTextures {
 	
 	public static Texture CROSS;
 	public static Texture STREET;
+	public static Texture PHOTO_FRAME;
 	public static Texture GAME_BACKGROUND;
 	public static Texture STOOL;
 	public static Texture ED_SKELETON;
@@ -67,6 +68,7 @@ public class StandardTextures {
 		PERLIN = gfxLoader.getImage("perlin1",TextureFilter.LINEAR_MIP_LINEAR);
 		
 		ARROW = gfxLoader.getImage("arrow",defSettings);
+		PHOTO_FRAME = gfxLoader.getImage("photoFrame",defSettings);
 		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT,TextureFilter.LINEAR_MIP_LINEAR));
 		GAME_BACKGROUND = gfxLoader.getImage("nightsky",defSettings);
 		CROSS = gfxLoader.getImage("cross",defSettings);

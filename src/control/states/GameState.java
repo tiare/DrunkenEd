@@ -329,8 +329,7 @@ public class GameState extends WorldState {
 							+ gameSettings.dyingTimeout) {
 						// TODO: -1f, -1f -> distance, time
 						player.fellDown = true;
-						super.programController.switchState(new GameOverState(
-								programController, this, player.getWorldX(), stateTimer
+						super.programController.switchState(new GameOverState(this, player.getWorldX(), stateTimer
 										- pauseTime));
 					}
 				}

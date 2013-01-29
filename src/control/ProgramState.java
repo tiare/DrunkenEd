@@ -35,6 +35,8 @@ public abstract class ProgramState implements TrackingListener {
 		showMarkWarnings = true;
 	}
 	
+	protected void derivedInit() { };
+	
 	public ProgramState init(ProgramController programController) {
 		initialized = true;
 		this.programController = programController;
@@ -43,6 +45,7 @@ public abstract class ProgramState implements TrackingListener {
 		
 		highscores = programController.highscores;
 		gameSettings = programController.gameSettings;
+		derivedInit();
 		return this;
 	}
 	
