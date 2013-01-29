@@ -78,6 +78,7 @@ public class UserTrackerMod {
 			regusers.remove(args.getId());
 			if (activeUser==args.getId()) {
 				activeUser=-1;
+				programController.tracking.trackedUser=true;
 				p("RESTART TRIGGERED");
 				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
@@ -108,6 +109,8 @@ public class UserTrackerMod {
 	                
 	                if (activeUser==-1){
 	                	activeUser=args.getUser();
+	                	nottrackedsince=0;
+	                	programController.tracking.trackedUser=true;
 	                	}
 	               
 	                //p("args.getUser()::"+args.getUser());
@@ -168,7 +171,7 @@ public class UserTrackerMod {
 	private float BENDINGANGLEFACTOR=1;
 	public float schulterwinkel=0;
 	public int activeUser=-1;
-	private float nottrackedsince=0;
+	public float nottrackedsince=0;
 	public int users[];
 	private boolean drinkAlreadyCalled=false;
 	public float headangle=0;
@@ -228,6 +231,7 @@ public class UserTrackerMod {
 					if (skeletonCap.isSkeletonTracking(users[i])){
 					//	p("endlich drin");
 						activeUser=users[i];
+						programController.tracking.trackedUser=true;
 						//activeUser=i;
 					//	p("we are tracking: ");
 						p("activeuser:: "+activeUser );
@@ -289,8 +293,13 @@ public class UserTrackerMod {
             	checkTriggers();
             	nottrackedsince=0;
             	}
-            else if (skeletonCap.isSkeletonTracking(activeUser)) {nottrackedsince+=deltatime;}
+            else if (activeUser !=-1 && !skeletonCap.isSkeletonTracking(activeUser)) {
+            	nottrackedsince+=deltatime;
+            	}
            // if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println(activeuser);
+            if (nottrackedsince>0){
+            	programController.tracking.trackedUser=false;
+            }
             
         } catch (GeneralException e) {
             e.printStackTrace();
@@ -440,10 +449,10 @@ public class UserTrackerMod {
 			programController.tracking.gpareaz=(torso3d.getZ()-2250)/750;
 			programController.tracking.gpareax=(4*torso3d.getX()/torso3d.getZ());
 			//p("kopfwinkel::"+programController.tracking.headangle*180/Math.PI+"|| bendingangle: "+bendingangle*180/Math.PI);
-			if (programController.tracking.gpareaz<=-1){p("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
-        	if (programController.tracking.gpareaz>=1){p("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
-        	if (programController.tracking.gpareax>=1){p("STEP LEFT,more TO THE MIDDLE");}
-        	if (programController.tracking.gpareax<=-1){p("STEP RIGHT, more TO THE MIDDLE");}
+//			if (programController.tracking.gpareaz<=-1){p("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
+//        	if (programController.tracking.gpareaz>=1){p("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
+//        	if (programController.tracking.gpareax>=1){p("STEP LEFT,more TO THE MIDDLE");}
+//        	if (programController.tracking.gpareax<=-1){p("STEP RIGHT, more TO THE MIDDLE");}
 //			if (torso3d.getZ()<1500){System.out.println("TOO CLOSE, step " +Math.floor((2000-torso3d.getZ()))/1000 +"m BACK");wrongz = true;}
 //        	if (torso3d.getZ()>3000){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
 //        	if (!wrongz && torso3d.getX()/torso3d.getZ()>0.25){System.out.println("STEP LEFT,more TO THE MIDDLE");}

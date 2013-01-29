@@ -39,6 +39,9 @@ public class Player implements SkeletonCarrier {
 	public float fellTime;
 	public boolean moved;
 	
+	private int drinkState;
+	public float headAngle;
+	
 	public float steeredBending;
 	public float bendingSpeed;
 	public float drunkenBending;
@@ -51,6 +54,7 @@ public class Player implements SkeletonCarrier {
 		fellDown = false;
 		gameOver = false;
 		moved = false;
+		drinkState = 0;
 	}
 	
 	public Player init(ProgramController programController) {
@@ -76,44 +80,46 @@ public class Player implements SkeletonCarrier {
 	
 	private void refreshArms() {
 		
-		if(mFlail) {
-			skeleton.mLeftShoulderJoint.setPosByConstraint();
-			skeleton.mRightShoulderJoint.setPosByConstraint();
-			float angle = -lifeTime*20;
-			if(velX<0)
-				angle *= -1;
-			skeleton.mLeftUpperArmBone.setAngle(angle+PI);
-			skeleton.mLeftLowerArmBone.setAngle(angle+PI);
-			skeleton.mRightUpperArmBone.setAngle(angle);
-			skeleton.mRightLowerArmBone.setAngle(angle);
-		}else if(mSwingTime>0) {
-			skeleton.mLeftShoulderJoint.setPosByConstraint();
-			skeleton.mRightShoulderJoint.setPosByConstraint();
-			boolean up = (int)(lifeTime*1000)/120%2==0;
-			float fac = 0.3f;
-			float angle = (up?PI/2+fac:PI/2-fac);
-			float offset = -(steeredBending+drunkenBending);
-			if(offset<0)
-				offset *= 0.7f;
-			skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
-			skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
-			skeleton.mRightUpperArmBone.setAngle(angle+offset);
-			skeleton.mRightLowerArmBone.setAngle(angle+offset);
-		}else{
-			skeleton.mLeftShoulderJoint.setPosByConstraint();
-			skeleton.mRightShoulderJoint.setPosByConstraint();
-			if(armAnglesByTracking) {
-				skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
-				skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
-				skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
-				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+		if(drinkState<=0) {
+			if(mFlail) {
+				skeleton.mLeftShoulderJoint.setPosByConstraint();
+				skeleton.mRightShoulderJoint.setPosByConstraint();
+				float angle = -lifeTime*20;
+				if(velX<0)
+					angle *= -1;
+				skeleton.mLeftUpperArmBone.setAngle(angle+PI);
+				skeleton.mLeftLowerArmBone.setAngle(angle+PI);
+				skeleton.mRightUpperArmBone.setAngle(angle);
+				skeleton.mRightLowerArmBone.setAngle(angle);
+			}else if(mSwingTime>0) {
+				skeleton.mLeftShoulderJoint.setPosByConstraint();
+				skeleton.mRightShoulderJoint.setPosByConstraint();
+				boolean up = (int)(lifeTime*1000)/120%2==0;
+				float fac = 0.3f;
+				float angle = (up?PI/2+fac:PI/2-fac);
+				float offset = -(steeredBending+drunkenBending);
+				if(offset<0)
+					offset *= 0.7f;
+				skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
+				skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
+				skeleton.mRightUpperArmBone.setAngle(angle+offset);
+				skeleton.mRightLowerArmBone.setAngle(angle+offset);
 			}else{
-				skeleton.mLeftUpperArmBone.setAngle(0);
-				skeleton.mLeftLowerArmBone.setAngle(0);
-				skeleton.mRightUpperArmBone.setAngle(0);
-				skeleton.mRightLowerArmBone.setAngle(0);
+				skeleton.mLeftShoulderJoint.setPosByConstraint();
+				skeleton.mRightShoulderJoint.setPosByConstraint();
+				if(armAnglesByTracking) {
+					skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
+					skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
+					skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
+					skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+				}else{
+					skeleton.mLeftUpperArmBone.setAngle(0);
+					skeleton.mLeftLowerArmBone.setAngle(0);
+					skeleton.mRightUpperArmBone.setAngle(0);
+					skeleton.mRightLowerArmBone.setAngle(0);
+				}
+					
 			}
-				
 		}
 		skeleton.refreshBottle();
 	}
@@ -208,10 +214,15 @@ public class Player implements SkeletonCarrier {
 				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
 				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
 				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
-				if(inGame || !CONTROL_HEAD)
-					skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);
-				else
-					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
+				
+				if(drinkState>0) {
+					skeleton.mHeadJoint.setPosByAngle(headAngle);
+				}else{
+					if(inGame || !CONTROL_HEAD)
+						skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);
+					else
+						skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
+				}
 				
 //				skeleton.mButtJoint.mPosX = skeleton.mHipJoint.mPosX;
 //				skeleton.mButtJoint.mPosY = skeleton.mHipJoint.mPosY-0.2f;
@@ -292,6 +303,10 @@ public class Player implements SkeletonCarrier {
 	@Override
 	public void setSkeleton(Skeleton skeleton) {
 		
+	}
+	
+	public void setDrinking() {
+		drinkState = 1;
 	}
 
 	public void fallDown() {
