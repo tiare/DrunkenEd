@@ -75,7 +75,6 @@ public class GameOverState extends ProgramState {
 		if (control.Debug.GAME_OVER_SYSTEM_OUT_PRINTLN)
 			System.out.println(p);
 	}
-	
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -179,7 +178,7 @@ public class GameOverState extends ProgramState {
 					playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 80, 125, new TextureSettings());
 				}
 				graphics.bindTexture(playerImageTexture);
-				graphics2D.drawRectCentered(0f, -0.5f, 0.45f, 0.7f);
+				graphics2D.drawRectCentered(0f, -0.05f, 0.45f, 0.7f);
 
 			} else {
 				//programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
