@@ -12,7 +12,7 @@ import graphics.translator.TextureSettings;
 
 public class GameOverState extends ProgramState {
 
-	 int TIMEOUT = 20; // in seconds
+	 int TIMEOUT = 10; // in seconds
 	 int SECONDTIMEOUT = 2;
 	static boolean DEBUG = false;
 
@@ -50,7 +50,7 @@ public class GameOverState extends ProgramState {
 		this.time = time;
 		this.isHighScore = programController.highscores.getHighScorePos(programController.gameSettings.difficulty, (int) getScore(distance, time)) < 4;
 		if (!isHighScore) {
-			TIMEOUT = 10;
+			TIMEOUT = 5;
 		}
 		if (DEBUG) {
 			this.isHighScore = true;
@@ -87,12 +87,11 @@ public class GameOverState extends ProgramState {
 			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
 				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
 			}
-		}
-		if (tookPicture) {
 			timeLeft = SECONDTIMEOUT - (int) ((System.currentTimeMillis() - secondCountdownTime)/1000L);
-		} else 
-			timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() -  countdownTime) / 1000L);
-		if ( timeLeft < 0 && control.Debug.FAKE_CONTROLS &&  isHighScore ) {
+		} else {
+			timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() -  countdownTime) / 1000L);	
+		}
+		if (timeLeft < 0 && !tookPicture && isHighScore) {
 			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
 		}
 		if (timeLeft < 0 || noPicture || returnWithoutHighscore) {
