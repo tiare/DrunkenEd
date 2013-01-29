@@ -234,11 +234,8 @@ public class GameOverState extends ProgramState {
 
 	@Override
 	public void onDrink() {
-		if (Long.valueOf(drinkWait).equals(-1L)) {
-			drinkWait = System.currentTimeMillis();
-		}
 		// start game
-		if (!tookPicture && isHighScore && diffX <= range && System.currentTimeMillis() - drinkWait > 50L) {
+		if (!tookPicture && isHighScore && diffX <= range) {
 			tookPicture = true;
 			secondCountdownTime = System.currentTimeMillis();
 			p("took a picture & returning");
