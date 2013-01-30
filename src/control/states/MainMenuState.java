@@ -38,7 +38,8 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 	
 	private float drinkTime = 0.f;
-	private float timeout;
+	private float timeout = 3.f;
+	private int gulp;
 	private boolean startLevel;
 	
 	private int[] scoresEasy;
@@ -56,9 +57,14 @@ public class MainMenuState extends WorldState {
 	private float shadowElbowAngle = 0;
 	private float shadowShoulderAngle = 0;
 	private float shadowStepAngle = 93;
-	private float elbowAngle = 0;
-	private float shoulderAngle = 0;
-	//private float stepAngle = 80;
+	//Beer settings
+	private float headAngle = 220;
+	private float elbowAngle1 = 205;
+	private float shoulderAngle1 = 100;
+	private float elbowAngle2 = 160;
+	private float shoulderAngle2 = 110;
+	private float handAngle = 290;
+
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
@@ -81,6 +87,8 @@ public class MainMenuState extends WorldState {
 		this.programController = programController;
 		super.init(programController);
 		drinkTime = programController.getProgramTime();
+		gulp = 0;
+		
 		player.posX = -0.8f;
 		startLevel = false;
 		player.inGame = false;
@@ -99,8 +107,6 @@ public class MainMenuState extends WorldState {
 		
 		player.setArmAnglesByTracking(true);
 		skeleton = (DrunkenSkeleton)player.getSkeleton();
-		
-		timeout = 4.f;
 		
 		return this;
 	}
@@ -179,8 +185,12 @@ public class MainMenuState extends WorldState {
 			shadowShoulderAngle = 0;
 		}
 		else {
-			elbowAngle = (float)Math.toDegrees(skeleton.mRightHandJoint.getParentAngle());
-			shoulderAngle = (float)Math.toDegrees(skeleton.mRightElbowJoint.getParentAngle());
+			skeleton.mHeadJoint.setPosByAngle((float)Math.toRadians(headAngle));
+			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians((activeLevel==LEFT)?shoulderAngle1:shoulderAngle2));
+			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians((activeLevel==LEFT)?elbowAngle1:elbowAngle2));
+			if (activeLevel!=LEFT) 
+				skeleton.mBottleJoint.setPosByAngle((float)Math.toRadians(handAngle));
+		//	skeleton.refreshBottle();
 		}
 	}
 	
@@ -208,29 +218,11 @@ public class MainMenuState extends WorldState {
 			shadowSkeleton.refreshBottle();
 		}
 		else {
-//			if (elbowAngle < 160) {
-//				elbowAngle += 160/stepAngle;
-//			}
-//			else if (elbowAngle > 165) {
-//				elbowAngle -= 160/stepAngle;
-//			}
-//			
-//			if (shoulderAngle < 60) {				
-//				shoulderAngle += 60/stepAngle;	
-//			}
-//			else if (shoulderAngle > 65) {
-//				shoulderAngle -= 60/stepAngle;
-//			}
-			elbowAngle = 160;
-			shoulderAngle = 60;
-			
-//			if (elbowAngle > 160 && elbowAngle < 165 && shoulderAngle > 60 && shoulderAngle < 65)
-//				timeout = 0;
-			
-			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
-			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
-			
-			skeleton.refreshBottle();
+			if (programController.getProgramTime() > drinkTime + gulp*(timeout/3)) {
+				//Empty the drink a little further
+				skeleton.setDrinkState(gulp);
+				gulp++;
+			}
 		}
 	}
 	
@@ -518,6 +510,7 @@ public class MainMenuState extends WorldState {
 				super.gameSettings.difficulty = activeLevel;
 				drinkTime = programController.getProgramTime();
 				startLevel = true;
+				player.setDrinking(); //release arms and head
 				prepareForDrinkingGesture(false);
 			}
 		}
@@ -531,6 +524,7 @@ public class MainMenuState extends WorldState {
 			super.gameSettings.difficulty = activeLevel;
 			drinkTime = programController.getProgramTime();
 			startLevel = true;
+			player.setDrinking(); //release arms and head
 			prepareForDrinkingGesture(false);
 		}
 	}
