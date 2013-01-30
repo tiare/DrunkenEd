@@ -25,6 +25,7 @@ public abstract class AbstractTracking {
 	public float gpareaz;
 	public float gpareax;
 	public float drinking;
+	public boolean trackedUser=false;
 	
 	public AbstractTracking(ProgramController programController) {
 		this.programController = programController;

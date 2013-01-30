@@ -3,6 +3,7 @@ package control.states;
 import java.text.DecimalFormat;
 
 import figure.DrunkenSkeleton;
+import util.Util;
 import control.Debug;
 import control.GameSettings;
 import control.ProgramState;
@@ -144,7 +145,7 @@ public class GameState extends WorldState {
 		pool.add(to);
 		streetRow = new HorizontalRow(pool);
 		streetRow.setSpacerWidth(0, 0);
-		streetRow.setStart(-5);
+		streetRow.setStart(-10);
 		
 		
 	}
@@ -188,7 +189,7 @@ public class GameState extends WorldState {
 					float t = stateTimer-10;
 					if(t<0)
 						t=0;
-					difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.8f)*0.05f);
+					difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.5f)*0.1f);
 					//---PLAYER-CONTROLS---
 					
 					synchronized (player.getSkeleton()) {
@@ -260,7 +261,7 @@ public class GameState extends WorldState {
 							speed = (acceleration / 50.0f) * gameSettings.speedAccelerationFactor + player.getSpeed();
 							//Maximum speed
 							if (Math.abs(speed) > gameSettings.maxSpeed) {
-								if(maxSpeedTime>0.45f) {
+								if(maxSpeedTime>0.55f) {
 									player.fallDown();
 									gameOverTime = programController.getProgramTime();	
 								}else
@@ -329,8 +330,7 @@ public class GameState extends WorldState {
 							+ gameSettings.dyingTimeout) {
 						// TODO: -1f, -1f -> distance, time
 						player.fellDown = true;
-						super.programController.switchState(new GameOverState(
-								programController, this, player.getWorldX(), stateTimer
+						super.programController.switchState(new GameOverState(this, player.getWorldX(), stateTimer
 										- pauseTime));
 					}
 				}
@@ -427,7 +427,8 @@ public class GameState extends WorldState {
 					t = "0" + t;
 				}
 		
-				graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
+				if(player.posX>=1 && !programController.markWarning)
+					graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
 				//graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f, 0.1f,-1, -1, 0, 0.07f, s);
 	//			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f, 0.1f,-1, -1, 0, 0.07f, t);
 	//			graphics2D.drawStringL(graphics2D.getScreenLeft() + 0.255f, 0.7f, 0.1f,":");
@@ -454,12 +455,6 @@ public class GameState extends WorldState {
 	@Override
 	public int getType() {
 		return ProgramState.GAME;
-	}
-
-	@Override
-	public void userLost() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

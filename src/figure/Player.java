@@ -38,6 +38,9 @@ public class Player implements SkeletonCarrier {
 	public boolean fellDown;
 	public float fellTime;
 	public boolean moved;
+	public int stepCounter;
+	
+	private int drinkState;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -51,6 +54,7 @@ public class Player implements SkeletonCarrier {
 		fellDown = false;
 		gameOver = false;
 		moved = false;
+		drinkState = 0;
 	}
 	
 	public Player init(ProgramController programController) {
@@ -69,6 +73,7 @@ public class Player implements SkeletonCarrier {
 		
 		fellTime = 0;
 		lifeTime = 0;
+		stepCounter = 0;
 		
 		start();
 		return this;
@@ -76,44 +81,42 @@ public class Player implements SkeletonCarrier {
 	
 	private void refreshArms() {
 		
-		if(mFlail) {
-			skeleton.mLeftShoulderJoint.setPosByConstraint();
-			skeleton.mRightShoulderJoint.setPosByConstraint();
-			float angle = -lifeTime*20;
-			if(velX<0)
-				angle *= -1;
-			skeleton.mLeftUpperArmBone.setAngle(angle+PI);
-			skeleton.mLeftLowerArmBone.setAngle(angle+PI);
-			skeleton.mRightUpperArmBone.setAngle(angle);
-			skeleton.mRightLowerArmBone.setAngle(angle);
-		}else if(mSwingTime>0) {
-			skeleton.mLeftShoulderJoint.setPosByConstraint();
-			skeleton.mRightShoulderJoint.setPosByConstraint();
-			boolean up = (int)(lifeTime*1000)/120%2==0;
-			float fac = 0.3f;
-			float angle = (up?PI/2+fac:PI/2-fac);
-			float offset = -(steeredBending+drunkenBending);
-			if(offset<0)
-				offset *= 0.7f;
-			skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
-			skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
-			skeleton.mRightUpperArmBone.setAngle(angle+offset);
-			skeleton.mRightLowerArmBone.setAngle(angle+offset);
-		}else{
-			skeleton.mLeftShoulderJoint.setPosByConstraint();
-			skeleton.mRightShoulderJoint.setPosByConstraint();
-			if(armAnglesByTracking) {
-				skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
-				skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
-				skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
-				skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+		skeleton.mLeftShoulderJoint.setPosByConstraint();
+		skeleton.mRightShoulderJoint.setPosByConstraint();
+		if(drinkState<=0) {
+			if(mFlail) {
+				float angle = -lifeTime*20;
+				if(velX<0)
+					angle *= -1;
+				skeleton.mLeftUpperArmBone.setAngle(angle+PI);
+				skeleton.mLeftLowerArmBone.setAngle(angle+PI);
+				skeleton.mRightUpperArmBone.setAngle(angle);
+				skeleton.mRightLowerArmBone.setAngle(angle);
+			}else if(mSwingTime>0) {
+				boolean up = (int)(lifeTime*1000)/120%2==0;
+				float fac = 0.3f;
+				float angle = (up?PI/2+fac:PI/2-fac);
+				float offset = -(steeredBending+drunkenBending);
+				if(offset<0)
+					offset *= 0.7f;
+				skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
+				skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
+				skeleton.mRightUpperArmBone.setAngle(angle+offset);
+				skeleton.mRightLowerArmBone.setAngle(angle+offset);
 			}else{
-				skeleton.mLeftUpperArmBone.setAngle(0);
-				skeleton.mLeftLowerArmBone.setAngle(0);
-				skeleton.mRightUpperArmBone.setAngle(0);
-				skeleton.mRightLowerArmBone.setAngle(0);
+				if(armAnglesByTracking) {
+					skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
+					skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
+					skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
+					skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+				}else{
+					skeleton.mLeftUpperArmBone.setAngle(0);
+					skeleton.mLeftLowerArmBone.setAngle(0);
+					skeleton.mRightUpperArmBone.setAngle(0);
+					skeleton.mRightLowerArmBone.setAngle(0);
+				}
+					
 			}
-				
 		}
 		skeleton.refreshBottle();
 	}
@@ -163,6 +166,8 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void step(float deltaTime) {
+		stepCounter ++;
+		final int nStep = 2;
 		lifeTime += deltaTime;
 		if(fellDown)
 			fellTime += deltaTime;
@@ -195,23 +200,32 @@ public class Player implements SkeletonCarrier {
 					bending = upLimit;
 				if(bending<downLimit)
 					bending = downLimit;
-				float prevX = skeleton.mBreastJoint.mPosX;
-				float prevY = skeleton.mBreastJoint.mPosY;
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
-				float fac = 0.15f;
-				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
-				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
-				skeleton.mRightShoulderJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mRightElbowJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mRightHandJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mLeftShoulderJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
-				if(inGame || !CONTROL_HEAD)
-					skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);
-				else
-					skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
+				
+				if(stepCounter%nStep==0) {
+					float prevX = skeleton.mBreastJoint.mPosX;
+					float prevY = skeleton.mBreastJoint.mPosY;
+					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
+					float fac = programController.gameSettings.difficulty*0.2f+0.1f;
+					float breastVX = (skeleton.mBreastJoint.mPosX-prevX)/(deltaTime*nStep)*fac;
+					float breastVY = (skeleton.mBreastJoint.mPosY-prevY)/(deltaTime*nStep)*fac;
+					for(Joint joint:skeleton.mJoints) {
+						int dist = joint.childDistance(skeleton.mHipJoint);
+						if(dist>=0)
+							joint.setSpeed(-breastVX*1/(dist*2+1), -breastVY*2/(dist*2+1));
+						else
+							joint.setSpeed(breastVX, breastVY);
+					}
+				}else
+					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
+				
+				if(drinkState>0) {
+					//skeleton.mHeadJoint.setPosByAngle(headAngle);
+				}else{
+					if(inGame || !CONTROL_HEAD)
+						skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);
+					else
+						skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
+				}
 				
 //				skeleton.mButtJoint.mPosX = skeleton.mHipJoint.mPosX;
 //				skeleton.mButtJoint.mPosY = skeleton.mHipJoint.mPosY-0.2f;
@@ -221,7 +235,7 @@ public class Player implements SkeletonCarrier {
 		}
 		
 		synchronized(skeleton) {
-			if(gameOver && fellTime<0.2f)
+			if(gameOver && fellTime<20f)
 				skeleton.applyConstraints(deltaTime);
 		}
 	}
@@ -230,11 +244,16 @@ public class Player implements SkeletonCarrier {
 		synchronized(skeleton) {
 	
 			skeleton.mBottleVisible = !inGame;
-			if(fellDown) {
-				if(true || (int)(fellTime*1000)/500 % 2==0)
-					skeleton.mHeadBone.setTextureCoordinatesIndex(2);
-				else
+			if(drinkState>0) {
+				if(drinkState<2)
 					skeleton.mHeadBone.setTextureCoordinatesIndex(3);
+				else
+					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
+			}else if(fellDown) {
+//				if(true || (int)(fellTime*1000)/500 % 2==0)
+//					skeleton.mHeadBone.setTextureCoordinatesIndex(2);
+//				else
+				skeleton.mHeadBone.setTextureCoordinatesIndex(2);
 			}else{
 				if(mFlail || mSwingTime>0) {
 					skeleton.mHeadBone.setTextureCoordinatesIndex(1);
@@ -293,6 +312,10 @@ public class Player implements SkeletonCarrier {
 	public void setSkeleton(Skeleton skeleton) {
 		
 	}
+	
+	public void setDrinking() {
+		drinkState = 1;
+	}
 
 	public void fallDown() {
 		gameOver = true;
@@ -305,14 +328,14 @@ public class Player implements SkeletonCarrier {
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
 			joint.mFriction = 0.998f;
-			joint.mVelX = velX;
+			joint.mVelX += velX;
 		}
 		
-		for(Constraint constraint:skeleton.mConstraints) {
-			if(constraint instanceof AngleConstraint) {
-				((AngleConstraint)constraint).mStrength = 20;
-			}
-		}
+//		for(Constraint constraint:skeleton.mConstraints) {
+//			if(constraint instanceof AngleConstraint) {
+//				((AngleConstraint)constraint).mStrength = 20;
+//			}
+//		}
 	}
 	
 	public void setFlailingArms(boolean flail){

@@ -14,13 +14,14 @@ import graphics.translator.TextureWrap;
 public class StandardTextures {
 
 	
-	public static Texture CUBE;
+	//public static Texture CUBE;
 	public static Texture CIRCLE;
 	public static Texture PERLIN;
 	public static Texture ARROW;
 	
 	public static Texture CROSS;
 	public static Texture STREET;
+	public static Texture PHOTO_FRAME;
 	public static Texture GAME_BACKGROUND;
 	public static Texture STOOL;
 	public static Texture ED_SKELETON;
@@ -62,11 +63,12 @@ public class StandardTextures {
 		TextureSettings defSettings = new TextureSettings(TextureWrap.CLAMP,TextureWrap.CLAMP,TextureFilter.LINEAR_MIP_LINEAR);
 		
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
-		CUBE = gfxLoader.getImage("cube");
+		//CUBE = gfxLoader.getImage("cube");
 		CIRCLE = gfxLoader.getImage("circle",defSettings);
 		PERLIN = gfxLoader.getImage("perlin1",TextureFilter.LINEAR_MIP_LINEAR);
 		
 		ARROW = gfxLoader.getImage("arrow",defSettings);
+		PHOTO_FRAME = gfxLoader.getImage("photoFrame",defSettings);
 		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT,TextureFilter.LINEAR_MIP_LINEAR));
 		GAME_BACKGROUND = gfxLoader.getImage("nightsky",defSettings);
 		CROSS = gfxLoader.getImage("cross",defSettings);

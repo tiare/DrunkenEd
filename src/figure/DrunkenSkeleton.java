@@ -19,12 +19,14 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	public int mDrinkId;
 	public boolean mBottleVisible;
 	public int mDrinkState;
+	public boolean mBottleAutoAngle;
 	
 	public DrunkenSkeleton() {
 		mBottleVisible = true;
 		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
 		mContourTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
 		mDrinkState = 0;
+		mBottleAutoAngle = true;
 	}
 	
 	@Override
@@ -59,6 +61,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mRightLowerArmBone,1);
 		super.addBone(mRightUpperArmBone,1);
 		super.addBone(mBottleBone,1);
+		
 		//super.addBone(mButtBone,2);
 		super.addBone(mRightFootBone,2);
 		super.addBone(mRightLowerLegBone,2);
@@ -75,7 +78,10 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mLeftLowerArmBone,5);
 		
 		super.getBoneConstraint(mHeadBone, AngleConstraint.class).mSpanAngle *= 0.99f;
-
+		float f = 0.8f;
+		super.getBoneConstraint(mLeftUpperLegBone, AngleConstraint.class).mSpanAngle *= f;
+		super.getBoneConstraint(mRightUpperLegBone, AngleConstraint.class).mSpanAngle *= f;
+		
 		recalculateConstraints();
 		
 		float shift;
@@ -102,7 +108,8 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mHeadBone.mShiftX2 += 0.01f;
 		mHeadBone.putTextureCoords(0.5f, 0, 0.75f, 0.25f);
 		mHeadBone.putTextureCoords(0.75f, 0, 1f, 0.25f);
-		
+		mLeftUpperArmBone.mContourX1 -= 0.6f;
+		mLeftUpperArmBone.mContourY1 += 0.3f;
 		shift = 0.15f;
 		mRightShoulderJoint.mRelativeX += shift;
 		mLeftShoulderJoint.mRelativeX += shift+0.025f;
@@ -114,6 +121,9 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mRightHandJoint.mPosY += shift;
 		mBodyBone.setWidth(0.35f);
 		mBodyBone.setShiftX(0.05f);
+		mBodyBone.mContourX2-=0.9f;
+		mBodyBone.mContourX4-=0.6f;
+		mBodyBone.mContourY3-=0.6f;
 		mBodyBone.mShiftY2 -= 0.075f;
 		mHeadBone.setShiftX(0.05f);
 		mLeftFootBone.setWidth(0.1f);
@@ -125,8 +135,8 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mRightLegJoint.mRelativeX+=0.09f;
 		mLeftUpperLegBone.mShiftY1-=0.02f;
 		
-		mContourFactor = 0.04f;
-		mFloorFriction = 0.7f;
+		mContourFactor = 0.037f;
+		mFloorFriction = 0.9f;
 	}
 	
 	private void refreshBottleCoords() {
@@ -143,7 +153,8 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	}
 	
 	public void refreshBottle() {
-		mBottleJoint.setPosByAngle(mRightHandJoint.getParentAngle()+PI/2);
+		if(mBottleAutoAngle)
+			mBottleJoint.setPosByAngle(mRightHandJoint.getParentAngle()+PI/2);
 		refreshBottleCoords();
 	}
 	

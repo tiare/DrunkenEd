@@ -56,29 +56,31 @@ public class ProgramController extends DefaultSurface {
 		programTimer = 0;
 		tracking.init();
 		
-		
-		
-		new Thread() {
-			@Override
-			public void run() {
-				while(running) {
-					long startTime = System.currentTimeMillis();
-					try {
-						Thread.sleep(20);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
-					step(deltaTime);
-					
-				}
-			}
-		}.start();
+//		new Thread() {
+//			@Override
+//			public void run() {
+//				while(running) {
+//					long startTime = System.currentTimeMillis();
+//					try {
+//						Thread.sleep(20);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
+//					step(deltaTime);
+//					
+//				}
+//			}
+//		}.start();
 		
 		started = true;
 	}
 	
 	public void step(float deltaTime) {
+		if(markWarning) {
+			if(!tracking.trackedUser)
+				markWarning = false;
+		}
 		if(fadeState==null) {
 			if(fade<1) {
 				fade += deltaTime*fadeSpeed;
@@ -124,7 +126,7 @@ public class ProgramController extends DefaultSurface {
 		tracking.restart();
 		mFirstDraw = true;
 		if(currentState!=null) {
-			currentState.onStop();
+			currentState.stop();
 		}
 		currentState = newState;
 		currentState.onStart();
@@ -141,6 +143,8 @@ public class ProgramController extends DefaultSurface {
 
 	@Override
 	public void draw() {
+		if(!super.update())
+			return;
 		if(currentState!=null && !mChangingState) {
 			if(mFirstDraw) {
 				currentState.startGraphics();

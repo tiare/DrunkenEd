@@ -2,8 +2,8 @@ package control;
 
 import org.OpenNI.Point3D;
 
-import tracking.AbstractTracking;
 import tracking.TrackingListener;
+import control.states.MainMenuState;
 import graphics.Camera2D;
 import graphics.defaults.Default2DGraphics;
 import graphics.defaults.Default3DGraphics;
@@ -35,6 +35,8 @@ public abstract class ProgramState implements TrackingListener {
 		showMarkWarnings = true;
 	}
 	
+	protected void derivedInit() { };
+	
 	public ProgramState init(ProgramController programController) {
 		initialized = true;
 		this.programController = programController;
@@ -43,6 +45,7 @@ public abstract class ProgramState implements TrackingListener {
 		
 		highscores = programController.highscores;
 		gameSettings = programController.gameSettings;
+		derivedInit();
 		return this;
 	}
 	
@@ -61,10 +64,16 @@ public abstract class ProgramState implements TrackingListener {
 		onStep(deltaTime);
 	}
 	
+	public void userLost() {
+		onAbort();
+		programController.fadeToState(new MainMenuState());
+	}
+	
 	public void draw() {
 		graphics.clear(0, 0, 0);
 		graphics.setShaderProgram(graphics2D.getDefaultProgram());
 		graphics2D.setWhite();
+
 		onDraw();
 		
 		if(Debug.DRAW_USER_SKELETON) {
