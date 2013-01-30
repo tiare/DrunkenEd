@@ -322,9 +322,4 @@ public class GameOverState extends ProgramState {
 		return super.GAMEOVER;
 	}
 
-	@Override
-	public void userLost() {
-
-	}
-
 }

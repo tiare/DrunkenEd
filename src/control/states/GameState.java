@@ -3,6 +3,7 @@ package control.states;
 import java.text.DecimalFormat;
 
 import figure.DrunkenSkeleton;
+import util.Util;
 import control.Debug;
 import control.GameSettings;
 import control.ProgramState;
@@ -188,7 +189,7 @@ public class GameState extends WorldState {
 					float t = stateTimer-10;
 					if(t<0)
 						t=0;
-					difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.8f)*0.05f);
+					difficultyFactor = gameSettings.difficulty + ((float)Math.pow(t,0.5f)*0.1f);
 					//---PLAYER-CONTROLS---
 					
 					synchronized (player.getSkeleton()) {
@@ -259,7 +260,7 @@ public class GameState extends WorldState {
 							float speed;
 							speed = (acceleration / 50.0f) * gameSettings.speedAccelerationFactor + player.getSpeed();
 							//Maximum speed
-							if (Math.abs(speed) > gameSettings.maxSpeed) {
+							if (Math.abs(speed) > gameSettings.maxSpeed && player.steeredBending*Util.sign(speed)>-0.2f) {
 								if(maxSpeedTime>0.45f) {
 									player.fallDown();
 									gameOverTime = programController.getProgramTime();	
@@ -454,12 +455,6 @@ public class GameState extends WorldState {
 	@Override
 	public int getType() {
 		return ProgramState.GAME;
-	}
-
-	@Override
-	public void userLost() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

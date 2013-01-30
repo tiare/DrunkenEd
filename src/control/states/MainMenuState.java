@@ -534,12 +534,6 @@ public class MainMenuState extends WorldState {
 	public int getType() {
 		return super.MENU;
 	}
-
-	@Override
-	public void userLost() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void startGraphics() {

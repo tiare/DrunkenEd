@@ -28,10 +28,4 @@ public class FigureTestState extends WorldState{
 		}
 	}
 
-	@Override
-	public void userLost() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -41,7 +41,6 @@ public class Player implements SkeletonCarrier {
 	public int stepCounter;
 	
 	private int drinkState;
-	public float headAngle;
 	
 	public float steeredBending;
 	public float bendingSpeed;
@@ -210,7 +209,7 @@ public class Player implements SkeletonCarrier {
 					float prevX = skeleton.mBreastJoint.mPosX;
 					float prevY = skeleton.mBreastJoint.mPosY;
 					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
-					float fac = programController.gameSettings.difficulty*0.3f+0.1f;
+					float fac = programController.gameSettings.difficulty*0.2f+0.1f;
 					float breastVX = (skeleton.mBreastJoint.mPosX-prevX)/(deltaTime*nStep)*fac;
 					float breastVY = (skeleton.mBreastJoint.mPosY-prevY)/(deltaTime*nStep)*fac;
 					for(Joint joint:skeleton.mJoints) {
@@ -224,7 +223,7 @@ public class Player implements SkeletonCarrier {
 					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
 				
 				if(drinkState>0) {
-					skeleton.mHeadJoint.setPosByAngle(headAngle);
+					//skeleton.mHeadJoint.setPosByAngle(headAngle);
 				}else{
 					if(inGame || !CONTROL_HEAD)
 						skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);

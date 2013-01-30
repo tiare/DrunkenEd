@@ -7,7 +7,7 @@ public class GameSettings {
 	
 	public boolean speedIsProportionalToBending = false;
 	public float speedFactor = 9.0f;
-	public float maxSpeed = 6.5f;
+	public float maxSpeed = 5.8f;
 	public float speedAccelerationFactor = 0.7f;
 	public float flailingArmsSpeedFactor = 0.86f;
 	public float swingingArmsBendFactor = 0.8f;
