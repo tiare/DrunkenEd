@@ -153,6 +153,7 @@ public class ProgramController extends DefaultSurface {
 		
 		if(markWarning) {
 			mGraphics2D.switchGameCoordinates(false);
+			mGraphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			mGraphics.setAmbientColor(1);
 			mGraphics2D.setColor(1, 0.1f, 0);
 			mGraphics2D.drawStringC(0, 0.74f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
