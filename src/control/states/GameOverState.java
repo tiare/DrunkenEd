@@ -126,9 +126,12 @@ public class GameOverState extends ProgramState {
 	@Override
 	public void onDraw() {
 		if (noPicture) return;
-
+		
 		if (gameState != null)
 			gameState.draw();
+		
+		if (programController.markWarning)
+			return;
 
 		graphics.setAmbientColor(programController.getBrightness());
 		graphics2D.switchGameCoordinates(false);
@@ -255,7 +258,7 @@ public class GameOverState extends ProgramState {
 				if(tookPicture)
 					graphics2D.setColor(0.1f,0.9f,0.1f);
 				else
-					graphics2D.setColor(c*0.08f,c*0.08f,c*0.3f);//graphics2D.setColor(0.25f,0.25f,0.8f);
+					graphics2D.setColor(c*0.18f,c*0.18f,c*0.4f);//graphics2D.setColor(0.25f,0.25f,0.8f);
 				graphics2D.drawRectCentered(0f, -0.25f, 0.45f*s*1.15f, 0.7f*s*1.1f);
 				
 				returnTime = 2.5f;

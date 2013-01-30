@@ -60,7 +60,7 @@ public class ProgramController extends DefaultSurface {
 		
 		new Thread() {
 			@Override
-			public void run() {
+			public void run() {if(true)return;
 				while(running) {
 					long startTime = System.currentTimeMillis();
 					try {
@@ -141,6 +141,7 @@ public class ProgramController extends DefaultSurface {
 
 	@Override
 	public void draw() {
+		super.update();
 		if(currentState!=null && !mChangingState) {
 			if(mFirstDraw) {
 				currentState.startGraphics();

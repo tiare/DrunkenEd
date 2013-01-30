@@ -426,7 +426,8 @@ public class GameState extends WorldState {
 					t = "0" + t;
 				}
 		
-				graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
+				if(player.posX>=1 && !programController.markWarning)
+					graphics2D.drawString(-0.24f, -0.86f, 0.15f,-1, -1, 0, 0.107f, s);
 				//graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f, 0.1f,-1, -1, 0, 0.07f, s);
 	//			graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f, 0.1f,-1, -1, 0, 0.07f, t);
 	//			graphics2D.drawStringL(graphics2D.getScreenLeft() + 0.255f, 0.7f, 0.1f,":");

@@ -415,7 +415,7 @@ public class MainMenuState extends WorldState {
 		//Write highscores
 		//graphics2D.setDefaultFont();
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
-		graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
+		//graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
 		//graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawStringL(posX-0.75f, posY-0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX-0.75f, posY-0.45f, 0.23f, "2. ");
