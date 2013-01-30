@@ -76,7 +76,10 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mLeftLowerArmBone,5);
 		
 		super.getBoneConstraint(mHeadBone, AngleConstraint.class).mSpanAngle *= 0.99f;
-
+		float f = 0.8f;
+		super.getBoneConstraint(mLeftUpperLegBone, AngleConstraint.class).mSpanAngle *= f;
+		super.getBoneConstraint(mRightUpperLegBone, AngleConstraint.class).mSpanAngle *= f;
+		
 		recalculateConstraints();
 		
 		float shift;
@@ -130,7 +133,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mRightLegJoint.mRelativeX+=0.09f;
 		mLeftUpperLegBone.mShiftY1-=0.02f;
 		
-		mContourFactor = 0.04f;
+		mContourFactor = 0.037f;
 		mFloorFriction = 0.7f;
 	}
 	

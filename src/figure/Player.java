@@ -38,6 +38,7 @@ public class Player implements SkeletonCarrier {
 	public boolean fellDown;
 	public float fellTime;
 	public boolean moved;
+	public int stepCounter;
 	
 	private int drinkState;
 	public float headAngle;
@@ -73,6 +74,7 @@ public class Player implements SkeletonCarrier {
 		
 		fellTime = 0;
 		lifeTime = 0;
+		stepCounter = 0;
 		
 		start();
 		return this;
@@ -169,6 +171,8 @@ public class Player implements SkeletonCarrier {
 	}
 	
 	public void step(float deltaTime) {
+		stepCounter ++;
+		final int nStep = 2;
 		lifeTime += deltaTime;
 		if(fellDown)
 			fellTime += deltaTime;
@@ -201,19 +205,23 @@ public class Player implements SkeletonCarrier {
 					bending = upLimit;
 				if(bending<downLimit)
 					bending = downLimit;
-				float prevX = skeleton.mBreastJoint.mPosX;
-				float prevY = skeleton.mBreastJoint.mPosY;
-				skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
-				float fac = 0.15f;
-				skeleton.mBreastJoint.mVelX = (skeleton.mBreastJoint.mPosX-prevX)/deltaTime*fac;
-				skeleton.mBreastJoint.mVelY = (skeleton.mBreastJoint.mPosY-prevY)/deltaTime*fac;
-				skeleton.mRightShoulderJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mRightElbowJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mRightHandJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mLeftShoulderJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mLeftElbowJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mLeftHandJoint.setSpeed(skeleton.mBreastJoint);
-				skeleton.mHeadJoint.setSpeed(skeleton.mBreastJoint);
+				
+				if(stepCounter%nStep==0) {
+					float prevX = skeleton.mBreastJoint.mPosX;
+					float prevY = skeleton.mBreastJoint.mPosY;
+					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
+					float fac = programController.gameSettings.difficulty*0.3f+0.1f;
+					float breastVX = (skeleton.mBreastJoint.mPosX-prevX)/(deltaTime*nStep)*fac;
+					float breastVY = (skeleton.mBreastJoint.mPosY-prevY)/(deltaTime*nStep)*fac;
+					for(Joint joint:skeleton.mJoints) {
+						int dist = joint.childDistance(skeleton.mHipJoint);
+						if(dist>=0)
+							joint.setSpeed(-breastVX*1/(dist*2+1), -breastVY*2/(dist*2+1));
+						else
+							joint.setSpeed(breastVX, breastVY);
+					}
+				}else
+					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
 				
 				if(drinkState>0) {
 					skeleton.mHeadJoint.setPosByAngle(headAngle);
@@ -325,14 +333,14 @@ public class Player implements SkeletonCarrier {
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
 			joint.mFriction = 0.998f;
-			joint.mVelX = velX;
+			joint.mVelX += velX;
 		}
 		
-		for(Constraint constraint:skeleton.mConstraints) {
-			if(constraint instanceof AngleConstraint) {
-				((AngleConstraint)constraint).mStrength = 20;
-			}
-		}
+//		for(Constraint constraint:skeleton.mConstraints) {
+//			if(constraint instanceof AngleConstraint) {
+//				((AngleConstraint)constraint).mStrength = 20;
+//			}
+//		}
 	}
 	
 	public void setFlailingArms(boolean flail){
