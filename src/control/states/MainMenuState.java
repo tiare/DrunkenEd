@@ -18,7 +18,7 @@ public class MainMenuState extends WorldState {
 	
 	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
 	public static final float SPEED_FACTOR = 3.5f;
-	public static final float HELP_FREQUENCY = 6;
+	public static final float HELP_FREQUENCY = 4;
 	public static final float HELP_INTENSITY = 0.018f;
 	
 	private int activeLevel = NONE;
@@ -55,22 +55,26 @@ public class MainMenuState extends WorldState {
 	private DrunkenSkeleton skeleton;
 	private float shadowElbowAngle = 0;
 	private float shadowShoulderAngle = 0;
-	private float shadowStepAngle = 160;
+	private float shadowStepAngle = 93;
 	private float elbowAngle = 0;
 	private float shoulderAngle = 0;
-	private float stepAngle = 100;
+	//private float stepAngle = 80;
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
 	private LinkedList<Float> traveledDistances;
 	private float minDistance = 0.6f;
+	
 	private boolean showArrows = false;
 	private float blinkValue = 0;
 	
-	private static final String DEFAULT_TEXT = "Choose your drink";
+	private static final String DEFAULT_TEXT = "Choose your difficulty";
 	private static final String DRINK_TEXT = "Drink to start!";
 	private static final String BEND_TEXT = "Bend to move!";
-	private static final FloatColor HELP_COLOR = new FloatColor(0.5f, 0.8f, 1.f);
+	private static final FloatColor HELP_COLOR1 = new FloatColor(0.9f, 0.6f, 0.2f);
+	private static final FloatColor HELP_COLOR2 = new FloatColor(1.f, 1.f, 0.2f);
+	private static final FloatColor TITLE_COLOR1 = new FloatColor(0.4f, 0.7f, 0.4f);
+	private static final FloatColor TITLE_COLOR2 = new FloatColor(0.8f, 1.f, 0.6f);
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
@@ -135,7 +139,7 @@ public class MainMenuState extends WorldState {
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
-			blinkValue = pulse(2.5f,1);
+			blinkValue = pulse(4.0f,1);
 			if (waitedLongEnough && !startLevel) {
 				doDrinkingGesture (true);
 			}
@@ -204,22 +208,24 @@ public class MainMenuState extends WorldState {
 			shadowSkeleton.refreshBottle();
 		}
 		else {
-			if (elbowAngle < 160) {
-				elbowAngle += 160/stepAngle;
-			}
-			else if (elbowAngle > 165) {
-				elbowAngle -= 160/stepAngle;
-			}
+//			if (elbowAngle < 160) {
+//				elbowAngle += 160/stepAngle;
+//			}
+//			else if (elbowAngle > 165) {
+//				elbowAngle -= 160/stepAngle;
+//			}
+//			
+//			if (shoulderAngle < 60) {				
+//				shoulderAngle += 60/stepAngle;	
+//			}
+//			else if (shoulderAngle > 65) {
+//				shoulderAngle -= 60/stepAngle;
+//			}
+			elbowAngle = 160;
+			shoulderAngle = 60;
 			
-			if (shoulderAngle < 60) {				
-				shoulderAngle += 60/stepAngle;	
-			}
-			else if (shoulderAngle > 65) {
-				shoulderAngle -= 60/stepAngle;
-			}
-			
-			if (elbowAngle > 160 && elbowAngle < 165 && shoulderAngle > 60 && shoulderAngle < 65)
-				timeout = 0;
+//			if (elbowAngle > 160 && elbowAngle < 165 && shoulderAngle > 60 && shoulderAngle < 65)
+//				timeout = 0;
 			
 			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(shoulderAngle));
 			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(elbowAngle));
@@ -240,7 +246,7 @@ public class MainMenuState extends WorldState {
 					
 				}
 				
-				if (totalDistance > minDistance)
+				if (totalDistance > minDistance || traveledDistances.size() < 299)
 					showArrows = false;
 				else {
 					showArrows = true;
@@ -300,9 +306,9 @@ public class MainMenuState extends WorldState {
 			graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
 			graphics.bindTexture(null);
 			
-			drawHighscores(stoolLx, highscoresY, LEFT, "Beer", "Easy");
-			drawHighscores(stoolCx, highscoresY, CENTER, "Wine", "Medium");
-			drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka", "Hard");
+			drawHighscores(stoolLx, highscoresY, LEFT, "Beer");
+			drawHighscores(stoolCx, highscoresY, CENTER, "Wine");
+			drawHighscores(stoolRx, highscoresY, RIGHT, "Vodka");
 			
 			drawStool(stoolLx, stoolsY, (activeLevel == 0), LEFT);
 			drawStool(stoolCx, stoolsY, (activeLevel == 1), CENTER);
@@ -313,8 +319,7 @@ public class MainMenuState extends WorldState {
 			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			graphics2D.switchGameCoordinates(false);
 			if ((waitedLongEnough || showArrows) && !startLevel) {
-				graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
-						HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
+				graphics2D.setColorWeighted(HELP_COLOR1, HELP_COLOR2, blinkValue);
 				if(!programController.markWarning) {
 					if (waitedLongEnough) {
 						graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
@@ -363,7 +368,7 @@ public class MainMenuState extends WorldState {
 		graphics.bindTexture(null);
 	}
 	
-	private void drawHighscores (float posX, float posY, int position, String title, String altTitle) {
+	private void drawHighscores (float posX, float posY, int position, String title) {
 		if (position == activeLevel) {
 			graphics2D.setColor(1.f, 1.f, 1.f);
 		}
@@ -429,8 +434,8 @@ public class MainMenuState extends WorldState {
 		//Write blackboard title
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		if (activeLevel == position) {
-			graphics2D.setColor(1.f, 0.f, 0.f);//graphics2D.setColor(0.8f, 0.2f, 0.2f);
-			graphics2D.drawString(posX, posY+0.5f, 0.2f, 0, 0, 0, altTitle);
+			graphics2D.setColorWeighted(TITLE_COLOR1, TITLE_COLOR2, blinkValue);
+			graphics2D.drawString(posX, posY+0.5f, 0.2f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, title);
 		}
 		else {
 			graphics2D.setColor(0.8f, 0.8f, 0.8f);
@@ -443,8 +448,8 @@ public class MainMenuState extends WorldState {
 		if(programController.markWarning)
 			return;
 		if (showArrows && !waitedLongEnough && !startLevel) {
-			graphics2D.setColor(HELP_COLOR.getRed()+blinkValue*(1-HELP_COLOR.getRed()), 
-					HELP_COLOR.getGreen()+blinkValue*(1-HELP_COLOR.getGreen()), HELP_COLOR.getBlue());
+			graphics2D.setColorWeighted(HELP_COLOR1, HELP_COLOR2, blinkValue);
+			
 			float a = PI/2*0.27f+pulse(HELP_FREQUENCY,0.13f);
 			float r = 1.5f;
 			float angleOffset = -0.3f;
