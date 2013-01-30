@@ -57,15 +57,17 @@ public class MainMenuState extends WorldState {
 	private float shadowElbowAngle = 0;
 	private float shadowShoulderAngle = 0;
 	private float shadowStepAngle = 93;
-	//Beer settings
+
 	private float headAngle = 220;
-	private float elbowAngle1 = 210;
-	private float elbowAngle2 = 160;
+	private float elbowAngle1 = 210; //1 is beer setting
+	private float elbowAngle2 = 160; //2 is wine and vodka setting
 	private float shoulderAngle1 = 95;
 	private float shoulderAngle2 = 110;
 	private float handAngle1 = 280;
 	private float handAngle2 = 287;
-
+	private float inactiveElbowAngle = 10;
+	private float inactiveShoulderAngle = -15;
+	
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
 	private boolean waitedLongEnough = false;
@@ -118,18 +120,17 @@ public class MainMenuState extends WorldState {
 			camera.set(player.getCenterX(), 1.7f, 2.3f);
 			oldPlayerPosX = player.posX;
 			
+			player.step(deltaTime);
 			if (startLevel) {
 				if (programController.getProgramTime() > drinkTime + timeout) {
 					//start game
 					programController.fadeToState(new GameState());
 				}
 				else {
+					prepareForDrinkingGesture(false);
 					doDrinkingGesture(false);
 				}
 			}
-			//else {
-				player.step(deltaTime);
-			//}
 			
 			//don't let the player walk out of the screen
 			dontLeaveScreen ();
@@ -187,6 +188,10 @@ public class MainMenuState extends WorldState {
 		}
 		else {
 			skeleton.mHeadJoint.setPosByAngle((float)Math.toRadians(headAngle));
+			//set inactive left arm
+			skeleton.mLeftElbowJoint.setPosByAngle((float)Math.toRadians(inactiveShoulderAngle));
+			skeleton.mLeftHandJoint.setPosByAngle((float)Math.toRadians(inactiveElbowAngle));
+			//set right drinking arm
 			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(
 					(activeLevel==LEFT)?shoulderAngle1:shoulderAngle2));
 			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(
@@ -516,14 +521,7 @@ public class MainMenuState extends WorldState {
 		//Select drink - enter level
 		if( key == Keys.UP) {
 			//Enter level
-			if (activeLevel != NONE && !startLevel) {
-				//set difficulty in gamesettings!
-				super.gameSettings.difficulty = activeLevel;
-				drinkTime = programController.getProgramTime();
-				startLevel = true;
-				player.setDrinking(); //release arms and head
-				prepareForDrinkingGesture(false);
-			}
+			onDrink();
 		}
 	}
 	
@@ -537,7 +535,6 @@ public class MainMenuState extends WorldState {
 			startLevel = true;
 			player.setDrinking(); //release arms and head
 			skeleton.mBottleAutoAngle = false;
-			prepareForDrinkingGesture(false);
 		}
 	}
 	

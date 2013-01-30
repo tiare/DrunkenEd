@@ -145,7 +145,7 @@ public class GameState extends WorldState {
 		pool.add(to);
 		streetRow = new HorizontalRow(pool);
 		streetRow.setSpacerWidth(0, 0);
-		streetRow.setStart(-5);
+		streetRow.setStart(-10);
 		
 		
 	}
