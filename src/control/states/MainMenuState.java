@@ -190,7 +190,7 @@ public class MainMenuState extends WorldState {
 			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians((activeLevel==LEFT)?elbowAngle1:elbowAngle2));
 			if (activeLevel!=LEFT) 
 				skeleton.mBottleJoint.setPosByAngle((float)Math.toRadians(handAngle));
-			skeleton.refreshBottle();
+		//	skeleton.refreshBottle();
 		}
 	}
 	
