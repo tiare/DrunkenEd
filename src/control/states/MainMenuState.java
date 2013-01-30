@@ -59,11 +59,12 @@ public class MainMenuState extends WorldState {
 	private float shadowStepAngle = 93;
 	//Beer settings
 	private float headAngle = 220;
-	private float elbowAngle1 = 205;
-	private float shoulderAngle1 = 100;
+	private float elbowAngle1 = 210;
 	private float elbowAngle2 = 160;
+	private float shoulderAngle1 = 95;
 	private float shoulderAngle2 = 110;
-	private float handAngle = 290;
+	private float handAngle1 = 280;
+	private float handAngle2 = 287;
 
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
@@ -99,7 +100,6 @@ public class MainMenuState extends WorldState {
 		scoresHard = highscores.highscoresHard;
 		
 		traveledDistances = new LinkedList<Float>();
-		//startCounting = programController.getProgramTime();
 		
 		shadowPlayer = new Player(false);
 		shadowPlayer.init(programController);
@@ -107,6 +107,7 @@ public class MainMenuState extends WorldState {
 		
 		player.setArmAnglesByTracking(true);
 		skeleton = (DrunkenSkeleton)player.getSkeleton();
+		skeleton.mBottleAutoAngle = true;
 		
 		return this;
 	}
@@ -126,9 +127,9 @@ public class MainMenuState extends WorldState {
 					doDrinkingGesture(false);
 				}
 			}
-			else {
+			//else {
 				player.step(deltaTime);
-			}
+			//}
 			
 			//don't let the player walk out of the screen
 			dontLeaveScreen ();
@@ -186,11 +187,13 @@ public class MainMenuState extends WorldState {
 		}
 		else {
 			skeleton.mHeadJoint.setPosByAngle((float)Math.toRadians(headAngle));
-			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians((activeLevel==LEFT)?shoulderAngle1:shoulderAngle2));
-			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians((activeLevel==LEFT)?elbowAngle1:elbowAngle2));
-			if (activeLevel!=LEFT) 
-				skeleton.mBottleJoint.setPosByAngle((float)Math.toRadians(handAngle));
-		//	skeleton.refreshBottle();
+			skeleton.mRightElbowJoint.setPosByAngle((float)Math.toRadians(
+					(activeLevel==LEFT)?shoulderAngle1:shoulderAngle2));
+			skeleton.mRightHandJoint.setPosByAngle((float)Math.toRadians(
+					(activeLevel==LEFT)?elbowAngle1:elbowAngle2));
+			skeleton.mBottleJoint.setPosByAngle((float)Math.toRadians(
+					(activeLevel==LEFT)?handAngle1:handAngle2));
+			shadowSkeleton.refreshBottle();
 		}
 	}
 	
@@ -332,7 +335,9 @@ public class MainMenuState extends WorldState {
 			
 			player.skeleton.setDrinkId(activeLevel);
 			shadowPlayer.skeleton.setDrinkId(activeLevel);
-			shadowPlayer.draw();
+			
+			if(shadowSkeleton.mRightUpperArmBone.mVisible)
+				shadowPlayer.draw();
 			
 			graphics2D.setWhite();
 			player.draw();
@@ -495,8 +500,14 @@ public class MainMenuState extends WorldState {
 			player.steeredBending = bending;
 			if(true || Math.abs(player.steeredBending+player.drunkenBending)>0.1f) {
 				player.setSpeedX( (float)((player.steeredBending + player.drunkenBending) / (Math.PI/4.0) / 2.0) * SPEED_FACTOR );
-			}else
+			}
+			else {
 				player.setSpeedX(0);
+			}
+		}
+		else {
+			player.steeredBending = 0;
+			player.setSpeedX(0);
 		}
 	}
 	
@@ -525,6 +536,7 @@ public class MainMenuState extends WorldState {
 			drinkTime = programController.getProgramTime();
 			startLevel = true;
 			player.setDrinking(); //release arms and head
+			skeleton.mBottleAutoAngle = false;
 			prepareForDrinkingGesture(false);
 		}
 	}
