@@ -260,8 +260,8 @@ public class GameState extends WorldState {
 							float speed;
 							speed = (acceleration / 50.0f) * gameSettings.speedAccelerationFactor + player.getSpeed();
 							//Maximum speed
-							if (Math.abs(speed) > gameSettings.maxSpeed && player.steeredBending*Util.sign(speed)>-0.2f) {
-								if(maxSpeedTime>0.45f) {
+							if (Math.abs(speed) > gameSettings.maxSpeed) {
+								if(maxSpeedTime>0.55f) {
 									player.fallDown();
 									gameOverTime = programController.getProgramTime();	
 								}else

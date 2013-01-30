@@ -19,12 +19,14 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	public int mDrinkId;
 	public boolean mBottleVisible;
 	public int mDrinkState;
+	public boolean mBottleAutoAngle;
 	
 	public DrunkenSkeleton() {
 		mBottleVisible = true;
 		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.NEAREST);
 		mContourTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
 		mDrinkState = 0;
+		mBottleAutoAngle = true;
 	}
 	
 	@Override
@@ -134,7 +136,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mLeftUpperLegBone.mShiftY1-=0.02f;
 		
 		mContourFactor = 0.037f;
-		mFloorFriction = 0.7f;
+		mFloorFriction = 0.9f;
 	}
 	
 	private void refreshBottleCoords() {
@@ -151,7 +153,8 @@ public class DrunkenSkeleton extends HumanSkeleton {
 	}
 	
 	public void refreshBottle() {
-		mBottleJoint.setPosByAngle(mRightHandJoint.getParentAngle()+PI/2);
+		if(mBottleAutoAngle)
+			mBottleJoint.setPosByAngle(mRightHandJoint.getParentAngle()+PI/2);
 		refreshBottleCoords();
 	}
 	

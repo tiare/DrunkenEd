@@ -239,7 +239,7 @@ public class Player implements SkeletonCarrier {
 		}
 		
 		synchronized(skeleton) {
-			if(gameOver && fellTime<0.2f)
+			if(gameOver && fellTime<20f)
 				skeleton.applyConstraints(deltaTime);
 		}
 	}
