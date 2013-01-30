@@ -1,11 +1,7 @@
 package control.states;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import figure.DrunkenSkeleton;
 import figure.Player;
-import control.ProgramController;
 import graphics.FloatColor;
 import graphics.StandardTextures;
 import graphics.events.Keys;
@@ -14,12 +10,31 @@ import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import control.Debug;
+import control.ProgramController;
+
 public class MainMenuState extends WorldState {
 	
-	public static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
-	public static final float SPEED_FACTOR = 3.5f;
-	public static final float HELP_FREQUENCY = 4;
-	public static final float HELP_INTENSITY = 0.018f;
+	public static boolean NO_USER_TEST = false; //set to true, if you wish to test the case of no user detected
+	
+	private static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
+	private static final float SPEED_FACTOR = 3.5f;
+	private static final float HELP_FREQUENCY = 4;
+	private static final float HELP_INTENSITY = 0.018f;
+	private static final String START_TEXT = "Step onto the mark to play!";
+	private static final String TITLE_TEXT = "Drunken Ed";
+	private static final String DEFAULT_TEXT = "Choose your difficulty";
+	private static final String DRINK_TEXT = "Drink to start!";
+	private static final String BEND_TEXT = "Bend to move!";
+	private static final FloatColor HELP_COLOR1 = new FloatColor(0.9f, 0.6f, 0.2f);
+	private static final FloatColor HELP_COLOR2 = new FloatColor(1.f, 1.f, 0.2f);
+	private static final FloatColor TITLE_COLOR1 = new FloatColor(0.4f, 0.7f, 0.4f);
+	private static final FloatColor TITLE_COLOR2 = new FloatColor(0.8f, 1.f, 0.6f);
+
+	private boolean trackedUser = true;
 	
 	private int activeLevel = NONE;
 	private float barWidth = 6.f;
@@ -59,7 +74,7 @@ public class MainMenuState extends WorldState {
 	private float shadowStepAngle = 93;
 
 	private float headAngle = 220;
-	private float elbowAngle1 = 210; //1 is beer setting
+	private float elbowAngle1 = 205; //1 is beer setting
 	private float elbowAngle2 = 160; //2 is wine and vodka setting
 	private float shoulderAngle1 = 95;
 	private float shoulderAngle2 = 110;
@@ -76,19 +91,15 @@ public class MainMenuState extends WorldState {
 	
 	private boolean showArrows = false;
 	private float blinkValue = 0;
-	
-	private static final String DEFAULT_TEXT = "Choose your difficulty";
-	private static final String DRINK_TEXT = "Drink to start!";
-	private static final String BEND_TEXT = "Bend to move!";
-	private static final FloatColor HELP_COLOR1 = new FloatColor(0.9f, 0.6f, 0.2f);
-	private static final FloatColor HELP_COLOR2 = new FloatColor(1.f, 1.f, 0.2f);
-	private static final FloatColor TITLE_COLOR1 = new FloatColor(0.4f, 0.7f, 0.4f);
-	private static final FloatColor TITLE_COLOR2 = new FloatColor(0.8f, 1.f, 0.6f);
+
 	
 	@Override
 	public MainMenuState init(ProgramController programController) {
 		this.programController = programController;
 		super.init(programController);
+		
+		camera.set(0, 1.7f, 2.3f);
+		
 		drinkTime = programController.getProgramTime();
 		gulp = 0;
 		
@@ -116,10 +127,19 @@ public class MainMenuState extends WorldState {
 	
 	@Override
 	public void onStep(float deltaTime) {
-		synchronized(camera) {
-			camera.set(player.getCenterX(), 1.7f, 2.3f);
-			oldPlayerPosX = player.posX;
+		synchronized(camera) {	
+			if(!Debug.FAKE_CONTROLS)
+				trackedUser = programController.tracking.trackedUser;
+			else trackedUser = !NO_USER_TEST;
 			
+			blinkValue = pulse(4.0f,1);
+			
+			if (!trackedUser)
+				return;
+			
+			camera.set(player.getCenterX(), 1.7f, 2.3f);
+				
+			oldPlayerPosX = player.posX;
 			player.step(deltaTime);
 			if (startLevel) {
 				if (programController.getProgramTime() > drinkTime + timeout) {
@@ -147,7 +167,6 @@ public class MainMenuState extends WorldState {
 			shadowPlayer.posY = player.posY;
 			updateShadowPosition();
 			
-			blinkValue = pulse(4.0f,1);
 			if (waitedLongEnough && !startLevel) {
 				doDrinkingGesture (true);
 			}
@@ -315,6 +334,19 @@ public class MainMenuState extends WorldState {
 			drawStool(stoolRx, stoolsY, (activeLevel == 2), RIGHT);
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			
+			if (!trackedUser) { //Do this if there is no tracked player
+				graphics2D.switchGameCoordinates(false);
+				graphics2D.setColorWeighted(HELP_COLOR1, HELP_COLOR2, blinkValue);
+				graphics2D.drawString(0, -0.9f, 0.13f+pulse(HELP_FREQUENCY,HELP_INTENSITY), 0, 0, 0, START_TEXT);
+				//graphics2D.setColorWeighted(TITLE_COLOR1, TITLE_COLOR2, blinkValue);
+				graphics2D.setColor(FloatColor.BLUE);
+				graphics2D.drawString(0, -0.05f, 0.17f, 0, 0, (float)Math.sin(stateTimer*5)*0.04f, TITLE_TEXT);
+				graphics.bindTexture(null);
+				graphics2D.switchGameCoordinates(true);
+				
+				return;
+			}
+			
 			//Display bottom text
 			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			graphics2D.switchGameCoordinates(false);
@@ -341,7 +373,7 @@ public class MainMenuState extends WorldState {
 			player.skeleton.setDrinkId(activeLevel);
 			shadowPlayer.skeleton.setDrinkId(activeLevel);
 			
-			if(shadowSkeleton.mRightUpperArmBone.mVisible)
+			if(waitedLongEnough && !startLevel)
 				shadowPlayer.draw();
 			
 			graphics2D.setWhite();
@@ -350,7 +382,7 @@ public class MainMenuState extends WorldState {
 	}
 
 	private void drawStool (float posX, float posY, boolean active, int drink) {
-		if(!active) {
+		if(!active && trackedUser) {
 			float drinkY = (drink > 0? posY + 0.96f: posY + 0.79f);
 			//display the drinks
 			graphics2D.setColor(1.f, 1.f, 1.f);
@@ -420,10 +452,8 @@ public class MainMenuState extends WorldState {
 		graphics.bindTexture(null);
 		
 		//Write highscores
-		//graphics2D.setDefaultFont();
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
 		graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
-		//graphics2D.setColor(1.f, 1.f, 1.f);
 		graphics2D.drawStringL(posX-0.75f, posY-0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX-0.75f, posY-0.45f, 0.23f, "2. ");
 		graphics2D.drawStringL(posX-0.75f, posY-0.85f, 0.23f, "3. ");
