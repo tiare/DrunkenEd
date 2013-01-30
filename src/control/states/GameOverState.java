@@ -156,6 +156,7 @@ public class GameOverState extends ProgramState {
 		graphics2D.drawString(0.2f, 0.49f, 0.15f*appear(scoreAppear+0.15f,0.5f)*(1+pulse(pulseFreq,0.12f)), 0, 0, 0, (int)score + "m");
 		
 		float returnTime;
+		float helpCl = pulse(pulseFreq/2,1);
 		
 		if(stateTimer>scoreAppear) {
 			if (isHighScore) {
@@ -173,7 +174,7 @@ public class GameOverState extends ProgramState {
 				float shiftY = 0.2f;
 				if(!tookPicture) {
 					//graphics2D.setColor(1,1,0);
-					graphics2D.setColorWeighted(TAKEPHOTO_CL1,TAKEPHOTO_CL2,pulse(pulseFreq/2,1));
+					graphics2D.setColorWeighted(TAKEPHOTO_CL1,TAKEPHOTO_CL2,helpCl);
 					graphics2D.drawString(x, -shiftY, height, 0, 0, a, "Drink to take");
 					graphics2D.drawString(x+0.05f, -0.13f-shiftY, height, 0, 0, a, "a photo!");
 				}else{
@@ -265,11 +266,11 @@ public class GameOverState extends ProgramState {
 			} else {
 
 				//graphics2D.setColor(0.8f, 0.8f, 1);
-				graphics2D.setColor(1,1,0);
-				graphics2D.drawString(0, -0.1f, (0.15f+pulse(pulseFreq,0.022f))*appear(scoreAppear+0.8f,0.3f,1), 0, 0, 0, "Drink to try again!");
+				graphics2D.setColorWeighted(TAKEPHOTO_CL1,TAKEPHOTO_CL2,helpCl);
+				graphics2D.drawString(0, 0.0f, (0.15f+pulse(pulseFreq,0.022f))*appear(scoreAppear+0.6f,0.3f,1), 0, 0, 0, "Drink to try again!");
 	
 				//graphics2D.drawString(1.44f, -0.8f, 0.1f, 0, 0, 0, (timeLeft > 0 ? String.valueOf((int) timeLeft) : "0"));
-				returnTime = 1.6f;
+				returnTime = 1.4f;
 			}
 		
 			graphics2D.setColor(0.8f, 0.8f, 1);

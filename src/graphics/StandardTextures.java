@@ -14,7 +14,7 @@ import graphics.translator.TextureWrap;
 public class StandardTextures {
 
 	
-	public static Texture CUBE;
+	//public static Texture CUBE;
 	public static Texture CIRCLE;
 	public static Texture PERLIN;
 	public static Texture ARROW;
@@ -63,7 +63,7 @@ public class StandardTextures {
 		TextureSettings defSettings = new TextureSettings(TextureWrap.CLAMP,TextureWrap.CLAMP,TextureFilter.LINEAR_MIP_LINEAR);
 		
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
-		CUBE = gfxLoader.getImage("cube");
+		//CUBE = gfxLoader.getImage("cube");
 		CIRCLE = gfxLoader.getImage("circle",defSettings);
 		PERLIN = gfxLoader.getImage("perlin1",TextureFilter.LINEAR_MIP_LINEAR);
 		

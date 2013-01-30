@@ -103,7 +103,8 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mHeadBone.mShiftX2 += 0.01f;
 		mHeadBone.putTextureCoords(0.5f, 0, 0.75f, 0.25f);
 		mHeadBone.putTextureCoords(0.75f, 0, 1f, 0.25f);
-		
+		mLeftUpperArmBone.mContourX1 -= 0.6f;
+		mLeftUpperArmBone.mContourY1 += 0.3f;
 		shift = 0.15f;
 		mRightShoulderJoint.mRelativeX += shift;
 		mLeftShoulderJoint.mRelativeX += shift+0.025f;
@@ -115,6 +116,9 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		mRightHandJoint.mPosY += shift;
 		mBodyBone.setWidth(0.35f);
 		mBodyBone.setShiftX(0.05f);
+		mBodyBone.mContourX2-=0.9f;
+		mBodyBone.mContourX4-=0.6f;
+		mBodyBone.mContourY3-=0.6f;
 		mBodyBone.mShiftY2 -= 0.075f;
 		mHeadBone.setShiftX(0.05f);
 		mLeftFootBone.setWidth(0.1f);

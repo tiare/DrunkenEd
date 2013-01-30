@@ -28,7 +28,7 @@ public class TestState extends ProgramState{
 		graphics2D.activate();
 		graphics2D.setWhite();
 		
-		graphics.bindTexture(StandardTextures.CUBE);
+		//graphics.bindTexture(StandardTextures.CUBE);
 		graphics2D.drawRectCentered(0,0.15f, 1,0.9f, stateTimer);
 		
 		graphics2D.setColor(0.5f, 0.5f, 0.85f);

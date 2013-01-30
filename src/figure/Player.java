@@ -241,11 +241,16 @@ public class Player implements SkeletonCarrier {
 		synchronized(skeleton) {
 	
 			skeleton.mBottleVisible = !inGame;
-			if(fellDown) {
-				if(true || (int)(fellTime*1000)/500 % 2==0)
-					skeleton.mHeadBone.setTextureCoordinatesIndex(2);
-				else
+			if(drinkState>0) {
+				if(drinkState<2)
 					skeleton.mHeadBone.setTextureCoordinatesIndex(3);
+				else
+					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
+			}else if(fellDown) {
+//				if(true || (int)(fellTime*1000)/500 % 2==0)
+//					skeleton.mHeadBone.setTextureCoordinatesIndex(2);
+//				else
+				skeleton.mHeadBone.setTextureCoordinatesIndex(2);
 			}else{
 				if(mFlail || mSwingTime>0) {
 					skeleton.mHeadBone.setTextureCoordinatesIndex(1);
