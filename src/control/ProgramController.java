@@ -141,7 +141,8 @@ public class ProgramController extends DefaultSurface {
 
 	@Override
 	public void draw() {
-		super.update();
+		if(!super.update())
+			return;
 		if(currentState!=null && !mChangingState) {
 			if(mFirstDraw) {
 				currentState.startGraphics();

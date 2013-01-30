@@ -18,7 +18,10 @@ public class DrunkenMain {
 		Config.preInitialize();
 		
 		GLESFrame frame = new GLESFrame("Drunken Ed");
-		frame.init(Debug.RESOLUTION_X,Debug.RESOLUTION_Y);
+		if(Debug.FULLSCREEN)
+			frame.initFullScreen(true);
+		else
+			frame.init(Debug.RESOLUTION_X,Debug.RESOLUTION_Y);
 		
 		ProgramController mainControl = new ProgramController();
 

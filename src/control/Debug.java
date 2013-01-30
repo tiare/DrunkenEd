@@ -2,6 +2,7 @@ package control;
 
 public class Debug {
 	
+	public static boolean FULLSCREEN = true;
 	public static boolean NO_PHOTO_CAMERA = false;
 	public static boolean DRAW_USER_SKELETON = false;
 	public static boolean USE_COUNTDOWN = true;

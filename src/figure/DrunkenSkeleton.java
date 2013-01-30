@@ -59,6 +59,7 @@ public class DrunkenSkeleton extends HumanSkeleton {
 		super.addBone(mRightLowerArmBone,1);
 		super.addBone(mRightUpperArmBone,1);
 		super.addBone(mBottleBone,1);
+		
 		//super.addBone(mButtBone,2);
 		super.addBone(mRightFootBone,2);
 		super.addBone(mRightLowerLegBone,2);
