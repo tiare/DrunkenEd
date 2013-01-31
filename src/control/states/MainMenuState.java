@@ -18,7 +18,7 @@ import control.ProgramController;
 
 public class MainMenuState extends WorldState {
 	
-	public static boolean NO_USER_TEST = false; //set to true, if you wish to test the case of no user detected
+	public static boolean NO_USER = false; //set to true, if you wish to test the case of no user detected
 	
 	private static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
 	private static final float SPEED_FACTOR = 3.5f;
@@ -130,7 +130,7 @@ public class MainMenuState extends WorldState {
 		synchronized(camera) {	
 			if(!Debug.FAKE_CONTROLS)
 				trackedUser = programController.tracking.trackedUser;
-			else trackedUser = !NO_USER_TEST;
+			else trackedUser = !NO_USER;
 			
 			blinkValue = pulse(4.0f,1);
 			
