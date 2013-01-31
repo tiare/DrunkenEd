@@ -29,11 +29,9 @@ public abstract class WorldState extends ProgramState {
 	}
 	
 	public void draw() {
-		synchronized (camera) {
-			graphics2D.switchGameCoordinates(true);
-			graphics2D.setCamera(camera);
-			super.draw();
-		}
+		graphics2D.switchGameCoordinates(true);
+		graphics2D.setCamera(camera);
+		super.draw();
 	}
 	
 	protected void drawBackground(float zoom,float offset) {
