@@ -273,8 +273,10 @@ public class GameOverState extends ProgramState {
 				returnTime = 1.4f;
 			}
 		
-			graphics2D.setColor(0.8f, 0.8f, 1);
-			graphics2D.drawString(0f, -0.83f, 0.115f*appear(scoreAppear+returnTime,0.3f), 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
+			if(!tookPicture) {
+				graphics2D.setColor(0.8f, 0.8f, 1);
+				graphics2D.drawString(0f, -0.83f, 0.115f*appear(scoreAppear+returnTime,0.3f), 0, 0, 0, "Returning in "+(timeLeft > 0 ? String.valueOf((int) timeLeft) : "0")+"s");
+			}
 
 		}
 
