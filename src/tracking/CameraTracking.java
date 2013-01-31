@@ -49,6 +49,7 @@ public class CameraTracking extends AbstractTracking {
 			img = ImageGenerator.create(app.context);
 		} catch (GeneralException e) {
 			e.printStackTrace();
+			img = null;
 		}
 	}
 
@@ -87,6 +88,8 @@ public class CameraTracking extends AbstractTracking {
 		if (app != null) {
 			try {
 				//picByteBuffer = img.getImageMap().createByteBuffer();
+				if(img==null)
+					return null;
 				img.getImageMap().copyToBuffer(picByteBuffer, picByteBuffer.capacity());
 				if (getHeadPos().x != 0 && getHeadPos().y != 0) {
 					userPicByteBuffer.rewind();

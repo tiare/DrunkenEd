@@ -213,20 +213,22 @@ public class GameOverState extends ProgramState {
 						diffX = 0.0f;
 					
 	
-					if (!tookPicture && diffX < range)
+					//if (!tookPicture && diffX < range)
 						//graphics2D.drawString(0, -0.5f, 0.2f, 0, 0, 0, "Drink to take a picture!");
 	
 					//graphics.bindTexture(StandardTextures.CUBE);
-						graphics2D.setWhite();
-					if (playerImageTexture != null) {
-						if (!tookPicture)
-							playerImageTexture.update(((CameraTracking) programController.tracking).getColorImageByteBuffer());
-					} else {
-						playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 80, 125, new TextureSettings());
+					//graphics2D.setWhite();
+					if(!Debug.NO_PHOTO_CAMERA) {
+						if (playerImageTexture != null) {
+							if (!tookPicture)
+								playerImageTexture.update(((CameraTracking) programController.tracking).getColorImageByteBuffer());
+						} else {
+							playerImageTexture = new Texture(graphics, ((CameraTracking) programController.tracking).getColorImageByteBuffer(), 80, 125, new TextureSettings());
+						}
 					}
 					
-					graphics.bindTexture(playerImageTexture);
-					graphics2D.drawRectCentered(0f, -0.25f, 0.45f*s, 0.7f*s);
+//					graphics.bindTexture(playerImageTexture);
+//					graphics2D.drawRectCentered(0f, -0.25f, 0.45f*s, 0.7f*s);
 	
 				} else {
 					//programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);

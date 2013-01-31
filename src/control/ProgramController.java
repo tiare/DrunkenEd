@@ -90,8 +90,8 @@ public class ProgramController extends DefaultSurface {
 			tracking.step(deltaTime);
 			super.step(deltaTime);
 			if(currentState.showMarkWarnings) {
-				float limit = markWarning?0.6f:0.85f;
-				markWarning = Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
+				float limit = markWarning?0.6f:0.9f;
+				markWarning = tracking.trackedUser && Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
 			}
 			if(markWarning) {
 				
