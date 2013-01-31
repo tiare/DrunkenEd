@@ -4,9 +4,6 @@ import java.nio.ByteBuffer;
 
 import javax.vecmath.Point2d;
 
-import jogamp.nativewindow.windows.BITMAPINFO;
-import jogamp.opengl.util.av.impl.FFMPEGMediaPlayer.PixelFormat;
-
 import org.OpenNI.GeneralException;
 import org.OpenNI.ImageGenerator;
 import org.OpenNI.Point3D;
@@ -22,6 +19,7 @@ public class CameraTracking extends AbstractTracking {
 	public float gpareaz=0;
 	public float gpareax=0;
 	public float drinking=0;
+	public ImageGenerator img;
 
 	public CameraTracking(ProgramController programController) {
 		super(programController);
@@ -47,6 +45,11 @@ public class CameraTracking extends AbstractTracking {
 	public void start() {
 		app = new UserTrackerMod(programController);
 		app.updateDepth(0);
+		try {
+			img = ImageGenerator.create(app.context);
+		} catch (GeneralException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void step(float deltatime) {
@@ -83,9 +86,8 @@ public class CameraTracking extends AbstractTracking {
 		}
 		if (app != null) {
 			try {
-				ImageGenerator img = ImageGenerator.create(app.context);
 				//picByteBuffer = img.getImageMap().createByteBuffer();
-				img.getImageMap().copyToBuffer(picByteBuffer, 0);
+				img.getImageMap().copyToBuffer(picByteBuffer, picByteBuffer.capacity());
 				if (getHeadPos().x != 0 && getHeadPos().y != 0) {
 					userPicByteBuffer.rewind();
 					for (int y = (int) (getHeadPos().y - 25); y < (int) (getHeadPos().y + 100); y++) {
