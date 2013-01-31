@@ -287,12 +287,12 @@ public class MainMenuState extends WorldState {
 			
 			//Draw back wall
 			graphics2D.setColor(0.4f, 0.3f, 0.2f);
-			graphics2D.drawRectCentered(0, 2.f, 8 ,4.0f);
+			graphics2D.drawRectCentered(0, 2.5f, 8 ,5.0f);
 	
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			graphics.bindTexture(StandardTextures.WALL);
-			graphics2D.drawRectCentered(-2, 0.65f, 4, 1.25f);
-			graphics2D.drawRectCentered( 2, 0.65f, 4, 1.25f);
+			graphics2D.drawRectCentered(-2, 0.90f, 4, 1.75f);
+			graphics2D.drawRectCentered( 2, 0.90f, 4, 1.75f);
 			graphics.bindTexture(null);
 			
 			//Draw stuff on walls
