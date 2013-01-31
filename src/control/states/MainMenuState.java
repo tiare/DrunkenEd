@@ -440,11 +440,11 @@ public class MainMenuState extends WorldState {
 
 		// Draw highscore portraits
 		graphics.bindTexture(firstPic);
-		graphics2D.drawRectCentered(posX - 0.3f, posY + 0.1f, 0.3f, 0.35f);
+		graphics2D.drawRectCentered(posX - 0.3f, posY + 0.1f, 0.25f, 0.35f);
 		graphics.bindTexture(secondPic);
-		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.3f, 0.3f, 0.35f);
+		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.3f, 0.25f, 0.35f);
 		graphics.bindTexture(thirdPic);
-		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.7f, 0.3f, 0.35f);
+		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.7f, 0.25f, 0.35f);
 		graphics.bindTexture(null);
 
 		// Write highscores
@@ -453,9 +453,9 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.45f, 0.23f, "2. ");
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.85f, 0.23f, "3. ");
-		graphics2D.drawStringR(posX + 0.75f, posY - 0.05f, 0.23f, "" + scores[0]);
-		graphics2D.drawStringR(posX + 0.75f, posY - 0.45f, 0.23f, "" + scores[1]);
-		graphics2D.drawStringR(posX + 0.75f, posY - 0.85f, 0.23f, "" + scores[2]);
+		graphics2D.drawStringR(posX + 0.75f, posY - 0.05f, 0.23f, "" + scores[0] + "m");
+		graphics2D.drawStringR(posX + 0.75f, posY - 0.45f, 0.23f, "" + scores[1] + "m");
+		graphics2D.drawStringR(posX + 0.75f, posY - 0.85f, 0.23f, "" + scores[2] + "m");
 		graphics.bindTexture(null);
 		graphics2D.setDefaultProgram();
 
