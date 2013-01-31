@@ -84,7 +84,7 @@ public class MainMenuState extends WorldState {
 	private float handAngle2 = 287;
 	private float inactiveElbowAngle = 10;
 	private float inactiveShoulderAngle = -15;
-	private float angleIncrease = 2;
+	private float angleIncrease = 5;
 
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
@@ -217,7 +217,7 @@ public class MainMenuState extends WorldState {
 			// set right drinking arm
 			skeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1+increase : shoulderAngle2+increase));
 			skeleton.mRightHandJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? elbowAngle1 : elbowAngle2));
-			skeleton.mBottleJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? handAngle1 : handAngle2));
+			skeleton.mBottleJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? handAngle1+increase : handAngle2+increase*0.45));
 			shadowSkeleton.refreshBottle();
 		}
 	}
@@ -439,16 +439,40 @@ public class MainMenuState extends WorldState {
 		}
 
 		// Draw highscore portraits
-		//float 
-		graphics.bindTexture(firstPic);
-		graphics2D.drawRectCentered(posX - 0.3f, posY + 0.1f, 0.3f, 0.35f);
-		//graphics.bindTexture(StandardTextures.PHOTO_FRAME);
-		//graphics2D.drawRect(posX - 0.3f, posY + 0.1f, 0.3f, 0.35f)
-		graphics.bindTexture(secondPic);
-		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.3f, 0.3f, 0.35f);
-		graphics.bindTexture(thirdPic);
-		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.7f, 0.3f, 0.35f);
-		graphics.bindTexture(null);
+		float dimX = 0.25f;
+		float dimY = 0.35f;
+		final float cl = 0.45f;
+		if(firstPic!=null) {
+			graphics.bindTexture(firstPic);
+			graphics2D.drawRectCentered(posX - 0.3f, posY + 0.1f, dimX, dimY);
+			if(firstPic!=StandardTextures.NO_ED) {
+				graphics2D.setColor(cl);
+				graphics.bindTexture(StandardTextures.PHOTO_FRAME);
+				graphics2D.drawRectCentered(posX - 0.3f, posY + 0.1f, dimX*1.15f, dimY*1.1f);
+				graphics2D.setColor(1);
+			}
+		}
+		if(secondPic!=null) {
+			graphics.bindTexture(secondPic);
+			graphics2D.drawRectCentered(posX - 0.3f, posY - 0.3f, dimX, dimY);
+			if(secondPic!=StandardTextures.NO_ED) {
+				graphics2D.setColor(cl);
+				graphics.bindTexture(StandardTextures.PHOTO_FRAME);
+				graphics2D.drawRectCentered(posX - 0.3f, posY - 0.3f, dimX*1.15f, dimY*1.1f);
+				graphics2D.setColor(1);
+			}
+		}
+		if(thirdPic!=null) {
+			graphics.bindTexture(thirdPic);
+			graphics2D.drawRectCentered(posX - 0.3f, posY - 0.7f, dimX, dimY);
+			if(thirdPic!=StandardTextures.NO_ED) {
+				graphics2D.setColor(cl);
+				graphics.bindTexture(StandardTextures.PHOTO_FRAME);
+				graphics2D.drawRectCentered(posX - 0.3f, posY - 0.7f, dimX*1.15f, dimY*1.1f);
+				graphics2D.setColor(1);
+			}
+			graphics.bindTexture(null);
+		}
 
 		// Write highscores
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
@@ -456,9 +480,12 @@ public class MainMenuState extends WorldState {
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.45f, 0.23f, "2. ");
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.85f, 0.23f, "3. ");
-		graphics2D.drawStringR(posX + 0.75f, posY - 0.05f, 0.23f, "" + scores[0]);
-		graphics2D.drawStringR(posX + 0.75f, posY - 0.45f, 0.23f, "" + scores[1]);
-		graphics2D.drawStringR(posX + 0.75f, posY - 0.85f, 0.23f, "" + scores[2]);
+		if(firstPic!=null)
+			graphics2D.drawStringR(posX + 0.75f, posY - 0.05f, 0.23f, "" + scores[0] + "m");
+		if(secondPic!=null)
+			graphics2D.drawStringR(posX + 0.75f, posY - 0.45f, 0.23f, "" + scores[1] + "m");
+		if(thirdPic!=null)
+			graphics2D.drawStringR(posX + 0.75f, posY - 0.85f, 0.23f, "" + scores[2] + "m");
 		graphics.bindTexture(null);
 		graphics2D.setDefaultProgram();
 
@@ -602,9 +629,9 @@ public class MainMenuState extends WorldState {
 			currentScores = scoresMedium;
 
 		if (currentScores[place] == 0)
-			return StandardTextures.NO_ED;
+			return null;
 		else
-			return StandardTextures.ED;
+			return StandardTextures.NO_ED;
 	}
 
 }
