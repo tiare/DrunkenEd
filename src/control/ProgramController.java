@@ -1,15 +1,15 @@
 package control;
 
 
+import graphics.StandardTextures;
+import graphics.defaults.DefaultSurface;
+import graphics.events.Keys;
+import graphics.events.PointerEvent;
 import tracking.AbstractTracking;
 import tracking.CameraTracking;
 import tracking.FakedTracking;
 import util.Util;
 import control.states.MainMenuState;
-import graphics.StandardTextures;
-import graphics.defaults.DefaultSurface;
-import graphics.events.Keys;
-import graphics.events.PointerEvent;
 
 public class ProgramController extends DefaultSurface {
 
@@ -18,7 +18,7 @@ public class ProgramController extends DefaultSurface {
 	public AbstractTracking tracking;
 	private float programTimer;
 	public boolean started;
-	private boolean running;
+	//private boolean running;
 	public Highscores highscores;
 	public GameSettings gameSettings;
 	private boolean mFirstDraw;
@@ -38,7 +38,7 @@ public class ProgramController extends DefaultSurface {
 			tracking = new FakedTracking(this);
 		else
 			tracking = new CameraTracking(this);
-		running = true;
+		//running = true;
 		mChangingState = false;
 		
 		highscores = new Highscores();
@@ -211,7 +211,7 @@ public class ProgramController extends DefaultSurface {
 		if(key == Keys.ESC) {
 			//Only end game if we are in the menu
 			if (currentState.getType() == MENU) {
-				running = false;
+				//running = false;
 				System.exit(0);
 			}
 			//Otherwise jump out to the menu

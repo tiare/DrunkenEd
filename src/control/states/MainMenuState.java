@@ -84,6 +84,7 @@ public class MainMenuState extends WorldState {
 	private float handAngle2 = 287;
 	private float inactiveElbowAngle = 10;
 	private float inactiveShoulderAngle = -15;
+	private float angleIncrease = 2;
 
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
@@ -208,12 +209,13 @@ public class MainMenuState extends WorldState {
 			shadowElbowAngle = 0;
 			shadowShoulderAngle = 0;
 		} else {
-			skeleton.mHeadJoint.setPosByAngle((float) Math.toRadians(headAngle));
+			float increase =  angleIncrease*gulp;
+			skeleton.mHeadJoint.setPosByAngle((float) Math.toRadians(headAngle+increase));
 			// set inactive left arm
 			skeleton.mLeftElbowJoint.setPosByAngle((float) Math.toRadians(inactiveShoulderAngle));
 			skeleton.mLeftHandJoint.setPosByAngle((float) Math.toRadians(inactiveElbowAngle));
 			// set right drinking arm
-			skeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1 : shoulderAngle2));
+			skeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1+increase : shoulderAngle2+increase));
 			skeleton.mRightHandJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? elbowAngle1 : elbowAngle2));
 			skeleton.mBottleJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? handAngle1 : handAngle2));
 			shadowSkeleton.refreshBottle();
