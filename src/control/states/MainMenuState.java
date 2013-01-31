@@ -439,8 +439,11 @@ public class MainMenuState extends WorldState {
 		}
 
 		// Draw highscore portraits
+		//float 
 		graphics.bindTexture(firstPic);
 		graphics2D.drawRectCentered(posX - 0.3f, posY + 0.1f, 0.3f, 0.35f);
+		//graphics.bindTexture(StandardTextures.PHOTO_FRAME);
+		//graphics2D.drawRect(posX - 0.3f, posY + 0.1f, 0.3f, 0.35f)
 		graphics.bindTexture(secondPic);
 		graphics2D.drawRectCentered(posX - 0.3f, posY - 0.3f, 0.3f, 0.35f);
 		graphics.bindTexture(thirdPic);
