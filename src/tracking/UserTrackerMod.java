@@ -39,10 +39,11 @@ import tracking.UserTrackerMod.CalibrationCompleteObserver;
 import tracking.UserTrackerMod.LostUserObserver;
 import tracking.UserTrackerMod.NewUserObserver;
 import tracking.UserTrackerMod.PoseDetectedObserver;
+import tracking.UserTrackerMod.ExitUserCallback;
  
 
 public class UserTrackerMod {
-	private static final float DRINKINGTIME = 0.2f;
+	private static final float DRINKINGTIME = 0.4f;
 	private TreeSet<Integer> regusers=new TreeSet<Integer>();
 	class NewUserObserver implements IObserver<UserEventArgs>
 	{
@@ -152,6 +153,25 @@ public class UserTrackerMod {
 		}
 	}
 	
+	class ExitUserCallback implements  IObserver<UserEventArgs>
+	{
+		public void update(IObservable<UserEventArgs> observable,UserEventArgs args){
+			regusers.remove(args.getId());
+			if (activeUser==args.getId()) {
+				activeUser=-1;
+				programController.tracking.trackedUser=false;
+				p("RESTART TRIGGERED - in ExitUserCallback");
+				// RESTART???
+				//programController.switchState(new MainMenuState().init(programController));
+				TrackingListener listener = programController.getCurrentState();
+				if(listener!=null) {
+					listener.userLost();
+				}
+			}
+			// lostuser code here
+		}
+	}
+	
 	public final String SAMPLE_XML_FILE = "SamplesConfig.xml";
 	OutArg<ScriptNode> scriptNode;
 	public Context context;
@@ -206,6 +226,7 @@ public class UserTrackerMod {
             
             userGen.getNewUserEvent().addObserver(new NewUserObserver());
             userGen.getLostUserEvent().addObserver(new LostUserObserver());
+            userGen.getUserExitEvent().addObserver(new ExitUserCallback());
             skeletonCap.getCalibrationCompleteEvent().addObserver(new CalibrationCompleteObserver());
             poseDetectionCap.getPoseDetectedEvent().addObserver(new PoseDetectedObserver());
             
