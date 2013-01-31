@@ -293,22 +293,6 @@ public class MainMenuState extends WorldState {
 			graphics2D.drawRectCentered( 2, 0.65f, 4, 1.25f);
 			graphics.bindTexture(null);
 
-			// Draw stuff on walls
-			graphics.bindTexture(StandardTextures.DART);
-			graphics2D.drawRectCentered(-3.4f, 1.8f, 0.7f, 0.7f);
-			graphics.bindTexture(StandardTextures.FLAG1);
-			graphics2D.drawRectCentered(-3.3f, 2.9f, 0.5f, 0.5f);
-			graphics.bindTexture(StandardTextures.FLAG2);
-			graphics2D.drawRectCentered(-3.5f, 3.2f, 0.6f, 0.4f);
-			graphics.bindTexture(StandardTextures.PICTURE1);
-			graphics2D.drawRectCentered(3.5f, 2.5f, 0.35f, 0.5f);
-			graphics.bindTexture(StandardTextures.PICTURE2);
-			graphics2D.drawRectCentered(3.2f, 3.f, 0.45f, 0.45f);
-			graphics.bindTexture(StandardTextures.PICTURE3);
-			graphics2D.drawRectCentered(3.3f, 1.7f, 0.5f, 0.4f);
-
-			graphics.bindTexture(null);
-
 			// Draw side walls
 			graphics.bindTexture(StandardTextures.BRICK_LEFT);
 			graphics2D.drawRectCentered(-4.f, 2.15f, 0.3f, 4.72f, 0);
@@ -317,8 +301,10 @@ public class MainMenuState extends WorldState {
 			graphics.bindTexture(null);
 
 			// drawBar
-			graphics.bindTexture(StandardTextures.TAP);
-			graphics2D.drawRectCentered(0.7f, 1.44f, 0.2f, 0.3f);
+			if (trackedUser) {
+				graphics.bindTexture(StandardTextures.TAP);
+				graphics2D.drawRectCentered(0.7f, 1.44f, 0.2f, 0.3f);
+			}
 			graphics.bindTexture(StandardTextures.BAR);
 			graphics2D.drawRectCentered(barPosX, barPosY, barWidth, barHeight);
 			graphics.bindTexture(null);
@@ -345,6 +331,21 @@ public class MainMenuState extends WorldState {
 
 				return;
 			}
+			
+			// Draw stuff on walls
+			graphics.bindTexture(StandardTextures.DART);
+			graphics2D.drawRectCentered(-3.4f, 1.8f, 0.7f, 0.7f);
+//			graphics.bindTexture(StandardTextures.FLAG1);
+//			graphics2D.drawRectCentered(-3.4f, 2.7f, 0.5f, 0.5f);
+			graphics.bindTexture(StandardTextures.FLAG2);
+			graphics2D.drawRectCentered(-3.4f, 2.7f, 0.6f, 0.4f);
+			graphics.bindTexture(StandardTextures.PICTURE1);
+			graphics2D.drawRectCentered(3.35f, 2.8f, 0.35f, 0.5f);
+//			graphics.bindTexture(StandardTextures.PICTURE2);
+//			graphics2D.drawRectCentered(3.2f, 3.f, 0.45f, 0.45f);
+			graphics.bindTexture(StandardTextures.PICTURE3);
+			graphics2D.drawRectCentered(3.3f, 1.7f, 0.5f, 0.4f);
+			graphics.bindTexture(null);
 
 			// Display bottom text
 			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
