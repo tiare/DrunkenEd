@@ -39,9 +39,11 @@ import tracking.UserTrackerMod.CalibrationCompleteObserver;
 import tracking.UserTrackerMod.LostUserObserver;
 import tracking.UserTrackerMod.NewUserObserver;
 import tracking.UserTrackerMod.PoseDetectedObserver;
+import tracking.UserTrackerMod.ExitUserCallback;
  
 
 public class UserTrackerMod {
+	private static final float DRINKINGTIME = 0.4f;
 	private TreeSet<Integer> regusers=new TreeSet<Integer>();
 	class NewUserObserver implements IObserver<UserEventArgs>
 	{
@@ -49,7 +51,7 @@ public class UserTrackerMod {
 		public void update(IObservable<UserEventArgs> observable,
 				UserEventArgs args)
 		{
-			System.out.println("New user " + args.getId());
+			p("New user " + args.getId());
 			regusers.add(args.getId());
 			try
 			{
@@ -73,12 +75,12 @@ public class UserTrackerMod {
 		public void update(IObservable<UserEventArgs> observable,
 				UserEventArgs args)
 		{
-			System.out.println("Lost user " + args.getId());
+			p("Lost user " + args.getId());
 			//joints.remove(args.getId());
 			regusers.remove(args.getId());
 			if (activeUser==args.getId()) {
 				activeUser=-1;
-				programController.tracking.trackedUser=true;
+				programController.tracking.trackedUser=false;
 				p("RESTART TRIGGERED");
 				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
@@ -92,18 +94,19 @@ public class UserTrackerMod {
 			
 		}
 	}	
+	
 	class CalibrationCompleteObserver implements IObserver<CalibrationProgressEventArgs>
 	{
 		@Override
 		public void update(IObservable<CalibrationProgressEventArgs> observable,
 				CalibrationProgressEventArgs args)
 		{
-			System.out.println("Calibration complete: " + args.getStatus());
+			p("Calibration complete: " + args.getStatus());
 			try
 			{
 			if (args.getStatus() == CalibrationProgressStatus.OK)
 			{
-				System.out.println("starting tracking "  +args.getUser());
+				p("starting tracking "  +args.getUser());
 					skeletonCap.startTracking(args.getUser());
 	                joints.put(new Integer(args.getUser()), new HashMap<SkeletonJoint, SkeletonJointPosition>());
 	                
@@ -138,7 +141,7 @@ public class UserTrackerMod {
 		public void update(IObservable<PoseDetectionEventArgs> observable,
 				PoseDetectionEventArgs args)
 		{
-			System.out.println("Pose " + args.getPose() + " detected for " + args.getUser());
+			p("Pose " + args.getPose() + " detected for " + args.getUser());
 			try
 			{
 				poseDetectionCap.stopPoseDetection(args.getUser());
@@ -147,6 +150,25 @@ public class UserTrackerMod {
 			{
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	class ExitUserCallback implements  IObserver<UserEventArgs>
+	{
+		public void update(IObservable<UserEventArgs> observable,UserEventArgs args){
+			regusers.remove(args.getId());
+			if (activeUser==args.getId()) {
+				activeUser=-1;
+				programController.tracking.trackedUser=false;
+				p("RESTART TRIGGERED - in ExitUserCallback");
+				// RESTART???
+				//programController.switchState(new MainMenuState().init(programController));
+				TrackingListener listener = programController.getCurrentState();
+				if(listener!=null) {
+					listener.userLost();
+				}
+			}
+			// lostuser code here
 		}
 	}
 	
@@ -204,6 +226,7 @@ public class UserTrackerMod {
             
             userGen.getNewUserEvent().addObserver(new NewUserObserver());
             userGen.getLostUserEvent().addObserver(new LostUserObserver());
+            userGen.getUserExitEvent().addObserver(new ExitUserCallback());
             skeletonCap.getCalibrationCompleteEvent().addObserver(new CalibrationCompleteObserver());
             poseDetectionCap.getPoseDetectedEvent().addObserver(new PoseDetectedObserver());
             
@@ -269,16 +292,7 @@ public class UserTrackerMod {
 //					
 //					}
 //			}
-            if (nottrackedsince>1) {
-				activeUser=-1;
-				p("RESTART TRIGGERED");
-				// RESTART???
-				//programController.switchState(new MainMenuState().init(programController));
-				TrackingListener listener = programController.getCurrentState();
-				if(listener!=null) {
-					listener.userLost();
-				}
-			}
+            
             
             
             if (activeUser==-1) {
@@ -289,6 +303,7 @@ public class UserTrackerMod {
             //p("users checked for skeleton tracking, if 1 then checkingtriggers");
 			//setActiveUser();
 			//if (activeuser!=0 )
+            //p(!skeletonCap.isSkeletonTracking(activeUser));
             if (activeUser!=-1 && skeletonCap.isSkeletonTracking(activeUser)){ 
             	checkTriggers();
             	nottrackedsince=0;
@@ -296,10 +311,18 @@ public class UserTrackerMod {
             else if (activeUser !=-1 && !skeletonCap.isSkeletonTracking(activeUser)) {
             	nottrackedsince+=deltatime;
             	}
+            //p(nottrackedsince);
+            if (nottrackedsince>1) {
+				activeUser=-1;
+				p("RESTART TRIGGERED");
+				// RESTART???
+				//programController.switchState(new MainMenuState().init(programController));
+				TrackingListener listener = programController.getCurrentState();
+				if(listener!=null) {
+					listener.userLost();
+				}
+			}
            // if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println(activeuser);
-            if (nottrackedsince>0){
-            	programController.tracking.trackedUser=false;
-            }
             
         } catch (GeneralException e) {
             e.printStackTrace();
@@ -372,7 +395,7 @@ public class UserTrackerMod {
 		}
 		TrackingListener listener = programController.getCurrentState();
 		if(listener!=null) {
-			if (hasDrinkingPose && !drinkAlreadyCalled && programController.tracking.drinking>0.5){
+			if (hasDrinkingPose && !drinkAlreadyCalled && programController.tracking.drinking>DRINKINGTIME){
 				listener.onDrink();
 				drinkAlreadyCalled=true;
 				
