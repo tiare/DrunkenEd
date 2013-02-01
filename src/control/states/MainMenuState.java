@@ -75,16 +75,16 @@ public class MainMenuState extends WorldState {
 	private float shadowShoulderAngle = 0;
 	private float shadowStepAngle = 93;
 
-	private float headAngle = 220;
-	private float elbowAngle1 = 205; // 1 is beer setting
-	private float elbowAngle2 = 160; // 2 is wine and vodka setting
-	private float shoulderAngle1 = 95;
-	private float shoulderAngle2 = 110;
-	private float handAngle1 = 280;
-	private float handAngle2 = 287;
+	private float headAngle = 150;
+	private float elbowAngle1 = 165; // 1 is beer setting
+	private float elbowAngle2 = 120; // 2 is wine and vodka setting
+	private float shoulderAngle1 = 10;
+	private float shoulderAngle2 = 20;
+	private float handAngle1 = 240;
+	private float handAngle2 = 240;
 	private float inactiveElbowAngle = 10;
 	private float inactiveShoulderAngle = -15;
-	private float angleIncrease = 5;
+	private float angleIncrease = 30;
 
 	private float activationTime = 0;
 	private float hintTimeout = 5.f;
@@ -215,9 +215,9 @@ public class MainMenuState extends WorldState {
 			skeleton.mLeftElbowJoint.setPosByAngle((float) Math.toRadians(inactiveShoulderAngle));
 			skeleton.mLeftHandJoint.setPosByAngle((float) Math.toRadians(inactiveElbowAngle));
 			// set right drinking arm
-			skeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1+increase : shoulderAngle2+increase));
-			skeleton.mRightHandJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? elbowAngle1 : elbowAngle2));
-			skeleton.mBottleJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? handAngle1+increase : handAngle2+increase*0.45));
+			skeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1+increase*1.2 : shoulderAngle2+increase*1.2));
+			skeleton.mRightHandJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? elbowAngle1+increase*0.5 : elbowAngle2+increase*0.45));
+			skeleton.mBottleJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? handAngle1+increase*0.6 : handAngle2+increase*0.55));
 			shadowSkeleton.refreshBottle();
 		}
 	}
