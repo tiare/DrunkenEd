@@ -143,6 +143,7 @@ public class MainMenuState extends WorldState {
 			}
 
 			camera.set(player.getCenterX(), 1.7f, 2.3f);
+			//camera.set(0, 1.7f, 2.3f);
 
 			oldPlayerPosX = player.posX;
 			player.step(deltaTime);
