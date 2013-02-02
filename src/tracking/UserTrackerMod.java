@@ -1,6 +1,6 @@
 package tracking;
 
-import java.nio.ShortBuffer;
+//import java.nio.ShortBuffer;
 
 import java.util.HashMap;
 import java.util.TreeSet;
@@ -12,8 +12,8 @@ import org.OpenNI.CalibrationProgressEventArgs;
 import org.OpenNI.CalibrationProgressStatus;
 import org.OpenNI.Context;
 import org.OpenNI.DepthGenerator;
-import org.OpenNI.DepthMetaData;
-import org.OpenNI.ImageGenerator;
+//import org.OpenNI.DepthMetaData;
+//import org.OpenNI.ImageGenerator;
 import org.OpenNI.GeneralException;
 import org.OpenNI.IObservable;
 import org.OpenNI.IObserver;
@@ -21,6 +21,7 @@ import org.OpenNI.OutArg;
 import org.OpenNI.Point3D;
 import org.OpenNI.PoseDetectionCapability;
 import org.OpenNI.PoseDetectionEventArgs;
+//import org.OpenNI.SceneMetaData;
 import org.OpenNI.SceneMetaData;
 import org.OpenNI.ScriptNode;
 import org.OpenNI.SkeletonCapability;
@@ -31,15 +32,15 @@ import org.OpenNI.StatusException;
 import org.OpenNI.UserEventArgs;
 import org.OpenNI.UserGenerator;
 
-import control.Debug;
-import control.ProgramController;
-import control.states.MainMenuState;
 
-import tracking.UserTrackerMod.CalibrationCompleteObserver;
-import tracking.UserTrackerMod.LostUserObserver;
-import tracking.UserTrackerMod.NewUserObserver;
-import tracking.UserTrackerMod.PoseDetectedObserver;
-import tracking.UserTrackerMod.ExitUserCallback;
+import control.ProgramController;
+//import control.states.MainMenuState;
+//import control.Debug;
+//import tracking.UserTrackerMod.CalibrationCompleteObserver;
+//import tracking.UserTrackerMod.LostUserObserver;
+//import tracking.UserTrackerMod.NewUserObserver;
+//import tracking.UserTrackerMod.PoseDetectedObserver;
+//import tracking.UserTrackerMod.ExitUserCallback;
  
 
 public class UserTrackerMod {
@@ -161,14 +162,11 @@ public class UserTrackerMod {
 				activeUser=-1;
 				programController.tracking.trackedUser=false;
 				p("RESTART TRIGGERED - in ExitUserCallback");
-				// RESTART???
-				//programController.switchState(new MainMenuState().init(programController));
 				TrackingListener listener = programController.getCurrentState();
 				if(listener!=null) {
 					listener.userLost();
 				}
 			}
-			// lostuser code here
 		}
 	}
 	
@@ -176,8 +174,8 @@ public class UserTrackerMod {
 	OutArg<ScriptNode> scriptNode;
 	public Context context;
 	public DepthGenerator depthGen;
-	private int width;
-	private int height;
+//	private int width;
+//	private int height;
 	private UserGenerator userGen;
 	private SkeletonCapability skeletonCap;
 	private PoseDetectionCapability poseDetectionCap;
@@ -202,6 +200,7 @@ public class UserTrackerMod {
 			SkeletonJoint.RIGHT_SHOULDER,SkeletonJoint.RIGHT_ELBOW,SkeletonJoint.RIGHT_HAND,SkeletonJoint.NECK,SkeletonJoint.TORSO,
 			SkeletonJoint.LEFT_HIP,SkeletonJoint.LEFT_KNEE,SkeletonJoint.LEFT_FOOT,SkeletonJoint.RIGHT_HIP,SkeletonJoint.RIGHT_KNEE,SkeletonJoint.RIGHT_FOOT};
 	public Point3D[] skeletonpoints=new Point3D[body.length];
+	//SceneMetaData sceneMD = new SceneMetaData();
 	
 	public UserTrackerMod(ProgramController programController){
 		try {
@@ -251,12 +250,15 @@ public class UserTrackerMod {
 			users = userGen.getUsers();
 			if (0<users.length && activeUser==-1){// p(2);
 				for (int i=0;i<users.length;i++){ //p(3);
+					//p(skeletonCap.isSkeletonTracking(users[i])+"||"+userGen.getUserPixels(users[i]).getDataSize());
 					if (skeletonCap.isSkeletonTracking(users[i])){
 					//	p("endlich drin");
+						
 						activeUser=users[i];
 						programController.tracking.trackedUser=true;
 						//activeUser=i;
-					//	p("we are tracking: ");
+						p("TrackedUser=true");
+					//	p(	userGen.getUserPixels(activeUser, sceneMD);
 						p("activeuser:: "+activeUser );
 						break;
 						}
@@ -275,11 +277,11 @@ public class UserTrackerMod {
         	this.deltatime=deltatime;
             //context.waitAnyUpdateAll();
             context.waitNoneUpdateAll();
-            DepthMetaData depthMD = depthGen.getMetaData();
+           // DepthMetaData depthMD = depthGen.getMetaData();
            // SceneMetaData sceneMD = userGen.getUserPixels(0);
             
            // ShortBuffer scene = sceneMD.getData().createShortBuffer();
-            ShortBuffer depth = depthMD.getData().createShortBuffer();
+           //ShortBuffer depth = depthMD.getData().createShortBuffer();
            // calcHist(depth);
            // depth.rewind();
            // users = userGen.getUsers();
@@ -298,7 +300,7 @@ public class UserTrackerMod {
             if (activeUser==-1) {
             	programController.tracking.trackArms=false;
             	setNextUser();
-            	
+            	programController.tracking.trackedUser=false;
             	}
             //p("users checked for skeleton tracking, if 1 then checkingtriggers");
 			//setActiveUser();
@@ -307,6 +309,7 @@ public class UserTrackerMod {
             if (activeUser!=-1 && skeletonCap.isSkeletonTracking(activeUser)){ 
             	checkTriggers();
             	nottrackedsince=0;
+            	programController.tracking.trackedUser=true;
             	}
             else if (activeUser !=-1 && !skeletonCap.isSkeletonTracking(activeUser)) {
             	nottrackedsince+=deltatime;
@@ -315,6 +318,7 @@ public class UserTrackerMod {
             if (nottrackedsince>1) {
 				activeUser=-1;
 				p("RESTART TRIGGERED");
+				programController.tracking.trackedUser=false;
 				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
 				TrackingListener listener = programController.getCurrentState();
@@ -468,7 +472,7 @@ public class UserTrackerMod {
 //			Point2d temp2d=new Point2d();
 			bendingangle=test/BENDINGANGLEFACTOR;
 			//System.out.println(test*180/Math.PI+"::"+bendingangle);
-			boolean wrongz =false;
+			//boolean wrongz =false;
 			programController.tracking.gpareaz=(torso3d.getZ()-2250)/750;
 			programController.tracking.gpareax=(4*torso3d.getX()/torso3d.getZ());
 			//p("kopfwinkel::"+programController.tracking.headangle*180/Math.PI+"|| bendingangle: "+bendingangle*180/Math.PI);
