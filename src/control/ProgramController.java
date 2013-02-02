@@ -246,4 +246,10 @@ public class ProgramController extends DefaultSurface {
 			return fade;
 	}
 	
+	@Override
+	public void zoom(float value) {
+		if(currentState!=null)
+			currentState.zoom(value);
+	}
+	
 }
