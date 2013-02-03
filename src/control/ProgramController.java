@@ -76,7 +76,7 @@ public class ProgramController extends DefaultSurface {
 		started = true;
 	}
 	
-	public void step(float deltaTime) {
+	public void step(float deltaTime) {System.out.println(tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+"");
 		if(markWarning) {
 			if(!tracking.trackedUser)
 				markWarning = false;
@@ -91,7 +91,7 @@ public class ProgramController extends DefaultSurface {
 			super.step(deltaTime);
 			if(currentState.showMarkWarnings) {
 				float limit = markWarning?0.6f:0.9f;
-				markWarning = tracking.trackedUser && Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
+				markWarning = tracking.trackedUser && (Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit);
 			}
 			if(markWarning) {
 				

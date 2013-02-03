@@ -48,7 +48,7 @@ public class CameraTracking extends AbstractTracking {
 		try {
 			img = ImageGenerator.create(app.context);
 		} catch (GeneralException e) {
-			e.printStackTrace();
+			System.out.println("No RGB camera");
 			img = null;
 		}
 	}
