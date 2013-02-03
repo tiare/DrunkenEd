@@ -76,7 +76,7 @@ public class ProgramController extends DefaultSurface {
 		started = true;
 	}
 	
-	public void step(float deltaTime) {System.out.println(tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+""+tracking.trackedUser+"");
+	public void step(float deltaTime) {
 		if(markWarning) {
 			if(!tracking.trackedUser)
 				markWarning = false;
