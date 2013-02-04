@@ -13,4 +13,5 @@ public class Debug {
 	public static boolean TRACKING_SYSTEM_OUT_PRINTLN = false;
 	public static boolean GAME_STATE_SYSO = false;
 	public static boolean DRAW_SKELETON = false;
+	public static boolean SETFAKESCORES = true;
 }

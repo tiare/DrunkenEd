@@ -111,6 +111,22 @@ public class MainMenuState extends WorldState {
 		scoresEasy = highscores.highscoresEasy;
 		scoresMedium = highscores.highscoresMedium;
 		scoresHard = highscores.highscoresHard;
+		
+		if (Debug.SETFAKESCORES) {
+			highscores.addHighscore(programController.gameSettings.GAME_EASY, 299, null);
+			highscores.addHighscore(programController.gameSettings.GAME_EASY, 210, null);
+			highscores.addHighscore(programController.gameSettings.GAME_EASY, 8, null);
+			
+
+			highscores.addHighscore(programController.gameSettings.GAME_MEDIUM, 210, null);
+			highscores.addHighscore(programController.gameSettings.GAME_MEDIUM, 73, null);
+			highscores.addHighscore(programController.gameSettings.GAME_EASY, 19, null);
+			
+
+			highscores.addHighscore(programController.gameSettings.GAME_HARD, 1337, null);
+			highscores.addHighscore(programController.gameSettings.GAME_HARD, 42, null);
+			highscores.addHighscore(programController.gameSettings.GAME_HARD, 12, null);
+		}
 
 		traveledDistances = new LinkedList<Float>();
 
