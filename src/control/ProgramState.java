@@ -133,6 +133,10 @@ public abstract class ProgramState implements TrackingListener {
 		
 	}
 	
+	public void zoom(float value) {
+		
+	}
+	
 	@Override
 	public void onDrink() {
 		

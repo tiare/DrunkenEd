@@ -91,7 +91,7 @@ public class ProgramController extends DefaultSurface {
 			super.step(deltaTime);
 			if(currentState.showMarkWarnings) {
 				float limit = markWarning?0.6f:0.9f;
-				markWarning = tracking.trackedUser && Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit;
+				markWarning = tracking.trackedUser && (Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit);
 			}
 			if(markWarning) {
 				
@@ -244,6 +244,12 @@ public class ProgramController extends DefaultSurface {
 			return fade * 0.18f;
 		else
 			return fade;
+	}
+	
+	@Override
+	public void zoom(float value) {
+		if(currentState!=null)
+			currentState.zoom(value);
 	}
 	
 }

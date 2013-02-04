@@ -8,7 +8,7 @@ import graphics.translator.GraphicsTranslator;
 public class HorizontalRow {
 
 	private HorizontalDrawablePool pool;
-	private float drawingWidth = 6.0f;
+	private float drawingWidth = 3.0f;
 	private float spacerWidthMin = 0.4f;
 	private float spacerWidthRange = 0.4f;
 	private LinkedList<HorizontalDrawableInterface> row;
@@ -50,18 +50,18 @@ public class HorizontalRow {
 		
 	}
 	
-	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D, float offset){
+	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D, float offset, float zoom){
 		
 		start = startOffset;
 		for( HorizontalDrawableInterface item : row){
-			if( start + item.getWidth() > offset - drawingWidth && start < offset + drawingWidth ){
+			if( start + item.getWidth() > offset - drawingWidth*zoom && start < offset + drawingWidth*zoom ){
 				item.draw(graphics, graphics2D);
 			}
 			
 			start += item.getWidth();
 			
 		}
-		while( start < offset + drawingWidth ){
+		while( start < offset + drawingWidth*zoom ){
 			// add and draw new house
 			HorizontalDrawableInterface item = pool.getRandom().copy();
 			add(item);
