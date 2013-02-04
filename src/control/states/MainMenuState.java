@@ -55,7 +55,7 @@ public class MainMenuState extends WorldState {
 	private float oldPlayerPosX = 0f;
 
 	private float drinkTime = 0.f;
-	private float timeout = 3.f;
+	private float timeout = 2.f;
 	private int gulp;
 	private boolean startLevel;
 
@@ -87,10 +87,10 @@ public class MainMenuState extends WorldState {
 	private float angleIncrease = 30;
 
 	private float activationTime = 0;
-	private float hintTimeout = 5.f;
+	private float hintTimeout = 3.f;
 	private boolean waitedLongEnough = false;
 	private LinkedList<Float> traveledDistances;
-	private float minDistance = 0.6f;
+	private float minDistance = 0.8f;
 
 	private boolean showArrows = false;
 	private float blinkValue = 0;
@@ -266,7 +266,7 @@ public class MainMenuState extends WorldState {
 
 			}
 
-			if (totalDistance > minDistance || traveledDistances.size() < 299)
+			if (totalDistance > minDistance)
 				showArrows = false;
 			else {
 				showArrows = true;
