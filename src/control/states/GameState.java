@@ -145,7 +145,7 @@ public class GameState extends LevelState {
 						bendingSum = player.steeredBending + player.drunkenBending;
 						float acceleration = 0.0f;
 						boolean noFlail = true;
-						if (Math.abs(bendingSum) > 0.05f) {
+						if (!player.inAir() && Math.abs(bendingSum) > 0.05f) {
 							int sign = bendingSum < 0 ? -1 : 1;
 							if (bendingSum * player.getSpeed() > 0) {
 								// noFlail =

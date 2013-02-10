@@ -301,7 +301,7 @@ public class GameOverState extends ProgramState {
 
 	@Override
 	public void onDrink() {
-		if(stateTimer<4)
+		if(isHighScore && stateTimer<4)
 			return;
 		if (!tookPicture && isHighScore && diffX <= range) {
 			tookPicture = true;

@@ -13,7 +13,7 @@ public class DrunkenJump extends DrunkenAnimation{
 	
 	public DrunkenJump() {
 		setFrames(new KeyFrame[]{frame0,frame1,frame2,frame3});
-		mFramesPerSecond = 3.5f;
+		mFramesPerSecond = 2.5f;
 		mInterpolate = true;
 	}
 

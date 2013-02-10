@@ -25,7 +25,7 @@ public class Player implements SkeletonCarrier {
 	public DefaultAnimationPlayer animationPlayer;
 	
 	//Properties
-	private float mGravity = -7f;
+	private float mGravity = -9f;
 	public boolean inGame;
 	private boolean armAnglesByTracking;
 	

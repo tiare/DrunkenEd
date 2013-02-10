@@ -54,7 +54,7 @@ public class FakedTracking extends AbstractTracking{
 		if(key=='d')
 			listener.onDrink();
 		if(key==Keys.UP)
-			listener.onJump(3f);
+			listener.onJump(4.5f);
 	}
 
 	@Override
