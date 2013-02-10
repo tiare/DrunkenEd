@@ -165,6 +165,10 @@ public class Player implements SkeletonCarrier {
 		return velX;
 	}
 	
+	public boolean inAir() {
+		return posY>skeleton.mLowerLimit;
+	}
+	
 	public void step(float deltaTime) {
 		stepCounter ++;
 		final int nStep = 2;
@@ -189,6 +193,13 @@ public class Player implements SkeletonCarrier {
 					velY += mGravity*deltaTime;
 				}
 				
+				if(inAir()) {
+					if(animationPlayer.mCurrentAnimation!=DrunkenAnimationSystem.JUMP)
+						animationPlayer.crossAnimation(DrunkenAnimationSystem.JUMP);
+				}else{
+					if(animationPlayer.mCurrentAnimation!=DrunkenAnimationSystem.WALK)
+						animationPlayer.crossAnimation(DrunkenAnimationSystem.WALK);
+				}
 				animationPlayer.proceed(velX*deltaTime);
 				
 				float angleOffset = 0;

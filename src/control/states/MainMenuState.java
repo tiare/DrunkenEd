@@ -530,9 +530,9 @@ public class MainMenuState extends WorldState {
 			float dX = (float) Math.sin(a) * r;
 			float y = -r + 1.1f + player.posY + (float) Math.cos(a) * r;
 			graphics.bindTexture(StandardTextures.ARROW_L);
-			graphics2D.drawRectCentered(player.getCenterX() - dX, player.posY + y, 0.6f, 0.32f, a * 1.01f + angleOffset);
+			graphics2D.drawRectCentered(player.getCenterX() - dX, y, 0.6f, 0.32f, a * 1.01f + angleOffset);
 			graphics.bindTexture(StandardTextures.ARROW_R);
-			graphics2D.drawRectCentered(player.getCenterX() + dX, player.posY + y, 0.6f, 0.32f, -a * 1.01f - angleOffset);
+			graphics2D.drawRectCentered(player.getCenterX() + dX, y, 0.6f, 0.32f, -a * 1.01f - angleOffset);
 			graphics.bindTexture(null);
 		}
 	}

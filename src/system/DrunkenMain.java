@@ -26,7 +26,7 @@ public class DrunkenMain {
 		ProgramController mainControl = new ProgramController();
 
 		frame.setSurface(mainControl);
-		frame.setIconImage(new ImageIcon(IOCommon.ICON_PATH).getImage());
+		//frame.setIconImage(new ImageIcon(IOCommon.ICON_PATH).getImage());
 		frame.run();
 	}
 	
