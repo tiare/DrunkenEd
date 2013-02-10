@@ -93,7 +93,8 @@ public class GameOverState extends ProgramState {
 		}
 		if (tookPicture) {
 			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
-				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
+				if(programController.tracking instanceof CameraTracking)
+					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
 			}
 			timeLeft = SECONDTIMEOUT - (int) ((System.currentTimeMillis() - secondCountdownTime)/1000L);
 		} else {
@@ -291,14 +292,7 @@ public class GameOverState extends ProgramState {
 		graphics2D.drawRectCentered(around, -height / 2-0.05f, width + thickness, thickness);
 	}
 
-	public void keyDown(int key) {
-		// Enter the selected door
-		if (key == Keys.UP) {
-			// switch to menu
-			programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), null);
-			programController.fadeToState(new MainMenuState());
-		}
-		
+	public void keyDown(int key) {		
 		if (key == 'p') 
 			tookPicture = true;
 	}

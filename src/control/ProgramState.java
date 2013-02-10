@@ -143,6 +143,11 @@ public abstract class ProgramState implements TrackingListener {
 	}
 	
 	@Override
+	public void onJump(float velocity) {
+		
+	}
+	
+	@Override
 	public void onBend(float bending) {
 		
 	}

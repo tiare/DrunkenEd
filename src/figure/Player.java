@@ -9,42 +9,43 @@ import graphics.defaults.DefaultAnimationPlayer;
 import graphics.skeletons.Skeleton;
 import graphics.skeletons.SkeletonCarrier;
 import graphics.skeletons.animations.AnimationPlayer;
-import graphics.skeletons.constraints.AngleConstraint;
-import graphics.skeletons.constraints.Constraint;
 import graphics.skeletons.elements.Joint;
-import graphics.translator.GraphicsTranslator;
 
 public class Player implements SkeletonCarrier {
 
 	public final static DrunkenAnimationSystem ANIMATION_SYSTEM = new DrunkenAnimationSystem();
 	public final static float PI = 3.1415926535f;
 	public final static boolean CONTROL_HEAD = false;
-	
-	private float velX,velY;
+
+	//References
 	private ProgramController programController;
 	private AbstractTracking tracking;
 	public DrunkenSkeleton skeleton;
-	private GraphicsTranslator graphics;
 	private Default2DGraphics graphics2D;
-	public float posX,posY;
-	public boolean gameOver;
-	private boolean armAnglesByTracking;
 	public DefaultAnimationPlayer animationPlayer;
-	public float lifeTime;
-	private boolean mFlail;
-	private boolean mSwing;
-	private float mSwingTime;
+	
+	//Properties
+	private float mGravity = -7f;
 	public boolean inGame;
-	public boolean fellDown;
-	public float fellTime;
-	public boolean moved;
-	public int stepCounter;
+	private boolean armAnglesByTracking;
 	
+	//State
+	public float posX,posY;
+	private float velX,velY;
+	public boolean gameOver;		
 	private int drinkState;
-	
+	public boolean moved;
 	public float steeredBending;
 	public float bendingSpeed;
 	public float drunkenBending;
+	private float mSwingTime;
+	public int stepCounter;
+	public boolean fellDown;
+	public float fellTime;
+	public float lifeTime;
+	private boolean mFlail;
+	private boolean mSwing;
+	
 	
 	public Player(boolean inGame) {
 		this.inGame = inGame;
@@ -59,7 +60,6 @@ public class Player implements SkeletonCarrier {
 	
 	public Player init(ProgramController programController) {
 		this.programController = programController;
-		this.graphics = programController.mGraphics;
 		this.graphics2D = programController.mGraphics2D;
 		tracking = programController.tracking;
 		skeleton.init(this);
@@ -178,9 +178,17 @@ public class Player implements SkeletonCarrier {
 			else if(mSwingTime>0)
 				mSwingTime -= deltaTime;
 			synchronized(skeleton) {
+				
 				posX += velX*deltaTime;
 				posY += velY*deltaTime;
 
+				if(posY<=skeleton.mLowerLimit) {
+					posY = skeleton.mLowerLimit;
+					velY = 0;
+				}else{
+					velY += mGravity*deltaTime;
+				}
+				
 				animationPlayer.proceed(velX*deltaTime);
 				
 				float angleOffset = 0;
@@ -321,7 +329,6 @@ public class Player implements SkeletonCarrier {
 		gameOver = true;
 		setArmAnglesByTracking(false);
 		skeleton.mConstantForceY = -0.2f;
-		skeleton.mLowerLimit = 0;
 		skeleton.mLimitForceInwards = 5.4f;
 		skeleton.mLimitForceOutwards = 2.0f;
 		
@@ -329,6 +336,7 @@ public class Player implements SkeletonCarrier {
 			joint.mFixed = false;
 			joint.mFriction = 0.998f;
 			joint.mVelX += velX;
+			joint.mVelY += velY;
 		}
 		
 //		for(Constraint constraint:skeleton.mConstraints) {
@@ -362,6 +370,18 @@ public class Player implements SkeletonCarrier {
 	
 	public float getCenterY() {
 		return posY+0.9f;
+	}
+
+	public void jump(float velocity) {
+		if(posY<=skeleton.mLowerLimit+0.001f) {
+			velY = velocity;
+		}
+	}
+
+	public void setFloorY(float y) {
+		if(posY<y)
+			posY = y;
+		skeleton.mLowerLimit = y;
 	}
 	
 }

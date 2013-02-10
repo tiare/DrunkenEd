@@ -40,12 +40,21 @@ public class FakedTracking extends AbstractTracking{
 			bending += (float)Math.PI /72.0f;
 		}
 		
-		TrackingListener listener = programController.getCurrentState();
-		if(listener!=null) {
-			//listener.onDrink();
-			listener.onBend(bending);
+		if(programController.getCurrentState()!=null) {
+			programController.getCurrentState().onBend(bending);
 		}
 		
+	}
+	
+	public void keyDown(int key) {
+		super.keyDown(key);
+		TrackingListener listener = programController.getCurrentState();
+		if(listener==null)
+			return;
+		if(key=='d')
+			listener.onDrink();
+		if(key==Keys.UP)
+			listener.onJump(3f);
 	}
 
 	@Override
@@ -55,13 +64,11 @@ public class FakedTracking extends AbstractTracking{
 	
 	@Override
 	public java.nio.ByteBuffer getColorImageByteBuffer() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Point3D[] getSkeletonPoints() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	

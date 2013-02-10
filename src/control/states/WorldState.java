@@ -41,6 +41,12 @@ public abstract class WorldState extends ProgramState {
 	}
 	
 	@Override
+	public void onJump(float velocity) {
+		if(player!=null)
+			player.jump(velocity);
+	}
+	
+	@Override
 	public int getType() {
 		return -1; // MENU = 0, GAME = 1, GAMEOVER = 2
 	}

@@ -586,15 +586,6 @@ public class MainMenuState extends WorldState {
 	}
 
 	@Override
-	public void keyDown(int key) {
-		// Select drink - enter level
-		if (key == Keys.UP) {
-			// Enter level
-			onDrink();
-		}
-	}
-
-	@Override
 	public void onDrink() {
 		// Drink - enter level
 		if (activeLevel != NONE && !startLevel) {
