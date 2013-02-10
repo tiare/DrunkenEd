@@ -44,7 +44,7 @@ import control.ProgramController;
  
 
 public class UserTrackerMod {
-	private static final float DRINKINGTIME = 0.4f;
+	private static final float DRINKINGTIME = 0.35f;
 	private TreeSet<Integer> regusers=new TreeSet<Integer>();
 	class NewUserObserver implements IObserver<UserEventArgs>
 	{

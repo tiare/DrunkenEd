@@ -8,7 +8,7 @@ import graphics.translator.GraphicsTranslator;
 public class HorizontalRow {
 
 	private HorizontalDrawablePool pool;
-	private float drawingWidth = 3.0f;
+	private float drawingWidth = 4.0f;
 	private float spacerWidthMin = 0.4f;
 	private float spacerWidthRange = 0.4f;
 	private LinkedList<HorizontalDrawableInterface> row;
