@@ -1,20 +1,19 @@
 package control.states;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import figure.DrunkenSkeleton;
 import figure.Player;
+import control.Debug;
+import control.GameSettings;
+import control.ProgramController;
 import graphics.FloatColor;
 import graphics.StandardTextures;
-import graphics.events.Keys;
 import graphics.skeletons.elements.Bone;
 import graphics.skeletons.elements.Joint;
 import graphics.translator.Texture;
 import graphics.translator.TextureSettings;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import control.Debug;
-import control.ProgramController;
 
 public class MainMenuState extends WorldState {
 
@@ -113,19 +112,19 @@ public class MainMenuState extends WorldState {
 		scoresHard = highscores.highscoresHard;
 		
 		if (Debug.SETFAKESCORES) {
-			highscores.addHighscore(programController.gameSettings.GAME_EASY, 299, null);
-			highscores.addHighscore(programController.gameSettings.GAME_EASY, 210, null);
-			highscores.addHighscore(programController.gameSettings.GAME_EASY, 8, null);
+			highscores.addHighscore(GameSettings.GAME_EASY, 299, null);
+			highscores.addHighscore(GameSettings.GAME_EASY, 210, null);
+			highscores.addHighscore(GameSettings.GAME_EASY, 8, null);
 			
 
-			highscores.addHighscore(programController.gameSettings.GAME_MEDIUM, 210, null);
-			highscores.addHighscore(programController.gameSettings.GAME_MEDIUM, 73, null);
-			highscores.addHighscore(programController.gameSettings.GAME_EASY, 19, null);
+			highscores.addHighscore(GameSettings.GAME_MEDIUM, 210, null);
+			highscores.addHighscore(GameSettings.GAME_MEDIUM, 73, null);
+			highscores.addHighscore(GameSettings.GAME_EASY, 19, null);
 			
 
-			highscores.addHighscore(programController.gameSettings.GAME_HARD, 1337, null);
-			highscores.addHighscore(programController.gameSettings.GAME_HARD, 42, null);
-			highscores.addHighscore(programController.gameSettings.GAME_HARD, 12, null);
+			highscores.addHighscore(GameSettings.GAME_HARD, 1337, null);
+			highscores.addHighscore(GameSettings.GAME_HARD, 42, null);
+			highscores.addHighscore(GameSettings.GAME_HARD, 12, null);
 		}
 
 		traveledDistances = new LinkedList<Float>();
