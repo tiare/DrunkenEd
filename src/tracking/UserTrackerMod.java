@@ -2,6 +2,7 @@ package tracking;
 
 //import java.nio.ShortBuffer;
 
+import java.nio.ShortBuffer;
 import java.util.HashMap;
 import java.util.TreeSet;
 
@@ -46,6 +47,7 @@ import control.ProgramController;
 public class UserTrackerMod {
 	private static final float DRINKINGTIME = 0.35f;
 	private TreeSet<Integer> regusers=new TreeSet<Integer>();
+	
 	class NewUserObserver implements IObserver<UserEventArgs>
 	{
 		@Override
@@ -82,7 +84,7 @@ public class UserTrackerMod {
 			if (activeUser==args.getId()) {
 				activeUser=-1;
 				programController.tracking.trackedUser=false;
-				p("RESTART TRIGGERED");
+				p("RESTART TRIGGERED - in lostuserobserver");
 				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
 				TrackingListener listener = programController.getCurrentState();
@@ -196,10 +198,14 @@ public class UserTrackerMod {
 	private boolean drinkAlreadyCalled=false;
 	public float headangle=0;
 	private float deltatime=0;
+	private boolean activeUserHasPixels=false;
+	private boolean isJumping=false;
+	private float oldz1,oldz2=0;
 	public SkeletonJoint[] body= {SkeletonJoint.HEAD,SkeletonJoint.LEFT_SHOULDER,SkeletonJoint.LEFT_ELBOW,SkeletonJoint.LEFT_HAND,
 			SkeletonJoint.RIGHT_SHOULDER,SkeletonJoint.RIGHT_ELBOW,SkeletonJoint.RIGHT_HAND,SkeletonJoint.NECK,SkeletonJoint.TORSO,
 			SkeletonJoint.LEFT_HIP,SkeletonJoint.LEFT_KNEE,SkeletonJoint.LEFT_FOOT,SkeletonJoint.RIGHT_HIP,SkeletonJoint.RIGHT_KNEE,SkeletonJoint.RIGHT_FOOT};
 	public Point3D[] skeletonpoints=new Point3D[body.length];
+	private float jumpingspeed;
 	//SceneMetaData sceneMD = new SceneMetaData();
 	
 	public UserTrackerMod(ProgramController programController){
@@ -248,20 +254,37 @@ public class UserTrackerMod {
 		try {
 			//p(1);
 			users = userGen.getUsers();
+			boolean breaker=false;
 			if (0<users.length && activeUser==-1){// p(2);
 				for (int i=0;i<users.length;i++){ //p(3);
 					//p(skeletonCap.isSkeletonTracking(users[i])+"||"+userGen.getUserPixels(users[i]).getDataSize());
 					if (skeletonCap.isSkeletonTracking(users[i])){
 					//	p("endlich drin");
-						
-						activeUser=users[i];
-						programController.tracking.trackedUser=true;
-						//activeUser=i;
-						p("TrackedUser=true");
-					//	p(	userGen.getUserPixels(activeUser, sceneMD);
-						p("activeuser:: "+activeUser );
-						break;
+						SceneMetaData sceneMD = userGen.getUserPixels(users[i]);
+			            ShortBuffer scene = sceneMD.getData().createShortBuffer();
+			            scene=sceneMD.getData().createShortBuffer();
+			            scene.rewind();
+			            for (int z =0;z<scene.capacity();z++){
+			            	if (scene.get()==users[i]){
+			            		activeUserHasPixels=true;
+			            		breaker=true;
+			            		break;
+			            	}
+			            		
+			            }
+						if (activeUserHasPixels){
+							activeUser=users[i];
+							programController.tracking.trackedUser=true;
+							p("TrackedUser=true");
+							p("activeuser:: "+activeUser );
+						} else {
+							
 						}
+						activeUserHasPixels=false;
+						if (breaker)break;
+						}
+					
+					
 					}
 				}
 		} catch (StatusException e) {
@@ -306,6 +329,34 @@ public class UserTrackerMod {
 			//setActiveUser();
 			//if (activeuser!=0 )
             //p(!skeletonCap.isSkeletonTracking(activeUser));
+            
+            
+            
+            //check if activeuser is in fov
+            if (activeUser!=-1){
+            	SceneMetaData sceneMD = userGen.getUserPixels(activeUser);
+            	ShortBuffer scene = sceneMD.getData().createShortBuffer();
+            	scene=sceneMD.getData().createShortBuffer();
+            	scene.rewind();
+            	for (int i =0;i<scene.capacity();i++){
+            		if (scene.get()==activeUser){
+            			activeUserHasPixels=true;
+            			break;
+            		}	
+            	}
+            	if (!activeUserHasPixels) {
+//            		TrackingListener listener = programController.getCurrentState();
+//            		if(listener!=null) {
+//            			listener.userLost();
+//            		}
+            		activeUser=-1;
+            		programController.tracking.trackedUser=false;
+				
+            	}
+            	activeUserHasPixels=false;        
+            }
+            
+            
             if (activeUser!=-1 && skeletonCap.isSkeletonTracking(activeUser)){ 
             	checkTriggers();
             	nottrackedsince=0;
@@ -317,7 +368,7 @@ public class UserTrackerMod {
             //p(nottrackedsince);
             if (nottrackedsince>1) {
 				activeUser=-1;
-				p("RESTART TRIGGERED");
+				p("RESTART TRIGGERED - user not tracked over 1 sec");
 				programController.tracking.trackedUser=false;
 				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
@@ -387,7 +438,16 @@ public class UserTrackerMod {
 				skeletonpoints[i]=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(activeUser, body[i]).getPosition());
 			}
 			
-			
+			float z1=skeletonpoints[9].getY()*skeletonpoints[9].getZ()/2250;
+			float z2=skeletonpoints[12].getY()*skeletonpoints[12].getZ()/2250;
+			if (z1-oldz1<-3 && z2-oldz2<-3 && z1-oldz1>-8 && z2-oldz2>-8){
+				p("JUMP detected");
+				isJumping =true;
+				jumpingspeed=Math.abs(z1-oldz1+z2-oldz2)/2;
+			}
+			oldz1=z1;
+			oldz2=z2;
+			p(oldz1+"::"+z1+"||"+oldz2+"::"+z2);
 			calculateBendingAngle();
 			//calculateShoulderAngle();
 			calculateArmsAngle();
@@ -403,6 +463,9 @@ public class UserTrackerMod {
 				listener.onDrink();
 				drinkAlreadyCalled=true;
 				
+				} else if (isJumping){
+					listener.onJump(jumpingspeed);
+					isJumping=false;
 				}
 			listener.onBend(bendingangle);
 		}
