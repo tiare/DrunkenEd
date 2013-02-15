@@ -1,7 +1,5 @@
 package system;
 
-import javax.swing.ImageIcon;
-
 import pc.fileio.IOCommon;
 import pc.gles.GLESFrame;
 import control.Config;
@@ -21,7 +19,7 @@ public class DrunkenMain {
 		if(Debug.FULLSCREEN)
 			frame.initFullScreen(true);
 		else
-			frame.init(Debug.RESOLUTION_X,Debug.RESOLUTION_Y);
+			frame.init(Debug.RESOLUTION_X,Debug.RESOLUTION_Y,true,!Debug.NO_FRAME_DECORATOR);
 		
 		ProgramController mainControl = new ProgramController();
 

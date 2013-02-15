@@ -14,4 +14,5 @@ public class Debug {
 	public static boolean GAME_STATE_SYSO = false;
 	public static boolean DRAW_SKELETON = false;
 	public static boolean SETFAKESCORES = false;
+	public static boolean NO_FRAME_DECORATOR = false;
 }
