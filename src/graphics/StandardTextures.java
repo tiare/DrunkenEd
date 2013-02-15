@@ -14,6 +14,7 @@ import graphics.translator.TextureWrap;
 public class StandardTextures {
 
 	
+	public static Texture BRICKS;
 	//public static Texture CUBE;
 	public static Texture CIRCLE;
 	public static Texture PERLIN;
@@ -66,6 +67,7 @@ public class StandardTextures {
 		//CUBE = gfxLoader.getImage("cube");
 		CIRCLE = gfxLoader.getImage("circle",defSettings);
 		PERLIN = gfxLoader.getImage("perlin1",TextureFilter.LINEAR_MIP_LINEAR);
+		BRICKS = gfxLoader.getImage("bricks",defSettings);
 		
 		ARROW = gfxLoader.getImage("arrow",defSettings);
 		PHOTO_FRAME = gfxLoader.getImage("photoFrame",defSettings);

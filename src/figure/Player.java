@@ -25,9 +25,10 @@ public class Player implements SkeletonCarrier {
 	public DefaultAnimationPlayer animationPlayer;
 	
 	//Properties
-	private float mGravity = -9f;
+	private float gravity = -9f;
 	public boolean inGame;
 	private boolean armAnglesByTracking;
+	public boolean jumpEnabled = true;
 	
 	//State
 	public float posX,posY;
@@ -190,7 +191,7 @@ public class Player implements SkeletonCarrier {
 					posY = skeleton.mLowerLimit;
 					velY = 0;
 				}else{
-					velY += mGravity*deltaTime;
+					velY += gravity*deltaTime;
 				}
 				
 				if(inAir()) {
@@ -384,8 +385,10 @@ public class Player implements SkeletonCarrier {
 	}
 
 	public void jump(float velocity) {
-		if(posY<=skeleton.mLowerLimit+0.001f) {
-			velY = velocity;
+		if(jumpEnabled && Debug.JUMP_ENABLED) {
+			if(posY<=skeleton.mLowerLimit+0.001f) {
+				velY = velocity;
+			}
 		}
 	}
 

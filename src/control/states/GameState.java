@@ -1,6 +1,7 @@
 package control.states;
 
 import figure.DrunkenSkeleton;
+import model.Obstacle;
 import control.Debug;
 import control.GameSettings;
 import control.ProgramState;
@@ -32,6 +33,7 @@ public class GameState extends LevelState {
 
 	public GameState() {
 		super();
+		useObstacles = Debug.USE_OBSTACLES;
 	}
 
 	@Override
@@ -64,6 +66,11 @@ public class GameState extends LevelState {
 	public void onBend(float bending) {
 		player.steeredBending = bending;
 	}
+	
+	protected void setGameOver() {
+		player.fallDown();
+		gameOverTime = programController.getProgramTime();
+	}
 
 	@Override
 	public void onStep(float deltaTime) {
@@ -71,6 +78,7 @@ public class GameState extends LevelState {
 		// worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
 		synchronized (camera) {
 
+			float camShiftX = useObstacles?0.1f:0;
 			if (gameOverOverlay) {
 				brightness += (0.4f - brightness) * 0.05f;
 				camera.mAdaption = 0.06f;
@@ -170,8 +178,7 @@ public class GameState extends LevelState {
 							// Maximum speed
 							if (Math.abs(speed) > gameSettings.maxSpeed) {
 								if (maxSpeedTime > 0.55f) {
-									player.fallDown();
-									gameOverTime = programController.getProgramTime();
+									setGameOver();
 								} else
 									maxSpeedTime += deltaTime;
 
@@ -206,26 +213,39 @@ public class GameState extends LevelState {
 								worldZoom += ((float) Math.sin(stateTimer * gameSettings.zoomFrequencyFactor) / 200.0) * gameSettings.zoomIntensityFactor;
 							}
 
-							float bending = Math.abs(player.drunkenBending + player.steeredBending);
-							// Overbend
-							if (bending > fallingAngle) {
-								player.fallDown();
-								gameOverTime = programController.getProgramTime();
-							} else {
-
-								// Swinging
-								if (swingingArms) {
-									if (bending < Math.PI / 2 * gameSettings.swingingArmsBendFactor) {
-										swingingArms = false;
-										player.setSwingingArms(false);
-									}
-								} else {
-									if (bending > Math.PI / 2 * gameSettings.swingingArmsBendFactor) {
-										swingingArms = true;
-										player.setSwingingArms(true);
+							//Obstacles
+							if(useObstacles) {
+								if(player.posY<=0.1f) {
+									for(Obstacle obstacle:obstacles) {
+										if(player.posX>=obstacle.getLeft() && player.posX<=obstacle.getRight()){
+											setGameOver();
+											break;
+										}
 									}
 								}
 							}
+							
+							if(!player.fellDown) {
+								float bending = Math.abs(player.drunkenBending + player.steeredBending);
+								// Overbend
+								if (bending > fallingAngle) {
+									setGameOver();
+								} else {
+									// Swinging
+									if (swingingArms) {
+										if (bending < Math.PI / 2 * gameSettings.swingingArmsBendFactor) {
+											swingingArms = false;
+											player.setSwingingArms(false);
+										}
+									} else {
+										if (bending > Math.PI / 2 * gameSettings.swingingArmsBendFactor) {
+											swingingArms = true;
+											player.setSwingingArms(true);
+										}
+									}
+								}
+							}
+
 						}
 					}
 				} else {
@@ -239,7 +259,7 @@ public class GameState extends LevelState {
 				}
 				DrunkenSkeleton skeleton = (DrunkenSkeleton) player.getSkeleton();
 				if (!fixedCameraMode)
-					camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY + player.posY + 0.2f, worldZoom, player.drunkenBending);
+					camera.set(skeleton.mHipJoint.mPosX + player.posX + camShiftX, skeleton.mHipJoint.mPosY + player.posY + 0.2f, worldZoom, player.drunkenBending);
 				else if (player.getWorldX() > camera.getX() + 8) {
 					fixedCameraMode = false;
 				}
@@ -309,6 +329,7 @@ public class GameState extends LevelState {
 			graphics2D.switchGameCoordinates(true);
 		}
 
+		super.drawObstacles();
 	}
 
 	@Override

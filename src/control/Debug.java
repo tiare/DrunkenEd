@@ -15,4 +15,6 @@ public class Debug {
 	public static boolean DRAW_SKELETON = false;
 	public static boolean SETFAKESCORES = false;
 	public static boolean NO_FRAME_DECORATOR = false;
+	public static boolean USE_OBSTACLES = true;
+	public static boolean JUMP_ENABLED = true;
 }

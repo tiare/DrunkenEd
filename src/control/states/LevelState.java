@@ -2,6 +2,8 @@ package control.states;
 
 import java.text.DecimalFormat;
 
+import model.Obstacle;
+
 import graphics.StandardTextures;
 import graphics.background.HorizontalDrawablePool;
 import graphics.background.HorizontalRow;
@@ -9,10 +11,13 @@ import graphics.background.TexturedObject;
 
 public class LevelState extends WorldState {
 
+	private final static int OBSTACLE_COUNT = 128;
 	protected float worldZoom;
 	protected HorizontalRow houseRow;
 	protected HorizontalRow streetRow;
 	protected HorizontalRow streetItemRow;
+	protected Obstacle[] obstacles;
+	protected boolean useObstacles = true;
 	
 	protected TexturedObject moes;
 
@@ -32,6 +37,15 @@ public class LevelState extends WorldState {
 		// configure random houses
 		HorizontalDrawablePool pool = new HorizontalDrawablePool();
 
+		if(useObstacles) {
+			obstacles = new Obstacle[OBSTACLE_COUNT];
+			float x = 4;
+			for(int i=0;i<OBSTACLE_COUNT;i++) {
+				x += (float)Math.random() * 10 + 10;
+				obstacles[i] = new Obstacle(x);
+			}
+		}
+		
 		TexturedObject to;
 		pool.add(new TexturedObject(StandardTextures.HOUSE1));
 		to = new TexturedObject(StandardTextures.HOUSE1);
@@ -131,6 +145,20 @@ public class LevelState extends WorldState {
 		
 		// draw trees lanterns and banks
 		streetItemRow.draw(graphics, graphics2D, camera.getX(), worldZoom);
+	}
+	
+	protected void drawObstacles() {
+		if(useObstacles) {
+			graphics.bindTexture(StandardTextures.BRICKS);
+			graphics2D.setWhite();
+			graphics2D.setDefaultProgram();
+			for(Obstacle obstacle:obstacles) {
+				if(obstacle.posX > camera.getX()+graphics.mRatioX*camera.getZoom()*1.5f)
+					break;
+				if(obstacle.posX > camera.getX()-graphics.mRatioX*camera.getZoom()*1.5f)
+					graphics2D.drawRectCentered(obstacle.posX, 0, obstacle.height);
+			}
+		}
 	}
 
 }
