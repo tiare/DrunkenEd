@@ -78,6 +78,10 @@ public class GameState extends LevelState {
 		// worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
 		synchronized (camera) {
 
+			if(useObstacles)
+				worldZoom = 2.5f;
+			else
+				worldZoom = 2;
 			float camShiftX = useObstacles?0.1f:0;
 			if (gameOverOverlay) {
 				brightness += (0.4f - brightness) * 0.05f;
@@ -129,6 +133,7 @@ public class GameState extends LevelState {
 
 						// player.drunkenBending -= player.getSpeed()*0.005f;
 
+						float airFactor = player.inAir()?0.1f:1;
 						// add bending caused by drunkenness
 						if (gameSettings.useGravity) {
 
@@ -140,7 +145,7 @@ public class GameState extends LevelState {
 								uBend = limit;
 							if (uBend < -limit)
 								uBend = -limit;
-							player.bendingSpeed = (float) (uBend * gameSettings.gravityFactor + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor;
+							player.bendingSpeed = (float) (uBend * gameSettings.gravityFactor + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor * airFactor;
 
 							player.drunkenBending += player.bendingSpeed;
 						}
@@ -156,14 +161,13 @@ public class GameState extends LevelState {
 						if (!player.inAir() && Math.abs(bendingSum) > 0.05f) {
 							int sign = bendingSum < 0 ? -1 : 1;
 							if (bendingSum * player.getSpeed() > 0) {
-								// noFlail =
-								// Math.abs(player.getSpeed())*0.08f>Math.abs(bendingSum);
-								// noFlail = Math.abs(player.getSpeed())>0.02f
-								// && Math.abs(bendingSum)<0.4f;
-								noFlail = false;
-								if (!noFlail)
-									acceleration = (float) Math.pow(Math.min(0.7 * Math.PI / 2, sign * bendingSum), 0.5f) * sign * 0.3f;
-
+								if(Math.abs(player.getSpeed())*0.08f<Math.abs(bendingSum)) {
+									// noFlail = Math.abs(player.getSpeed())>0.02f
+									// && Math.abs(bendingSum)<0.4f;
+									noFlail = false;
+									if (!noFlail)
+										acceleration = (float) Math.pow(Math.min(0.7 * Math.PI / 2, sign * bendingSum), 0.5f) * sign * 0.3f;
+								}
 							} else
 								acceleration = bendingSum * 2;
 							acceleration *= 2 / fallingAngle * gameSettings.speedFactor;

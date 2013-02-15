@@ -2,14 +2,20 @@ package model;
 
 public class Obstacle {
 
+	public static float collFactor = 0.3f;
+	public static float collShift = 0.1f;
 	public float posX;
 	public float width;
 	public float height;
+	public float collLeft;
+	public float collRight;
 	
 	public Obstacle(float x,float width,float height) {
 		this.posX = x;
 		this.width = width;
 		this.height = height;
+		collLeft = x-width*collFactor+collShift;
+		collRight = x+width*collFactor+collShift;
 	}
 	
 	public Obstacle(float x) {
@@ -17,11 +23,11 @@ public class Obstacle {
 	}
 
 	public float getLeft() {
-		return posX-width/2;
+		return collLeft;
 	}
 	
 	public float getRight() {
-		return posX+width/2;
+		return collRight;
 	}
 	
 }
