@@ -200,7 +200,8 @@ public class UserTrackerMod {
 	private float deltatime=0;
 	private boolean activeUserHasPixels=false;
 	private boolean isJumping=false;
-	private float oldz1,oldz2=0;
+	private float oldz1=0;
+	private float oldz2=0;
 	public SkeletonJoint[] body= {SkeletonJoint.HEAD,SkeletonJoint.LEFT_SHOULDER,SkeletonJoint.LEFT_ELBOW,SkeletonJoint.LEFT_HAND,
 			SkeletonJoint.RIGHT_SHOULDER,SkeletonJoint.RIGHT_ELBOW,SkeletonJoint.RIGHT_HAND,SkeletonJoint.NECK,SkeletonJoint.TORSO,
 			SkeletonJoint.LEFT_HIP,SkeletonJoint.LEFT_KNEE,SkeletonJoint.LEFT_FOOT,SkeletonJoint.RIGHT_HIP,SkeletonJoint.RIGHT_KNEE,SkeletonJoint.RIGHT_FOOT};
@@ -321,6 +322,7 @@ public class UserTrackerMod {
             
             
             if (activeUser==-1) {
+            	oldz1=oldz2=0;
             	programController.tracking.trackArms=false;
             	setNextUser();
             	programController.tracking.trackedUser=false;
@@ -437,17 +439,17 @@ public class UserTrackerMod {
 			for (int i =0;i<body.length;i++){
 				skeletonpoints[i]=depthGen.convertRealWorldToProjective(skeletonCap.getSkeletonJointPosition(activeUser, body[i]).getPosition());
 			}
-			
+			// Jump Detection
 			float z1=skeletonpoints[9].getY()*skeletonpoints[9].getZ()/2250;
 			float z2=skeletonpoints[12].getY()*skeletonpoints[12].getZ()/2250;
-			if (z1-oldz1<-3 && z2-oldz2<-3 && z1-oldz1>-8 && z2-oldz2>-8){
+			if (z1-oldz1<-3 && z2-oldz2<-3 && z1-oldz1>-8 && z2-oldz2>-8 && oldz1!=0 && oldz2!=0){
 				p("JUMP detected");
 				isJumping =true;
 				jumpingspeed=Math.abs(z1-oldz1+z2-oldz2)/2;
 			}
 			oldz1=z1;
 			oldz2=z2;
-			p(oldz1+"::"+z1+"||"+oldz2+"::"+z2);
+			//p(oldz1+"::"+z1+"||"+oldz2+"::"+z2);
 			calculateBendingAngle();
 			//calculateShoulderAngle();
 			calculateArmsAngle();
