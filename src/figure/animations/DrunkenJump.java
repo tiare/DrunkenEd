@@ -5,16 +5,14 @@ import graphics.skeletons.pose.AnglePose;
 
 public class DrunkenJump extends DrunkenAnimation{
 
-	public static KeyFrame frame0 = new KeyFrame(new AnglePose(new float[]{0.07f,1.284f,-0.419f,2.928f,-0.081f,0.894f,-0.968f,-0.651f,-1.215f,0.353f,-0.383f,1.544f,0.269f,1.35f,-0.236f}),1);
-	public static KeyFrame frame1 = new KeyFrame(new AnglePose(new float[]{0.052f,1.292f,-0.398f,2.943f,0.765f,0.169f,-1.2f,-1.619f,-1.282f,0.574f,-0.526f,1.858f,0.885f,0.559f,-0.231f}),1);
-	public static KeyFrame frame2 = new KeyFrame(new AnglePose(new float[]{0.098f,1.309f,-0.488f,2.941f,1.149f,-0.063f,-0.46f,-1.77f,-1.338f,0.527f,-0.742f,1.819f,0.494f,-0.305f,-0.226f}),1);
-	public static KeyFrame frame3 = new KeyFrame(new AnglePose(new float[]{0.043f,1.296f,-0.456f,2.934f,0.934f,1.116f,-0.499f,-0.909f,-1.068f,0.484f,-0.494f,1.473f,0.688f,0.484f,-0.209f}),1);
-
+	public static KeyFrame frame0 = new KeyFrame(new AnglePose(new float[]{-0.19f,1.724f,-0.102f,3.054f,-0.122f,0.203f,-0.387f,-0.082f,2.317f,2.008f,-3.018f,2.748f,0.364f,0.867f,-0.218f}),1);
+	public static KeyFrame frame1 = new KeyFrame(new AnglePose(new float[]{-0.19f,1.359f,-0.104f,2.86f,0.544f,0.877f,-1.315f,-0.293f,-1.549f,0.518f,-0.354f,1.627f,0.304f,1.078f,-2.947f}),1);
 	
 	public DrunkenJump() {
-		setFrames(new KeyFrame[]{frame0,frame1,frame2,frame3});
-		mFramesPerSecond = 2.5f;
+		mFramesPerSecond = 0.8f;
 		mInterpolate = true;
+		this.mLoop = false;
+		setFrames(new KeyFrame[]{frame0,frame1});
 	}
 
 	

@@ -39,6 +39,9 @@ public class GameState extends LevelState {
 	@Override
 	public void onStart() {
 		super.onStart();
+		
+		placeObstacles((gameSettings.difficulty)*11+8,(gameSettings.difficulty+1)*7);
+		
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
 		fallingAngle = (float) Math.toRadians(105);
 		player.bendingSpeed = 0;
@@ -79,10 +82,10 @@ public class GameState extends LevelState {
 		synchronized (camera) {
 
 			if(useObstacles)
-				worldZoom = 2.5f;
+				worldZoom = 2.3f;
 			else
 				worldZoom = 2;
-			float camShiftX = useObstacles?0.1f:0;
+			float camShiftX = useObstacles?0.2f:0;
 			if (gameOverOverlay) {
 				brightness += (0.4f - brightness) * 0.05f;
 				camera.mAdaption = 0.06f;
@@ -133,7 +136,7 @@ public class GameState extends LevelState {
 
 						// player.drunkenBending -= player.getSpeed()*0.005f;
 
-						float airFactor = player.inAir()?0.1f:1;
+						float airFactor = player.inAir()?0.5f:1;
 						// add bending caused by drunkenness
 						if (gameSettings.useGravity) {
 
@@ -161,7 +164,7 @@ public class GameState extends LevelState {
 						if (!player.inAir() && Math.abs(bendingSum) > 0.05f) {
 							int sign = bendingSum < 0 ? -1 : 1;
 							if (bendingSum * player.getSpeed() > 0) {
-								if(Math.abs(player.getSpeed())*0.08f<Math.abs(bendingSum)) {
+								if(Math.abs(player.getSpeed())*0.15f<Math.abs(bendingSum)) {
 									// noFlail = Math.abs(player.getSpeed())>0.02f
 									// && Math.abs(bendingSum)<0.4f;
 									noFlail = false;
@@ -333,7 +336,7 @@ public class GameState extends LevelState {
 			graphics2D.switchGameCoordinates(true);
 		}
 
-		super.drawObstacles();
+		super.drawObstacles(!gameOverOverlay);
 	}
 
 	@Override

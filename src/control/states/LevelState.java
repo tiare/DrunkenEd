@@ -36,15 +36,6 @@ public class LevelState extends WorldState {
 	public void derivedInit() {
 		// configure random houses
 		HorizontalDrawablePool pool = new HorizontalDrawablePool();
-
-		if(useObstacles) {
-			obstacles = new Obstacle[OBSTACLE_COUNT];
-			float x = 4;
-			for(int i=0;i<OBSTACLE_COUNT;i++) {
-				x += (float)Math.random() * 10 + 10;
-				obstacles[i] = new Obstacle(x);
-			}
-		}
 		
 		TexturedObject to;
 		pool.add(new TexturedObject(StandardTextures.HOUSE1));
@@ -118,6 +109,7 @@ public class LevelState extends WorldState {
 	@Override
 	protected void onDraw() {
 		float c = 0.82f*brightness*programController.getBrightness();
+		c = 0.01f;
 		graphics.clear(c, c, c);
 		
 		graphics.bindTexture(null);
@@ -147,16 +139,35 @@ public class LevelState extends WorldState {
 		streetItemRow.draw(graphics, graphics2D, camera.getX(), worldZoom);
 	}
 	
-	protected void drawObstacles() {
+	protected void placeObstacles(float offset,float factor) {
+		if(useObstacles) {
+			obstacles = new Obstacle[OBSTACLE_COUNT];
+			float x = offset/4;
+			for(int i=0;i<OBSTACLE_COUNT;i++) {
+				x += (float)Math.random() * factor + offset;
+				obstacles[i] = new Obstacle(x);
+			}
+		}
+	}
+	
+	protected void drawObstacles(boolean drawHint) {
 		if(useObstacles) {
 			graphics.bindTexture(StandardTextures.BRICKS);
 			graphics2D.setWhite();
 			graphics2D.setDefaultProgram();
+			boolean first = true;
 			for(Obstacle obstacle:obstacles) {
 				if(obstacle.posX > camera.getX()+graphics.mRatioX*camera.getZoom()*1.5f)
 					break;
-				if(obstacle.posX > camera.getX()-graphics.mRatioX*camera.getZoom()*1.5f)
+				if(obstacle.posX > camera.getX()-graphics.mRatioX*camera.getZoom()*1.5f) {
 					graphics2D.drawRectCentered(obstacle.posX, 0, obstacle.height);
+					if(first && drawHint) {
+						graphics2D.setColor(MainMenuState.HELP_COLOR2);
+						graphics2D.drawStringC(obstacle.posX, 0.9f, 0.4f+pulse(5,0.1f), "Jump!");
+						graphics.bindTexture(StandardTextures.BRICKS);
+					}
+				}
+				first = false;
 			}
 		}
 	}

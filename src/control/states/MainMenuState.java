@@ -28,12 +28,12 @@ public class MainMenuState extends WorldState {
 	private static final String DEFAULT_TEXT = "Choose your difficulty!";
 	private static final String DRINK_TEXT = "Drink to start!";
 	private static final String BEND_TEXT = "Bend to move!";
-	private static final FloatColor HELP_COLOR1 = new FloatColor(0.9f, 0.7f, 0.3f);
-	private static final FloatColor HELP_COLOR2 = new FloatColor(1.f, 1.f, 0.2f);
-	private static final FloatColor TITLE_COLOR1 = new FloatColor(0.4f, 0.7f, 0.4f);
-	private static final FloatColor TITLE_COLOR2 = new FloatColor(0.8f, 1.f, 0.6f);
-	private static final FloatColor GAME_TITLE_COLOR1 = new FloatColor(0.4f,0.4f,0.8f);
-	private static final FloatColor GAME_TITLE_COLOR2 = new FloatColor(0.6f,0.6f,0.99f);
+	public static final FloatColor HELP_COLOR1 = new FloatColor(0.9f, 0.7f, 0.3f);
+	public static final FloatColor HELP_COLOR2 = new FloatColor(1.f, 1.f, 0.2f);
+	public static final FloatColor TITLE_COLOR1 = new FloatColor(0.4f, 0.7f, 0.4f);
+	public static final FloatColor TITLE_COLOR2 = new FloatColor(0.8f, 1.f, 0.6f);
+	public static final FloatColor GAME_TITLE_COLOR1 = new FloatColor(0.4f,0.4f,0.8f);
+	public static final FloatColor GAME_TITLE_COLOR2 = new FloatColor(0.6f,0.6f,0.99f);
 
 	private boolean trackedUser = true;
 

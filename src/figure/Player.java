@@ -195,13 +195,18 @@ public class Player implements SkeletonCarrier {
 				}
 				
 				if(inAir()) {
-					if(animationPlayer.mCurrentAnimation!=DrunkenAnimationSystem.JUMP)
-						animationPlayer.crossAnimation(DrunkenAnimationSystem.JUMP);
+					if(animationPlayer.mCurrentAnimation!=DrunkenAnimationSystem.JUMP) {
+						//animationPlayer.crossAnimation(DrunkenAnimationSystem.JUMP);
+						animationPlayer.setAnimation(DrunkenAnimationSystem.JUMP);
+					}
+					//if(animationPlayer.mCurrentAnimationTime+deltaTime < DrunkenAnimationSystem.JUMP.mTotalDuration)
+						animationPlayer.proceed(deltaTime);
 				}else{
 					if(animationPlayer.mCurrentAnimation!=DrunkenAnimationSystem.WALK)
 						animationPlayer.crossAnimation(DrunkenAnimationSystem.WALK);
+					animationPlayer.proceed(velX*deltaTime);
 				}
-				animationPlayer.proceed(velX*deltaTime);
+				
 				
 				float angleOffset = 0;
 				if(!inGame && !moved) {

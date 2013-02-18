@@ -2,8 +2,8 @@ package model;
 
 public class Obstacle {
 
-	public static float collFactor = 0.3f;
-	public static float collShift = 0.1f;
+	public static float collFactor = 0.2f;
+	public static float collShift = 0.3f;
 	public float posX;
 	public float width;
 	public float height;
@@ -19,7 +19,7 @@ public class Obstacle {
 	}
 	
 	public Obstacle(float x) {
-		this(x,0.85f,0.85f);
+		this(x,0.85f,0.95f);
 	}
 
 	public float getLeft() {
