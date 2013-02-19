@@ -137,6 +137,7 @@ public class MainMenuState extends WorldState {
 		skeleton = (DrunkenSkeleton) player.getSkeleton();
 		skeleton.mBottleAutoAngle = true;
 
+		player.jumpEnabled = false;
 		return this;
 	}
 
@@ -608,6 +609,7 @@ public class MainMenuState extends WorldState {
 		easyWinners = setHighscorePictures(LEFT);
 		mediumWinners = setHighscorePictures(CENTER);
 		hardWinners = setHighscorePictures(RIGHT);
+		shadowPlayer.getSkeleton().loadTexture();
 	}
 
 	private ArrayList<Texture> setHighscorePictures(int level) {
