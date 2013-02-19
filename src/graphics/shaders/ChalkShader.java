@@ -5,7 +5,6 @@ import graphics.AbstractGFXLoader;
 import graphics.StandardTextures;
 import graphics.defaults.DefaultProgram;
 import graphics.programs.BasicProgram;
-import graphics.programs.GLProgramFactory;
 import graphics.translator.GraphicsTranslator;
 
 public class ChalkShader extends BasicProgram{
@@ -14,6 +13,7 @@ public class ChalkShader extends BasicProgram{
 
 	@Override
 	public void initHandles() {
+		super.initHandles();
 		fsNoiseTexSamplerHandle = mProgram.getUniformLocation("texSamplerNoise");
 	}
 	

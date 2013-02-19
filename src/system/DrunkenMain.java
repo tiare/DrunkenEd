@@ -16,7 +16,7 @@ public class DrunkenMain {
 		Config.preInitialize();
 		
 		GLESFrame frame = new GLESFrame("Drunken Ed");
-		if(Debug.FULLSCREEN || true)
+		if(Debug.FULLSCREEN)
 			frame.initFullScreen(true);
 		else
 			frame.init(Debug.RESOLUTION_X,Debug.RESOLUTION_Y,true,!Debug.NO_FRAME_DECORATOR);

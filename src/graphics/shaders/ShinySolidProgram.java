@@ -11,6 +11,7 @@ public class ShinySolidProgram extends BasicProgram{
 
 	@Override
 	public void initHandles() {
+		super.initHandles();
 		fsNoiseTexSamplerHandle = mProgram.getUniformLocation("texSamplerNoise");
 	}
 	
