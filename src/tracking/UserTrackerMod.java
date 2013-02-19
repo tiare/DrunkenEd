@@ -207,6 +207,12 @@ public class UserTrackerMod {
 			SkeletonJoint.LEFT_HIP,SkeletonJoint.LEFT_KNEE,SkeletonJoint.LEFT_FOOT,SkeletonJoint.RIGHT_HIP,SkeletonJoint.RIGHT_KNEE,SkeletonJoint.RIGHT_FOOT};
 	public Point3D[] skeletonpoints=new Point3D[body.length];
 	private float jumpingspeed;
+	
+	
+	
+	
+	
+	
 	//SceneMetaData sceneMD = new SceneMetaData();
 	
 	public UserTrackerMod(ProgramController programController){
@@ -301,25 +307,6 @@ public class UserTrackerMod {
         	this.deltatime=deltatime;
             //context.waitAnyUpdateAll();
             context.waitNoneUpdateAll();
-           // DepthMetaData depthMD = depthGen.getMetaData();
-           // SceneMetaData sceneMD = userGen.getUserPixels(0);
-            
-           // ShortBuffer scene = sceneMD.getData().createShortBuffer();
-           //ShortBuffer depth = depthMD.getData().createShortBuffer();
-           // calcHist(depth);
-           // depth.rewind();
-           // users = userGen.getUsers();
-           //float nearestx=1000;
-//			for (int i = 0; i < users.length; ++i)
-//			{
-//				if (skeletonCap.isSkeletonTracking(users[i])){				
-//					//getJoints(users[i]);
-//					
-//					
-//					}
-//			}
-            
-            
             
             if (activeUser==-1) {
             	oldz1=oldz2=0;
@@ -327,12 +314,6 @@ public class UserTrackerMod {
             	setNextUser();
             	programController.tracking.trackedUser=false;
             	}
-            //p("users checked for skeleton tracking, if 1 then checkingtriggers");
-			//setActiveUser();
-			//if (activeuser!=0 )
-            //p(!skeletonCap.isSkeletonTracking(activeUser));
-            
-            
             
             //check if activeuser is in fov
             if (activeUser!=-1){
@@ -372,7 +353,6 @@ public class UserTrackerMod {
 				activeUser=-1;
 				p("RESTART TRIGGERED - user not tracked over 1 sec");
 				programController.tracking.trackedUser=false;
-				// RESTART???
 				//programController.switchState(new MainMenuState().init(programController));
 				TrackingListener listener = programController.getCurrentState();
 				if(listener!=null) {
@@ -392,26 +372,27 @@ public class UserTrackerMod {
 			//hasDrinkingPose=false;
 			//makesStep=false;
 			users = userGen.getUsers();
-			float drinkbuffer=Math.abs(skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()-skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.LEFT_SHOULDER).getPosition().getX());
+			float drinkbufferx=Math.abs(skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()-skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.HEAD).getPosition().getX());
+			float drinkbuffery=Math.abs(skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.HEAD).getPosition().getY()-skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.NECK).getPosition().getY());
 			if (users.length>0 && skeletonCap.isSkeletonTracking(activeUser)){
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY());
 //			System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getX()
 //					+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()
 //					+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getZ());
-			if (skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.HEAD).getPosition().getY()
+			if (skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.HEAD).getPosition().getY()+drinkbuffery*2
 					>=skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_HAND).getPosition().getY()
 				&&	skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_HAND).getPosition().getY()
 					>=skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY()
 					&& skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_HAND).getPosition().getX()
-					<= skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()+drinkbuffer
+					<= skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_SHOULDER).getPosition().getX()+drinkbufferx
 					&& skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.RIGHT_HAND).getPosition().getX()
 					>= skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.HEAD).getPosition().getX()
 					){
 				//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("TRINKbewegung erkannt");
 				hasDrinkingPose=true;
 				programController.tracking.drinking+=deltatime;
-				p(programController.tracking.drinking);
+				//p(programController.tracking.drinking);
 			}
 			
 			if (skeletonCap.getSkeletonJointPosition(activeUser, SkeletonJoint.HEAD).getPosition().getY()
