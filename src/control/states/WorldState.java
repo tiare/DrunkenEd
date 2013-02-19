@@ -24,6 +24,8 @@ public abstract class WorldState extends ProgramState {
 	
 	@Override
 	public void step(float deltaTime) {
+		if(!initialized)
+			return;
 		camera.update();
 		super.step(deltaTime);
 	}

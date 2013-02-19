@@ -23,7 +23,7 @@ public abstract class ProgramState implements TrackingListener {
 	protected GameSettings gameSettings;
 	public static final int MENU = 0, GAME = 1, GAMEOVER = 2;
 	protected Camera2D camera;
-	private boolean initialized;
+	public boolean initialized;
 	
 	protected abstract void onStep(float deltaTime);
 	protected abstract void onDraw();
