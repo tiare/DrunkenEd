@@ -3,7 +3,6 @@ package graphics.shaders;
 import graphics.AbstractGFXLoader;
 import graphics.defaults.DefaultProgram;
 import graphics.programs.BasicProgram;
-import graphics.programs.GLProgramFactory;
 import graphics.translator.GraphicsTranslator;
 
 public class ShinySolidProgram extends BasicProgram{
@@ -11,8 +10,7 @@ public class ShinySolidProgram extends BasicProgram{
 	public int fsNoiseTexSamplerHandle;
 
 	@Override
-	public void init(GLProgramFactory programFactory,AbstractGFXLoader gfxLoader) {
-		super.init(programFactory, gfxLoader);
+	public void initHandles() {
 		fsNoiseTexSamplerHandle = mProgram.getUniformLocation("texSamplerNoise");
 	}
 	

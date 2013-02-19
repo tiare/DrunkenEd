@@ -12,8 +12,7 @@ public class ShinyContourProgram extends BasicProgram{
 	public int fsNoiseTexSamplerHandle;
 
 	@Override
-	public void init(GLProgramFactory programFactory,AbstractGFXLoader gfxLoader) {
-		super.init(programFactory, gfxLoader);
+	public void initHandles() {
 		fsNoiseTexSamplerHandle = mProgram.getUniformLocation("texSamplerNoise");
 	}
 	
@@ -38,9 +37,9 @@ public class ShinyContourProgram extends BasicProgram{
 	}
 	
 	@Override
-	public void activate(GraphicsTranslator graphics) {
-		super.activate(graphics);
-		graphics.bindTexture(StandardTextures.PERLIN,1);
+	public void activate() {
+		super.activate();
+		mGraphics.bindTexture(StandardTextures.PERLIN,1);
 	}
 	
 }

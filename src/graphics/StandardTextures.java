@@ -113,9 +113,9 @@ public class StandardTextures {
 		FONT_BELLIGERENT_MADNESS_BOLD.init(graphics, 2, 6);
 
 		CHALK_SHADER = new ChalkShader();
-		CHALK_SHADER.init(graphics, gfxLoader);
+		CHALK_SHADER.init(graphics);
 		DRUNKEN_SHADER = new DrunkenShader();
-		DRUNKEN_SHADER.init(graphics, gfxLoader);
+		DRUNKEN_SHADER.init(graphics);
 		
 		Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
