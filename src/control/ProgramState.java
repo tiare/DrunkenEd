@@ -4,10 +4,10 @@ import org.OpenNI.Point3D;
 
 import tracking.TrackingListener;
 import control.states.MainMenuState;
-import graphics.Camera2D;
 import graphics.defaults.Default2DGraphics;
 import graphics.defaults.Default3DGraphics;
 import graphics.translator.GraphicsTranslator;
+import graphics.util.Camera2D;
 
 public abstract class ProgramState implements TrackingListener {
 
@@ -71,7 +71,7 @@ public abstract class ProgramState implements TrackingListener {
 	
 	public void draw() {
 		graphics.clear(0, 0, 0);
-		graphics.setShaderProgram(graphics2D.getDefaultProgram());
+		graphics2D.setShaderProgram(graphics2D.getDefaultProgram());
 		graphics2D.setWhite();
 
 		onDraw();

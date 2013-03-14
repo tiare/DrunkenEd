@@ -134,7 +134,7 @@ public class GameOverState extends ProgramState {
 		if (programController.markWarning)
 			return;
 
-		graphics.setAmbientColor(programController.getBrightness());
+		graphics2D.setAmbientColor(programController.getBrightness());
 		graphics2D.switchGameCoordinates(false);
 
 		float startAnim = 0.5f;

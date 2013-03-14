@@ -115,7 +115,7 @@ public class LevelState extends WorldState {
 		graphics.bindTexture(null);
 		graphics2D.setWhite();
 
-		graphics.setAmbientColor(programController.getBrightness()*brightness);
+		graphics2D.setAmbientColor(programController.getBrightness()*brightness);
 		
 		super.drawBackground(2,0.35f);
 		

@@ -1,9 +1,7 @@
 package graphics.shaders;
 
 import graphics.AbstractGFXLoader;
-import graphics.defaults.DefaultProgram;
 import graphics.programs.BasicProgram;
-import graphics.translator.GraphicsTranslator;
 
 public class ShinySolidProgram extends BasicProgram{
 	
@@ -17,7 +15,7 @@ public class ShinySolidProgram extends BasicProgram{
 	
 	@Override
 	protected String getVertexShader(AbstractGFXLoader gfxLoader) {
-		return DefaultProgram.VERTEX_SHADER;
+		return BasicProgram.VERTEX_SHADER;
 	}
 
 	@Override
@@ -26,12 +24,8 @@ public class ShinySolidProgram extends BasicProgram{
 	}
 	
 	@Override
-	public void bindTexture(int texId, int level) {
-		super.bindTexture(texId, level);
-	}
-	
-	public void bindBuffers(GraphicsTranslator graphics) {
-		super.bindBuffers(graphics);
+	public void activate() {
+		super.activate();
 		mProgram.setUniformInt(fsNoiseTexSamplerHandle, 1);
 	}
 	

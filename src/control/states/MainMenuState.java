@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import figure.DrunkenSkeleton;
 import figure.Player;
+import util.NonConcurrentList;
 import control.Debug;
 import control.GameSettings;
 import control.ProgramController;
@@ -199,8 +200,8 @@ public class MainMenuState extends WorldState {
 	}
 
 	private void updateShadowPosition() {
-		LinkedList<Joint> joints = skeleton.mJoints;
-		LinkedList<Joint> shadowJoints = shadowSkeleton.mJoints;
+		NonConcurrentList<Joint> joints = skeleton.mJoints;
+		NonConcurrentList<Joint> shadowJoints = shadowSkeleton.mJoints;
 		Joint currentShadowJoint;
 		Joint currentJoint;
 
@@ -212,7 +213,7 @@ public class MainMenuState extends WorldState {
 			currentShadowJoint.mPosY = currentJoint.mPosY;
 		}
 
-		LinkedList<Bone> shadowBones = shadowSkeleton.mBones;
+		NonConcurrentList<Bone> shadowBones = shadowSkeleton.mBones;
 		for (Bone bone : shadowBones) {
 			bone.mVisible = false;
 		}
