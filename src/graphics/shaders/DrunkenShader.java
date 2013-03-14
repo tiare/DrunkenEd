@@ -2,14 +2,13 @@ package graphics.shaders;
 
 
 import graphics.AbstractGFXLoader;
-import graphics.defaults.DefaultProgram;
 import graphics.programs.BasicProgram;
 
 public class DrunkenShader extends BasicProgram{
 	
 	@Override
 	protected String getVertexShader(AbstractGFXLoader gfxLoader) {
-		return DefaultProgram.VERTEX_SHADER;
+		return BasicProgram.VERTEX_SHADER;
 	}
 
 	@Override

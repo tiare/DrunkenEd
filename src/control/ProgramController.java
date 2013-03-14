@@ -151,14 +151,14 @@ public class ProgramController extends DefaultSurface {
 				mFirstDraw = false;
 			}
 			mGraphics2D.setTime((int)(programTimer*100));
-			mGraphics.setAmbientColor(getBrightness());
+			mGraphics2D.setAmbientColor(getBrightness());
 			currentState.draw();
 		}
 		
 		if(markWarning) {
 			mGraphics2D.switchGameCoordinates(false);
 			mGraphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-			mGraphics.setAmbientColor(1);
+			mGraphics2D.setAmbientColor(1);
 			mGraphics2D.setColor(1, 0.1f, 0);
 			mGraphics2D.drawStringC(0, 0.74f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
 			float yOffset = 0.1f;

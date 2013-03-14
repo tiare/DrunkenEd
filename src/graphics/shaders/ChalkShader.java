@@ -3,7 +3,6 @@ package graphics.shaders;
 
 import graphics.AbstractGFXLoader;
 import graphics.StandardTextures;
-import graphics.defaults.DefaultProgram;
 import graphics.programs.BasicProgram;
 import graphics.translator.GraphicsTranslator;
 
@@ -19,7 +18,7 @@ public class ChalkShader extends BasicProgram{
 	
 	@Override
 	protected String getVertexShader(AbstractGFXLoader gfxLoader) {
-		return DefaultProgram.VERTEX_SHADER;
+		return BasicProgram.VERTEX_SHADER;
 	}
 
 	@Override
@@ -28,18 +27,9 @@ public class ChalkShader extends BasicProgram{
 	}
 	
 	@Override
-	public void bindTexture(int texId, int level) {
-		super.bindTexture(texId, level);
-	}
-	
-	public void bindBuffers(GraphicsTranslator graphics) {
-		super.bindBuffers(graphics);
-		mProgram.setUniformInt(fsNoiseTexSamplerHandle, 1);
-	}
-	
-	@Override
 	public void activate() {
 		super.activate();
+		mProgram.setUniformInt(fsNoiseTexSamplerHandle, 1);
 		mGraphics.bindTexture(StandardTextures.PERLIN,1);
 	}
 	

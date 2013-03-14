@@ -2,10 +2,7 @@ package graphics.shaders;
 
 import ninja.game.model.StandardTextures;
 import graphics.AbstractGFXLoader;
-import graphics.defaults.DefaultProgram;
 import graphics.programs.BasicProgram;
-import graphics.programs.GLProgramFactory;
-import graphics.translator.GraphicsTranslator;
 
 public class ShinyContourProgram extends BasicProgram{
 	
@@ -19,7 +16,7 @@ public class ShinyContourProgram extends BasicProgram{
 	
 	@Override
 	protected String getVertexShader(AbstractGFXLoader gfxLoader) {
-		return DefaultProgram.VERTEX_SHADER;
+		return BasicProgram.VERTEX_SHADER;
 	}
 
 	@Override
@@ -28,18 +25,9 @@ public class ShinyContourProgram extends BasicProgram{
 	}
 	
 	@Override
-	public void bindTexture(int texId, int level) {
-		super.bindTexture(texId, level);
-	}
-	
-	public void bindBuffers(GraphicsTranslator graphics) {
-		super.bindBuffers(graphics);
-		mProgram.setUniformInt(fsNoiseTexSamplerHandle, 1);
-	}
-	
-	@Override
 	public void activate() {
 		super.activate();
+		mProgram.setUniformInt(fsNoiseTexSamplerHandle, 1);
 		mGraphics.bindTexture(StandardTextures.PERLIN,1);
 	}
 	
