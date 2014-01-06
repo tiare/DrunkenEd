@@ -223,7 +223,7 @@ public class Player implements SkeletonCarrier {
 				float bending = (drunkenBending+steeredBending);
 				float upLimit = 0.9f*PI/2;
 				if(!inGame)
-					upLimit *= 0.55f;
+					upLimit *= 0.45f;
 				float downLimit = -0.9f*upLimit;
 				if(bending>upLimit)
 					bending = upLimit;
@@ -288,6 +288,10 @@ public class Player implements SkeletonCarrier {
 					skeleton.mHeadBone.setTextureCoordinatesIndex(1);
 				}else
 					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
+			}
+
+			if(this.armAnglesByTracking) {
+				skeleton.mHeadJoint.setPosByAngle2D(PI*0.96f);
 			}
 
 			skeleton.refreshVisualData();

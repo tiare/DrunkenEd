@@ -11,52 +11,48 @@
 
 \title{Drunken Ed - A Balance Game For Public Large Screen Displays}
 
-\numberofauthors{6}
+\newcommand{\tuaddr}{
+\affaddr{Technische Universit\"at Berlin}\\
+\affaddr{Stra\ss e des 17. Juni 135}\\
+\affaddr{Berlin, 10623 Germany}\\
+}
+
+\numberofauthors{5}
 % Notice how author names are alternately typesetted to appear ordered in 2-column format;
 % i.e., the first 4 autors on the first column and the other 4 auhors on the second column.
 % Actually, it's up to you to strictly adhere to this author notation.
 \author{
-  \alignauthor{
-  	\textbf{Alexander Biskupski}\\
-  	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni 135}\\
-  	\affaddr{Berlin, 10623 Germany}\\
-  	\email{alexander.biskupski@campus.tu-berlin.de}
+	\alignauthor{
+  	\textbf{Jonas Willaredt}\\
+  	\tuaddr
+  	\email{jonas.willaredt@campus.tu-berlin.de}
   }\alignauthor{
   	\textbf{Andreas Fender}\\
-  	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni 135}\\
-  	\affaddr{Berlin, 10623 Germany}\\
+  	\tuaddr
   	\email{andreas.fender@campus.tu-berlin.de}
   }
   \vfil
   \alignauthor{
   	\textbf{Tiare Feuchtner}\\
-  	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni 135}\\
-  	\affaddr{Berlin, 10623 Germany}\\
+  	\tuaddr
   	\email{tiare.feuchtner@campus.tu-berlin.de}
   }\alignauthor{
   	\textbf{Marcel Karsten}\\
-  	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni 135}\\
-  	\affaddr{Berlin, 10623 Germany}\\
+  	\tuaddr
   	\email{marcel.karsten@campus.tu-berlin.de}
   }
   \vfil
-  \alignauthor{
-  	\textbf{Jonas Willaredt}\\
-  	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni 135}\\
-  	\affaddr{Berlin, 10623 Germany}\\
-  	\email{jonas.willaredt@campus.tu-berlin.de}
+	\alignauthor{
+  	\textbf{Alexander Biskupski}\\
+  	\tuaddr
+  	\email{alexander.biskupski@campus.tu-berlin.de}
   }
 }
 
 % Paper metadata (use plain text, for PDF inclusion and later re-using, if desired)
 \def\plaintitle{Drunken Ed - A Balance Game For Public Large Screen Displays}
 \def\plainauthor{Alexander Biskupski, Andreas Fender, Tiare Feuchtner, Marcel Karsten, Jonas Willaredt}
-\def\plainkeywords{Drunken Ed, public display, large screen display, balance game, kinect, hci, interaction, gesture control}
+\def\plainkeywords{Drunken Ed, public display, large screen display, casual game, balance game, kinect, hci, interaction, natural user interface, gesture control}
 %\def\plaingeneralterms{Documentation, Standardization}
 
 \hypersetup{
@@ -83,7 +79,7 @@
 \maketitle
 
 \begin{abstract}
-In this paper we present Drunken Ed, a balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers suitable interaction techniques for large screen displays. This single player game has a very direct control mapping, which uses the orientation of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. In addition we apply the simple gesture of raising a hand to the mouth to drink, to trigger a selection in the menu. This form of mapping has proven to be very intuitive and the game setting is widely accepted, despite its drunken protagonist.
+In this paper we present \drunkened, a balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers suitable interaction techniques for large screen displays. This single player game has a very direct control mapping, which uses the orientation of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. In addition we apply the simple gesture of raising a hand to the mouth to drink, to trigger a selection in the menu. This form of mapping has proven to be very intuitive and the game setting is widely accepted, despite its drunken protagonist.
 %Do not change the page size or page settings.
 \end{abstract}
 
@@ -103,13 +99,13 @@ for help using the ACM Classification system.
 % =============================================================================
 \section{Introduction}
 % =============================================================================
-The balance game Drunken Ed was developed with the goal of creating an application for public large screen displays, which could provide some sort of entertainment. Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, Drunken Ed can be easily installed in a public area, such as a waiting room, where it serves to entertain, relieve boredom and shorten the wait.
-The gameplay of Drunken Ed can be briefly described as a single player game, with the mission to guide Ed home safely. Ed has had a couple of drinks too many, and dangerously staggers along the sidewalk. The player must lean left and right to help Ed keep balance and avoid dangerous obstacles such as passing cars when crossing a street, as depicted in [\ref{??}].
+The balance game \drunkened\ was developed with the goal of creating an application for public large screen displays, which could provide some sort of entertainment. Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, \drunkened\ can be easily installed in a public area, such as a waiting room, where it serves to entertain, relieve boredom and shorten the wait.
+The gameplay of \drunkened\ can be briefly described as a single player game, with the mission to guide Ed home safely. Ed has had a couple of drinks too many, and dangerously staggers along the sidewalk. The player must lean left and right to help Ed keep balance and to jump over bricks as depicted in [\ref{??}].
 To ensure suitability for public context, we attempted to fulfill the criteria of acceptability, accessibility, simplicity and flexibility as proposed by \cite{kultima2009casual}. Acceptability was a strongly discussed aspect, since our protagonist Ed indulges in the pleasure of consuming alcohol, which causes him to stagger along the streets drunkenly. However we have found that this situation is widely accepted, specially among young people and not at all troubling. The questioned subjects responded that they could easily relate to this situation and described the experience of steering Ed as fun. Furthermore our game does not encourage people to drink, but points out the problematic consequences of drinking too much. Accessibilty is guaranteed by our physical setup with a large screen and visual tracking in a public space. The game can be played by anybody who approaches it, independent of sex or age. Merely the tracking capability of the Kinect sets a couple of limitations, such as inability to cope with occlusion and bad lighting situations. Simplicity is given by keeping the components of the game minimal and providing the user with a single main control mechanic - bending the upper body left and right in order to help Ed keep balance.
-The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in figure \ref{??}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time and distance traveled. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown and if the player has managed a top score, he can have his picture taken to be displayed on the list. Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores. \cite{ohara2008understanding}
+The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in figure \ref{??}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown and if the player has managed a top score, he can have his picture taken to be displayed on the list. Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores. \cite{ohara2008understanding}
 
 
-\input{introduction.tex}
+%\input{introduction.tex}
 
 % =============================================================================
 \section{Mechanics}
@@ -133,8 +129,8 @@ The starting point of the game, is the minimalistic level selection menu display
 After brainstorming we specified the project outline defining the setting of the installation, theme and main mechanics of the balance game and clarified the requirements. [picture of sketch]
 Furthermore we created a fictional persona for whom we designed the game.
 \subsection{Storyboarding and Interviews}
-In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as Drunken Ed and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
-At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring [TODO: dishwasher, ed or ...?] A total of x people participated with a majority of votes for Drunken Ed.
+In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as \drunkened\ and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
+At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring [TODO: dishwasher, ed or ...?] A total of x people participated with a majority of votes for \drunkened.
 \subsection{Paper Prototype and User Study}
 Prior to implementation we performed user studies with a detailed paper prototype. Here we researched the comprehensibility of our menu, the users readiness to learn the controls and the need for hints and explanations. At this stage we made valuable observations on which we based our design decisions (TODO: eg?)
 \subsubsection{The Drinking Gesture}
