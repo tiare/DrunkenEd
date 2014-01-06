@@ -5,6 +5,7 @@ src/control/Config.java
 score*bb
 *.csv
 *.jar
+*.tcp
 
 #LaTeX
 */doc/*.aux
