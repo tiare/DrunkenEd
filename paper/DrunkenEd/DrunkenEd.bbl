@@ -1,33 +1,35 @@
 \begin{thebibliography}{1}
 
-\bibitem{Acrobat7}
-{Adobe Acrobat Reader 7}.
-\newblock \url{http://www.adobe.com/products/acrobat/}.
+\bibitem{kultima2009casual}
+Kultima, A.
+\newblock Casual game design values.
+\newblock In {\em Proceedings of the 13th International MindTrek Conference:
+  Everyday Life in the Ubiquitous Era}, ACM MindTrek '09 (2009), 58--65.
 
-\bibitem{Anderson92}
-Anderson, R.~E.
-\newblock Social impacts of computing: Codes of professional ethics.
-\newblock {\em Social Science Computing Review 10}, 2 (1992), 453--469.
+\bibitem{malone1981motivation}
+Malone, T.~W.
+\newblock Toward a theory of intrinsically motivating instruction.
+\newblock {\em Cognitive science 5}, 4 (1981), 333--369.
 
-\bibitem{Klemmer02}
-Klemmer, R.~S., Thomsen, M., Phelps-Goodman, E., Lee, R., and Landay, J.~A.
-\newblock Where do web sites come from? capturing and interacting with design
-  history.
-\newblock In {\em Proc. CHI}, ACM Press (2002), 1--8.
+\bibitem{nielsen1995usability}
+Nielsen, J.
+\newblock 10 usability heuristics for user interface design.
+\newblock \url{http://www.nngroup.com/articles/ten-usability-heuristics/}.
 
-\bibitem{Mather00}
-Mather, B.~D.
-\newblock Making up titles for conference papers.
-\newblock In {\em Ext. Abstracts CHI}, ACM Press (2000), 1--2.
+\bibitem{ohara2008understanding}
+O'Hara, K., Glancy, M., and Robertshaw, S.
+\newblock Understanding collective play in an urban screen game.
+\newblock In {\em Proceedings of the 2008 ACM conference on Computer supported
+  cooperative work}, ACM (2008), 67--76.
 
-\bibitem{Schwartz95}
-Schwartz, M.
-\newblock {\em Guidelines for Bias-Free Writing}.
-\newblock Indiana University Press, Bloomington, IN, USA, 1995.
+\bibitem{salen2004rules}
+Salen, K., and Zimmerman, E.
+\newblock {\em Rules of play: Game design fundamentals}.
+\newblock MIT press, 2004.
 
-\bibitem{Zellweger01}
-Zellweger, P.~T., Bouvin, N.~O., Jeh{\o}j, H., and Mackinlay, J.~D.
-\newblock Fluid annotations in an open world.
-\newblock In {\em Proc. Hypertext}, ACM Press (2001), 9--18.
+\bibitem{walter2013strikeapose}
+Walter, R., Bailly, G., and Müller, J.
+\newblock Strikeapose: Revealing mid-air gestures on public displays.
+\newblock ACM CHI'13 (2013).
 
 \end{thebibliography}

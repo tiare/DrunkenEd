@@ -9,7 +9,7 @@
 % DOI string from ACM form confirmation}
 %% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
 
-\title{Drunken Ed ...}
+\title{Drunken Ed - A Balance Game For Public Large Screen Displays}
 
 \numberofauthors{6}
 % Notice how author names are alternately typesetted to appear ordered in 2-column format;
@@ -18,53 +18,53 @@
 \author{
   \alignauthor{
   	\textbf{Alexander Biskupski}\\
-  	\affaddr{AuthorCo, Inc.}\\
-  	\affaddr{123 Author Ave.}\\
-  	\affaddr{Authortown, PA 54321 USA}\\
-  	\email{author1@anotherco.com}
+  	\affaddr{Technische Universität Berlin}\\
+  	\affaddr{Straße des 17. Juni xx}\\
+  	\affaddr{Berlin, xxxxx Germany}\\
+  	\email{alexander.biskupski@campus.tu-berlin.de}
   }\alignauthor{
-  	\textbf{Marcel Karsten}\\
-  	\affaddr{AuthorCo, Inc.}\\
-  	\affaddr{123 Author Ave.}\\
-  	\affaddr{Authortown, PA 54321 USA}\\
-  	\email{author5@anotherco.com}
-  }
-  \vfil
-  \alignauthor{
   	\textbf{Andreas Fender}\\
-  	\affaddr{AuthorCo, Inc.}\\
-  	\affaddr{123 Author Ave.}\\
-  	\affaddr{Authortown, PA 54321 USA}\\
-  	\email{author2@anotherco.com}
-  }\alignauthor{
-  	\textbf{Jonas Willaredt}\\
-  	\affaddr{AuthorCo, Inc.}\\
-  	\affaddr{123 Author Ave.}\\
-  	\affaddr{Authortown, PA 54321 USA}\\
-  	\email{author6@anotherco.com}
+  	\affaddr{Technische Universität Berlin}\\
+  	\affaddr{Straße des 17. Juni xx}\\
+  	\affaddr{Berlin, xxxxx Germany}\\
+  	\email{andreas.fender@campus.tu-berlin.de}
   }
   \vfil
   \alignauthor{
   	\textbf{Tiare Feuchtner}\\
-  	\affaddr{AuthorCo, Inc.}\\
-  	\affaddr{123 Author Ave.}\\
-  	\affaddr{Authortown, PA 54321 USA}\\
-  	\email{author3@anotherco.com}
+  	\affaddr{Technische Universität Berlin}\\
+  	\affaddr{Straße des 17. Juni xx}\\
+  	\affaddr{Berlin, xxxxx Germany}\\
+  	\email{tiare.feuchtner@campus.tu-berlin.de}
+  }\alignauthor{
+  	\textbf{Marcel Karsten}\\
+  	\affaddr{Technische Universität Berlin}\\
+  	\affaddr{Straße des 17. Juni xx}\\
+  	\affaddr{Berlin, xxxxx Germany}\\
+  	\email{marcel.karsten@campus.tu-berlin.de}
+  }
+  \vfil
+  \alignauthor{
+  	\textbf{Jonas Willaredt}\\
+  	\affaddr{Technische Universität Berlin}\\
+  	\affaddr{Straße des 17. Juni xx}\\
+  	\affaddr{Berlin, xxxxx Germany}\\
+  	\email{jonas.willaredt@campus.tu-berlin.de}
   }
 }
 
 % Paper metadata (use plain text, for PDF inclusion and later re-using, if desired)
-\def\plaintitle{CHI LaTeX Extended Abstracts Template}
-\def\plainauthor{Luis A. Leiva}
-\def\plainkeywords{Guides, instructions, author's kit, conference publications}
-\def\plaingeneralterms{Documentation, Standardization}
+\def\plaintitle{Drunken Ed - A Balance Game For Public Large Screen Displays}
+\def\plainauthor{Alexander Biskupski, Andreas Fender, Tiare Feuchtner, Marcel Karsten, Jonas Willaredt}
+\def\plainkeywords{Drunken Ed, public display, large screen display, balance game, kinect, hci, interaction, gesture control}
+%\def\plaingeneralterms{Documentation, Standardization}
 
 \hypersetup{
   % Your metadata go here
   pdftitle={\plaintitle},
   pdfauthor={\plainauthor},  
   pdfkeywords={\plainkeywords},
-  pdfsubject={\plaingeneralterms},
+ % pdfsubject={\plaingeneralterms},
   % Quick access to color overriding:
   %citecolor=black,
   %linkcolor=black,
@@ -82,176 +82,207 @@
 \maketitle
 
 \begin{abstract}
-In this sample we describe the formatting requirements for various SIGCHI related submissions 
-and offer recommendations on writing for the worldwide SIGCHI readership. 
+In this paper we present Drunken Ed, a balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers suitable interaction techniques for large screen displays. This single player game has a very direct control mapping, which uses the orientation of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. In addition we apply the simple gesture of raising a hand to the mouth to drink, to trigger a selection in the menu. This form of mapping has proven to be very intuitive and the game setting is widely accepted, despite its drunken protagonist.
 %Do not change the page size or page settings.
-Please review this document even if you have submitted to SIGCHI conferences before, 
-some format details have changed relative to previous years.
 \end{abstract}
 
 \keywords{\plainkeywords}
 \textcolor{red}{Mandatory section to be included in your final version.}
 
-\category{H.5.m}{Information interfaces and presentation (e.g., HCI)}{Miscellaneous}. 
+\category{H.5.m}{TODO: Information interfaces and presentation (e.g., HCI)}{Miscellaneous}. 
 %See \cite{ACMCCS} 
 See: \url{http://www.acm.org/about/class/1998/} 
 for help using the ACM Classification system.
 \textcolor{red}{Mandatory section to be included in your final version.}
 
-\terms{\plaingeneralterms}
+%\terms{\plaingeneralterms}
 \textcolor{red}{Optional section to be included in your final version.}
 
 
 % =============================================================================
 \section{Introduction}
 % =============================================================================
-This format is to be used for submissions that are published in the conference extended abstracts.  
-We wish to give this volume a consistent, high-quality appearance. 
-We therefore ask that authors follow some simple guidelines. 
-In essence, you should format your paper exactly like this document. 
-The easiest way to do this is simply to download a template from the conference website and replace the content with your own material.
+The balance game Drunken Ed was developed with the goal of creating an application for public large screen displays, which could provide some sort of entertainment. Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, Drunken Ed can be easily installed in a public area, such as a waiting room, where it serves to entertain, relieve boredom and shorten the wait.
+The gameplay of Drunken Ed can be briefly described as a single player game, with the mission to guide Ed home safely. Ed has had a couple of drinks too many, and dangerously staggers along the sidewalk. The player must lean left and right to help Ed keep balance and avoid dangerous obstacles such as passing cars when crossing a street, as depicted in [\ref{??}].
+To ensure suitability for public context, we attempted to fulfill the criteria of acceptability, accessibility, simplicity and flexibility as proposed by \cite{kultima2009casual}. Acceptability was a strongly discussed aspect, since our protagonist Ed indulges in the pleasure of consuming alcohol, which causes him to stagger along the streets drunkenly. However we have found that this situation is widely accepted, specially among young people and not at all troubling. The questioned subjects responded that they could easily relate to this situation and described the experience of steering Ed as fun. Furthermore our game does not encourage people to drink, but points out the problematic consequences of drinking too much. Accessibilty is guaranteed by our physical setup with a large screen and visual tracking in a public space. The game can be played by anybody who approaches it, independent of sex or age. Merely the tracking capability of the Kinect sets a couple of limitations, such as inability to cope with occlusion and bad lighting situations. Simplicity is given by keeping the components of the game minimal and providing the user with a single main control mechanic - bending the upper body left and right in order to help Ed keep balance.
+The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in figure \ref{??}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time and distance traveled. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown and if the player has managed a top score, he can have his picture taken to be displayed on the list. Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores. \cite{ohara2008understanding}
 
 % =============================================================================
-\section{Copyright}
+\section{Design Process}
 % =============================================================================
-For publications in the CHI Extended Abstracts, copyright remains with the author.  
-The publication is not considered an archival publication; however, it does go into the ACM Digital Library. 
-Because you retain copyright, as the author you are free to use this material as you like, including submitting a paper based on this work to other conferences or journals.  
-Authors grant unrestricted permission for ACM to publish the accepted submission in the CHI Extended Abstracts without additional consideration or remuneration.
+\subsection{Project Outline}
+After brainstorming we specified the project outline defining the setting of the installation, theme and main mechanics of the balance game and clarified the requirements. [picture of sketch]
+Furthermore we created a fictional persona for whom we designed the game.
+\subsection{Storyboarding and Interviews}
+In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as Drunken Ed and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
+At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring [TODO: dishwasher, ed or ...?] A total of x people participated with a majority of votes for Drunken Ed.
+\subsection{Paper Prototype and User Study}
+Prior to implementation we performed user studies with a detailed paper prototype. Here we researched the comprehensibility of our menu, the users readiness to learn the controls and the need for hints and explanations. At this stage we made valuable observations on which we based our design decisions (TODO: eg?)
+\subsubsection{The Drinking Gesture}
+Expressive gesture explained by hints as proposed by Walter et al. \cite{walter2013strikeapose} TODO
 
-% =============================================================================
-\section{Text formatting}
-% =============================================================================
-Please use an 8.5-point Verdana font, or other sans serifs font as close as possible in appearance to Verdana in which these guidelines have been set. 
-Arial 9-point font is a reasonable substitute for Verdana as it has a similar x-height. 
-Please use serif or non-proportional fonts only for special purposes, such as distinguishing source code text.
-Additionally, here is an example of footnoted text.\footnote{Use footnotes sparingly, if at all.}
-As stated in the footnote, footnotes should rarely be used.
+\subsection{Heuristic Prototype Evaluation}
+After developing a first interactive prototype, we  analyzed our game regarding Nielsen’s 10 Usability Heuristics \cite{nielsen1995usability} and added two further principles, which we deemed essential for a casual game in public context. Here we wish to explain our additional principles.
 
-\subsection{Language, style, and content}
-% -----------------------------------------------------------------------------
-The written and spoken language of SIGCHI is English. 
-Spelling and punctuation may use any dialect of English (e.g., British, Canadian, US, etc.) provided this is done consistently. 
-Hyphenation is optional. 
-To ensure suitability for an international audience, please pay attention to the following:
-
-\begin{itemize}\compresslist
-\item 	
-Write in a straightforward style. 
-Use simple sentence structure. 
-Try to avoid long sentences and complex sentence structures. 
-Use semicolons carefully.
-\item 	
-Use common and basic vocabulary (e.g., use the word ``unusual" rather than the word ``arcane").
-\item 	
-Briefly define or explain all technical terms. 
-The terminology common to your practice/discipline may be different in other design practices/disciplines.
-\item 	
-Spell out all acronyms the first time they are used in your text. 
-For example, ``World Wide Web (WWW)".
-\item 	
-Explain local references (e.g., not everyone knows all city names in a particular country).
-\item 	
-Explain ``insider" comments. 
-Ensure that your whole audience understands any reference whose meaning you do not describe (e.g., do not assume that everyone has used a Macintosh or a particular application).
-\item 	
-Explain colloquial language and puns. 
-Understanding phrases like ``red herring" requires a cultural knowledge of English. 
-Humor and irony are difficult to translate.
-\item 	
-Use unambiguous forms for culturally localized concepts, such as times, dates, currencies and numbers (e.g., ``1-5-97" or ``5/1/97" may mean 5 January or 1 May, and ``seven o'clock" may mean 7:00 am or 19:00).
-\item 	
-Be careful with the use of gender-specific pronouns (he, she) and other gender-specific words (chairman, manpower, man-months). 
-Use inclusive language (e.g., she or he, they, chair, staff, staff-hours, person-years) that is gender-neutral. 
-If necessary, you may be able to use ``he" and ``she" in alternating sentences, so that the two genders occur equally often~\cite{Schwartz95}. 
-\end{itemize}
-
-
-% =============================================================================
-\section{Figures}
-% =============================================================================
-The examples on this and following pages should help you get a feel for how screen-shots and other figures should be placed in the template. 
-Be sure to make images large enough so the important details are legible and clear.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{DrunkenEd.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:DrunkenEd}
-\end{figure}
-
-Your document may use color figures, which are included in the page limit; the figures must be usable when printed in black and white.
-You can use the \LaTeX's \texttt{marginpar} command to insert figures in the (right) margin side of the document (see \autoref{fig:marginparsample}).
-
-
-% =============================================================================
-\section{References and Citations}
-% =============================================================================
-Use a numbered list of references at the end of the article, ordered alphabetically by first author, and referenced by numbers in brackets \cite{Anderson92,Klemmer02,Mather00,Zellweger01}
-For papers from conference proceedings, include the title of the paper and an abbreviated name of the conference (e.g., for Interact 2003 proceedings, use Proc. Interact 2003). 
-Do not include the location of the conference or the exact date; do include the page numbers if available. 
-See the examples of citations at the end of this document. 
-
-Your references should be published materials accessible to the public.  
-Internal technical reports may be cited only if they are easily accessible (i.e., you provide the address for obtaining the report within your citation) and may be obtained by any reader for a nominal fee.  
-Proprietary information may not be cited. 
-Private communications should be acknowledged in the main text, not referenced  (e.g., [Robertson, personal communication]).
-
-% =============================================================================
-\section{Accessibility}
-% =============================================================================
-The Executive Council of SIGCHI has committed to making SIGCHI conferences more inclusive for researchers, practitioners, and educators with disabilities. As a part of this goal, the all authors are asked to work on improving the accessibility of their submissions. Specifically, we encourage authors to carry out the following five steps:
 \begin{enumerate}
-	\item Add alternative text to all figures
-	\item Mark table headings
-	\item Add tags to the PDF
-	\item Verify the default language
-	\item Set the tab order to ``Use Document Structure''
+	\item Motivation: All difficulty levels are available to play, so an advanced player does not need to stagger through all the easier stages first to reach a sufficiently challenging level. The highscores displayed above the level selection should provide the necessary motive to start another game and improve your score.
+	\item Learning curve (Additional Principle): A player can improve his performance and score, if he plays more often.
 \end{enumerate}
-Unfortunately good tools do not yet exist to create tagged PDF files from Latex. LaTeX users will need to carry out all of the above steps in the PDF directly using Adobe Acrobat, after the PDF has been generated.
- 
-For more information and links to instructions and resources, please see:
-{\url{http://chi2014.acm.org/authors/guide-to-an-accessible-submission}}.
+Changes were made according to the results of this evaluation, as to the visibility of system status by adding a countdown at level start and including a highscore list for motivation.
+
+A think aloud study was performed with several users of varying expertise, which lead to further improvements of the game according to Nielsen's heuristics. Among others we discovered the necessity of additional hints with both animated text and icons to ensure the user is constantly aware of his options and implemented a warning to be desplayed when the user leaves the optimal tracking region for error prevention. [picture of users]
 
 % =============================================================================
-\section{Producing and testing PDF files}
+\section{Implementation}
 % =============================================================================
-We recommend that you produce a PDF version of your submission well before the final deadline. 
-Besides making sure that you are able to produce a PDF, you will need to check that (a) the length of the file remains within the submission category's page limit, (b) the PDF file size is 4 megabytes or less, and (c) the file can be read and printed using Adobe Acrobat Reader. 
-Test your PDF file by viewing or printing it with the same software we will use when we receive it, Adobe Acrobat Reader Version 7. 
-This is widely available at no cost from~\cite{Acrobat7}.  
-Note that most reviewers will use a North American/European version of Acrobat reader, which cannot handle documents containing non-North American or non-European fonts (e.g. Asian fonts).  
-Please therefore do not use Asian fonts, and verify this by testing with a North American/European Acrobat reader (obtainable as above). Something as minor as including a space or punctuation character in a two-byte font can render a file unreadable.
-
+We implemented body tracking with the Microsoft Kinect camera, using the OpenNI library.
 
 % =============================================================================
-\section{Dummy text}
-% =============================================================================
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ut eros semper lectus vehicula elementum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam quis mi sapien. Suspendisse potenti. Mauris ultrices euismod velit sed dictum. Nullam auctor, nulla tincidunt dapibus suscipit, velit leo convallis metus, vel commodo libero erat in dolor. In laoreet porttitor ligula, porta blandit lectus consequat quis. 
-
-Nam ut eros dui. Mauris volutpat elit metus, euismod pellentesque purus. In hac habitasse platea dictumst. Nullam consectetur lacinia interdum. Sed nec blandit nisi. Proin in nulla purus, sit amet iaculis tortor. Ut dapibus pellentesque nulla in interdum. Nunc at velit felis. Curabitur euismod neque eu orci varius in pharetra sem interdum. Morbi in mauris ac risus iaculis dapibus id in magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-
-\marginpar{
-\begin{figure}
-  \begin{center}
-  \includegraphics[width=\marginparwidth]{DrunkenEd.jpg}
-  \caption{A marginal figure.}
-  \label{fig:marginparsample}
-  \end{center}  
-\end{figure}
-}
-Aliquam consectetur quam sed odio varius vitae rhoncus urna fermentum. Phasellus viverra diam non justo porttitor varius. Integer ultrices accumsan lectus eget mollis. Nulla et leo sit amet nunc ornare rutrum sit amet ac dui. Cras vehicula accumsan purus nec fermentum. Mauris viverra condimentum metus, ut posuere quam laoreet nec. Phasellus massa tellus, ullamcorper nec porta sed, aliquet vitae nulla. Phasellus non tortor mauris. Cras ullamcorper egestas erat, vel rutrum elit viverra a. Donec in nisl ut est facilisis blandit. Quisque congue accumsan risus, ut venenatis magna vulputate vel. Nam commodo sapien vel mauris adipiscing nec dictum quam congue. Phasellus tempor vestibulum nisl quis blandit. Nullam condimentum auctor nibh, quis elementum libero tristique.
-
-
-
 \section{Acknowledgements}
-We thank all DUX 2003 publications support and staff who wrote this document originally and allowed us to modify it for this conference.
-This template was based on Manas Tungare's \texttt{chi.cls}, and rewritten by Luis A. Leiva.
+% =============================================================================
 
-\section{References format}
-References must be the same font size as other body text.
-% REFERENCES FORMAT
-% References must be the same font size as other body text.
+%%--------------------REMOVE FOLLOWING SECTIONS---------------------------------
+%% =============================================================================
+%\section{Copyright}
+%% =============================================================================
+%For publications in the CHI Extended Abstracts, copyright remains with the author.  
+%The publication is not considered an archival publication; however, it does go into the ACM Digital Library. 
+%Because you retain copyright, as the author you are free to use this material as you like, including submitting a paper based on this work to other conferences or journals.  
+%Authors grant unrestricted permission for ACM to publish the accepted submission in the CHI Extended Abstracts without additional consideration or remuneration.
+%
+%% =============================================================================
+%\section{Text formatting}
+%% =============================================================================
+%Please use an 8.5-point Verdana font, or other sans serifs font as close as possible in appearance to Verdana in which these guidelines have been set. 
+%Arial 9-point font is a reasonable substitute for Verdana as it has a similar x-height. 
+%Please use serif or non-proportional fonts only for special purposes, such as distinguishing source code text.
+%Additionally, here is an example of footnoted text.\footnote{Use footnotes sparingly, if at all.}
+%As stated in the footnote, footnotes should rarely be used.
+%
+%\subsection{Language, style, and content}
+%% -----------------------------------------------------------------------------
+%The written and spoken language of SIGCHI is English. 
+%Spelling and punctuation may use any dialect of English (e.g., British, Canadian, US, etc.) provided this is done consistently. 
+%Hyphenation is optional. 
+%To ensure suitability for an international audience, please pay attention to the following:
+%
+%\begin{itemize}\compresslist
+%\item 	
+%Write in a straightforward style. 
+%Use simple sentence structure. 
+%Try to avoid long sentences and complex sentence structures. 
+%Use semicolons carefully.
+%\item 	
+%Use common and basic vocabulary (e.g., use the word ``unusual" rather than the word ``arcane").
+%\item 	
+%Briefly define or explain all technical terms. 
+%The terminology common to your practice/discipline may be different in other design practices/disciplines.
+%\item 	
+%Spell out all acronyms the first time they are used in your text. 
+%For example, ``World Wide Web (WWW)".
+%\item 	
+%Explain local references (e.g., not everyone knows all city names in a particular country).
+%\item 	
+%Explain ``insider" comments. 
+%Ensure that your whole audience understands any reference whose meaning you do not describe (e.g., do not assume that everyone has used a Macintosh or a particular application).
+%\item 	
+%Explain colloquial language and puns. 
+%Understanding phrases like ``red herring" requires a cultural knowledge of English. 
+%Humor and irony are difficult to translate.
+%\item 	
+%Use unambiguous forms for culturally localized concepts, such as times, dates, currencies and numbers (e.g., ``1-5-97" or ``5/1/97" may mean 5 January or 1 May, and ``seven o'clock" may mean 7:00 am or 19:00).
+%\item 	
+%Be careful with the use of gender-specific pronouns (he, she) and other gender-specific words (chairman, manpower, man-months). 
+%Use inclusive language (e.g., she or he, they, chair, staff, staff-hours, person-years) that is gender-neutral. 
+%If necessary, you may be able to use ``he" and ``she" in alternating sentences, so that the two genders occur equally often~\cite{Schwartz95}. 
+%\end{itemize}
+%
+%
+%% =============================================================================
+%\section{Figures}
+%% =============================================================================
+%The examples on this and following pages should help you get a feel for how screen-shots and other figures should be placed in the template. 
+%Be sure to make images large enough so the important details are legible and clear.
+%
+%\begin{figure}
+  %\centering
+  %\includegraphics[width=\linewidth]{DrunkenEd.jpg}
+  %\caption{Insert a caption below each figure.}
+  %\label{fig:DrunkenEd}
+%\end{figure}
+%
+%Your document may use color figures, which are included in the page limit; the figures must be usable when printed in black and white.
+%You can use the \LaTeX's \texttt{marginpar} command to insert figures in the (right) margin side of the document (see \autoref{fig:marginparsample}).
+%
+%
+%% =============================================================================
+%\section{References and Citations}
+%% =============================================================================
+%Use a numbered list of references at the end of the article, ordered alphabetically by first author, and referenced by numbers in brackets \cite{Anderson92,Klemmer02,Mather00,Zellweger01}
+%For papers from conference proceedings, include the title of the paper and an abbreviated name of the conference (e.g., for Interact 2003 proceedings, use Proc. Interact 2003). 
+%Do not include the location of the conference or the exact date; do include the page numbers if available. 
+%See the examples of citations at the end of this document. 
+%
+%Your references should be published materials accessible to the public.  
+%Internal technical reports may be cited only if they are easily accessible (i.e., you provide the address for obtaining the report within your citation) and may be obtained by any reader for a nominal fee.  
+%Proprietary information may not be cited. 
+%Private communications should be acknowledged in the main text, not referenced  (e.g., [Robertson, personal communication]).
+%
+%% =============================================================================
+%\section{Accessibility}
+%% =============================================================================
+%The Executive Council of SIGCHI has committed to making SIGCHI conferences more inclusive for researchers, practitioners, and educators with disabilities. As a part of this goal, the all authors are asked to work on improving the accessibility of their submissions. Specifically, we encourage authors to carry out the following five steps:
+%\begin{enumerate}
+	%\item Add alternative text to all figures
+	%\item Mark table headings
+	%\item Add tags to the PDF
+	%\item Verify the default language
+	%\item Set the tab order to ``Use Document Structure''
+%\end{enumerate}
+%Unfortunately good tools do not yet exist to create tagged PDF files from Latex. LaTeX users will need to carry out all of the above steps in the PDF directly using Adobe Acrobat, after the PDF has been generated.
+ %
+%For more information and links to instructions and resources, please see:
+%{\url{http://chi2014.acm.org/authors/guide-to-an-accessible-submission}}.
+%
+%% =============================================================================
+%\section{Producing and testing PDF files}
+%% =============================================================================
+%We recommend that you produce a PDF version of your submission well before the final deadline. 
+%Besides making sure that you are able to produce a PDF, you will need to check that (a) the length of the file remains within the submission category's page limit, (b) the PDF file size is 4 megabytes or less, and (c) the file can be read and printed using Adobe Acrobat Reader. 
+%Test your PDF file by viewing or printing it with the same software we will use when we receive it, Adobe Acrobat Reader Version 7. 
+%This is widely available at no cost from~\cite{Acrobat7}.  
+%Note that most reviewers will use a North American/European version of Acrobat reader, which cannot handle documents containing non-North American or non-European fonts (e.g. Asian fonts).  
+%Please therefore do not use Asian fonts, and verify this by testing with a North American/European Acrobat reader (obtainable as above). Something as minor as including a space or punctuation character in a two-byte font can render a file unreadable.
+%
+%
+%% =============================================================================
+%\section{Dummy text}
+%% =============================================================================
+%Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ut eros semper lectus vehicula elementum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam quis mi sapien. Suspendisse potenti. Mauris ultrices euismod velit sed dictum. Nullam auctor, nulla tincidunt dapibus suscipit, velit leo convallis metus, vel commodo libero erat in dolor. In laoreet porttitor ligula, porta blandit lectus consequat quis. 
+%
+%Nam ut eros dui. Mauris volutpat elit metus, euismod pellentesque purus. In hac habitasse platea dictumst. Nullam consectetur lacinia interdum. Sed nec blandit nisi. Proin in nulla purus, sit amet iaculis tortor. Ut dapibus pellentesque nulla in interdum. Nunc at velit felis. Curabitur euismod neque eu orci varius in pharetra sem interdum. Morbi in mauris ac risus iaculis dapibus id in magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+%
+%\marginpar{
+%\begin{figure}
+  %\begin{center}
+  %\includegraphics[width=\marginparwidth]{DrunkenEd.jpg}
+  %\caption{A marginal figure.}
+  %\label{fig:marginparsample}
+  %\end{center}  
+%\end{figure}
+%}
+%Aliquam consectetur quam sed odio varius vitae rhoncus urna fermentum. Phasellus viverra diam non justo porttitor varius. Integer ultrices accumsan lectus eget mollis. Nulla et leo sit amet nunc ornare rutrum sit amet ac dui. Cras vehicula accumsan purus nec fermentum. Mauris viverra condimentum metus, ut posuere quam laoreet nec. Phasellus massa tellus, ullamcorper nec porta sed, aliquet vitae nulla. Phasellus non tortor mauris. Cras ullamcorper egestas erat, vel rutrum elit viverra a. Donec in nisl ut est facilisis blandit. Quisque congue accumsan risus, ut venenatis magna vulputate vel. Nam commodo sapien vel mauris adipiscing nec dictum quam congue. Phasellus tempor vestibulum nisl quis blandit. Nullam condimentum auctor nibh, quis elementum libero tristique.
+%
+%
+%
+%\section{Acknowledgements}
+%We thank all DUX 2003 publications support and staff who wrote this document originally and allowed us to modify it for this conference.
+%This template was based on Manas Tungare's \texttt{chi.cls}, and rewritten by Luis A. Leiva.
+%
+%\section{References format}
+%References must be the same font size as other body text.
+%% REFERENCES FORMAT
+%% References must be the same font size as other body text.
 
 \balance
 \bibliographystyle{acm-sigchi}
