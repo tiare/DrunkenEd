@@ -19,36 +19,36 @@
   \alignauthor{
   	\textbf{Alexander Biskupski}\\
   	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni xx}\\
-  	\affaddr{Berlin, xxxxx Germany}\\
+  	\affaddr{Straße des 17. Juni 135}\\
+  	\affaddr{Berlin, 10623 Germany}\\
   	\email{alexander.biskupski@campus.tu-berlin.de}
   }\alignauthor{
   	\textbf{Andreas Fender}\\
   	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni xx}\\
-  	\affaddr{Berlin, xxxxx Germany}\\
+  	\affaddr{Straße des 17. Juni 135}\\
+  	\affaddr{Berlin, 10623 Germany}\\
   	\email{andreas.fender@campus.tu-berlin.de}
   }
   \vfil
   \alignauthor{
   	\textbf{Tiare Feuchtner}\\
   	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni xx}\\
-  	\affaddr{Berlin, xxxxx Germany}\\
+  	\affaddr{Straße des 17. Juni 135}\\
+  	\affaddr{Berlin, 10623 Germany}\\
   	\email{tiare.feuchtner@campus.tu-berlin.de}
   }\alignauthor{
   	\textbf{Marcel Karsten}\\
   	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni xx}\\
-  	\affaddr{Berlin, xxxxx Germany}\\
+  	\affaddr{Straße des 17. Juni 135}\\
+  	\affaddr{Berlin, 10623 Germany}\\
   	\email{marcel.karsten@campus.tu-berlin.de}
   }
   \vfil
   \alignauthor{
   	\textbf{Jonas Willaredt}\\
   	\affaddr{Technische Universität Berlin}\\
-  	\affaddr{Straße des 17. Juni xx}\\
-  	\affaddr{Berlin, xxxxx Germany}\\
+  	\affaddr{Straße des 17. Juni 135}\\
+  	\affaddr{Berlin, 10623 Germany}\\
   	\email{jonas.willaredt@campus.tu-berlin.de}
   }
 }
@@ -76,6 +76,7 @@
 \usepackage{balance}    % useful for balancing the last columns
 \usepackage{bibspacing} % save vertical space in references
 
+\input{init.tex}
 
 \begin{document}
 
@@ -106,6 +107,24 @@ The balance game Drunken Ed was developed with the goal of creating an applicati
 The gameplay of Drunken Ed can be briefly described as a single player game, with the mission to guide Ed home safely. Ed has had a couple of drinks too many, and dangerously staggers along the sidewalk. The player must lean left and right to help Ed keep balance and avoid dangerous obstacles such as passing cars when crossing a street, as depicted in [\ref{??}].
 To ensure suitability for public context, we attempted to fulfill the criteria of acceptability, accessibility, simplicity and flexibility as proposed by \cite{kultima2009casual}. Acceptability was a strongly discussed aspect, since our protagonist Ed indulges in the pleasure of consuming alcohol, which causes him to stagger along the streets drunkenly. However we have found that this situation is widely accepted, specially among young people and not at all troubling. The questioned subjects responded that they could easily relate to this situation and described the experience of steering Ed as fun. Furthermore our game does not encourage people to drink, but points out the problematic consequences of drinking too much. Accessibilty is guaranteed by our physical setup with a large screen and visual tracking in a public space. The game can be played by anybody who approaches it, independent of sex or age. Merely the tracking capability of the Kinect sets a couple of limitations, such as inability to cope with occlusion and bad lighting situations. Simplicity is given by keeping the components of the game minimal and providing the user with a single main control mechanic - bending the upper body left and right in order to help Ed keep balance.
 The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in figure \ref{??}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time and distance traveled. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown and if the player has managed a top score, he can have his picture taken to be displayed on the list. Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores. \cite{ohara2008understanding}
+
+
+\input{introduction.tex}
+
+% =============================================================================
+\section{Mechanics}
+% =============================================================================
+\input{mechanics.tex}
+
+% =============================================================================
+\section{Design}
+% =============================================================================
+\input{design.tex}
+
+% =============================================================================
+\section{Future work}
+% =============================================================================
+\input{futurework.tex}
 
 % =============================================================================
 \section{Design Process}

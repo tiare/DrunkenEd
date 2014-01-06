@@ -10,15 +10,15 @@ import graphics.skeletons.constraints.DistanceConstraint;
 public class DrunkenAnimatorMain {
 
 	public static void main(String[] args) {
-		
+
 		IOCommon.IMAGE_PATH = "textures/";
 		Config.preInitialize();
-		
+
 		AnimatorFrame animatorFrame = new AnimatorFrame("Drunken Animator");
 
 		animatorFrame.init(900,null);
 		animatorFrame.waitUntilInitialized();
-		
+
 		DrunkenSkeleton drunkenSkeleton = new DrunkenSkeleton();
 		drunkenSkeleton.init(animatorFrame.getAnimatorSurface().mGraphics2D);
 		drunkenSkeleton.mBottleBone.mVisible = false;
@@ -26,8 +26,8 @@ public class DrunkenAnimatorMain {
 		drunkenSkeleton.getBoneConstraint(drunkenSkeleton.mBottleBone,DistanceConstraint.class).mEnabled = false;
 		drunkenSkeleton.mBreastJoint.mFixed = false;
 		animatorFrame.addSkeleton(drunkenSkeleton,new DrunkenAnimationSystem());
-		
+
 		animatorFrame.start();
 	}
-	
+
 }
