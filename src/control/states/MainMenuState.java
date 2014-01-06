@@ -111,17 +111,17 @@ public class MainMenuState extends WorldState {
 		scoresEasy = highscores.highscoresEasy;
 		scoresMedium = highscores.highscoresMedium;
 		scoresHard = highscores.highscoresHard;
-		
+
 		if (Debug.SETFAKESCORES) {
 			highscores.addHighscore(GameSettings.GAME_EASY, 299, null);
 			highscores.addHighscore(GameSettings.GAME_EASY, 210, null);
 			highscores.addHighscore(GameSettings.GAME_EASY, 8, null);
-			
+
 
 			highscores.addHighscore(GameSettings.GAME_MEDIUM, 210, null);
 			highscores.addHighscore(GameSettings.GAME_MEDIUM, 73, null);
 			highscores.addHighscore(GameSettings.GAME_EASY, 19, null);
-			
+
 
 			highscores.addHighscore(GameSettings.GAME_HARD, 1337, null);
 			highscores.addHighscore(GameSettings.GAME_HARD, 42, null);
@@ -306,7 +306,7 @@ public class MainMenuState extends WorldState {
 			// Draw back wall
 			graphics2D.setColor(0.4f, 0.3f, 0.2f);
 			graphics2D.drawRectCentered(0, 2.5f, 8 ,5.0f);
-	
+
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			graphics.bindTexture(StandardTextures.WALL);
 			graphics2D.drawRectCentered(-2, 0.65f, 4, 1.25f);
@@ -351,7 +351,7 @@ public class MainMenuState extends WorldState {
 
 				return;
 			}
-			
+
 			// Draw stuff on walls
 			graphics.bindTexture(StandardTextures.DART);
 			graphics2D.drawRectCentered(-3.4f, 1.8f, 0.7f, 0.7f);
@@ -494,7 +494,7 @@ public class MainMenuState extends WorldState {
 
 		// Write highscores
 		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
-		graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
+		//graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.05f, 0.23f, "1. ");
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.45f, 0.23f, "2. ");
 		graphics2D.drawStringL(posX - 0.75f, posY - 0.85f, 0.23f, "3. ");

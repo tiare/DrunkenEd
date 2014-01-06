@@ -4,6 +4,7 @@ lib/math/*
 src/control/Config.java
 score*bb
 *.csv
+*.jar
 
 #LaTeX
 */doc/*.aux
