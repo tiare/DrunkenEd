@@ -8,14 +8,15 @@ score*bb
 *.tcp
 drunken_ed.jar
 *.ym
+*.pdf
 
 #LaTeX
-*/doc/*.aux
-*/doc/*.bbl
-*/doc/*.blg
-*/doc/*.log
-*/doc/*.tps
-*/doc/*.tcp
+*.aux
+*.bbl
+*.blg
+*.log
+*.tps
+*.tcp
 
 #java specific
 *.class
