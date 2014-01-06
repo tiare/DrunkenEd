@@ -2,16 +2,14 @@ package system;
 
 import figure.DrunkenSkeleton;
 import figure.animations.DrunkenAnimationSystem;
-import pc.fileio.IOCommon;
-import pc.tools.animator.AnimatorFrame;
+import yang.pc.tools.animator.AnimatorFrame;
+import yang.physics.massaggregation.constraints.DistanceConstraint;
 import control.Config;
-import graphics.skeletons.constraints.DistanceConstraint;
 
 public class DrunkenAnimatorMain {
 
 	public static void main(String[] args) {
 
-		IOCommon.IMAGE_PATH = "textures/";
 		Config.preInitialize();
 
 		AnimatorFrame animatorFrame = new AnimatorFrame("Drunken Animator");

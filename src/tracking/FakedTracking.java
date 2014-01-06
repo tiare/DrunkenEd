@@ -4,8 +4,8 @@ import javax.vecmath.Point2d;
 
 import org.OpenNI.Point3D;
 
+import yang.events.Keys;
 import control.ProgramController;
-import graphics.events.Keys;
 
 public class FakedTracking extends AbstractTracking{
 

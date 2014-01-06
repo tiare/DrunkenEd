@@ -2,14 +2,13 @@ package figure;
 
 import figure.animations.DrunkenAnimationSystem;
 import tracking.AbstractTracking;
+import yang.graphics.defaults.Default2DGraphics;
+import yang.graphics.defaults.DefaultAnimationPlayer;
+import yang.graphics.skeletons.SkeletonCarrier;
+import yang.graphics.skeletons.animations.AnimationPlayer;
+import yang.physics.massaggregation.elements.Joint;
 import control.Debug;
 import control.ProgramController;
-import graphics.defaults.Default2DGraphics;
-import graphics.defaults.DefaultAnimationPlayer;
-import graphics.skeletons.Skeleton;
-import graphics.skeletons.SkeletonCarrier;
-import graphics.skeletons.animations.AnimationPlayer;
-import graphics.skeletons.elements.Joint;
 
 public class Player implements SkeletonCarrier {
 
@@ -23,17 +22,17 @@ public class Player implements SkeletonCarrier {
 	public DrunkenSkeleton skeleton;
 	private Default2DGraphics graphics2D;
 	public DefaultAnimationPlayer animationPlayer;
-	
+
 	//Properties
 	private float gravity = -9f;
 	public boolean inGame;
 	private boolean armAnglesByTracking;
 	public boolean jumpEnabled = true;
-	
+
 	//State
 	public float posX,posY;
 	private float velX,velY;
-	public boolean gameOver;		
+	public boolean gameOver;
 	private int drinkState;
 	public boolean moved;
 	public float steeredBending;
@@ -46,8 +45,8 @@ public class Player implements SkeletonCarrier {
 	public float lifeTime;
 	private boolean mFlail;
 	private boolean mSwing;
-	
-	
+
+
 	public Player(boolean inGame) {
 		this.inGame = inGame;
 		skeleton = new DrunkenSkeleton();
@@ -58,30 +57,30 @@ public class Player implements SkeletonCarrier {
 		moved = false;
 		drinkState = 0;
 	}
-	
+
 	public Player init(ProgramController programController) {
 		this.programController = programController;
 		this.graphics2D = programController.mGraphics2D;
 		tracking = programController.tracking;
-		skeleton.init(this);
+		skeleton.init(graphics2D,this);
 		setArmAnglesByTracking(true);
 		animationPlayer = new DefaultAnimationPlayer(skeleton,null);
 		skeleton.mAccuracy = 16;
-		
+
 		mFlail = false;
 		mSwing = false;
 		mSwingTime = -1;
-		
+
 		fellTime = 0;
 		lifeTime = 0;
 		stepCounter = 0;
-		
+
 		start();
 		return this;
 	}
-	
+
 	private void refreshArms() {
-		
+
 		skeleton.mLeftShoulderJoint.setPosByConstraint();
 		skeleton.mRightShoulderJoint.setPosByConstraint();
 		if(drinkState<=0) {
@@ -89,10 +88,10 @@ public class Player implements SkeletonCarrier {
 				float angle = -lifeTime*20;
 				if(velX<0)
 					angle *= -1;
-				skeleton.mLeftUpperArmBone.setAngle(angle+PI);
-				skeleton.mLeftLowerArmBone.setAngle(angle+PI);
-				skeleton.mRightUpperArmBone.setAngle(angle);
-				skeleton.mRightLowerArmBone.setAngle(angle);
+				skeleton.mLeftUpperArmBone.setAngle2D(angle+PI);
+				skeleton.mLeftLowerArmBone.setAngle2D(angle+PI);
+				skeleton.mRightUpperArmBone.setAngle2D(angle);
+				skeleton.mRightLowerArmBone.setAngle2D(angle);
 			}else if(mSwingTime>0) {
 				boolean up = (int)(lifeTime*1000)/120%2==0;
 				float fac = 0.3f;
@@ -100,28 +99,32 @@ public class Player implements SkeletonCarrier {
 				float offset = -(steeredBending+drunkenBending);
 				if(offset<0)
 					offset *= 0.7f;
-				skeleton.mLeftUpperArmBone.setAngle(-angle+offset);
-				skeleton.mLeftLowerArmBone.setAngle(-angle+offset);
-				skeleton.mRightUpperArmBone.setAngle(angle+offset);
-				skeleton.mRightLowerArmBone.setAngle(angle+offset);
+				skeleton.mLeftUpperArmBone.setAngle2D(-angle+offset);
+				skeleton.mLeftLowerArmBone.setAngle2D(-angle+offset);
+				skeleton.mRightUpperArmBone.setAngle2D(angle+offset);
+				skeleton.mRightLowerArmBone.setAngle2D(angle+offset);
 			}else{
 				if(armAnglesByTracking) {
-					skeleton.mLeftUpperArmBone.setAngle(tracking.leftUpperArmAngle);
-					skeleton.mLeftLowerArmBone.setAngle(tracking.leftLowerArmAngle);
-					skeleton.mRightUpperArmBone.setAngle(tracking.rightUpperArmAngle);
-					skeleton.mRightLowerArmBone.setAngle(tracking.rightLowerArmAngle);
+//					skeleton.mLeftUpperArmBone.setAngle2D(tracking.leftUpperArmAngle);
+//					skeleton.mLeftLowerArmBone.setAngle2D(tracking.leftLowerArmAngle);
+//					skeleton.mRightUpperArmBone.setAngle2D(tracking.rightUpperArmAngle);
+//					skeleton.mRightLowerArmBone.setAngle2D(tracking.rightLowerArmAngle);
+					skeleton.mLeftElbowJoint.setPosByAngle2D(tracking.leftUpperArmAngle);
+					skeleton.mLeftHandJoint.setPosByAngle2D(tracking.leftLowerArmAngle);
+					skeleton.mRightElbowJoint.setPosByAngle2D(tracking.rightUpperArmAngle);
+					skeleton.mRightHandJoint.setPosByAngle2D(tracking.rightLowerArmAngle);
 				}else{
-					skeleton.mLeftUpperArmBone.setAngle(0);
-					skeleton.mLeftLowerArmBone.setAngle(0);
-					skeleton.mRightUpperArmBone.setAngle(0);
-					skeleton.mRightLowerArmBone.setAngle(0);
+					skeleton.mLeftElbowJoint.setPosByAngle2D(0);
+					skeleton.mLeftHandJoint.setPosByAngle2D(0);
+					skeleton.mRightElbowJoint.setPosByAngle2D(0);
+					skeleton.mRightHandJoint.setPosByAngle2D(0);
 				}
-					
+
 			}
 		}
 		skeleton.refreshBottle();
 	}
-	
+
 	public void setArmAnglesByTracking(boolean enabled) {
 		armAnglesByTracking = enabled;
 		skeleton.mLeftElbowJoint.mFixed = enabled;
@@ -131,17 +134,17 @@ public class Player implements SkeletonCarrier {
 		tracking.trackArms = enabled;
 		refreshArms();
 	}
-	
+
 	private void setAnimated(Joint joint,boolean animated) {
 		joint.mFixed = animated;
 		joint.mAnimate = true;
 	}
-	
+
 	public void start() {
 		gameOver = false;
 		skeleton.mHipJoint.mFixed = true;
 		skeleton.mConstantForceY = -0.2f;
-		
+
 		skeleton.setAnimated(false);
 		setAnimated(skeleton.mLeftKneeJoint,true);
 		setAnimated(skeleton.mLeftFootJoint,true);
@@ -152,24 +155,25 @@ public class Player implements SkeletonCarrier {
 		setAnimated(skeleton.mBreastJoint,true);
 		setAnimated(skeleton.mHipJoint,true);
 		skeleton.mHeadJoint.mFixed = true;
-		
+
 		lifeTime = 0;
-		
+
 		animationPlayer.setAnimation(DrunkenAnimationSystem.WALK);
+
 	}
-	
+
 	public void setSpeedX(float speed) {
 		this.velX = speed;
 	}
-	
+
 	public float getSpeed() {
 		return velX;
 	}
-	
+
 	public boolean inAir() {
 		return posY>skeleton.mLowerLimit;
 	}
-	
+
 	public void step(float deltaTime) {
 		stepCounter ++;
 		final int nStep = 2;
@@ -183,7 +187,7 @@ public class Player implements SkeletonCarrier {
 			else if(mSwingTime>0)
 				mSwingTime -= deltaTime;
 			synchronized(skeleton) {
-				
+
 				posX += velX*deltaTime;
 				posY += velY*deltaTime;
 
@@ -193,7 +197,7 @@ public class Player implements SkeletonCarrier {
 				}else{
 					velY += gravity*deltaTime;
 				}
-				
+
 				if(inAir()) {
 					if(animationPlayer.mCurrentAnimation!=DrunkenAnimationSystem.JUMP) {
 						//animationPlayer.crossAnimation(DrunkenAnimationSystem.JUMP);
@@ -206,16 +210,16 @@ public class Player implements SkeletonCarrier {
 						animationPlayer.crossAnimation(DrunkenAnimationSystem.WALK);
 					animationPlayer.proceed(velX*deltaTime);
 				}
-				
-				
+
+
 				float angleOffset = 0;
 				if(!inGame && !moved) {
 					angleOffset = (float)Math.sin(lifeTime*5)*0.04f+0.08f;
 				}
-				
+
 				if(Math.abs(velX)>0.001f)
 					moved = true;
-				
+
 				float bending = (drunkenBending+steeredBending);
 				float upLimit = 0.9f*PI/2;
 				if(!inGame)
@@ -225,49 +229,49 @@ public class Player implements SkeletonCarrier {
 					bending = upLimit;
 				if(bending<downLimit)
 					bending = downLimit;
-				
+
 				if(stepCounter%nStep==0) {
-					float prevX = skeleton.mBreastJoint.mPosX;
-					float prevY = skeleton.mBreastJoint.mPosY;
-					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
+					float prevX = skeleton.mBreastJoint.mX;
+					float prevY = skeleton.mBreastJoint.mY;
+					skeleton.mBreastJoint.setPosByAngle2D(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
 					float fac = programController.gameSettings.difficulty*0.2f+0.1f;
-					float breastVX = (skeleton.mBreastJoint.mPosX-prevX)/(deltaTime*nStep)*fac;
-					float breastVY = (skeleton.mBreastJoint.mPosY-prevY)/(deltaTime*nStep)*fac;
+					float breastVX = (skeleton.mBreastJoint.mX-prevX)/(deltaTime*nStep)*fac;
+					float breastVY = (skeleton.mBreastJoint.mY-prevY)/(deltaTime*nStep)*fac;
 					for(Joint joint:skeleton.mJoints) {
 						int dist = joint.childDistance(skeleton.mHipJoint);
 						if(dist>=0)
-							joint.setSpeed(-breastVX*1/(dist*2+1), -breastVY*2/(dist*2+1));
+							joint.setVelocity(-breastVX*1/(dist*2+1), -breastVY*2/(dist*2+1));
 						else
-							joint.setSpeed(breastVX, breastVY);
+							joint.setVelocity(breastVX, breastVY);
 					}
 				}else
-					skeleton.mBreastJoint.setPosByAngle(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
-				
+					skeleton.mBreastJoint.setPosByAngle2D(skeleton.mHipJoint, skeleton.mBodyBone, -bending+PI-angleOffset);
+
 				if(drinkState>0) {
 					//skeleton.mHeadJoint.setPosByAngle(headAngle);
 				}else{
 					if(inGame || !CONTROL_HEAD)
-						skeleton.mHeadJoint.setPosByAngle(PI*0.9f+angleOffset);
+						skeleton.mHeadJoint.setPosByAngle2D(PI*0.9f+angleOffset);
 					else
-						skeleton.mHeadJoint.setPosByAngle(-tracking.headangle+bending+PI);
+						skeleton.mHeadJoint.setPosByAngle2D(-tracking.headangle+bending+PI);
 				}
-				
+
 //				skeleton.mButtJoint.mPosX = skeleton.mHipJoint.mPosX;
 //				skeleton.mButtJoint.mPosY = skeleton.mHipJoint.mPosY-0.2f;
-				
+
 				refreshArms();
 			}
 		}
-		
+
 		synchronized(skeleton) {
 			if(gameOver && fellTime<20f)
-				skeleton.applyConstraints(deltaTime);
+				skeleton.physicalStep(deltaTime);
 		}
 	}
-	
+
 	public void draw() {
 		synchronized(skeleton) {
-	
+
 			skeleton.mBottleVisible = !inGame;
 			if(drinkState>0) {
 				if(drinkState<2)
@@ -285,25 +289,21 @@ public class Player implements SkeletonCarrier {
 				}else
 					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
 			}
-			
-			skeleton.refreshVisualVars();
+
+			skeleton.refreshVisualData();
 			skeleton.draw();
 			if(Debug.DRAW_SKELETON)
 				skeleton.drawEditing(null);
 			graphics2D.setDefaultProgram();
-			
-			
-			
+
 			//graphics2D.drawRectCentered(0, 0, 1, 2, tracking.headangle);
 		}
 	}
 
-	@Override
 	public Default2DGraphics getGraphics() {
 		return graphics2D;
 	}
 
-	@Override
 	public int getLookDirection() {
 		return 1;
 	}
@@ -313,8 +313,7 @@ public class Player implements SkeletonCarrier {
 		return 1;
 	}
 
-	@Override
-	public Skeleton getSkeleton() {
+	public DrunkenSkeleton getSkeleton() {
 		return skeleton;
 	}
 
@@ -327,17 +326,16 @@ public class Player implements SkeletonCarrier {
 	public float getWorldY() {
 		return posY;
 	}
-	
+
 	public void setWorldPosition(float x,float y) {
 		posX = x;
 		posY = y;
 	}
 
-	@Override
-	public void setSkeleton(Skeleton skeleton) {
-		
+	public void setSkeleton(DrunkenSkeleton skeleton) {
+
 	}
-	
+
 	public void setDrinking() {
 		drinkState = 1;
 	}
@@ -348,43 +346,43 @@ public class Player implements SkeletonCarrier {
 		skeleton.mConstantForceY = -0.2f;
 		skeleton.mLimitForceInwards = 5.4f;
 		skeleton.mLimitForceOutwards = 2.0f;
-		
+
 		for(Joint joint:skeleton.mJoints) {
 			joint.mFixed = false;
 			joint.mFriction = 0.998f;
 			joint.mVelX += velX;
 			joint.mVelY += velY;
 		}
-		
+
 //		for(Constraint constraint:skeleton.mConstraints) {
 //			if(constraint instanceof AngleConstraint) {
 //				((AngleConstraint)constraint).mStrength = 20;
 //			}
 //		}
 	}
-	
+
 	public void setFlailingArms(boolean flail){
 		mFlail = flail;
 	}
-	
+
 	public void setSwingingArms(boolean swing){
 		mSwing = swing;
 	}
 
-	@Override
+
 	public void drawCollision() {
-		
+
 	}
 
-	@Override
+
 	public AnimationPlayer<?> getAnimationPlayer() {
 		return animationPlayer;
 	}
 
 	public float getCenterX() {
-		return posX+skeleton.mHipJoint.mPosX;
+		return posX+skeleton.mHipJoint.mX;
 	}
-	
+
 	public float getCenterY() {
 		return posY+0.9f;
 	}
@@ -402,5 +400,11 @@ public class Player implements SkeletonCarrier {
 			posY = y;
 		skeleton.mLowerLimit = y;
 	}
-	
+
+	@Override
+	public float getWorldZ() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

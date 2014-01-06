@@ -1,8 +1,8 @@
 package graphics.shaders;
 
-import ninja.game.model.StandardTextures;
-import graphics.AbstractGFXLoader;
-import graphics.programs.BasicProgram;
+import yang.graphics.programs.BasicProgram;
+import yang.graphics.translator.AbstractGFXLoader;
+import graphics.StandardTextures;
 
 public class ShinyContourProgram extends BasicProgram{
 	

@@ -53,6 +53,7 @@ public class CameraTracking extends AbstractTracking {
 		}
 	}
 
+	@Override
 	public void step(float deltatime) {
 		// p(deltatime);
 		if (app != null)
@@ -74,6 +75,7 @@ public class CameraTracking extends AbstractTracking {
 		System.out.println(p.toString());
 	}
 
+	@Override
 	public void restart() {
 		// app.context.release();
 		// start();

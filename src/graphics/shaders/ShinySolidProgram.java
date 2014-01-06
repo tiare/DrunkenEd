@@ -1,7 +1,7 @@
 package graphics.shaders;
 
-import graphics.AbstractGFXLoader;
-import graphics.programs.BasicProgram;
+import yang.graphics.programs.BasicProgram;
+import yang.graphics.translator.AbstractGFXLoader;
 
 public class ShinySolidProgram extends BasicProgram{
 	

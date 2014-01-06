@@ -1,8 +1,8 @@
 package graphics.background;
 
-import graphics.defaults.Default2DGraphics;
-import graphics.translator.GraphicsTranslator;
-import graphics.translator.Texture;
+import yang.graphics.defaults.Default2DGraphics;
+import yang.graphics.translator.GraphicsTranslator;
+import yang.graphics.translator.Texture;
 
 public class TexturedObject extends HorizontalDrawable{
 
@@ -36,7 +36,6 @@ public class TexturedObject extends HorizontalDrawable{
 		this.texture = tex;
 		height = tex.getHeight() / 80.0f;
 		width = tex.getWidth() / 80.0f;
-
 	}
 
 	@Override
@@ -44,6 +43,5 @@ public class TexturedObject extends HorizontalDrawable{
 		graphics.bindTexture(texture);
 		graphics2D.setColor(color[0], color[1], color[2]);
 		graphics2D.drawRect(offset, yOffset, offset+width, yOffset+height, 0, 1, 1, 0);
-		//graphics.bindTexture(null);
 	}
 }

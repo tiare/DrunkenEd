@@ -1,15 +1,16 @@
 package control;
 
 
-import graphics.StandardTextures;
-import graphics.defaults.DefaultSurface;
-import graphics.events.Keys;
-import graphics.events.PointerEvent;
 import tracking.AbstractTracking;
 import tracking.CameraTracking;
 import tracking.FakedTracking;
-import util.Util;
+import yang.events.Keys;
+import yang.events.eventtypes.SurfacePointerEvent;
+import yang.graphics.defaults.DefaultSurface;
+import yang.math.Geometry;
+import yang.math.MathConst;
 import control.states.MainMenuState;
+import graphics.StandardTextures;
 
 public class ProgramController extends DefaultSurface {
 
@@ -28,9 +29,9 @@ public class ProgramController extends DefaultSurface {
 	public boolean markWarning;
 	private float fade;
 	private float fadeSpeed;
-	
+
 	public ProgramController() {
-		super(true,false,true);
+		super(true,false);
 		started = false;
 		programTimer = 0;
 
@@ -40,22 +41,22 @@ public class ProgramController extends DefaultSurface {
 			tracking = new CameraTracking(this);
 		//running = true;
 		mChangingState = false;
-		
+
 		highscores = new Highscores();
 		gameSettings = new GameSettings();
-		
+
 		fade = 1;
 		fadeState = null;
 	}
-	
+
 	public void start() {
-		
+
 		StandardTextures.init(mGraphics);
-		
+
 		switchState( Config.getStartState(this).init(this) );
 		programTimer = 0;
 		tracking.init();
-		
+
 //		new Thread() {
 //			@Override
 //			public void run() {
@@ -68,14 +69,15 @@ public class ProgramController extends DefaultSurface {
 //					}
 //					float deltaTime = (System.currentTimeMillis()-startTime)*0.001f;
 //					step(deltaTime);
-//					
+//
 //				}
 //			}
 //		}.start();
-		
+
 		started = true;
 	}
-	
+
+	@Override
 	public void step(float deltaTime) {
 		if(markWarning) {
 			if(!tracking.trackedUser)
@@ -94,7 +96,7 @@ public class ProgramController extends DefaultSurface {
 				markWarning = tracking.trackedUser && (Math.abs(tracking.gpareax)>limit || Math.abs(tracking.gpareaz)>limit);
 			}
 			if(markWarning) {
-				
+
 			}else
 				currentState.step(deltaTime);
 		}else{
@@ -107,20 +109,20 @@ public class ProgramController extends DefaultSurface {
 		}
 		programTimer += deltaTime;
 	}
-	
+
 	public void fadeToState(ProgramState state) {
 		fade = 1;
 		fadeSpeed = DEFAULT_FADESPEED;
 		fadeState = state;
 	}
-	
+
 	@Override
-	public void initializationFinished() {
+	public void postInitGraphics() {
 		start();
 	}
-	
+
 	public void switchState(ProgramState newState) {
-		if(!newState.isInitialized()) 
+		if(!newState.isInitialized())
 			newState.init(this);
 		mChangingState = true;
 		tracking.restart();
@@ -132,35 +134,33 @@ public class ProgramController extends DefaultSurface {
 		currentState.onStart();
 		mChangingState = false;
 	}
-	
+
 	public ProgramState getCurrentState() {
 		return currentState;
 	}
-	
+
 	public float getProgramTime() {
 		return programTimer;
 	}
 
 	@Override
 	public void draw() {
-		if(!super.update())
-			return;
 		if(currentState!=null && !mChangingState) {
 			if(mFirstDraw) {
 				currentState.startGraphics();
 				mFirstDraw = false;
 			}
 			mGraphics2D.setTime((int)(programTimer*100));
-			mGraphics2D.setAmbientColor(getBrightness());
+			mGraphics2D.setColorFactor(getBrightness());
 			currentState.draw();
 		}
-		
+
 		if(markWarning) {
 			mGraphics2D.switchGameCoordinates(false);
-			mGraphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
-			mGraphics2D.setAmbientColor(1);
+			mGraphics2D.setLegacyFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+			mGraphics2D.setColorFactor(1);
 			mGraphics2D.setColor(1, 0.1f, 0);
-			mGraphics2D.drawStringC(0, 0.74f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
+			mGraphics2D.drawStringLegacyC(0, 0.74f, 0.15f+(float)Math.abs(Math.sin(programTimer*10))*0.018f, "Step onto the mark!");
 			float yOffset = 0.1f;
 			mGraphics.bindTexture(StandardTextures.CROSS);
 			mGraphics2D.drawRectCentered(0,-yOffset,0.15f);
@@ -169,40 +169,40 @@ public class ProgramController extends DefaultSurface {
 			mGraphics.bindTexture(StandardTextures.CIRCLE);
 			float x = tracking.gpareax*fac;
 			float y = -tracking.gpareaz*fac;
-			float a = Util.getAngle(x, y);
+			float a = Geometry.getAngle(x, y);
 			y -= yOffset;
 			mGraphics2D.drawRectCentered(x,y,0.17f);
 			mGraphics.bindTexture(StandardTextures.ARROW);
 			float r = 0.135f+(float)Math.abs(Math.sin(programTimer*10)*0.06f);
 			float dX = -(float)Math.cos(a) * r;
-			float dY = -(float)Math.sin(a) * r;	
-			mGraphics2D.drawRectCentered(x+dX, y+dY, 0.1f, 0.1f, a-Util.F_PI/2);
+			float dY = -(float)Math.sin(a) * r;
+			mGraphics2D.drawRectCentered(x+dX, y+dY, 0.1f, 0.1f, a-MathConst.PI/2);
 			mGraphics2D.setColor(1,1,1);
-			mGraphics2D.drawStringC(x, y, 0.12f, "You");
-			
+			mGraphics2D.drawStringLegacyC(x, y, 0.12f, "You");
+
 		}
-		
+
 		mGraphics.flush();
 	}
-	
+
 	@Override
-	public void pointerDown(float x,float y,PointerEvent event) {
+	public void pointerDown(float x,float y,SurfacePointerEvent event) {
 		if(currentState!=null)
 			currentState.pointerDown(x, y, event.mId);
 	}
-	
+
 	@Override
-	public void pointerDragged(float x,float y,PointerEvent event) {
+	public void pointerDragged(float x,float y,SurfacePointerEvent event) {
 		if(currentState!=null)
 			currentState.pointerDragged(x, y, event.mId);
 	}
-	
+
 	@Override
-	public void pointerUp(float x,float y,PointerEvent event) {
+	public void pointerUp(float x,float y,SurfacePointerEvent event) {
 		if(currentState!=null)
 			currentState.pointerUp(x, y, event.mId);
 	}
-	
+
 	@Override
 	public void keyDown(int key) {
 		if(key == 'c') {
@@ -224,32 +224,32 @@ public class ProgramController extends DefaultSurface {
 		if(tracking != null)
 			tracking.keyDown(key);
 	}
-	
+
 	@Override
 	public void keyUp(int key) {
-		
+
 		if(currentState!=null)
 			currentState.keyUp(key);
-		
+
 		if(tracking != null)
 			tracking.keyUp(key);
 	}
-	
+
 	public void test() {
 		System.out.println("Testing switch");
 	}
-	
+
 	public float getBrightness() {
 		if(markWarning)
 			return fade * 0.18f;
 		else
 			return fade;
 	}
-	
+
 	@Override
 	public void zoom(float value) {
 		if(currentState!=null)
 			currentState.zoom(value);
 	}
-	
+
 }

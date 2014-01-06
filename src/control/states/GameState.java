@@ -39,9 +39,9 @@ public class GameState extends LevelState {
 	@Override
 	public void onStart() {
 		super.onStart();
-		
+
 		placeObstacles((gameSettings.difficulty)*1100+11,(gameSettings.difficulty+1)*7);
-		
+
 		fallingAngle = gameSettings.fallingAngle[gameSettings.difficulty];
 		fallingAngle = (float) Math.toRadians(105);
 		player.bendingSpeed = 0;
@@ -60,8 +60,8 @@ public class GameState extends LevelState {
 
 		gameOverOverlay = false;
 
-		DrunkenSkeleton skeleton = (DrunkenSkeleton) player.getSkeleton();
-		camera.set(skeleton.mHipJoint.mPosX + player.posX, skeleton.mHipJoint.mPosY, worldZoom, player.drunkenBending);
+		DrunkenSkeleton skeleton = player.getSkeleton();
+		camera.set(skeleton.mHipJoint.mX + player.posX, skeleton.mHipJoint.mY, worldZoom, player.drunkenBending);
 		player.setFloorY(0.1f);
 	}
 
@@ -69,10 +69,19 @@ public class GameState extends LevelState {
 	public void onBend(float bending) {
 		player.steeredBending = bending;
 	}
-	
+
 	protected void setGameOver() {
 		player.fallDown();
 		gameOverTime = programController.getProgramTime();
+	}
+
+	public void refreshCam() {
+		float camShiftX = useObstacles?0.2f:0;
+		if (!fixedCameraMode)
+			camera.set(player.getSkeleton().mHipJoint.mX + player.posX + camShiftX, player.getSkeleton().mHipJoint.mY + player.posY + 0.2f, worldZoom, player.drunkenBending);
+		else if (player.getWorldX() > camera.getX() + 10) {
+			fixedCameraMode = false;
+		}
 	}
 
 	@Override
@@ -87,13 +96,13 @@ public class GameState extends LevelState {
 				worldZoom = 2.3f;
 			else
 				worldZoom = 2;
-			float camShiftX = useObstacles?0.2f:0;
+
 			if (gameOverOverlay) {
 				brightness += (0.4f - brightness) * 0.05f;
-				camera.mAdaption = 0.06f;
-				camera.setRotation(camera.getRotation() * 0.96f);
-				camera.setZoom(camera.getZoom() + (3.5f - camera.getZoom()) * 0.7f);
-				camera.setPos(player.skeleton.mHipJoint.mPosX + player.posX, player.skeleton.mHipJoint.mPosY + 1);
+				camera.mAdaption = 0.05f;
+				camera.setRotation(camera.getRotation() * 0.98f);
+				camera.setZoom(camera.getZoom() + (3.7f - camera.getZoom()) * 0.4f);
+				camera.setPos(player.skeleton.mHipJoint.mX + player.posX, player.skeleton.mHipJoint.mY + 1);
 			} else {
 				if (pause) {
 					if (stateTimer > pauseTime) {
@@ -103,6 +112,7 @@ public class GameState extends LevelState {
 					}
 
 					player.step(deltaTime);
+					refreshCam();
 
 					return;
 				} else if (pauseFadeOut > 0) {
@@ -113,7 +123,7 @@ public class GameState extends LevelState {
 					float t = stateTimer - 10;
 					if (t < 0)
 						t = 0;
-					difficultyFactor = gameSettings.difficulty + ((float) Math.pow(t, 0.5f) * 0.1f);
+					difficultyFactor = (gameSettings.difficulty + ((float) Math.pow(t, 0.5f) * 0.1f)) * 0.4f;
 					if(fixedCameraMode)
 						difficultyFactor = 0;
 					// ---PLAYER-CONTROLS---
@@ -152,7 +162,7 @@ public class GameState extends LevelState {
 								uBend = limit;
 							if (uBend < -limit)
 								uBend = -limit;
-							player.bendingSpeed = (float) (uBend * gameSettings.gravityFactor + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor * airFactor;
+							player.bendingSpeed = (uBend * gameSettings.gravityFactor + player.steeredBending * player.steeredBending * sign * 0.15f) * difficultyFactor * airFactor;
 
 							player.drunkenBending += player.bendingSpeed;
 						}
@@ -236,7 +246,7 @@ public class GameState extends LevelState {
 									}
 								}
 							}
-							
+
 							if(!player.fellDown) {
 								float bending = Math.abs(player.drunkenBending + player.steeredBending);
 								// Overbend
@@ -269,12 +279,8 @@ public class GameState extends LevelState {
 						super.programController.switchState(new GameOverState(this, player.getWorldX(), stateTimer - pauseTime));
 					}
 				}
-				DrunkenSkeleton skeleton = (DrunkenSkeleton) player.getSkeleton();
-				if (!fixedCameraMode)
-					camera.set(skeleton.mHipJoint.mPosX + player.posX + camShiftX, skeleton.mHipJoint.mPosY + player.posY + 0.2f, worldZoom*1.5f, player.drunkenBending);
-				else if (player.getWorldX() > camera.getX() + 10) {
-					fixedCameraMode = false;
-				}
+				DrunkenSkeleton skeleton = player.getSkeleton();
+				refreshCam();
 			}
 			player.step(deltaTime);
 		}
@@ -287,10 +293,10 @@ public class GameState extends LevelState {
 		// draw initial start sequence
 		if (pause) {
 			graphics2D.setColor(1.f, 1.f, 1.f);
-			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, (int) Math.ceil(pauseTime - stateTimer) + " ");
+			graphics2D.drawStringLegacy(0.0f, 2.3f, 0.5f, 0, 0, 0, (int) Math.ceil(pauseTime - stateTimer) + " ");
 		} else if (pauseFadeOut > 0) {
 			graphics2D.setColor(1.f, 1.f, 1.f, pauseFadeOut);
-			graphics2D.drawString(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
+			graphics2D.drawStringLegacy(0.0f, 2.3f, 0.5f, 0, 0, 0, "Walk!");
 		}
 
 		// config camera
@@ -305,7 +311,7 @@ public class GameState extends LevelState {
 		// Draw stats
 		if (!gameOverOverlay) {
 			graphics2D.switchGameCoordinates(false);
-			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+			graphics2D.setLegacyFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			// graphics2D.drawStringL(1.2f, 0.8f, 0.1f, df.format( player.posX )
 			// +"m ");
@@ -331,7 +337,7 @@ public class GameState extends LevelState {
 			}
 
 			if (!fixedCameraMode && player.posX >= 1 && !programController.markWarning)
-				graphics2D.drawString(-0.24f, -0.86f, 0.15f, -1, -1, 0, 0.107f, s);
+				graphics2D.drawStringLegacy(-0.24f, -0.86f, 0.15f, -1, -1, 0, 0.107f, s);
 			// graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.8f,
 			// 0.1f,-1, -1, 0, 0.07f, s);
 			// graphics2D.drawString(graphics2D.getScreenLeft() + 0.1f, 0.7f,

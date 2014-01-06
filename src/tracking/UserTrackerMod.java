@@ -7,15 +7,12 @@ import java.util.HashMap;
 import java.util.TreeSet;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Tuple3d;
 import javax.vecmath.Vector3d;
 
 import org.OpenNI.CalibrationProgressEventArgs;
 import org.OpenNI.CalibrationProgressStatus;
 import org.OpenNI.Context;
 import org.OpenNI.DepthGenerator;
-//import org.OpenNI.DepthMetaData;
-//import org.OpenNI.ImageGenerator;
 import org.OpenNI.GeneralException;
 import org.OpenNI.IObservable;
 import org.OpenNI.IObserver;
@@ -23,7 +20,6 @@ import org.OpenNI.OutArg;
 import org.OpenNI.Point3D;
 import org.OpenNI.PoseDetectionCapability;
 import org.OpenNI.PoseDetectionEventArgs;
-//import org.OpenNI.SceneMetaData;
 import org.OpenNI.SceneMetaData;
 import org.OpenNI.ScriptNode;
 import org.OpenNI.SkeletonCapability;
@@ -34,9 +30,11 @@ import org.OpenNI.StatusException;
 import org.OpenNI.UserEventArgs;
 import org.OpenNI.UserGenerator;
 
-
 import control.ProgramController;
 import control.ProgramState;
+//import org.OpenNI.DepthMetaData;
+//import org.OpenNI.ImageGenerator;
+//import org.OpenNI.SceneMetaData;
 //import control.states.MainMenuState;
 //import control.Debug;
 //import tracking.UserTrackerMod.CalibrationCompleteObserver;

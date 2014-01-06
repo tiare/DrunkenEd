@@ -1,7 +1,7 @@
 package graphics.background;
 
-import graphics.defaults.Default2DGraphics;
-import graphics.translator.GraphicsTranslator;
+import yang.graphics.defaults.Default2DGraphics;
+import yang.graphics.translator.GraphicsTranslator;
 
 public class Tree extends HorizontalDrawable {
 
@@ -29,7 +29,7 @@ public class Tree extends HorizontalDrawable {
 
 	@Override
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D) {
-		
+
 		graphics2D.setColor(0.3f, 0.1f, 0.0f);
 		graphics2D.drawRectCentered(offset,yOffset+1, 0.2f,2.0f, 0);
 		graphics2D.setColor(0.0f, 0.66f, 0.0f);

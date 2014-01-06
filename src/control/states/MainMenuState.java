@@ -5,22 +5,24 @@ import java.util.LinkedList;
 
 import figure.DrunkenSkeleton;
 import figure.Player;
-import util.NonConcurrentList;
+import yang.graphics.model.FloatColor;
+import yang.graphics.skeletons.CartoonBone;
+import yang.graphics.textures.TextureProperties;
+import yang.graphics.translator.Texture;
+import yang.physics.massaggregation.elements.Joint;
+import yang.physics.massaggregation.elements.JointConnection;
+import yang.util.YangList;
 import control.Debug;
 import control.GameSettings;
 import control.ProgramController;
-import graphics.FloatColor;
 import graphics.StandardTextures;
-import graphics.skeletons.elements.Bone;
-import graphics.skeletons.elements.Joint;
-import graphics.translator.Texture;
-import graphics.translator.TextureSettings;
 
 public class MainMenuState extends WorldState {
 
 	public static boolean NO_USER_TEST = false; // set to true, if you wish to
 												// test the case of no user detected
 	private static final int NONE = -1, LEFT = 0, CENTER = 1, RIGHT = 2;
+	private static final float DRINK_HINT_SPEED = 0.7f;
 	private static final float SPEED_FACTOR = 3.5f;
 	private static final float HELP_FREQUENCY = 4;
 	private static final float HELP_INTENSITY = 0.018f;
@@ -28,7 +30,7 @@ public class MainMenuState extends WorldState {
 	private static final String TITLE_TEXT = "Drunken Ed";
 	private static final String DEFAULT_TEXT = "Choose your difficulty!";
 	private static final String DRINK_TEXT = "Drink to start!";
-	private static final String BEND_TEXT = "Bend to move!";
+	private static final String BEND_TEXT = "Bend yourself to move!";
 	public static final FloatColor HELP_COLOR1 = new FloatColor(0.9f, 0.7f, 0.3f);
 	public static final FloatColor HELP_COLOR2 = new FloatColor(1.f, 1.f, 0.2f);
 	public static final FloatColor TITLE_COLOR1 = new FloatColor(0.4f, 0.7f, 0.4f);
@@ -87,7 +89,7 @@ public class MainMenuState extends WorldState {
 	private float angleIncrease = 30;
 
 	private float activationTime = 0;
-	private float hintTimeout = 3.f;
+	private float hintTimeout = 1.7f;
 	private boolean waitedLongEnough = false;
 	private LinkedList<Float> traveledDistances;
 	private float minDistance = 0.8f;
@@ -132,10 +134,10 @@ public class MainMenuState extends WorldState {
 
 		shadowPlayer = new Player(false);
 		shadowPlayer.init(programController);
-		shadowSkeleton = (DrunkenSkeleton) shadowPlayer.getSkeleton();
+		shadowSkeleton = shadowPlayer.getSkeleton();
 
 		player.setArmAnglesByTracking(true);
-		skeleton = (DrunkenSkeleton) player.getSkeleton();
+		skeleton = player.getSkeleton();
 		skeleton.mBottleAutoAngle = true;
 
 		player.jumpEnabled = false;
@@ -200,8 +202,8 @@ public class MainMenuState extends WorldState {
 	}
 
 	private void updateShadowPosition() {
-		NonConcurrentList<Joint> joints = skeleton.mJoints;
-		NonConcurrentList<Joint> shadowJoints = shadowSkeleton.mJoints;
+		YangList<Joint> joints = skeleton.mJoints;
+		YangList<Joint> shadowJoints = shadowSkeleton.mJoints;
 		Joint currentShadowJoint;
 		Joint currentJoint;
 
@@ -209,13 +211,13 @@ public class MainMenuState extends WorldState {
 			currentJoint = joints.get(i);
 			currentShadowJoint = shadowJoints.get(i);
 
-			currentShadowJoint.mPosX = currentJoint.mPosX;
-			currentShadowJoint.mPosY = currentJoint.mPosY;
+			currentShadowJoint.mX = currentJoint.mX;
+			currentShadowJoint.mY = currentJoint.mY;
 		}
 
-		NonConcurrentList<Bone> shadowBones = shadowSkeleton.mBones;
-		for (Bone bone : shadowBones) {
-			bone.mVisible = false;
+		YangList<JointConnection> shadowBones = shadowSkeleton.mBones;
+		for (JointConnection bone : shadowBones) {
+			((CartoonBone)bone).mVisible = false;
 		}
 
 		shadowSkeleton.refreshBottle();
@@ -228,14 +230,14 @@ public class MainMenuState extends WorldState {
 			shadowShoulderAngle = 0;
 		} else {
 			float increase =  angleIncrease*gulp;
-			skeleton.mHeadJoint.setPosByAngle((float) Math.toRadians(headAngle+increase));
+			skeleton.mHeadJoint.setPosByAngle2D((float) Math.toRadians(headAngle+increase));
 			// set inactive left arm
-			skeleton.mLeftElbowJoint.setPosByAngle((float) Math.toRadians(inactiveShoulderAngle));
-			skeleton.mLeftHandJoint.setPosByAngle((float) Math.toRadians(inactiveElbowAngle));
+			skeleton.mLeftElbowJoint.setPosByAngle2D((float) Math.toRadians(inactiveShoulderAngle));
+			skeleton.mLeftHandJoint.setPosByAngle2D((float) Math.toRadians(inactiveElbowAngle));
 			// set right drinking arm
-			skeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1+increase*1.2 : shoulderAngle2+increase*1.2));
-			skeleton.mRightHandJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? elbowAngle1+increase*0.5 : elbowAngle2+increase*0.45));
-			skeleton.mBottleJoint.setPosByAngle((float) Math.toRadians((activeLevel == LEFT) ? handAngle1+increase*0.6 : handAngle2+increase*0.55));
+			skeleton.mRightElbowJoint.setPosByAngle2D((float) Math.toRadians((activeLevel == LEFT) ? shoulderAngle1+increase*1.2 : shoulderAngle2+increase*1.2));
+			skeleton.mRightHandJoint.setPosByAngle2D((float) Math.toRadians((activeLevel == LEFT) ? elbowAngle1+increase*0.5 : elbowAngle2+increase*0.45));
+			skeleton.mBottleJoint.setPosByAngle2D((float) Math.toRadians((activeLevel == LEFT) ? handAngle1+increase*0.6 : handAngle2+increase*0.55));
 			shadowSkeleton.refreshBottle();
 		}
 	}
@@ -250,13 +252,13 @@ public class MainMenuState extends WorldState {
 				shadowShoulderAngle = 30;
 				shadowStepAngle *= -1;
 			}
-			shadowElbowAngle += 160 / shadowStepAngle;
-			shadowShoulderAngle += 60 / shadowStepAngle;
-			shadowSkeleton.mRightElbowJoint.setPosByAngle((float) Math.toRadians(shadowShoulderAngle));
-			shadowSkeleton.mRightHandJoint.setPosByAngle((float) Math.toRadians(shadowElbowAngle));
+			shadowElbowAngle += 160 / shadowStepAngle * DRINK_HINT_SPEED;
+			shadowShoulderAngle += 60 / shadowStepAngle * DRINK_HINT_SPEED;
+			shadowSkeleton.mRightElbowJoint.setPosByAngle2D((float) Math.toRadians(shadowShoulderAngle));
+			shadowSkeleton.mRightHandJoint.setPosByAngle2D((float) Math.toRadians(shadowElbowAngle));
 
-			shadowSkeleton.setModColor(0.f, 0.f, 0.f, 0.9f);
-			shadowSkeleton.setAddColor(0.1f, 0.1f, 0.15f);
+			shadowSkeleton.setFillColor(0.25f, 0.25f, 0.25f, 0.88f);
+			//shadowSkeleton.setSuppData(0.9f);
 			shadowSkeleton.mDrawContour = false;
 			shadowSkeleton.mRightLowerArmBone.mVisible = true;
 			shadowSkeleton.mRightUpperArmBone.mVisible = true;
@@ -341,11 +343,11 @@ public class MainMenuState extends WorldState {
 			if (!trackedUser) { // Do this if there is no tracked player
 				graphics2D.switchGameCoordinates(false);
 				graphics2D.setColorWeighted(HELP_COLOR1, HELP_COLOR2, blinkValue);
-				graphics2D.drawString(0, -0.14f, 0.13f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, START_TEXT);
+				graphics2D.drawStringLegacy(0, -0.14f, 0.13f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, START_TEXT);
 				// graphics2D.setColorWeighted(TITLE_COLOR1, TITLE_COLOR2,
 				// blinkValue);
 				graphics2D.setColorWeighted(GAME_TITLE_COLOR1,GAME_TITLE_COLOR2,pulse(HELP_FREQUENCY*0.5f,1));
-				graphics2D.drawString(0, 0.85f, 0.19f + (float)Math.sin(stateTimer*1.5f)*0.02f, 0, 0, (float) Math.sin(stateTimer * 3) * 0.05f, TITLE_TEXT);
+				graphics2D.drawStringLegacy(0, 0.85f, 0.19f + (float)Math.sin(stateTimer*1.5f)*0.02f, 0, 0, (float) Math.sin(stateTimer * 3) * 0.05f, TITLE_TEXT);
 				graphics.bindTexture(null);
 				graphics2D.switchGameCoordinates(true);
 
@@ -368,22 +370,22 @@ public class MainMenuState extends WorldState {
 			graphics.bindTexture(null);
 
 			// Display bottom text
-			graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+			graphics2D.setLegacyFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 			graphics2D.switchGameCoordinates(false);
 			if ((waitedLongEnough || showArrows) && !startLevel) {
 				graphics2D.setColorWeighted(HELP_COLOR1, HELP_COLOR2, blinkValue);
 				if (!programController.markWarning) {
 					if (waitedLongEnough) {
-						graphics2D.drawString(0, -0.9f, 0.13f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
+						graphics2D.drawStringLegacy(0, -0.9f, 0.13f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, DRINK_TEXT);
 					} else {
-						graphics2D.drawString(0, -0.9f, 0.13f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
+						graphics2D.drawStringLegacy(0, -0.9f, 0.13f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, BEND_TEXT);
 					}
 				}
 			}
 
 			graphics2D.setColor(GAME_TITLE_COLOR2);
 			if (!programController.markWarning)
-				graphics2D.drawString(0, 0.92f, 0.125f+pulse(HELP_FREQUENCY*0.5f,0.01f), 0, 0, 0, DEFAULT_TEXT);
+				graphics2D.drawStringLegacy(0, 0.92f, 0.125f+pulse(HELP_FREQUENCY*0.5f,0.01f), 0, 0, 0, DEFAULT_TEXT);
 			graphics2D.switchGameCoordinates(true);
 			graphics.bindTexture(null);
 
@@ -406,7 +408,7 @@ public class MainMenuState extends WorldState {
 			// display the drinks
 			graphics2D.setColor(1.f, 1.f, 1.f);
 			graphics.bindTexture(StandardTextures.ED_SKELETON);
-			graphics2D.drawRectCentered(posX, drinkY, 3.5f, 3.5f, 0, skeleton.mBottleBone.mTexCoords.get(drink * 4));
+			graphics2D.drawRectCentered(posX, drinkY, 0.9f, 0, skeleton.mBottleBone.mTexCoords.get(drink * 4));
 		}
 
 		if (active) {
@@ -493,28 +495,28 @@ public class MainMenuState extends WorldState {
 		}
 
 		// Write highscores
-		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
+		graphics2D.setLegacyFont(StandardTextures.FONT_BELLIGERENT_MADNESS_CHALK);
 		//graphics2D.setShaderProgram(StandardTextures.CHALK_SHADER);
-		graphics2D.drawStringL(posX - 0.75f, posY - 0.05f, 0.23f, "1. ");
-		graphics2D.drawStringL(posX - 0.75f, posY - 0.45f, 0.23f, "2. ");
-		graphics2D.drawStringL(posX - 0.75f, posY - 0.85f, 0.23f, "3. ");
+		graphics2D.drawStringLegacyL(posX - 0.75f, posY - 0.05f, 0.23f, "1. ");
+		graphics2D.drawStringLegacyL(posX - 0.75f, posY - 0.45f, 0.23f, "2. ");
+		graphics2D.drawStringLegacyL(posX - 0.75f, posY - 0.85f, 0.23f, "3. ");
 		if(firstPic!=null)
-			graphics2D.drawStringR(posX + 0.75f, posY - 0.05f, 0.23f, "" + scores[0] + "m");
+			graphics2D.drawStringLegacyR(posX + 0.75f, posY - 0.05f, 0.23f, "" + scores[0] + "m");
 		if(secondPic!=null)
-			graphics2D.drawStringR(posX + 0.75f, posY - 0.45f, 0.23f, "" + scores[1] + "m");
+			graphics2D.drawStringLegacyR(posX + 0.75f, posY - 0.45f, 0.23f, "" + scores[1] + "m");
 		if(thirdPic!=null)
-			graphics2D.drawStringR(posX + 0.75f, posY - 0.85f, 0.23f, "" + scores[2] + "m");
+			graphics2D.drawStringLegacyR(posX + 0.75f, posY - 0.85f, 0.23f, "" + scores[2] + "m");
 		graphics.bindTexture(null);
 		graphics2D.setDefaultProgram();
 
 		// Write blackboard title
-		graphics2D.setFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
+		graphics2D.setLegacyFont(StandardTextures.FONT_BELLIGERENT_MADNESS_BOLD);
 		if (activeLevel == position) {
 			graphics2D.setColorWeighted(TITLE_COLOR1, TITLE_COLOR2, blinkValue);
-			graphics2D.drawString(posX, posY + 0.5f, 0.2f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, title);
+			graphics2D.drawStringLegacy(posX, posY + 0.5f, 0.2f + pulse(HELP_FREQUENCY, HELP_INTENSITY), 0, 0, 0, title);
 		} else {
 			graphics2D.setColor(0.8f, 0.8f, 0.8f);
-			graphics2D.drawString(posX, posY + 0.5f, 0.2f, 0, 0, 0, title);
+			graphics2D.drawStringLegacy(posX, posY + 0.5f, 0.2f, 0, 0, 0, title);
 		}
 		graphics.bindTexture(null);
 	}
@@ -616,15 +618,15 @@ public class MainMenuState extends WorldState {
 	private ArrayList<Texture> setHighscorePictures(int level) {
 		ArrayList<Texture> textures = new ArrayList<Texture>();
 		if (highscores.getPictureFromPos(level, 0) != null)
-			textures.add(0, graphics.createTexture(highscores.getPictureFromPos(level, 0), 80, 125, new TextureSettings()));
+			textures.add(0, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 0), 80, 125, new TextureProperties()));
 		else
 			textures.add(0, getDefaultTexture(level, 0));
 		if (highscores.getPictureFromPos(level, 1) != null)
-			textures.add(1, graphics.createTexture(highscores.getPictureFromPos(level, 1), 80, 125, new TextureSettings()));
+			textures.add(1, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 1), 80, 125, new TextureProperties()));
 		else
 			textures.add(1, getDefaultTexture(level, 1));
 		if (highscores.getPictureFromPos(level, 2) != null)
-			textures.add(2, graphics.createTexture(highscores.getPictureFromPos(level, 2), 80, 125, new TextureSettings()));
+			textures.add(2, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 2), 80, 125, new TextureProperties()));
 		else
 			textures.add(2, getDefaultTexture(level, 2));
 

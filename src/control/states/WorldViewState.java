@@ -1,12 +1,12 @@
 package control.states;
 
-import graphics.events.Keys;
+import yang.events.Keys;
 import control.ProgramState;
 
 public class WorldViewState extends LevelState {
 
 	private float moveX,moveY;
-	
+
 	public WorldViewState() {
 		super();
 		moveX = 0;
@@ -24,8 +24,8 @@ public class WorldViewState extends LevelState {
 	public void onStep(float deltaTime) {
 		super.onStep(deltaTime);
 		camera.setZoom(worldZoom);
-		camera.mTarPos.x += moveX*deltaTime*worldZoom;
-		camera.mTarPos.y += moveY*deltaTime*worldZoom;
+		camera.mTarPos.mX += moveX*deltaTime*worldZoom;
+		camera.mTarPos.mY += moveY*deltaTime*worldZoom;
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class WorldViewState extends LevelState {
 	public int getType() {
 		return ProgramState.GAME;
 	}
-	
+
 	@Override
 	public void zoom(float value) {
 		worldZoom += value;

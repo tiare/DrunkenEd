@@ -1,7 +1,7 @@
 package graphics.background;
 
-import graphics.defaults.Default2DGraphics;
-import graphics.translator.GraphicsTranslator;
+import yang.graphics.defaults.Default2DGraphics;
+import yang.graphics.translator.GraphicsTranslator;
 
 public class Spacer implements HorizontalDrawableInterface {
 

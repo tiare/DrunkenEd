@@ -1,11 +1,13 @@
 #project
 lib/opengl/*
 lib/math/*
+lib/*
 src/control/Config.java
 score*bb
 *.csv
-*.jar
 *.tcp
+drunken_ed.jar
+*.ym
 
 #LaTeX
 */doc/*.aux

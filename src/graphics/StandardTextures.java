@@ -1,13 +1,14 @@
 package graphics;
 
-import ninja.game.graphics.fonts.FontBelligerentMadnessBold;
+import yang.graphics.font.LegacyAbstractFont;
+import yang.graphics.textures.TextureProperties;
+import yang.graphics.textures.enums.TextureFilter;
+import yang.graphics.textures.enums.TextureWrap;
+import yang.graphics.translator.AbstractGFXLoader;
+import yang.graphics.translator.GraphicsTranslator;
+import yang.graphics.translator.Texture;
+import graphics.fonts.FontBelligerentMadnessBold;
 import graphics.fonts.FontBelligerentMadnessChalk;
-import graphics.skeletons.Skeleton;
-import graphics.translator.GraphicsTranslator;
-import graphics.translator.Texture;
-import graphics.translator.TextureFilter;
-import graphics.translator.TextureSettings;
-import graphics.translator.TextureWrap;
 
 public class StandardTextures {
 
@@ -41,7 +42,6 @@ public class StandardTextures {
 	public static Texture ARROW_L;
 	public static Texture ARROW_R;
 
-	public static Texture ED;
 	public static Texture NO_ED;
 
 	public static Texture HOUSE1;
@@ -51,15 +51,15 @@ public class StandardTextures {
 	public static Texture TREE1;
 	public static Texture TREE2;
 
-	public static AbstractFont FONT_BELLIGERENT_MADNESS_CHALK;
-	public static AbstractFont FONT_BELLIGERENT_MADNESS_BOLD;
+	public static LegacyAbstractFont FONT_BELLIGERENT_MADNESS_CHALK;
+	public static LegacyAbstractFont FONT_BELLIGERENT_MADNESS_BOLD;
 
 //	public static ChalkShader CHALK_SHADER;
 //	public static DrunkenShader DRUNKEN_SHADER;
 
 	public static void init(GraphicsTranslator graphics) {
 
-		TextureSettings defSettings = new TextureSettings(TextureWrap.CLAMP,TextureWrap.CLAMP,TextureFilter.LINEAR_MIP_LINEAR);
+		TextureProperties defSettings = new TextureProperties(TextureWrap.CLAMP,TextureWrap.CLAMP,TextureFilter.LINEAR_MIP_LINEAR);
 
 		AbstractGFXLoader gfxLoader = graphics.mGFXLoader;
 		//CUBE = gfxLoader.getImage("cube");
@@ -69,7 +69,7 @@ public class StandardTextures {
 
 		ARROW = gfxLoader.getImage("arrow",defSettings);
 		PHOTO_FRAME = gfxLoader.getImage("photoFrame",defSettings);
-		STREET = gfxLoader.getImage("street",new TextureSettings(TextureWrap.REPEAT,TextureWrap.REPEAT,TextureFilter.LINEAR_MIP_LINEAR));
+		STREET = gfxLoader.getImage("street",new TextureProperties(TextureWrap.REPEAT,TextureWrap.REPEAT,TextureFilter.LINEAR_MIP_LINEAR));
 		GAME_BACKGROUND = gfxLoader.getImage("nightsky",defSettings);
 		CROSS = gfxLoader.getImage("cross",defSettings);
 		STOOL = gfxLoader.getImage("hocker",defSettings);
@@ -90,7 +90,6 @@ public class StandardTextures {
 		ARROW_L = gfxLoader.getImage("arrow_left", defSettings);
 		ARROW_R = gfxLoader.getImage("arrow_right", defSettings);
 
-		ED = gfxLoader.getImage("ed",defSettings);
 		NO_ED = gfxLoader.getImage("ed_silhouette",defSettings);
 		ED_SKELETON = gfxLoader.getImage("skeleton_ed",defSettings);
 
@@ -115,7 +114,7 @@ public class StandardTextures {
 //		DRUNKEN_SHADER = new DrunkenShader();
 //		DRUNKEN_SHADER.init(graphics);
 
-		Skeleton.CURSOR_TEXTURE = CIRCLE;
+		//Skeleton.CURSOR_TEXTURE = CIRCLE;
 	}
 
 }

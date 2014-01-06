@@ -2,8 +2,8 @@ package graphics.background;
 
 import java.util.LinkedList;
 
-import graphics.defaults.Default2DGraphics;
-import graphics.translator.GraphicsTranslator;
+import yang.graphics.defaults.Default2DGraphics;
+import yang.graphics.translator.GraphicsTranslator;
 
 public class HorizontalRow {
 
@@ -19,7 +19,7 @@ public class HorizontalRow {
 		this.pool = pool;
 		row = new LinkedList<HorizontalDrawableInterface>();
 	}
-	
+
 	public void setStart(float start){
 		this.startOffset = start;
 		this.start = startOffset;
@@ -34,32 +34,32 @@ public class HorizontalRow {
 		spacerWidthRange = max-min;
 		useSpacer = true;
 	}
-	
-	
+
+
 	public void add(HorizontalDrawableInterface drawable){
 		drawable.setOffset(start);
 		row.add(drawable);
 		start += drawable.getWidth();
-		
+
 		// add new spacer
 		if( useSpacer ){
 			HorizontalDrawableInterface item = new Spacer((float) (spacerWidthMin + Math.random() *spacerWidthRange));
 			row.add(item);
 			start += item.getWidth();
 		}
-		
+
 	}
-	
+
 	public void draw(GraphicsTranslator graphics, Default2DGraphics graphics2D, float offset, float zoom){
-		
+
 		start = startOffset;
 		for( HorizontalDrawableInterface item : row){
 			if( start + item.getWidth() > offset - drawingWidth*zoom && start < offset + drawingWidth*zoom ){
 				item.draw(graphics, graphics2D);
 			}
-			
+
 			start += item.getWidth();
-			
+
 		}
 		while( start < offset + drawingWidth*zoom ){
 			// add and draw new house
