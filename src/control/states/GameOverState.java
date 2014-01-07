@@ -43,6 +43,7 @@ public class GameOverState extends ProgramState {
 	boolean tookPicture;
 	private GameState gameState;
 	boolean returnWithoutHighscore;
+	boolean scoreSaved;
 
 	boolean noPicture;
 
@@ -74,6 +75,7 @@ public class GameOverState extends ProgramState {
 		tookPicture = false;
 		noPicture = false;
 		returnWithoutHighscore = false;
+		scoreSaved = false;
 	}
 
 	private float getScore(float distance, float time) {
@@ -91,11 +93,13 @@ public class GameOverState extends ProgramState {
 			gameState.gameOverOverlay = true;
 			gameState.step(deltaTime);
 		}
-		if (tookPicture) {
-			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
-				if(programController.tracking instanceof CameraTracking)
-					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
-			}
+		if (tookPicture && !scoreSaved) {
+//			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
+
+			if(programController.tracking instanceof CameraTracking)
+				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
+//			}
+			scoreSaved = true;
 			timeLeft = SECONDTIMEOUT - (int) ((System.currentTimeMillis() - secondCountdownTime)/1000L);
 		} else {
 			timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() -  countdownTime) / 1000L);

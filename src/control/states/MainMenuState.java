@@ -8,6 +8,8 @@ import figure.Player;
 import yang.graphics.model.FloatColor;
 import yang.graphics.skeletons.CartoonBone;
 import yang.graphics.textures.TextureProperties;
+import yang.graphics.textures.enums.TextureFilter;
+import yang.graphics.textures.enums.TextureWrap;
 import yang.graphics.translator.Texture;
 import yang.physics.massaggregation.elements.Joint;
 import yang.physics.massaggregation.elements.JointConnection;
@@ -618,15 +620,15 @@ public class MainMenuState extends WorldState {
 	private ArrayList<Texture> setHighscorePictures(int level) {
 		ArrayList<Texture> textures = new ArrayList<Texture>();
 		if (highscores.getPictureFromPos(level, 0) != null)
-			textures.add(0, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 0), 80, 125, new TextureProperties()));
+			textures.add(0, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 0), 80, 125, new TextureProperties(TextureWrap.CLAMP,TextureFilter.LINEAR)));
 		else
 			textures.add(0, getDefaultTexture(level, 0));
 		if (highscores.getPictureFromPos(level, 1) != null)
-			textures.add(1, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 1), 80, 125, new TextureProperties()));
+			textures.add(1, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 1), 80, 125, new TextureProperties(TextureWrap.CLAMP,TextureFilter.LINEAR)));
 		else
 			textures.add(1, getDefaultTexture(level, 1));
 		if (highscores.getPictureFromPos(level, 2) != null)
-			textures.add(2, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 2), 80, 125, new TextureProperties()));
+			textures.add(2, graphics.createAndInitTexture(highscores.getPictureFromPos(level, 2), 80, 125, new TextureProperties(TextureWrap.CLAMP,TextureFilter.LINEAR)));
 		else
 			textures.add(2, getDefaultTexture(level, 2));
 

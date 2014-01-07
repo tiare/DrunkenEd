@@ -27,7 +27,7 @@ public class Player implements SkeletonCarrier {
 	private float gravity = -9f;
 	public boolean inGame;
 	private boolean armAnglesByTracking;
-	public boolean jumpEnabled = true;
+	public boolean jumpEnabled = false;
 
 	//State
 	public float posX,posY;
@@ -250,9 +250,13 @@ public class Player implements SkeletonCarrier {
 				if(drinkState>0) {
 					//skeleton.mHeadJoint.setPosByAngle(headAngle);
 				}else{
-					if(inGame || !CONTROL_HEAD)
-						skeleton.mHeadJoint.setPosByAngle2D(PI*0.9f+angleOffset);
-					else
+					if(inGame || !CONTROL_HEAD) {
+						//skeleton.mHeadJoint.setPosByAngle2D(PI*0.9f+angleOffset);
+						if(this.armAnglesByTracking) {
+							skeleton.mHeadJoint.setPosByAngle2D(PI*0.96f);
+						}else
+							skeleton.mHeadJoint.setPosByAngle2D(PI*0.9f+angleOffset);
+					}else
 						skeleton.mHeadJoint.setPosByAngle2D(-tracking.headangle+bending+PI);
 				}
 
@@ -290,9 +294,7 @@ public class Player implements SkeletonCarrier {
 					skeleton.mHeadBone.setTextureCoordinatesIndex(0);
 			}
 
-			if(this.armAnglesByTracking) {
-				skeleton.mHeadJoint.setPosByAngle2D(PI*0.96f);
-			}
+
 
 			skeleton.refreshVisualData();
 			skeleton.draw();
@@ -395,6 +397,8 @@ public class Player implements SkeletonCarrier {
 		if(jumpEnabled && Debug.JUMP_ENABLED) {
 			if(posY<=skeleton.mLowerLimit+0.001f) {
 				velY = velocity;
+				if(velX<1)
+					velX += 1.35f;
 			}
 		}
 	}

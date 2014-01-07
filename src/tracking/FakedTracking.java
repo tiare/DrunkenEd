@@ -15,37 +15,44 @@ public class FakedTracking extends AbstractTracking{
 	public float gpareaz=0;
 	public float gpareax=0;
 	public float drinking=0;
-	
+
 	public FakedTracking(ProgramController programController) {
 		super(programController);
 		bending = 0.0f;
 	}
-	
+
+	@Override
 	public Point2d getHeadPos() {
 		return new Point2d(0,0.7f);
 	}
 
+	@Override
 	public void init() {
-		
+
 	}
-	
+
+	@Override
 	public float getTorsoBending(){
 		return bending;
 	}
+	@Override
 	public void step(float deltaTime) {
-		
+
 		if( keyIsPressed(Keys.LEFT) ){
 			bending += -(float)Math.PI /72.0f;
 		} else if( keyIsPressed(Keys.RIGHT) ){
 			bending += (float)Math.PI /72.0f;
+		} else if( keyIsPressed(Keys.DOWN) ){
+			bending = 0;
 		}
-		
+
 		if(programController.getCurrentState()!=null) {
 			programController.getCurrentState().onBend(bending);
 		}
-		
+
 	}
-	
+
+	@Override
 	public void keyDown(int key) {
 		super.keyDown(key);
 		TrackingListener listener = programController.getCurrentState();
@@ -61,7 +68,7 @@ public class FakedTracking extends AbstractTracking{
 	public void restart() {
 		bending = 0;
 	}
-	
+
 	@Override
 	public java.nio.ByteBuffer getColorImageByteBuffer() {
 		return null;
@@ -71,5 +78,5 @@ public class FakedTracking extends AbstractTracking{
 	public Point3D[] getSkeletonPoints() {
 		return null;
 	}
-	
+
 }
