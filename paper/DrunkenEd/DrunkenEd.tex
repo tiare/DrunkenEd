@@ -52,7 +52,7 @@
 % Paper metadata (use plain text, for PDF inclusion and later re-using, if desired)
 \def\plaintitle{Drunken Ed - A Balance Game For Public Large Screen Displays}
 \def\plainauthor{Alexander Biskupski, Andreas Fender, Tiare Feuchtner, Marcel Karsten, Jonas Willaredt}
-\def\plainkeywords{Public displays, large screen display, casual game, balance game, natural user interface, kinect, gesture control}
+\def\plainkeywords{Public displays, large screen display, casual game, balance game, natural user interface, Kinect, gesture control}
 %\def\plaingeneralterms{Documentation, Standardization}
 
 \hypersetup{
@@ -78,8 +78,9 @@
 
 \maketitle
 
+
 \begin{abstract}
-\drunkened is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. This single player game has a very direct control mapping, which uses the orientation of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose directly reflects that of the player, creating a very immediate form of control. In addition we apply the simple gesture of raising a hand to the mouth to drink, to trigger a selection in the menu. In our evaluation this form of mapping has proven to be very intuitive and the short play sessions agree with the requirements of a casual game in public environment. Furthermore the game setting is widely accepted, despite its drunken protagonist.
+\drunkened\ is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. The game setting with its drunken protagonist was well received by the players. This single player game uses the angle of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. When facing obstacles, a short hop allows the player to make Ed leap over them. To trigger a selection in the menu we use the simple gesture of raising a hand to the mouth to drink. Ed's body pose reflects the player's pose, creating a very direct form of control. Results of our evaluation show that this form of mapping has proven to be very easy to learn and the short play sessions meet the requirements of a casual game in public environment.
 %Do not change the page size or page settings.
 \end{abstract}
 
@@ -91,63 +92,124 @@
 % =============================================================================
 \section{Introduction}
 % =============================================================================
-The balance game \drunkened\ was developed with the goal of creating an application for public large screen displays, which could provide some sort of entertainment. Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, \drunkened\ can be easily installed in a public area, such as a waiting room, where it serves to entertain, relieve boredom and shorten the wait.
-The gameplay of \drunkened\ can be briefly described as a single player game, with the mission to guide Ed home safely. Ed has had a couple of drinks too many, and dangerously staggers along the sidewalk. The player must lean left and right to help Ed keep balance and avoid obstacles, as depicted in [\ref{??}].
-To ensure suitability for public context, we strove to fulfill the criteria of acceptability, accessibility, simplicity and flexibility as proposed by \cite{kultima2009casual}. \textit{Acceptability} was a strongly discussed aspect, since our protagonist Ed indulges in the pleasure of consuming alcohol, which causes him to stagger along the streets drunkenly. However we have found that this situation is widely accepted and considered fun, specially among young people. The questioned subjects responded that they could easily relate to this situation and described the experience of steering Ed as entertaining. Furthermore our game does not encourage people to drink, but points out the problematic consequences of drinking too much. \textit{Accessibilty} is guaranteed by our physical setup with a large screen and visual tracking. The game can be played by anybody who approaches it, independent of sex size, or age. However the tracking capability of the Kinect sets a couple of limitations, such as inability to cope with occlusion and bad lighting situations. \textit{Simplicity} is given by keeping the components of the game minimal and providing the user with a single main control mechanic - bending the upper body left and right in order to help Ed keep balance. Finally \textit{flexibility} is ensured by forgiving mistakes and gracefully recovering from situations such as when the player suddenly leaves the traking area.
-The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in figure \ref{??}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown. If the player has managed a top score, he can have his picture taken to be displayed on the list. Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores. \cite{ohara2008understanding}
+The balance game \drunkened\ was developed with the goal of creating an application for public large screen displays, which could provide some sort of entertainment and raise awareness for the negative effects of drinking. 
+\marginpar{
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot1.png}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot1}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot2}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot3}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot4}
+\end{figure}
+}
+Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, \drunkened\ can be easily installed in a public area, such as a waiting room, where it serves to entertain, relieve boredom and shorten the wait.
+The gameplay of \drunkened\ can be briefly described as a single player game, with the mission to guide Ed home safely. The players must keep balance and avoid obstacles, as depicted in \autoref{fig:screenshot1}, while attempting to move right along the road as far as they can get. The direct control mapping is easy to understand helps players to relate to the protagonist more strongly.
+%The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in \autoref{fig:screenshot2}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown. If the player has managed a top score, he can have his picture taken to be displayed on the list.
+Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores and strive provide entertainment to players as well as spectators, which has previously been discussed by O'Hara et al \cite{ohara2008understanding}.\\
+%To ensure suitability for public context, we aimed to fulfill the criteria casual games as proposed by Kultima et al. \cite{kultima2009casual}
 
 
 %\input{introduction.tex}
 
 % =============================================================================
-\section{Mechanics}
+\section{Design Principles}
 % =============================================================================
-\input{mechanics.tex}
+%\input{design.tex}
+To create a game suitable for public displays, we designed \drunkened\ with the following properties, which were partly inspired by the work of Kultima et al \cite{kultima2009casual}:
+\begin{itemize}\compresslist
+\item \textit{Simplicity:} It must be very easy to understand and to play. Therefore, the game is reduced to one main input (the upper body) and one simple goal (walking to the right).
+\item \textit{Brevity:} Games on public displays target people, who are usually not actually planning to play but merely passing by, and it has been shown that interaction with public displays happens in short bursts [TODO: by who?]. Therefore we designed our play sessions to be short. Furthermore we wish to encourage turn taking among multiple players due to the short game sessions.
+\item \textit{Acceptability:} This was a strongly discussed aspect, since our protagonist indulges in the pleasure of consuming alcohol, which causes him to stagger along the streets drunkenly. We have found that this situation is widely accepted and considered fun, specially among young people. Our game points out the problematic consequences of drinking too much with a humorous touch.
+\item \textit{Accessibilty:} Our physical setup with a large screen and visual tracking allows the game to be played by anybody who approaches it and does not require any prior knowledge or special capabilities. However the tracking with the Kinect sets a couple of limitations, such as when dealing with occlusion and bad lighting situations.
+\item \textit{Flexibility:} This is ensured by forgiving mistakes and gracefully recovering from situations such as when the player suddenly leaves the tracking area.
+\marginpar{
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot1.png}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot1}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot2}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot3}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
+  \caption{Insert a caption below each figure.}
+  \label{fig:screenshot4}
+\end{figure}
+}
+\end{itemize}
 
-% =============================================================================
-\section{Design}
-% =============================================================================
-\input{design.tex}
-
-% =============================================================================
-\section{Future work}
-% =============================================================================
-\input{futurework.tex}
+%The narrative elements must be reduced to a minimum. There are no cutscenes, long texts etc. to tell the game's background. The animations, the players actions and keywords like ''distance'' give the game a humorous context.
+%\drunkened\ targets a joy of failing, that is, letting \ed\ eventually tumble and fall asleep. \eds\ tumbling is not implemented as an animation, but physics based, i.e. depending on \eds\ locomotion and angular velocity. This means, that failing varies from player to player, since they can take \ed\ into individual, often awkward, sleeping postures. This also attempts to compensate the fact, that \drunkened\ is a single player game, because spectators can have fun seeing others fail.
 
 % =============================================================================
 \section{Design Process}
 % =============================================================================
-\subsection{Project Outline}
-After brainstorming we specified the project outline defining the setting of the installation, theme and main mechanics of the balance game and clarified the requirements. [picture of sketch]
-Furthermore we created a fictional persona for whom we designed the game.
-\subsection{Storyboarding and Interviews}
-In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as \drunkened\ and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
-At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring [TODO: dishwasher, ed or ...?] A total of x people participated with a majority of votes for \drunkened.
-\subsection{Paper Prototype and User Study}
-Prior to implementation we performed user studies with a detailed paper prototype. Here we researched the comprehensibility of our menu, the users readiness to learn the controls and the need for hints and explanations. At this stage we made valuable observations on which we based our design decisions (TODO: eg?)
-%\subsubsection{The Drinking Gesture}
-%Expressive gesture explained by hints as proposed by Walter et al. \cite{walter2013strikeapose} TODO
+\drunkened\ was created in a strongly participatory design process which entailed the creation of story boards [picture of story board] for use in semi structured interviews and paper prototyping for Wizard of Oz experiments. [picture of paper prototype]
+%\subsection{Project Outline}
+%After brainstorming we specified the project outline defining the setting of the installation, theme and main mechanics of the balance game and clarified the requirements. 
+%Furthermore we created a fictional persona for whom we designed the game.
+%\subsection{Storyboarding and Interviews}
+%In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as \drunkened\ and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
+%At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring a dish washer balancing plates or a sleepwalking guy. A total of x people participated with a majority of votes for \drunkened.
+%\subsection{Paper Prototype and User Study}
+%Prior to implementation we performed user studies with a detailed paper prototype. 
+With these we researched the comprehensibility of our level selection menu, the user's readiness to learn the controls and the need for ingame hints and explanations. At this stage we made valuable observations on which we based our design decisions, such as to implement a menu which is operable with the same mechanics as the game itself. Thus the menu serves a double purpose as tutorial, in teaching the player the game mechanics.
 \subsection{Heuristic Prototype Evaluation}
-After developing a first interactive prototype, we  analyzed our game regarding Nielsen’s 10 Usability Heuristics \cite{nielsen1995usability} and added two further principles, which we deemed essential for a casual game in public context.
+After developing a first interactive prototype, we  analyzed our game regarding Nielsen’s 10 Usability Heuristics \cite{nielsen1995usability} and added two further principles targeting the aspects of motivation and a steep learning curve required for games in public context.
 %Here we wish to explain our additional principles.
 %
 %\begin{enumerate}
 	%\item Motivation: All difficulty levels are available to play, so an advanced player does not need to stagger through all the easier stages first to reach a sufficiently challenging level. The highscores displayed above the level selection should provide the necessary motive to start another game and improve your score.
-	%\item Learning curve (Additional Principle): A player can improve his performance and score, if he plays more often.
+	%\item Learning curve (Additional Principle): A player can improve his performance and score, if he plays more often. 
 %\end{enumerate}
 %Changes were made according to the results of this evaluation, as to the visibility of system status by adding a countdown at level start and including a highscore list for motivation.
+A think aloud study was performed thereafter with several users of varying expertise, which lead to further improvements of the game according to Nielsen's heuristics. Among others we discovered the necessity of additional hints with both animated text and icons as proposed by Walter et al. \cite{walter2013strikeapose}. We hereby ensure that the user is constantly aware of his options and implemented a warning to be desplayed when the user leaves the optimal tracking region for error prevention. [picture of step on mark]
+\subsection{Implementation}
+The game was implemented using OpenGL for the graphics and SimpleOpenNI to process input through the Kinect sensor. The players are represented by \ed\ , who reflecs their body pose and forms the fixed axis around which the world begins to rotate. In the game \ed\ eventually tumbles and falls asleep. \eds\ tumbling is not implemented as an animation, but physics based, i.e. depending on \eds\ locomotion and angular velocity. This means, that failing varies from player to player, since they can take \ed\ into individual, often awkward, sleeping postures.
 
-A think aloud study was performed thereafter with several users of varying expertise, which lead to further improvements of the game according to Nielsen's heuristics. Among others we discovered the necessity of additional hints with both animated text and icons to ensure the user is constantly aware of his options and implemented a warning to be desplayed when the user leaves the optimal tracking region for error prevention. [picture of users]
-
-%% =============================================================================
-%\section{Implementation}
-%% =============================================================================
-%We implemented body tracking with the Microsoft Kinect camera, using the OpenNI library.
+% =============================================================================
+\section{Game Play and Mechanics}
+% =============================================================================
+%\input{mechanics.tex}
+% This also attempts to compensate the fact, that \drunkened\ is a single player game, because spectators can have fun seeing others fail.
+% =============================================================================
+\section{Conclusion}
+% =============================================================================
+\input{futurework.tex}
 
 % =============================================================================
 \section{Acknowledgements}
 % =============================================================================
-
+Special thanks go to our project supervisors J\"org M\"uller and Robert Walter for their help during development. Furthermore we wish to thank all volunteers who participated in interviews, experiments and play testing.
 %%--------------------REMOVE FOLLOWING SECTIONS---------------------------------
 %% =============================================================================
 %\section{Copyright}
