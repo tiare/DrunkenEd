@@ -10,6 +10,7 @@ drunken_ed.jar
 *.ym
 *.pdf
 *.rtf#
+jfxrt.jar
 
 #LaTeX
 *.aux
