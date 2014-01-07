@@ -1,4 +1,26 @@
+\usepackage{graphicx}
+
 \newcommand{\drunkened}{\textit{Drunken Ed}}
 \newcommand{\ed}{Ed}
 \newcommand{\eds}{Ed's}
 \newcommand{\lbreak}{\\[0.7cm]}
+
+\newcommand{\image}[2]{
+\begin{center}
+\includegraphics[scale = #1]{pictures/#2}
+\end{center}
+}
+\newcounter{imgcounter}
+\newcommand{\figimage}[4]{
+\begin{figure}[h] 
+\image{#1}{#2}
+\caption{\textit{#3}\\#4}
+\label{#2}
+\end{figure}
+}
+\newcommand{\capimage}[3]{
+\begin{center}
+\includegraphics[scale = #1]{#2}\\
+\begin{small}#3\end{small}
+\end{center}
+}

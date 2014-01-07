@@ -42,12 +42,12 @@ import control.ProgramState;
 //import tracking.UserTrackerMod.NewUserObserver;
 //import tracking.UserTrackerMod.PoseDetectedObserver;
 //import tracking.UserTrackerMod.ExitUserCallback;
- 
+
 
 public class UserTrackerMod {
-	private static final float DRINKINGTIME = 0.35f;
+	private static final float DRINKINGTIME = 0.25f;
 	private TreeSet<Integer> regusers=new TreeSet<Integer>();
-	
+
 	class NewUserObserver implements IObserver<UserEventArgs>
 	{
 		@Override
@@ -93,11 +93,11 @@ public class UserTrackerMod {
 				}
 			}
 			//setNextUser();
-			
-			
+
+
 		}
-	}	
-	
+	}
+
 	class CalibrationCompleteObserver implements IObserver<CalibrationProgressEventArgs>
 	{
 		@Override
@@ -112,13 +112,13 @@ public class UserTrackerMod {
 				p("starting tracking "  +args.getUser());
 					skeletonCap.startTracking(args.getUser());
 	                joints.put(new Integer(args.getUser()), new HashMap<SkeletonJoint, SkeletonJointPosition>());
-	                
+
 	                if (activeUser==-1){
 	                	activeUser=args.getUser();
 	                	nottrackedsince=0;
 	                	programController.tracking.trackedUser=true;
 	                	}
-	               
+
 	                //p("args.getUser()::"+args.getUser());
 			}
 			else if (args.getStatus() != CalibrationProgressStatus.MANUAL_ABORT)
@@ -155,9 +155,10 @@ public class UserTrackerMod {
 			}
 		}
 	}
-	
+
 	class ExitUserCallback implements  IObserver<UserEventArgs>
 	{
+		@Override
 		public void update(IObservable<UserEventArgs> observable,UserEventArgs args){
 			regusers.remove(args.getId());
 			if (activeUser==args.getId()) {
@@ -171,7 +172,7 @@ public class UserTrackerMod {
 			}
 		}
 	}
-	
+
 	public final String SAMPLE_XML_FILE = "SamplesConfig.xml";
 	OutArg<ScriptNode> scriptNode;
 	public Context context;
@@ -223,7 +224,7 @@ public class UserTrackerMod {
 	public Point3D[] skeletonpoints=new Point3D[body.length];
 	private Point3D[] positions=new Point3D[body.length];
 	private float jumpingspeed;
-	
+
 	private float drinkbuffery=0;
 	private float drinkbufferx=0;
 	private Vector3d vecLeftUpperArmAngle;
@@ -241,11 +242,11 @@ public class UserTrackerMod {
 	private Point3D headneck;
 	private Point3D temppoint;
 
-	
-	
-	
+
+
+
 	//SceneMetaData sceneMD = new SceneMetaData();
-	
+
 	public UserTrackerMod(ProgramController programController){
 		try {
             scriptNode = new OutArg<ScriptNode>();
@@ -253,31 +254,31 @@ public class UserTrackerMod {
             this.programController=programController;
 
             depthGen = DepthGenerator.create(context);
-            
-           
+
+
            // DepthMetaData depthMD = depthGen.getMetaData();
 
             //histogram = new float[10000];
           //  width = depthMD.getFullXRes();
           //  height = depthMD.getFullYRes();
-            
+
             //imgbytes = new byte[width*height*3];
 
             userGen = UserGenerator.create(context);
             skeletonCap = userGen.getSkeletonCapability();
             poseDetectionCap = userGen.getPoseDetectionCapability();
-            
+
             userGen.getNewUserEvent().addObserver(new NewUserObserver());
             userGen.getLostUserEvent().addObserver(new LostUserObserver());
             userGen.getUserExitEvent().addObserver(new ExitUserCallback());
             skeletonCap.getCalibrationCompleteEvent().addObserver(new CalibrationCompleteObserver());
             poseDetectionCap.getPoseDetectedEvent().addObserver(new PoseDetectedObserver());
-            
+
             calibPose = skeletonCap.getSkeletonCalibrationPose();
             joints = new HashMap<Integer, HashMap<SkeletonJoint,SkeletonJointPosition>>();
-            
+
             skeletonCap.setSkeletonProfile(SkeletonProfile.ALL);
-			
+
 			context.startGeneratingAll();
 			headpos=new Point2d(0,0);
 			lefthandpos=new Point2d(0,0);
@@ -299,7 +300,7 @@ public class UserTrackerMod {
             System.exit(1);
         }
 	}
-    
+
 	public void setNextUser() {
 		try {
 			//p(1);
@@ -320,7 +321,7 @@ public class UserTrackerMod {
 			            		breaker=true;
 			            		break;
 			            	}
-			            		
+
 			            }
 						if (activeUserHasPixels){
 							activeUser=users[i];
@@ -328,21 +329,21 @@ public class UserTrackerMod {
 							p("TrackedUser=true");
 							p("activeuser:: "+activeUser );
 						} else {
-							
+
 						}
 						activeUserHasPixels=false;
 						if (breaker)break;
 						}
-					
-					
+
+
 					}
 				}
 		} catch (StatusException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 
 	public void updateDepth(float deltatime) {
@@ -350,14 +351,14 @@ public class UserTrackerMod {
         	this.deltatime=deltatime;
             //context.waitAnyUpdateAll();
             context.waitNoneUpdateAll();
-            
+
             if (activeUser==-1) {
             	oldz1=oldz2=0;
             	programController.tracking.trackArms=false;
             	setNextUser();
             	programController.tracking.trackedUser=false;
             	}
-            
+
             //check if activeuser is in fov
             if (activeUser!=-1){
             	SceneMetaData sceneMD = userGen.getUserPixels(activeUser);
@@ -368,7 +369,7 @@ public class UserTrackerMod {
             		if (scene.get()==activeUser){
             			activeUserHasPixels=true;
             			break;
-            		}	
+            		}
             	}
             	if (!activeUserHasPixels) {
 //            		listener = programController.getCurrentState();
@@ -377,13 +378,13 @@ public class UserTrackerMod {
 //            		}
             		activeUser=-1;
             		programController.tracking.trackedUser=false;
-				
+
             	}
-            	activeUserHasPixels=false;        
+            	activeUserHasPixels=false;
             }
-            
-            
-            if (activeUser!=-1 && skeletonCap.isSkeletonTracking(activeUser)){ 
+
+
+            if (activeUser!=-1 && skeletonCap.isSkeletonTracking(activeUser)){
             	checkTriggers();
             	nottrackedsince=0;
             	programController.tracking.trackedUser=true;
@@ -403,11 +404,11 @@ public class UserTrackerMod {
 				}
 			}
            // if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println(activeuser);
-            
+
         } catch (GeneralException e) {
             e.printStackTrace();
         }
-		
+
 	}
 
 	private void checkTriggers() {
@@ -419,12 +420,12 @@ public class UserTrackerMod {
 				for (int i =0;i<body.length;i++){
 					positions[i]=skeletonCap.getSkeletonJointPosition(activeUser, body[i]).getPosition();
 					skeletonpoints[i]=depthGen.convertRealWorldToProjective(positions[i]);
-					
+
 				}
 				drinkbufferx=Math.abs(positions[4].getX()-positions[0].getX());
 				drinkbuffery=Math.abs(positions[0].getY()-positions[7].getY());
-				
-				
+
+
 //				System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.HEAD).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getY()+"::"+skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_SHOULDER).getPosition().getY());
 //				System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_KNEE).getPosition().getY()-skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HIP).getPosition().getY());
 //				System.out.println(skeletonCap.getSkeletonJointPosition(1, SkeletonJoint.RIGHT_HAND).getPosition().getX()
@@ -444,7 +445,7 @@ public class UserTrackerMod {
 					programController.tracking.drinking+=deltatime;
 					//p(programController.tracking.drinking);
 				}
-			
+
 			if (positions[0].getY()
 					<positions[6].getY()
 				||	positions[6].getY()
@@ -454,7 +455,7 @@ public class UserTrackerMod {
 				drinkAlreadyCalled=false;
 				programController.tracking.drinking=0;
 			}
-			
+
 			if (positions[13].getY()
 					-positions[12].getY()>-330){
 				//if (Debug.TRACKING_SYSTEM_OUT_PRINTLN)System.out.println("STEPbewegung erkannt");
@@ -467,8 +468,8 @@ public class UserTrackerMod {
 			lefthandpos.set(temppoint.getX(), temppoint.getY());
 			temppoint=skeletonpoints[6];
 			righthandpos.set(temppoint.getX(), temppoint.getY());
-			
-			
+
+
 			// Jump Detection
 			z1=skeletonpoints[9].getY()*skeletonpoints[9].getZ()/2250;
 			z2=skeletonpoints[12].getY()*skeletonpoints[12].getZ()/2250;
@@ -494,7 +495,7 @@ public class UserTrackerMod {
 			if (hasDrinkingPose && !drinkAlreadyCalled && programController.tracking.drinking>DRINKINGTIME){
 				listener.onDrink();
 				drinkAlreadyCalled=true;
-				
+
 				} else if (isJumping){
 					listener.onJump(jumpingspeed);
 					isJumping=false;
@@ -504,20 +505,20 @@ public class UserTrackerMod {
 	}
 
 	private void calculateArmsAngle() {
-		
+
 		Point3D lefthand = (positions[3]);
 		Point3D leftelbow = (positions[2]);
 		Point3D leftshoulder = (positions[1]);
 		Point3D righthand = (positions[6]);
 		Point3D rightelbow = (positions[5]);
 		Point3D rightshoulder = (positions[4]);
-		
+
 		vecLeftUpperArmAngle.set(leftelbow.getX()-leftshoulder.getX(),leftelbow.getY()-leftshoulder.getY(),leftelbow.getZ()-leftshoulder.getZ());
-		
+
 		vecRightUpperArmAngle.set(rightelbow.getX()-rightshoulder.getX(),rightelbow.getY()-rightshoulder.getY(),rightelbow.getZ()-rightshoulder.getZ());
-		
+
 		vecLeftLowerArmAngle.set(lefthand.getX()-leftelbow.getX(),lefthand.getY()-leftelbow.getY(),lefthand.getZ()-leftelbow.getZ());
-		
+
 		vecRightLowerArmAngle.set(righthand.getX()-rightelbow.getX(),righthand.getY()-rightelbow.getY(),righthand.getZ()-rightelbow.getZ());
 		programController.tracking.leftUpperArmAngle=(float) (Math.PI-Math.atan2(vecLeftUpperArmAngle.x,vecLeftUpperArmAngle.y));//-bendingangle;
 		programController.tracking.rightUpperArmAngle=(float) (-Math.PI-Math.atan2(vecRightUpperArmAngle.x,vecRightUpperArmAngle.y));//-bendingangle;
@@ -526,7 +527,7 @@ public class UserTrackerMod {
 		programController.tracking.trackArms=true;
 //	p("leftupper: "+(programController.tracking.leftUpperArmAngle*180/Math.PI)+"||leftlower: "+(programController.tracking.leftLowerArmAngle*180/Math.PI)
 //			+"||rightupper: "+(programController.tracking.rightUpperArmAngle*180/Math.PI)+"||rightlower: "+(programController.tracking.rightLowerArmAngle*180/Math.PI)+"||"+(bendingangle*180/Math.PI));
-		
+
 	}
 
 	private void calculateShoulderAngle(){
@@ -540,8 +541,8 @@ public class UserTrackerMod {
 		//float winkel2=(float) Math.atan2(v2.x,v2.y);
 		//schulterwinkel=winkel2-winkel1;
 		schulterwinkel=bendingangle-winkel1;
-		
-		
+
+
 	}
 
 	private void calculateBendingAngle() {
@@ -571,7 +572,7 @@ public class UserTrackerMod {
 //        	if (torso3d.getZ()>3000){System.out.println("TOO FAR, step " +Math.floor((torso3d.getZ()-3000))/1000+"m IN FRONT");wrongz=true;}
 //        	if (!wrongz && torso3d.getX()/torso3d.getZ()>0.25){System.out.println("STEP LEFT,more TO THE MIDDLE");}
 //        	if (!wrongz && torso3d.getX()/torso3d.getZ()<-0.25){System.out.println("STEP RIGHT, more TO THE MIDDLE");}
-		
+
 	}
 
 	private int setActiveUser() {
@@ -591,7 +592,7 @@ public class UserTrackerMod {
 						//p("activeuser set to:"+i+" :: "+temp);
 						nearestx=usertemp;
 					}
-					
+
 					}
 			}
 		} catch (StatusException e) {
@@ -607,9 +608,9 @@ public class UserTrackerMod {
 			p("activeuser set to:0");
 			return 0;
 		}
-		
+
 	}
-	
+
 	private static void p(Object p) {
 		if (control.Debug.TRACKING_SYSTEM_OUT_PRINTLN) System.out.println(p.toString());
 	}
