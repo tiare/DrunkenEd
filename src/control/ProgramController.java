@@ -9,6 +9,7 @@ import yang.events.eventtypes.SurfacePointerEvent;
 import yang.graphics.defaults.DefaultSurface;
 import yang.math.Geometry;
 import yang.math.MathConst;
+import yang.model.enums.UpdateMode;
 import control.states.MainMenuState;
 import graphics.StandardTextures;
 
@@ -44,8 +45,8 @@ public class ProgramController extends DefaultSurface {
 
 		highscores = new Highscores();
 		gameSettings = new GameSettings();
-		super.setUpdatesPerSecond(80);
-		//super.setUpdateMode(UpdateMode.MANUALLY);
+		super.setUpdatesPerSecond(60);
+		super.setUpdateMode(UpdateMode.MANUALLY);
 		fade = 1;
 		fadeState = null;
 	}
@@ -146,7 +147,8 @@ public class ProgramController extends DefaultSurface {
 
 	@Override
 	public void draw() {
-		super.catchUp();
+		//super.catchUp();
+		super.proceed();
 		if(currentState!=null && !mChangingState) {
 			if(mFirstDraw) {
 				currentState.startGraphics();

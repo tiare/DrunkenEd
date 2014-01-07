@@ -93,13 +93,15 @@ public class GameOverState extends ProgramState {
 			gameState.gameOverOverlay = true;
 			gameState.step(deltaTime);
 		}
-		if (tookPicture && !scoreSaved) {
+		if (tookPicture) {
 //			if ((int) ((System.currentTimeMillis() - secondCountdownTime) / 1000) > SECONDTIMEOUT) {
 
-			if(programController.tracking instanceof CameraTracking)
-				programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
-//			}
-			scoreSaved = true;
+			if(!scoreSaved) {
+				if(programController.tracking instanceof CameraTracking)
+					programController.highscores.addHighscore(programController.gameSettings.difficulty, (int) getScore(distance, time), ((CameraTracking) programController.tracking).getColorImageByteBuffer());
+	//			}
+				scoreSaved = true;
+			}
 			timeLeft = SECONDTIMEOUT - (int) ((System.currentTimeMillis() - secondCountdownTime)/1000L);
 		} else {
 			timeLeft = TIMEOUT - (int) ((System.currentTimeMillis() -  countdownTime) / 1000L);
@@ -308,7 +310,7 @@ public class GameOverState extends ProgramState {
 	public void onDrink() {
 		if(isHighScore && stateTimer<4)
 			return;
-		if (!tookPicture && isHighScore && diffX <= range) {
+		if (!tookPicture && isHighScore) {
 			tookPicture = true;
 			secondCountdownTime = System.currentTimeMillis();
 			p("took a picture & returning");
