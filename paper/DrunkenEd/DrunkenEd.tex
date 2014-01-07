@@ -74,6 +74,15 @@
 
 \input{init.tex}
 
+\newcommand{\fig}[2]{
+\begin{figure}
+  \centering
+  \includegraphics[width=\linewidth]{pictures/#1}
+  \caption{#2}
+  \label{fig:#1}
+\end{figure}
+}
+
 \begin{document}
 
 \maketitle
@@ -94,33 +103,13 @@
 % =============================================================================
 The balance game \drunkened\ was developed with the goal of creating an application for public large screen displays, which could provide some sort of entertainment and raise awareness for the negative effects of drinking. 
 \marginpar{
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot1.png}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot1}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot2}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot3}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot4}
-\end{figure}
+\fig{inGame2}{In game scene of Drunken Ed}
+\fig{titleScreen}{Initial screen when no player is detected}
+\fig{mainMenu}{Main menu to learn the controls and to select the difficulty}
+\fig{paperPrototype}{The paper prototype to test the interaction}
 }
 Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, \drunkened\ can be easily installed in a public area, such as a waiting room, where it serves to entertain, relieve boredom and shorten the wait.
-The gameplay of \drunkened\ can be briefly described as a single player game, with the mission to guide Ed home safely. The players must keep balance and avoid obstacles, as depicted in \autoref{fig:screenshot1}, while attempting to move right along the road as far as they can get. The direct control mapping is easy to understand helps players to relate to the protagonist more strongly.
+The gameplay of \drunkened\ can be briefly described as a single player game, with the mission to guide Ed home safely. The players must keep balance and avoid obstacles, as depicted in \autoref{fig:inGame2}, while attempting to move right along the road as far as they can get. The direct control mapping is easy to understand helps players to relate to the protagonist more strongly.
 %The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in \autoref{fig:screenshot2}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown. If the player has managed a top score, he can have his picture taken to be displayed on the list.
 Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores and strive provide entertainment to players as well as spectators, which has previously been discussed by O'Hara et al \cite{ohara2008understanding}.\\
 %To ensure suitability for public context, we aimed to fulfill the criteria casual games as proposed by Kultima et al. \cite{kultima2009casual}
@@ -147,7 +136,7 @@ To create a game suitable for public displays, we designed \drunkened\ with the 
 % =============================================================================
 \section{Design Process}
 % =============================================================================
-\drunkened\ was created in a strongly participatory design process which entailed the creation of story boards (TODO:see \autoref{fig:screenshot2})for use in semi structured interviews and paper prototyping for Wizard of Oz experiments. (TODO: see \autoref{fig:screenshot3})
+\drunkened\ was created in a strongly participatory design process which entailed the creation of story boards (see \autoref{fig:storyboard1}) for use in semi structured interviews and paper prototyping for Wizard of Oz experiments (see \autoref{fig:paperPrototype}).
 %\subsection{Project Outline}
 %After brainstorming we specified the project outline defining the setting of the installation, theme and main mechanics of the balance game and clarified the requirements. 
 %Furthermore we created a fictional persona for whom we designed the game.
@@ -158,30 +147,10 @@ To create a game suitable for public displays, we designed \drunkened\ with the 
 %Prior to implementation we performed user studies with a detailed paper prototype. 
 With these we researched the comprehensibility of our level selection menu, the user's readiness to learn the controls and the need for ingame hints and explanations. At this stage we made valuable observations on which we based our design decisions, such as to implement a menu which is operable with the same mechanics as the game itself. 
 \marginpar{
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot1.png}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot1}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot2}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot3}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics[width=\linewidth]{pictures/screenshot2.jpg}
-  \caption{Insert a caption below each figure.}
-  \label{fig:screenshot4}
-\end{figure}
+\fig{storyboard1}{Storyboard of the interaction with the public display}
+\fig{swingArms}{Ed spreading and swinging his arms as a warning}
+\fig{fallDown1}{Ed while tumbling}
+\fig{gameOver2}{Game over overlay after doing a highscore}
 }
 Thus the menu serves a double purpose as tutorial, in teaching the player the game mechanics.
 \subsection{Heuristic Prototype Evaluation}
