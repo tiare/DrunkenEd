@@ -3,7 +3,9 @@ package figure;
 import yang.graphics.skeletons.CartoonBone;
 import yang.graphics.skeletons.defaults.human.HumanSkeleton2D;
 import yang.graphics.textures.TextureHolder;
+import yang.graphics.textures.TextureProperties;
 import yang.graphics.textures.enums.TextureFilter;
+import yang.graphics.textures.enums.TextureWrap;
 import yang.physics.massaggregation.constraints.AngleConstraint;
 import yang.physics.massaggregation.elements.Joint;
 
@@ -23,7 +25,7 @@ public class DrunkenSkeleton extends HumanSkeleton2D {
 
 	public DrunkenSkeleton() {
 		mBottleVisible = true;
-		mTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
+		mTextureHolder = new TextureHolder("skeleton_ed",new TextureProperties(TextureWrap.CLAMP,TextureFilter.LINEAR_MIP_LINEAR));
 		//mContourTextureHolder = new TextureHolder("skeleton_ed",TextureFilter.LINEAR_MIP_LINEAR);
 		mDrinkState = 0;
 		mBottleAutoAngle = true;
