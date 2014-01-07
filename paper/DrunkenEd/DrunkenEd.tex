@@ -79,7 +79,7 @@
 \maketitle
 
 \begin{abstract}
-\drunkened is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. This single player game has a very direct control mapping, which uses the orientation of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose directly reflects that of the player, creating a very immediate form of control. In addition we apply the simple gesture of raising a hand to the mouth to drink, to trigger a selection in the menu. In our evaluation this form of mapping has proven to be very intuitive and the short play sessions agree with the requirements of a casual game in public environment. Furthermore the game setting is widely accepted, despite its drunken protagonist.
+\drunkened\ is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. This single player game has a very direct control mapping, which uses the orientation of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose reflects that of the player, creating a very direct form of control. In addition we apply the simple gesture of raising a hand to the mouth to drink, to trigger a selection in the menu. In our evaluation this form of mapping has proven to be very intuitive and the short play sessions agree with the requirements of a casual game in public environment. Furthermore the game setting is widely accepted, despite its drunken protagonist.
 %Do not change the page size or page settings.
 \end{abstract}
 
@@ -100,19 +100,14 @@ The starting point of the game, is the minimalistic level selection menu display
 %\input{introduction.tex}
 
 % =============================================================================
-\section{Mechanics}
+\section{Game Play and Mechanics}
 % =============================================================================
 \input{mechanics.tex}
 
 % =============================================================================
-\section{Design}
+\section{Design Principles}
 % =============================================================================
 \input{design.tex}
-
-% =============================================================================
-\section{Future work}
-% =============================================================================
-\input{futurework.tex}
 
 % =============================================================================
 \section{Design Process}
@@ -122,11 +117,9 @@ After brainstorming we specified the project outline defining the setting of the
 Furthermore we created a fictional persona for whom we designed the game.
 \subsection{Storyboarding and Interviews}
 In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as \drunkened\ and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
-At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring [TODO: dishwasher, ed or ...?] A total of x people participated with a majority of votes for \drunkened.
+At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring a dish washer balancing plates or a sleepwalking guy. A total of x people participated with a majority of votes for \drunkened.
 \subsection{Paper Prototype and User Study}
-Prior to implementation we performed user studies with a detailed paper prototype. Here we researched the comprehensibility of our menu, the users readiness to learn the controls and the need for hints and explanations. At this stage we made valuable observations on which we based our design decisions (TODO: eg?)
-%\subsubsection{The Drinking Gesture}
-%Expressive gesture explained by hints as proposed by Walter et al. \cite{walter2013strikeapose} TODO
+Prior to implementation we performed user studies with a detailed paper prototype. Here we researched the comprehensibility of our menu, the users readiness to learn the controls and the need for hints and explanations. At this stage we made valuable observations on which we based our design decisions, such as to implement a menu which is operable with the same 
 \subsection{Heuristic Prototype Evaluation}
 After developing a first interactive prototype, we  analyzed our game regarding Nielsen’s 10 Usability Heuristics \cite{nielsen1995usability} and added two further principles, which we deemed essential for a casual game in public context.
 %Here we wish to explain our additional principles.
@@ -136,13 +129,13 @@ After developing a first interactive prototype, we  analyzed our game regarding 
 	%\item Learning curve (Additional Principle): A player can improve his performance and score, if he plays more often.
 %\end{enumerate}
 %Changes were made according to the results of this evaluation, as to the visibility of system status by adding a countdown at level start and including a highscore list for motivation.
-
 A think aloud study was performed thereafter with several users of varying expertise, which lead to further improvements of the game according to Nielsen's heuristics. Among others we discovered the necessity of additional hints with both animated text and icons to ensure the user is constantly aware of his options and implemented a warning to be desplayed when the user leaves the optimal tracking region for error prevention. [picture of users]
-
-%% =============================================================================
-%\section{Implementation}
-%% =============================================================================
-%We implemented body tracking with the Microsoft Kinect camera, using the OpenNI library.
+\subsection{Implementation}
+The game was implemented using OpenGL for the graphics and SimpleOpenNI to process input through the Kinect sensor.
+% =============================================================================
+\section{Conclusion}
+% =============================================================================
+\input{futurework.tex}
 
 % =============================================================================
 \section{Acknowledgements}
