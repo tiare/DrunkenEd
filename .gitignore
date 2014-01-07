@@ -9,6 +9,7 @@ score*bb
 drunken_ed.jar
 *.ym
 *.pdf
+*.rtf#
 
 #LaTeX
 *.aux
