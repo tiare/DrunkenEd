@@ -267,11 +267,13 @@
 
 %% Added this as a default copyright strip
 \copyrightinfo{
-Paste the appropriate copyright statement here. ACM now supports three different copyright statements:\\
-$\bullet$ ACM copyright: ACM holds the copyright on the work. This is the historical approach.\\
-$\bullet$ License: The author(s) retain copyright, but ACM receives an exclusive publication license.\\
-$\bullet$ Open Access: The author(s) wish to pay for the work to be open access. The additional fee must be paid to ACM.\\
-This text field is large enough to hold the appropriate release statement assuming it is single spaced.
+Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, to republish, to post on servers, or to redistribute to lists, requires prior specific permission and/or a fee.\\
+Copyright {YEAR} held by Owner/Author. Publication Rights Licensed to ACM
+%Paste the appropriate copyright statement here. ACM now supports three different copyright statements:\\
+%$\bullet$ ACM copyright: ACM holds the copyright on the work. This is the historical approach.\\
+%$\bullet$ License: The author(s) retain copyright, but ACM receives an exclusive publication license.\\
+%$\bullet$ Open Access: The author(s) wish to pay for the work to be open access. The additional fee must be paid to ACM.\\
+%This text field is large enough to hold the appropriate release statement assuming it is single spaced.
 }
 
 \endinput
