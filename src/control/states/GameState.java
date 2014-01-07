@@ -92,6 +92,8 @@ public class GameState extends LevelState {
 		// worldRotation += (float)Math.sin(stateTimer+Math.PI/2) / 100.0f;
 		synchronized (camera) {
 
+			player.jumpEnabled = !pause;
+
 			if(useObstacles)
 				worldZoom = 2.3f;
 			else

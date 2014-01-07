@@ -27,7 +27,7 @@ public class Player implements SkeletonCarrier {
 	private float gravity = -9f;
 	public boolean inGame;
 	private boolean armAnglesByTracking;
-	public boolean jumpEnabled = true;
+	public boolean jumpEnabled = false;
 
 	//State
 	public float posX,posY;
@@ -397,6 +397,8 @@ public class Player implements SkeletonCarrier {
 		if(jumpEnabled && Debug.JUMP_ENABLED) {
 			if(posY<=skeleton.mLowerLimit+0.001f) {
 				velY = velocity;
+				if(velX<1)
+					velX += 1.35f;
 			}
 		}
 	}
