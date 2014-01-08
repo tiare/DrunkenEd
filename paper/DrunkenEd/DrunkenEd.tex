@@ -9,7 +9,7 @@
 % DOI string from ACM form confirmation}
 %% EXAMPLE END -- HOW TO OVERRIDE THE DEFAULT COPYRIGHT STRIP -- (July 22, 2013 - Paul Baumann)
 
-\title{Drunken Ed - A Balance Game For Public Large Screen Displays}
+\title{Drunken Ed: A Balance Game for Public Large Screen Displays}
 
 \newcommand{\tuaddr}{
 \affaddr{Technische Universit\"at Berlin}\\
@@ -23,34 +23,34 @@
 % Actually, it's up to you to strictly adhere to this author notation.
 \author{
 	\alignauthor{
-  	\textbf{Jonas Willaredt}\\
+		\textbf{Alexander Biskupski}\\
   	\tuaddr
-  	\email{jonas.willaredt@campus.tu-berlin.de}
-  }\alignauthor{
-  	\textbf{Andreas Fender}\\
-  	\tuaddr
-  	\email{andreas.fender@campus.tu-berlin.de}
-  }
-  \vfil
-  \alignauthor{
-  	\textbf{Tiare Feuchtner}\\
-  	\tuaddr
-  	\email{tiare.feuchtner@campus.tu-berlin.de}
+  	\email{alexbis@mailbox.tu-berlin.de}
   }\alignauthor{
   	\textbf{Marcel Karsten}\\
   	\tuaddr
   	\email{marcel.karsten@campus.tu-berlin.de}
   }
   \vfil
-	\alignauthor{
-  	\textbf{Alexander Biskupski}\\
+  \alignauthor{
+		\textbf{Andreas Fender}\\
   	\tuaddr
-  	\email{alexander.biskupski@campus.tu-berlin.de}
+  	\email{fenderandreas@mailbox.tu-berlin.de}
+  }\alignauthor{
+		\textbf{Jonas Willaredt}\\
+  	\tuaddr
+  	\email{jonas.willaredt@campus.tu-berlin.de}
+  }
+  \vfil
+	\alignauthor{
+		\textbf{Tiare Feuchtner}\\
+  	\tuaddr
+  	\email{tiare.feuchtner@campus.tu-berlin.de}
   }
 }
 
 % Paper metadata (use plain text, for PDF inclusion and later re-using, if desired)
-\def\plaintitle{Drunken Ed - A Balance Game For Public Large Screen Displays}
+\def\plaintitle{Drunken Ed: A Balance Game for Public Large Screen Displays}
 \def\plainauthor{Alexander Biskupski, Andreas Fender, Tiare Feuchtner, Marcel Karsten, Jonas Willaredt}
 \def\plainkeywords{Public displays, large screen display, casual game, balance game, Kinect, gesture control}
 %\def\plaingeneralterms{Documentation, Standardization}
@@ -89,7 +89,7 @@
 
 
 \begin{abstract}
-\drunkened\ is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. The game setting with its drunken protagonist was well received by the players. This single player game uses the angle of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose reflects the player's pose, creating a very direct form of control. Results of our evaluation show that this form of mapping has proven to be very easy to learn and the short play sessions meet the requirements of a casual game in public environment. Furthermore we have designed our level selection menu thus, that it fulfills the second purpose of a gameplay tutorial, allowing the player to get familiar with the controls.
+\drunkened\ is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. The game setting with its drunken protagonist Ed was well received by the players. This single player game uses the angle of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose reflects the player's pose, creating a very direct form of control. Results of our evaluation show that this form of mapping has proven to be very easy to learn and the short play sessions meet the requirements of a casual game in public environment. Furthermore we have designed our level selection menu thus, that it fulfills the purpose of a gameplay tutorial as well, allowing the player to get familiar with the controls.
 %Do not change the page size or page settings.
 \end{abstract}
 
@@ -149,7 +149,7 @@ With these we researched the comprehensibility of our level selection menu, the 
 \fig{userPlaying}{Performing a think aloud study with users}
 \fig{bendHint}{Hints are displayed to teach players the controls}
 \fig{titleScreen}{Initial screen while no player is detected}
-\fig{stepOnMark}{Inviting the player to step onto the mark to play}
+\fig{mainMenu}{Selecting a level and difficulty by choosing a drink}
 }
 Thus the menu serves a double purpose as tutorial, in teaching the player the game mechanics.
 \subsection{Heuristic Prototype Evaluation}
@@ -171,14 +171,15 @@ The game was implemented using OpenGL for the graphics and SimpleOpenNI to proce
 While no player is present, a bar is shown together with three blackboards displaying the highscores for the respective levels, as can be seen in \autoref{fig:titleScreen}. If a user enters the tracking area the main protagonist \ed\ appears. By bending to one side the player can move \ed\ around the bar. The player may now choose a level by selecting one of three alcoholic drinks which are placed on top of the bar: beer, wine or vodka (\autoref{fig:mainMenu}). The difficulty of each level corresponds to the type of alcohol consumed, thus beer signifies the easiest level while vodka is the most challenging. The players confirm their choice by performing an expressive drinking gesture.\lbreak
 At this point, the main game starts. By bending to one side, as in the menu, the player can make \ed\ walk, with the objective of getting as far to the right as possible. \ed\ does not walk in a controlled manner, but always follows his center of mass. This resembles the typical accentuated movement of a drunken person. The players bend their upper body to control \eds\ upper body, which in turn shifts his center of mass. \eds\ upper body has the same orientation as that of the player and creates a fixed axis around which the world rotates. The further \ed\ bends towards the ground, the faster he walks, but the player must compensate the world's rotation to keep ed from falling down. This happens as soon as the angle between the upper body and the floor becomes too small. Additionally, \ed\ stumbles if he goes too fast or trips over obstacles that lie in his path. To overcome the latter, a short hop allows the player to make Ed leap into the air.
 The higher the difficulty of the level, the faster and more uncontrollably the world rotates.\lbreak
-When \ed\ falls down the game is over (\autoref{fig:fallDown1}) and the distance traveled is presented to the players as their score. The players with a highscore may then take a picture of themselves to appear in the highscore list above the bar (see \autoref{fig:gameOver2}). Taking the picture is triggered by performing the drinking gesture before a countdown runs out. If a player does not wish to have a picture taken, she can wait for the countdown to end, or simply leave the playing area. The game then returns to the level selection menu.\\
-If a player should accidentally leave the tracking area, a hint invites her to step back onto a mark, which we placed on the floor in front of the screen (see \autoref{fig:stepOnMark}).\lbreak
+When \ed\ falls down the game is over (\autoref{fig:fallDown1}) and the distance traveled is presented to the players as their score. The players with a highscore may then take a picture of themselves to appear in the highscore list above the bar (see \autoref{fig:gameOver2}).
 \marginpar{
-\fig{mainMenu}{Selecting a level and difficulty by choosing a drink }
 \fig{fallDown1}{The game ends when Ed falls down}
 \fig{gameOver2}{Game over screen after reaching a highscore}
+\fig{stepOnMark}{Inviting the player to step onto the mark to play}
 \fig{swingArms}{Ed spreading and swinging his arms as a warning}
 }
+Taking the picture is triggered by performing the drinking gesture before a countdown runs out. If a player does not wish to have a picture taken, she can wait for the countdown to end, or simply leave the playing area. The game then returns to the level selection menu.\\
+If a player should accidentally leave the tracking area, a hint invites her to step back onto a mark, which we placed on the floor in front of the screen (see \autoref{fig:stepOnMark}).\lbreak
 During gameplay \eds\ arms play an important role to convey information to the player. While in the menu the arms are controllable by the players, in the main game \eds\ arms hang down idly resembling the typical cartoony posture of a drunkard. This emphasizes the loss of physical control. Furthermore this contributes to the players orientation, because \eds\ arms always point towards the floor and center of gravity. Thus their angle helps to estimate \eds\ movement. In addition, the arms have an important feedback role which can be seen in \autoref{fig:swingArms}: If \ed\ walks too fast, he begins to flail with his arms as if trying to balance and If \ed\ is close to falling, his arms start to swing. Players quickly interpreted these actions as alarming indicators.
 %\input{mechanics.tex}
 % This also attempts to compensate the fact, that \drunkened\ is a single player game, because spectators can have fun seeing others fail.
