@@ -267,8 +267,11 @@
 
 %% Added this as a default copyright strip
 \copyrightinfo{
-Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, to republish, to post on servers, or to redistribute to lists, requires prior specific permission and/or a fee.\\
-Copyright {YEAR} held by Owner/Author. Publication Rights Licensed to ACM
+Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the Owner/Author.\\$ $\\
+Copyright is held by the owner/author(s).\\$ $\\
+CHI 2014, Apr 26 - May 01 2014, Toronto, ON, Canada\\
+ACM 978-1-4503-2474-8/14/04.\\
+http://dx.doi.org/10.1145/2559206.2580097 
 %Paste the appropriate copyright statement here. ACM now supports three different copyright statements:\\
 %$\bullet$ ACM copyright: ACM holds the copyright on the work. This is the historical approach.\\
 %$\bullet$ License: The author(s) retain copyright, but ACM receives an exclusive publication license.\\

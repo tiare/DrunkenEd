@@ -1,0 +1,99 @@
+CHI 2014 Student Game Competition
+
+Reviews of submission #103: "Drunken Ed - A Balance Game for Public Large
+Screen Displays"
+
+------------------------ Submission 103, Review 1 ------------------------
+
+Overall rating:     26.5  (scale is 6..35; 35 is best)
+
+Rate the game
+
+   4.5 . . . Between possibly accept and strong accept 
+
+Enjoyment
+
+   4.0 
+
+Execution
+
+   3.5 
+
+Innovative
+
+   3.5 
+
+Technology
+
+   3.0 
+
+Games for a Purpose
+
+   N/A
+
+Innovative Interface
+
+   The interface used was basically a kinect, and although the hardware is
+   not exactly innovative, it was used in a slightly innovative way of
+   making people bend/jump to move the character
+
+Innovative Game Design
+
+   I would say , that the game design was nicely done in conjunction with
+   the interface. Its hard for characters to move and at the same time make
+   the player feel immersive, with a kinect camera because of spatial
+   restrictions, but they developed good gestures in conjunction with a
+   sort-of innovative game design. 
+
+Rate the Paper
+
+   4.0 - Possibly Accept: I would argue for accepting this paper 
+
+Review of Paper
+
+   The paper , in my opinion brilliantly explains the whole process they
+   went through while developing this game. They talk about their design
+   principles and playtests they conducted, and it was really interesting to
+   read about that. They definitely bring out the point of making games for
+   public and large displays but it would have been nice to know what
+   challenges they faced and why they took certain design decisions. 
+
+Rate the Overall Submission
+
+   4.0 - Possibly Accept:This submission should likely be a finalist 
+
+Expertise
+
+   2  (Passing Knowledge)
+
+The Review
+
+   There are quite a few kinect games , and balancing games I kept in mind
+   while judging this game. 
+   A lot of kinect games face the problem of restricting the movement of the
+   player mainly because the kinect has a limited range. I felt that this
+   game did a good job of justifying the players gestures, they basically
+   made the players feel like they are only balancing a drunken person. A
+   lot for balancing games have been made before, especially for mobiles and
+   they play well mainly because its about timing and making sure the
+   character doesnt die, and getting the high score. Thus, playing it with
+   kinect definitely feels a little bit different , and the jump seems to
+   add another feature to it, but it does not really feel extremely
+   innovative. 
+   I feel like this game would help a lot in connecting people, mainly
+   because its really fun and a lot of good moments seem to arise especially
+   because of the rag doll. BUT, the game does not explicitly help players
+   connect i.e. it does nothing int terms of helping players appreciate and
+   understand the differences we see in people    
+
+Areas for Improvement
+
+   I would have personally loved to read more about the challenges they
+   faced while making this game. They mainly talk about the whole process
+   they went through for creating the game, but dont really talk about the
+   challenges they were facing. Creating games for public and large displays
+   is definitely hard, and would have been interesting to know what inspired
+   their design decisions. 
+
+
+
