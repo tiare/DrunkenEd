@@ -33,17 +33,17 @@
   }
   \vfil
   \alignauthor{
-		\textbf{Andreas Fender}\\
+		\textbf{Andreas R. Fender}\\
   	\tuaddr
   	\email{fenderandreas@mailbox.tu-berlin.de}
   }\alignauthor{
-		\textbf{Jonas Willaredt}\\
+		\textbf{Jonas D. Willaredt}\\
   	\tuaddr
   	\email{jwill@cs.tu-berlin.de}
   }
   \vfil
 	\alignauthor{
-		\textbf{Tiare Feuchtner}\\
+		\textbf{Tiare M. Feuchtner}\\
   	\tuaddr
   	\email{tiare.feuchtner@campus.tu-berlin.de}
   }
@@ -89,7 +89,7 @@
 
 
 \begin{abstract}
-\drunkened\ is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. The game setting with its drunken protagonist Ed was well received by the players. This single player game uses the angle of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose reflects the player's pose, creating a very direct form of control. Results of our evaluation show that this form of mapping has proven to be very easy to learn and the short play sessions meet the requirements of a casual game in public environment. Furthermore we have designed our level selection menu thus, that it fulfills the purpose of a gameplay tutorial as well, allowing the player to get familiar with the controls.
+\drunkened\ is a 2D balance game that was specifically designed for public displays. We show that this casual game is well suited for public context and that camera based body tracking offers convenient interaction techniques for large screen displays. The game setting with its drunken protagonist Ed was well received by the players. This single player game uses the angle of the player's torso in relation to the ground to help Ed keep balance in a wobbling world. Ed's body pose reflects the player's pose, creating a very direct form of control. Results of our evaluation show that this form of mapping is very easy to learn and the short play sessions meet the requirements of a casual game in public environment. Furthermore we have designed our level selection menu thus, that it fulfills the double purpose of a gameplay tutorial, allowing the player to get familiar with the controls before plunging into the game.
 %Do not change the page size or page settings.
 \end{abstract}
 
@@ -109,9 +109,9 @@ The balance game \drunkened\ was developed with the goal of creating an applicat
 \fig{paperPrototype}{Paper prototype of Drunken Ed to test interaction}
 }
 Games are intrinsically motivating \cite{salen2004rules} \cite{malone1981motivation}, thus it is not required that the application fulfills any further useful purpose. By designing the game for a large screen display with vision based body tracking for the controls, \drunkened\ can be easily installed in a public area, e.g. a waiting room, where it serves to entertain and shorten the wait.\\
-The gameplay of \drunkened\ can be briefly described as a single player game, with the mission to guide Ed home safely. The players must keep balance and avoid obstacles, as depicted in \autoref{fig:inGame2}, while attempting to move right along the road as far as they can get. The direct control mapping is easy to understand and helps players to relate to the protagonist more strongly.
+The gameplay of \drunkened\ can be briefly described as a single player balance game. The mission is to guide Ed home safely: The players must keep balance and avoid obstacles, as depicted in \autoref{fig:inGame2}, while attempting to move right along the sidewalk as far as they can. The direct control mapping is easy to understand and helps players to relate to the protagonist more strongly.
 %The starting point of the game, is the minimalistic level selection menu displaying Ed in a pub shown in \autoref{fig:screenshot2}. Here the player may experiment with the controls and make Ed stagger left and right by leaning. On the counter there are three different types of alcohol: Beer, Wine and Vodka. The player can make Ed drink one of these by positioning Ed accordingly and performing a drinking gesture. This component of choice entails a further motivation factor according to Malone \cite{malone1981motivation}. Animations and hints inform the player about his options. Upon drinking, the game starts and Ed begins his unsteady way home. The difficulty of the selected level depends on the type of drink consumed - stronger alcohol makes it more difficult for Ed to keep balance. The difficulty further increases with time. A counter informs the player about his progress. Upon losing balance and falling down, a highscore list is shown. If the player has managed a top score, he can have his picture taken to be displayed on the list.
-Ed never actually reaches his home, thus this is purely an endurance game with the goal of getting as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores and strive to provide entertainment to players as well as spectators, which has previously been discussed by O'Hara et al \cite{ohara2008understanding}.\\
+Ed never actually reaches his home, thus this is purely an endurance game with the goal of travelling as far as possible. We hereby allow players who approach in groups to compete with their friends for the best scores. With appealing visuals we strive to provide entertainment to players as well as spectators, which has previously been discussed by O'Hara et al \cite{ohara2008understanding}.\\
 %To ensure suitability for public context, we aimed to fulfill the criteria casual games as proposed by Kultima et al. \cite{kultima2009casual}
 
 
@@ -123,10 +123,10 @@ Ed never actually reaches his home, thus this is purely an endurance game with t
 %\input{design.tex}
 To create a game suitable for public displays, we designed \drunkened\ with the following properties, which were partly inspired by the work of Kultima et al \cite{kultima2009casual}:
 \begin{itemize}\compresslist
-\item \textit{Simplicity:} It must be very easy to understand and to play. Therefore, the game is reduced to one main input (the upper body) and one simple goal (walking to the right).
-\item \textit{Brevity:} Games on public displays target people, who are usually passing by without any intention to play, and it has been shown that interaction with public displays happens in short bursts \cite{walter2013strikeapose}. Therefore we designed our play sessions to be short and hereby wish to encourage turn taking among multiple players.
+\item \textit{Simplicity:} The game must be very easy to understand and to play. Therefore, it is reduced to one main input (the upper body orientation) and one simple goal (walking to the right).
+\item \textit{Brevity:} Games on public displays target people who are usually passing by without any intention to play, and it has been shown that interaction with public displays happens in short bursts \cite{walter2013strikeapose}. Therefore we designed our play sessions to be short to encourage turn taking among multiple players.
 \item \textit{Acceptability:} This was a strongly discussed aspect, since our protagonist indulges in the pleasure of consuming alcohol, which causes him to stagger along the streets drunkenly. We have found that this situation is widely accepted and considered fun, specially among young people. Our game humorously points out the problematic consequences of drinking.
-\item \textit{Accessibility:} Our physical setup with a large screen and visual tracking allows the game to be played by anybody who approaches it and does not require any prior knowledge or special capabilities. However the tracking with the Kinect sets a couple of limitations, such as when dealing with occlusion and bad lighting situations.
+\item \textit{Accessibility:} Our physical setup with a large screen and visual tracking allows the game to be played by anybody who approaches it and does not require any prior knowledge or special abilities. However the tracking with the Kinect sets a couple of limitations, such as when dealing with occlusion, bad lighting situations or overcrowding.
 \item \textit{Flexibility:} This is ensured by forgiving mistakes and gracefully recovering from situations such as when the player suddenly leaves the tracking area.
 \end{itemize}
 
@@ -136,16 +136,16 @@ To create a game suitable for public displays, we designed \drunkened\ with the 
 % =============================================================================
 \section{Design Process}
 % =============================================================================
-\drunkened\ was created in a strongly participatory design process which entailed the creation of story boards (\autoref{fig:storyboard1}) for use in semi structured interviews and paper prototyping for Wizard of Oz experiments (\autoref{fig:paperPrototype}).
+\drunkened\ was created in a strongly participatory design process which entailed the creation of story boards (\autoref{fig:storyboard1}) for use in semi structured interviews and paper prototyping (\autoref{fig:paperPrototype}) for Wizard of Oz experiments.
 %\subsection{Project Outline}
 %After brainstorming we specified the project outline defining the setting of the installation, theme and main mechanics of the balance game and clarified the requirements. 
 %Furthermore we created a fictional persona for whom we designed the game.
 %\subsection{Storyboarding and Interviews}
-%In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as \drunkened\ and the acceptability of its drinking context. From these interviews we learned that.. [TODO]
+%In order to explore possible scenarios for the deployment of our game we created story boards [picture of story board]. With these we approached three potential users and conducted semi-structured interviews to enquire about the need of such a form of entertainment in the given situation and also clarify the desirability of a  game such as \drunkened\ and the acceptability of its drinking context. From these interviews we learned that..
 %At a later point we invited participants to take part in an online vote, to make sure that this controversial subject was truly well accepted. Here we offered the option of a balance game featuring a dish washer balancing plates or a sleepwalking guy. A total of x people participated with a majority of votes for \drunkened.
 %\subsection{Paper Prototype and User Study}
 %Prior to implementation we performed user studies with a detailed paper prototype. 
-With these we researched the comprehensibility of our level selection menu, the user's readiness to learn the controls and the need for in-game hints and explanations. At this stage we made valuable observations on which we based our design decisions, such as to implement a menu which is operable with the same mechanics as the game itself. Thus the menu serves a double purpose as tutorial, in teaching the player how to play.
+With these we researched the comprehensibility of our level selection menu, the user's readiness to learn the controls and the need for in-game hints and explanations. At this stage we made valuable observations on which we based our design decisions, such as to implement a menu, which is operable with the same mechanics as the game itself. Thus the menu serves a double purpose as a tutorial teaching the player how to play.
 \subsection{Heuristic Prototype Evaluation}
 \marginpar{
 \fig{userPlaying}{Performing a think aloud study with users}
@@ -165,27 +165,27 @@ A think aloud study was performed thereafter with several users of varying exper
 \subsection{Challenges}
 \begin{itemize}
 	\item Steep learning curve due to brief interaction sessions: To show the player \textit{how} to interact as quickly as possible, we designed a game with natural input gestures and direct mapping. In addition we implemented hints with both animated text and icons as proposed by Walter et al. \cite{walter2013strikeapose}, demonstrating the possible actions, if no valid input is made for a certain time (\autoref{fig:bendHint}).
-\item Creating a level selection menu for gesture based interaction: This process lead from a button interface based on hand selection with dwell times, to an approach with full body interaction and direct gesture mapping. In plain terms: The spatial menu representation may be navigated by leaning, making Ed stumble left or right. A selection is possible, once Ed holds the drink of choice in hand and can be triggered by performing a drinking gesture, which makes Ed empty the drink.
-\item Invisible limits of the tracking area: A simple solution would be to mark the interaction area on the floor in front of the screen. This however imposes certain requirements on the installation location, which we wished to avoid. Therefore we implemented a warning screen to be displayed when the user leaves the optimal tracking region for error prevention. This screen shows the optimal spot marked with a red "`x"' and the user's position relative to it, with an arrow guiding the player back (\autoref{fig:stepOnMark}).
+\item Creating a level selection menu for gesture based interaction: This process lead from a button interface based on hand selection with dwell times, to an approach with full body interaction and direct gesture mapping. In plain terms: The spatial menu representation may be navigated by leaning, thus making Ed stumble left or right. A selection is possible once Ed holds the drink of choice in hand and can be triggered by performing a drinking gesture, which makes Ed empty the drink.
+\item Invisible limits of the tracking area: A simple solution would be to mark the interaction area on the floor in front of the screen. This however imposes certain requirements on the installation location, which we wished to avoid. Therefore we implemented a warning screen to be displayed when the user leaves the optimal tracking region for error prevention. This screen shows the optimal spot marked with a red \"x\" and the player's relative position, with an arrow guiding her back (\autoref{fig:stepOnMark}).
 \end{itemize}
 \subsection{Implementation}
-The game was implemented using OpenGL for the graphics and SimpleOpenNI to process input from the Kinect sensor. The players are represented by the rag doll \ed, who reflects their body pose and forms the fixed axis around which the world begins to rotate. \eds\ tumbling is physics based, i.e. depending on \eds\ locomotion and angular velocity. This means that each player fails by bringing \ed\ into individual and often awkward sleeping postures.
+The game was implemented using OpenGL for the graphics and SimpleOpenNI to process input from the Kinect sensor. The players are represented by the rag doll \ed, who reflects their body pose and forms the fixed axis around which the world begins to rotate. This is unusual in balance games, where most often the world remains fixed. \eds\ tumbling is physics based, i.e. it depends on \eds\ locomotion and angular velocity. This means that each player fails by bringing \ed\ into individual and often awkward sleeping postures.
 
 % =============================================================================
 \section{Game Play and Mechanics}
 % =============================================================================
-While no player is present a bar is shown with three blackboards displaying the highscores for the respective levels (\autoref{fig:titleScreen}). A call to action invites passers-by to enter the tracking area, upon which \ed\ appears. By bending to one side the player can move \ed\ along the bar to choose a level by selecting one of three alcoholic drinks which are placed on top of it: beer, wine or vodka (\autoref{fig:mainMenu}). The difficulty of each level corresponds to the type of alcohol consumed - beer signifies the easiest level while vodka is the most challenging, causing the world to rotate faster and more uncontrollably. The choice is confirmed by performing an expressive drinking gesture.\\
-At this point, the main game starts with the objective to make \ed\ walk as far to the right as far possible. \ed\ walks in an uncontrolled manner, always following his center of mass, resembling the typical accentuated movement of a drunken person. 
+While no player is present a bar is shown with three blackboards displaying the highscores for the respective levels (\autoref{fig:titleScreen}). A call to action invites passers-by to enter the tracking area, upon which \ed\ appears. By bending to one side the player can move \ed\ along the bar to choose a level by selecting one of three alcoholic drinks which are placed on the counter: beer, wine or vodka (\autoref{fig:mainMenu}). The difficulty of each level corresponds to the type of alcohol consumed - beer signifies the easiest level while vodka is the most challenging, causing the world to rotate faster and more uncontrollably. The choice is confirmed by performing an expressive drinking gesture.\\
+At this point, the main game starts with the objective to make \ed\ walk as far as  possible. \ed\ walks in an uncontrolled manner always following his center of mass, resembling the typical accentuated movement of a drunken person. 
 \marginpar{
 \fig{mainMenu}{Selecting a level and difficulty by choosing a drink}
 \fig{fallDown1}{The game ends when Ed falls down}
 \fig{gameOver2}{Game over screen after reaching a highscore}
 \fig{swingArms}{Ed spreading and swinging his arms as a warning}
 }
-\eds\ upper body has the same orientation as that of the player and creates a fixed axis around which the world rotates. Bending \eds\ upper body shifts his center of mass, making him stumble in a certain direction. The closer \ed\ bends towards the ground, the faster he walks, and the player must compensate the world's rotation to keep \ed\ from falling down. This happens as soon as the angle between the upper body and the floor becomes too small. In addition \ed\ stumbles if he goes too fast, or trips over obstacles that lie in his path. To overcome the latter, a short hop makes \ed\ leap into the air.
+\eds\ upper body has the same orientation as that of the player and creates a fixed axis around which the world rotates. Bending \eds\ upper body shifts his center of mass, making him stumble in a certain direction. The closer \ed\ bends towards the ground, the faster he walks, and the player must compensate the world's rotation to keep \ed\ from falling down. This happens as soon as the angle between the upper body and the floor becomes too small. In addition \ed\ stumbles if he goes too fast, or trips over obstacles that lie in his path. For the latter, a short hop makes \ed\ leap into the air.\\
 The game is over once \ed\ falls down (\autoref{fig:fallDown1}) and the distance traveled is shown as the player's score. Players with a highscore may take a picture of themselves for the highscore list above the bar (see \autoref{fig:gameOver2}), which is once again triggered by the drinking gesture. To avoid taking the picture, the player can wait for the countdown to end, or simply leave the playing area. The game then returns to the level selection menu.\\
 %If a player should accidentally leave the tracking area, a hint invites her to step back onto a mark shown on the screen (see \autoref{fig:stepOnMark}).\\
-During gameplay \eds\ arms play an important role to convey information to the player. While in the menu the arms are controllable by the player, while in the main game \eds\ arms hang down idly emphasizing the loss of physical control. Furthermore this contributes to the players orientation and allow to estimate \eds\ movement, because his arms always point towards the floor and center of gravity. They also have an important feedback role which can be seen in \autoref{fig:swingArms}: If \ed\ walks too fast he begins to flail and if he is close to falling, his arms start to swing as if trying to balance. Players quickly interpreted these actions as alarming indicators.
+During gameplay \eds\ arms play an important role to convey information to the player. In the menu the arms are controllable by the player, while in the main game \eds\ arms hang down idly emphasizing the loss of physical control. Furthermore this contributes to the players orientation and allow to estimate \eds\ movement, because his arms always point towards the ground and center of gravity. They also have an important feedback role which can be seen in \autoref{fig:swingArms}: If \ed\ walks too fast he begins to flail and if he is close to falling, his arms start to swing as if trying to balance. Players quickly interpreted these actions as alarming indicators.
 %\input{mechanics.tex}
 % This also attempts to compensate the fact, that \drunkened\ is a single player game, because spectators can have fun seeing others fail.
 % =============================================================================
@@ -199,7 +199,7 @@ Creating games for public displays brings many new challenges in game design. Th
 % =============================================================================
 \section{Acknowledgments}
 % =============================================================================
-Special thanks go to our project supervisors J\"org M\"uller and Robert Walter for their help during development. Furthermore we wish to thank all volunteers who participated in interviews, experiments and play testing.
+Special thanks go to our project supervisors J\"org M\"uller and Robert Walter for their help during development. Furthermore we wish to thank all volunteers who participated in our interviews, experiments and testing.
 %%--------------------REMOVE FOLLOWING SECTIONS---------------------------------
 %% =============================================================================
 %\section{Copyright}
